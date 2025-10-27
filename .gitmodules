@@ -1,0 +1,24 @@
+[submodule "3rdparty/SARibbon"]
+	path = 3rdparty/SARibbon
+	url = https://github.com/czyt1988/SARibbon.git
+[submodule "3rdparty/ADS"]
+	path = 3rdparty/ADS
+	url = https://github.com/githubuser0xFFFF/Qt-Advanced-Docking-System.git
+[submodule "3rdparty/spdlog"]
+	path = 3rdparty/spdlog
+	url = https://github.com/gabime/spdlog.git
+[submodule "3rdparty/pybind11"]
+	path = 3rdparty/pybind11
+	url = https://github.com/pybind/pybind11.git
+[submodule "3rdparty/qwt"]
+	path = 3rdparty/qwt
+	url = https://github.com/czyt1988/QWT.git
+[submodule "3rdparty/zlib"]
+	path = 3rdparty/zlib
+	url = https://github.com/madler/zlib.git
+[submodule "3rdparty/quazip"]
+	path = 3rdparty/quazip
+	url = https://github.com/stachenov/quazip.git
+[submodule "3rdparty/vtk"]
+	path = 3rdparty/vtk
+	url = https://github.com/Kitware/VTK.git

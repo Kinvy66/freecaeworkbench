@@ -1,0 +1,53 @@
+# FCWorkbench的config file 此处将列举所有的components
+@PACKAGE_INIT@
+
+include(CMakeFindDependencyMacro)
+# 这里PROJECT_NAME就作为包名
+set(_package_name @PROJECT_NAME@)
+
+set(_${_package_name}_supported_components FCUtils FCAxOfficeWrapper FCMessageHandler FCPyBindQt FCPyScripts FCData FCCommonWidgets FCPyCommonWidgets FCGraphicsView FCWorkFlow FCFigure FCGui FCInterface FCPluginSupport)
+set(_${_package_name}_available_components "")
+
+# 把FC_ENABLE_PYTHON变量传递到此处
+set(FC_ENABLE_PYTHON @FC_ENABLE_PYTHON@)
+
+# 遍历所有要导入的模块
+foreach(_component ${${_package_name}_FIND_COMPONENTS})
+    # 首先判断是否在所支持列表中
+    if(_component IN_LIST _${_package_name}_supported_components)
+        set(__target ${_package_name}::${_component})
+        if(TARGET ${__target})
+            # 避免重复加载
+            continue()
+        else()
+            find_package(${_component} 
+                REQUIRED 
+                PATHS ${CMAKE_CURRENT_LIST_DIR}
+            )
+        endif()
+    else()
+        set(${_package_name}_FOUND FALSE)
+        set(${_package_name}_NOT_FOUND_MESSAGE "Unknown component: ${__target}.")
+        break()
+    endif()
+endforeach()
+
+if(NOT DEFINED @PROJECT_NAME@_FOUND)
+    set(@PROJECT_NAME@_FOUND TRUE)
+    set(@PROJECT_NAME@_VERSION "@PROJECT_VERSION@")
+    set(@PROJECT_NAME@_VERSION_MAJOR "@PROJECT_VERSION_MAJOR@")
+    set(@PROJECT_NAME@_VERSION_MINOR "@PROJECT_VERSION_MINOR@")
+    set(@PROJECT_NAME@_VERSION_PATCH "@PROJECT_VERSION_PATCH@")
+    #set(@PROJECT_NAME@_VERSION_TWEAK "@PROJECT_VERSION_TWEAK@")
+    set(@PROJECT_NAME@_DESCRIPTION "@PROJECT_DESCRIPTION@")
+    set(@PROJECT_NAME@_HOMEPAGE_URL "@PROJECT_HOMEPAGE_URL@")
+    set(@PROJECT_NAME@_COMMIT "@PROJECT_VERSION_COMMIT@")
+    set(@PROJECT_NAME@_COMPILE_DATETIME "@PROJECT_COMPILE_DATETIME@")
+endif()
+
+include(FeatureSummary)
+set_package_properties(@PROJECT_NAME@ PROPERTIES
+    DESCRIPTION "@PROJECT_DESCRIPTION@"
+    URL "@PROJECT_HOMEPAGE_URL@"
+)
+
