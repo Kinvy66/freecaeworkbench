@@ -172,7 +172,7 @@ macro(fcmacro_lib_install_no_rc)
         COMPATIBILITY SameMajorVersion
     )
     configure_package_config_file(
-      "${CMAKE_CURRENT_SOURCE_DIR}/../FCConfig.cmake.in"
+      "${CMAKE_CURRENT_SOURCE_DIR}/../FCLibConfig.cmake.in"
       "${CMAKE_CURRENT_BINARY_DIR}/${FC_LIB_NAME}Config.cmake"
       INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${FC_PROJECT_NAME}
       PATH_VARS FC_LIB_INCLUDE_INSTALL_DIR

@@ -48,7 +48,7 @@ cmake_minimum_required(VERSION 3.12)
 
 # add_subdirectory(FCGui)
 
-# add_subdirectory(FCInterface)
+add_subdirectory(FCInterface)
 # add_dependencies(FCInterface FCGui)
 
 # add_subdirectory(FCPluginSupport)

@@ -1,0 +1,396 @@
+/******************************************************************************
+ * File     : FCDockingAreaInterface.h
+ * Brief    : dock 区域的接口
+ * Author   : Kinvy
+ * Email    : kinvy66@163.com
+ * Date     : 2025-10-27
+ * Version  : V0.0.1
+ * Detail   :
+ * Copyright: Copyright By Kinvy, All Rights Reserved
+******************************************************************************/
+#include "FCDockingAreaInterface.h"
+#include <QMap>
+#include <QDebug>
+#include <QApplication>
+#include <QScreen>
+
+// FC
+#include "FCUIInterface.h"
+// Qt-Advanced-Docking-System
+#include "DockManager.h"
+#include "DockAreaWidget.h"
+#include "FloatingDockContainer.h"
+// SARibbon
+//  这个头文件需要存在，ui()->mainWindow()获取的窗口需要这个头文件，不要移除
+#include "SARibbonMainWindow.h"
+//
+// #include "DADataManageWidget.h"
+// #include "DADataOperateWidget.h"
+
+
+namespace FC 
+{
+class FCDockingAreaInterface::PrivateData
+{
+    FC_DECLARE_PUBLIC(FCDockingAreaInterface)
+public:
+    PrivateData(FCDockingAreaInterface* p);
+    void buildDock();
+
+public:
+    FCUIInterface* mUiInterface { nullptr };
+    ads::CDockManager* mDockManager { nullptr };
+    ads::CDockAreaWidget* mCenterArea { nullptr };
+};
+
+//===================================================
+// FCAppDockingAreaInterfacePrivate
+//===================================================
+
+FCDockingAreaInterface::PrivateData::PrivateData(FCDockingAreaInterface* p) : q_ptr(p)
+{
+}
+
+void FCDockingAreaInterface::PrivateData::buildDock()
+{
+    ads::CDockManager::setConfigFlag(ads::CDockManager::OpaqueSplitterResize, true);
+    ads::CDockManager::setConfigFlag(ads::CDockManager::XmlCompressionEnabled, false);
+    ads::CDockManager::setConfigFlag(ads::CDockManager::FocusHighlighting, true);
+    // mDockManager = new ads::CDockManager(q_ptr->ui()->mainWindow());
+}
+//===================================================
+// FCAppDockingAreaInterface
+//===================================================
+FCDockingAreaInterface::FCDockingAreaInterface(FCUIInterface* u)
+    : FCUIExtendInterface(u), FC_PIMPL_CONSTRUCT
+{
+    d_ptr->mUiInterface = u;
+    d_ptr->buildDock();
+}
+
+FCDockingAreaInterface::~FCDockingAreaInterface()
+{
+}
+
+/**
+ * @brief 获取CDockManager
+ * @return 
+ */
+ads::CDockManager* FCDockingAreaInterface::dockManager()
+{
+    return d_ptr->mDockManager;
+}
+
+/**
+ * @brief 获取CDockManager
+ * @return 
+ */
+const ads::CDockManager* FCDockingAreaInterface::dockManager() const
+{
+    return d_ptr->mDockManager;
+}
+
+/**
+ * @brief 通过窗口查找对应的CDockWidget
+ * @note 注意此函数是O(n)复杂度
+ * @param w 要查询的窗口
+ * @return 如果没找到，返回nullptr
+ */
+ads::CDockWidget* FCDockingAreaInterface::findDockWidget(QWidget* w) const
+{
+    if (nullptr == w) {
+        return nullptr;
+    }
+    const auto allDockWidgets = d_ptr->mDockManager->dockWidgetsMap();
+    for (auto i = allDockWidgets.begin(); i != allDockWidgets.end(); ++i) {
+        if (i.value()->widget() == w) {
+            return i.value();
+        }
+    }
+    return nullptr;
+}
+
+/**
+ * @brief 隐藏某个窗体对应的dockwidget
+ * @param w 传入dock内部维护的widget或dockwidget都可以
+ */
+void FCDockingAreaInterface::hideDockWidget(QWidget* w)
+{
+    ads::CDockWidget* d = findDockWidget(w);
+    if (d) {
+        d->toggleView(false);
+        qDebug().noquote() << tr("dock widget \"%1\" was closed and hide").arg(d->windowTitle());  // cn:停靠窗口“%1”隐藏并关闭
+    } else {
+        d = qobject_cast< ads::CDockWidget* >(w);
+        if (d) {
+            d->toggleView(false);
+        } else {
+            qDebug().noquote() << tr("can not find widget or dock widget ");  // cn:无法找到需要隐藏的dock 窗口
+        }
+    }
+}
+
+/**
+ * @brief 唤起一个widget对应的dock widget，如果窗口关闭了，也会唤起
+ * @param w
+ * @sa raiseDockingArea
+ */
+void FCDockingAreaInterface::raiseDockByWidget(QWidget* w)
+{
+    if (ads::CDockWidget* dw = findDockWidget(w)) {
+        if (dw->isClosed()) {
+            dw->toggleView();
+        }
+        dw->raise();
+    }
+}
+
+/**
+ * @brief 获取中心区域
+ * @return 
+ */
+ads::CDockAreaWidget* FCDockingAreaInterface::getCenterArea() const
+{
+    return d_ptr->mCenterArea;
+}
+
+/**
+ * @brief 获取中心窗口
+ * @return 
+ */
+ads::CDockWidget* FCDockingAreaInterface::getCentralWidget() const
+{
+    return d_ptr->mDockManager->centralWidget();
+}
+
+/**
+ * @brief 重置分割尺寸
+ */
+void FCDockingAreaInterface::resetDefaultSplitterSizes()
+{
+    QScreen* screen = QApplication::primaryScreen();
+    int leftwidth   = screen->size().width() / 6;
+    int rightwidth  = leftwidth;
+    int centerwidth = screen->size().width() - leftwidth - rightwidth;
+    dockManager()->setSplitterSizes(getCenterArea(), { leftwidth, centerwidth, rightwidth });
+}
+
+// QList< DAData > FCDockingAreaInterface::getCurrentSelectDatas() const
+// {
+//     QList< DAData > res;
+//     // 获取当前的焦点
+//     ads::CDockWidget* currentFource = dockManager()->focusedDockWidget();
+//     if (currentFource == nullptr) {
+//         // 说明没有焦点的窗口，返回空
+//         return res;
+//     }
+//     // 查看是否是DataOperateWidget
+//     auto dow = getDataOperateWidget();
+//     auto dmw = getDataManageWidget();
+    
+//     if (currentFource->widget() == dow) {
+//         // 数据表窗口，调用getCurrentSelectDatas
+//         return dow->getCurrentSelectDatas();
+//     } else if (currentFource->widget() == dmw) {
+//         // 数据管理窗口，调用getSelectDatas
+//         return dmw->getCurrentSelectDatas();
+//     }
+    
+//     return res;
+// }
+#if DA_ENABLE_PYTHON
+/**
+ * @brief 获取当前选中的dataframe
+ *
+ * @return pair:first 选中的dataframe，pair:second 选中的列索引，对于当前选中的是DataManageWidget，第二项返回空
+ */
+std::pair< DAPyDataFrame, QList< int > > DADockingAreaInterface::getCurrentSelectDataFrame() const
+{
+    std::pair< DAPyDataFrame, QList< int > > res;
+    // 获取当前的焦点
+    ads::CDockWidget* currentFource = dockManager()->focusedDockWidget();
+    if (currentFource == nullptr) {
+        // 说明没有焦点的窗口，返回空
+        return res;
+    }
+    // 查看是否是DataOperateWidget
+    auto dow = getDataOperateWidget();
+    auto dmw = getDataManageWidget();
+    
+    if (currentFource->widget() == dow) {
+        // 数据表窗口，调用getCurrentSelectDatas
+        return dow->getCurrentSelectDataFrame();
+    } else if (currentFource->widget() == dmw) {
+        // 数据管理窗口，调用getSelectDatas
+        auto sd = dmw->getOneSelectData();
+        if (sd.isDataFrame()) {
+            res.first = sd.toDataFrame();
+        }
+    }
+    return res;
+}
+#endif
+
+/**
+ * @brief 判断DataOperateWidget是否是在焦点
+ * @return
+ */
+bool FCDockingAreaInterface::isDataOperateWidgetDockOnFource() const
+{
+    // ads::CDockWidget* currentFource = dockManager()->focusedDockWidget();
+    // return (currentFource->widget() == getDataOperateWidget());
+    return true;
+}
+
+/**
+ * @brief 判断DataManageWidget是否是在焦点
+ * @return
+ */
+bool FCDockingAreaInterface::isDataManageWidgetDockOnFource() const
+{
+    // ads::CDockWidget* currentFource = dockManager()->focusedDockWidget();
+    // return (currentFource->widget() == getDataManageWidget());
+    
+    return true;
+    
+}
+
+// DAWorkFlowGraphicsScene* FCDockingAreaInterface::getCurrentScene() const
+// {
+//     DAWorkFlowOperateWidget* ow = getWorkFlowOperateWidget();
+//     if (ow) {
+//         return ow->getCurrentWorkFlowScene();
+//     }
+//     return nullptr;
+// }
+
+/**
+ * @brief 枚举DockingArea对应的窗口指针
+ * @param area
+ * @return
+ */
+ads::CDockWidget* FCDockingAreaInterface::dockingAreaToDockWidget(DockingArea area) const
+{
+    switch (area) {
+    // case DockingAreaChartManager:
+    //     return getChartManageDock();
+    // case DockingAreaChartOperate:
+    //     return getChartOperateDock();
+    // case DockingAreaDataManager:
+    //     return getDataManageDock();
+    // case DockingAreaDataOperate:
+    //     return getDataOperateDock();
+    case DockingAreaMessageLog:
+        return getMessageLogDock();
+    case DockingAreaSetting:
+        return getSettingContainerDock();
+    // case DockingAreaWorkFlowManager:
+    //     return getWorkflowNodeListDock();
+    // case DockingAreaWorkFlowOperate:
+    //     return getWorkFlowOperateDock();
+    default:
+        break;
+    }
+    return nullptr;
+}
+
+/**
+ * @brief 唤起一个dock widget，如果窗口关闭了，也会唤起
+ * @param area
+ * @sa raiseDockByWidget
+ */
+void FCDockingAreaInterface::raiseDockingArea(DockingArea area)
+{
+    ads::CDockWidget* dw = dockingAreaToDockWidget(area);
+    if (dw) {
+        if (dw->isClosed()) {
+            dw->toggleView();
+        }
+        dw->raise();
+    }
+}
+
+/**
+ * @brief 判断是否处于焦点
+ * @param area
+ * @return
+ */
+bool FCDockingAreaInterface::isDockingAreaFocused(DockingArea area) const
+{
+    ads::CDockWidget* dw = dockingAreaToDockWidget(area);
+    ads::CDockWidget* fd = dockManager()->focusedDockWidget();
+    if (dw) {
+        return (dw == fd);
+    }
+    return false;
+}
+
+/**
+ * @brief 创建中央dock窗体
+ * @param w
+ * @param widgetName
+ * @return
+ */
+ads::CDockWidget* FCDockingAreaInterface::createCenterDockWidget(QWidget* w, const QString& widgetName)
+{
+    ads::CDockWidget* dockWidget = new ads::CDockWidget(widgetName);
+    dockWidget->setWidget(w);
+    d_ptr->mCenterArea = d_ptr->mDockManager->setCentralWidget(dockWidget);
+    return dockWidget;
+}
+
+/**
+ * @brief 创建一个dock窗体
+ * @param w
+ * @param area
+ * @param widgetName 注意，这里的是作为title同时作为objectname,但多语言应该单独设置title，因此在构造之后必须在设置单独的objname
+ * @param dockAreaWidget
+ * @return
+ */
+ads::CDockWidget* FCDockingAreaInterface::createDockWidget(QWidget* w,
+                                                           ads::DockWidgetArea area,
+                                                           const QString& widgetName,
+                                                           ads::CDockAreaWidget* dockAreaWidget)
+{
+    ads::CDockWidget* dockWidget = new ads::CDockWidget(widgetName);
+    dockWidget->setWidget(w);
+    d_ptr->mDockManager->addDockWidget(area, dockWidget, dockAreaWidget);
+    return dockWidget;
+}
+
+/**
+ * @brief 创建一个浮动窗体
+ * @param w 窗口
+ * @param widgetName 窗体名称
+ * @param pos 位置
+ * @return
+ */
+ads::CDockWidget* FCDockingAreaInterface::createFloatingDockWidget(QWidget* w, const QString& widgetName, const QPoint& pos)
+{
+    ads::CDockWidget* dockWidget = new ads::CDockWidget(widgetName);
+    dockWidget->setWidget(w);
+    ads::CFloatingDockContainer* fc = d_ptr->mDockManager->addDockWidgetFloating(dockWidget);
+    fc->move(pos);
+    return dockWidget;
+}
+
+/**
+ * @brief 创建一个tab dock
+ * @param w 窗口
+ * @param widgetName 窗体名称
+ * @param dockAreaWidget 停靠区域
+ * @return
+ */
+ads::CDockWidget* FCDockingAreaInterface::createDockWidgetAsTab(QWidget* w,
+                                                                const QString& widgetName,
+                                                                ads::CDockAreaWidget* dockAreaWidget)
+{
+    ads::CDockWidget* dockWidget = new ads::CDockWidget(widgetName);
+    dockWidget->setWidget(w);
+    dockWidget->setFeatures(ads::CDockWidget::DefaultDockWidgetFeatures);
+    dockWidget->setMinimumSizeHintMode(ads::CDockWidget::MinimumSizeHintFromDockWidget);
+    d_ptr->mDockManager->addDockWidgetTabToArea(dockWidget, dockAreaWidget);
+    return dockWidget;
+}
+
+} // namespace FC
