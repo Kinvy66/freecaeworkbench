@@ -116,15 +116,17 @@ if(FC_ENABLE_PYTHON)
     fcmacro_import_Python(${FC_APP_NAME})
 endif()
 
-# find_package(${FC_PROJECT_NAME} COMPONENTS
-#     FCPluginSupport
-# )
+find_package(${FC_PROJECT_NAME} COMPONENTS
+    FCInterface
+    FCGui
+)
 
 if(${FC_PROJECT_NAME}_FOUND)
-    message(STATUS "  |-linked ${FC_PROJECT_NAME}::FCPluginSupport")
+    message(STATUS "  |-linked ${FC_PROJECT_NAME}::FCInterface")
 endif()
 target_link_libraries(${FC_APP_NAME} PUBLIC
-    # ${FC_PROJECT_NAME}::FCPluginSupport
+    ${FC_PROJECT_NAME}::FCInterface
+    ${FC_PROJECT_NAME}::FCGui
 )
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.

@@ -36,7 +36,7 @@ class FCUIInterface;
 // class FCChartOperateWidget;
 // class FCDataManageWidget;
 // class FCDataOperateWidget;
-// class FCMessageLogViewWidget;
+class FCMessageLogViewWidget;
 // class FCWorkFlowNodeListWidget;
 // class FCWorkFlowOperateWidget;
 
@@ -187,7 +187,7 @@ public:
     // virtual DADataOperateWidget* getDataOperateWidget() const = 0;
     
     // 获取日志显示窗口
-    // virtual FCMessageLogViewWidget* getMessageLogViewWidget() const = 0;
+    virtual FCMessageLogViewWidget* getMessageLogViewWidget() const = 0;
     
     // 获取设置窗口,设置容器可以放置多个设置窗口
     // virtual DASettingContainerWidget* getSettingContainerWidget() const = 0;
@@ -209,7 +209,7 @@ public:
 	 * @brief 工作流节点dock
 	 * @return
 	 */
-    virtual ads::CDockWidget* getWorkflowNodeListDock() const = 0;
+    // virtual ads::CDockWidget* getWorkflowNodeListDock() const = 0;
     
     /**
 	 * @brief 信息窗口dock
@@ -221,37 +221,37 @@ public:
 	 * @brief 设置窗口dock
 	 * @return
 	 */
-    virtual ads::CDockWidget* getSettingContainerDock() const = 0;
+    // virtual ads::CDockWidget* getSettingContainerDock() const = 0;
     
     /**
 	 * @brief 数据操作窗口dock
 	 * @return
 	 */
-    virtual ads::CDockWidget* getDataOperateDock() const = 0;
+    // virtual ads::CDockWidget* getDataOperateDock() const = 0;
     
     /**
 	 * @brief 绘图操作窗口dock
 	 * @return
 	 */
-    virtual ads::CDockWidget* getChartOperateDock() const = 0;
+    // virtual ads::CDockWidget* getChartOperateDock() const = 0;
     
     /**
 	 * @brief 工作流操作窗口dock
 	 * @return
 	 */
-    virtual ads::CDockWidget* getWorkFlowOperateDock() const = 0;
+    // virtual ads::CDockWidget* getWorkFlowOperateDock() const = 0;
     
     /**
 	 * @brief 数据管理窗口dock
 	 * @return
 	 */
-    virtual ads::CDockWidget* getDataManageDock() const = 0;
+    // virtual ads::CDockWidget* getDataManageDock() const = 0;
     
     /**
 	 * @brief 图表管理窗口dock
 	 * @return
 	 */
-    virtual ads::CDockWidget* getChartManageDock() const = 0;
+    // virtual ads::CDockWidget* getChartManageDock() const = 0;
 #if DA_ENABLE_PYTHON
     // 获取当前选中的Dataframe,如果用户在选中了列，返回选中的列索引
     virtual std::pair< DAPyDataFrame, QList< int > > getCurrentSelectDataFrame() const;

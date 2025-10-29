@@ -34,6 +34,7 @@ add_library(${FC_LIB_NAME} SHARED
             ${FC_GLOBAL_HEADER}
 )
 
+
 # 构建库定义的宏
 target_compile_definitions(${FC_LIB_NAME} PRIVATE FCINTERFACE_BUILDLIB)#!!!!** 注意变更 **!!!!
 add_library(${FC_PROJECT_NAME}::${FC_LIB_NAME} ALIAS ${FC_LIB_NAME})
@@ -47,8 +48,6 @@ target_link_libraries(${FC_LIB_NAME} PRIVATE
     Qt${QT_VERSION_MAJOR}::Widgets
     Qt${QT_VERSION_MAJOR}::Xml
 )
-
-
 
 # -------------link SARibbon--------------------------
 fcmacro_import_SARibbonBar(${FC_LIB_NAME})
@@ -68,14 +67,14 @@ endif()
 
 
 find_package(${FC_PROJECT_NAME} COMPONENTS
-    # FCGui
+    FCGui
 )
 
 if(${FC_PROJECT_NAME}_FOUND)
     message(STATUS "  |-linked ${FC_PROJECT_NAME}::FCGui")
 endif()
 target_link_libraries(${FC_LIB_NAME} PUBLIC
-    # ${FC_PROJECT_NAME}::FCGui
+    ${FC_PROJECT_NAME}::FCGui
 )
 if(FC_ENABLE_PYTHON)
     # -------------link python--------------------------

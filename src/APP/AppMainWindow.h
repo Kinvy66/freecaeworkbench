@@ -22,7 +22,6 @@ QT_END_NAMESPACE
 class QCloseEvent;
 namespace FC
 {
-
 class FCAppCore;
 class FCAppRibbonArea;
 class FCAppUI;

@@ -282,8 +282,8 @@ ads::CDockWidget* FCDockingAreaInterface::dockingAreaToDockWidget(DockingArea ar
     //     return getDataOperateDock();
     case DockingAreaMessageLog:
         return getMessageLogDock();
-    case DockingAreaSetting:
-        return getSettingContainerDock();
+    // case DockingAreaSetting:
+    //     return getSettingContainerDock();
     // case DockingAreaWorkFlowManager:
     //     return getWorkflowNodeListDock();
     // case DockingAreaWorkFlowOperate:
