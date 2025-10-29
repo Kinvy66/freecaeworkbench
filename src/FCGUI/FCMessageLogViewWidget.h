@@ -21,7 +21,7 @@ class FCMessageLogViewWidget;
 
 namespace FC 
 {
-class FCMessageLogViewWidget : public QWidget
+class FCGUI_API FCMessageLogViewWidget : public QWidget
 {
     Q_OBJECT
     

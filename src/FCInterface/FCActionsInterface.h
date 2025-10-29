@@ -20,7 +20,7 @@ class QActionGroup;
 namespace FC {
 class FCCoreInterface;
 
-class FCActionsInterface : public FCBaseInterface
+class FCINTERFACE_API FCActionsInterface : public FCBaseInterface
 {
     Q_OBJECT
     FC_DECLARE_PRIVATE(FCActionsInterface)
