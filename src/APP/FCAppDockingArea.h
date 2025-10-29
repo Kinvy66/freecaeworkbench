@@ -55,13 +55,13 @@ public:
     
 public:
     // 获取工作节点管理窗口
-    // virtual FCMessageLogViewWidget* getMessageLogViewWidget() const override;
+    virtual FCMessageLogViewWidget* getMessageLogViewWidget() const override;
     
     /**
 	 * @brief 信息窗口dock
 	 * @return
 	 */
-    // ads::CDockWidget* getMessageLogDock() const override;
+    ads::CDockWidget* getMessageLogDock() const override;
     
     
 private:
@@ -82,8 +82,8 @@ private:
     
     
     // 日志窗口
-    // FCMessageLogViewWidget* mMessageLogViewWidget;  ///< 日志窗口
-    // ads::CDockWidget* mMessageLogDock;
+    FCMessageLogViewWidget* mMessageLogViewWidget;  ///< 日志窗口
+    ads::CDockWidget* mMessageLogDock;
 };
 } // namespace FC
 

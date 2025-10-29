@@ -111,6 +111,11 @@ void FCAppCore::createUi(SARibbonMainWindow* mainwindow)
     // }
 }
 
+FCDataManagerInterface *FCAppCore::getDataManagerInterface() const
+{
+    return nullptr;
+}
+
 
 /**
  * @brief 获取FCAppUI，省去qobject_cast

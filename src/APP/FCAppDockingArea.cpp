@@ -69,15 +69,16 @@ void FCAppDockingArea::resetText()
     // mMessageLogDock->setWindowTitle(tr("log"));                    // cn:消息
 }
 
-// FCMessageLogViewWidget *FCAppDockingArea::getMessageLogViewWidget() const
-// {
-//     // return mMessageLogViewWidget;
-// }
+FCMessageLogViewWidget *FCAppDockingArea::getMessageLogViewWidget() const
+{
+    return mMessageLogViewWidget;
+    
+}
 
-// ads::CDockWidget *FCAppDockingArea::getMessageLogDock() const
-// {
-//     return mMessageLogDock;
-// }
+ads::CDockWidget *FCAppDockingArea::getMessageLogDock() const
+{
+    return mMessageLogDock;
+}
 
 void FCAppDockingArea::buildDockingArea()
 {
