@@ -16,12 +16,12 @@
 #include <QDir>
 #include <QProcess>
 // API
-// #include "FCAppUI.h"
-// #include "FCAppRibbonArea.h"
+#include "FCAppUI.h"
+#include "FCAppRibbonArea.h"
 // #include "FCAppDataManager.h"
-// #include "DACommandInterface.h"
-// #include "FCAppProject.h"
-// #include "FCAppCommand.h"
+#include "FCCommandInterface.h"
+#include "FCProjectInterface.h"
+#include "FCAppCommand.h"
 // #if DA_ENABLE_PYTHON
 // // DA Python
 // #include "DAPyInterpreter.h"
@@ -79,8 +79,7 @@ bool FCAppCore::initialized()
  */
 FCUIInterface* FCAppCore::getUiInterface() const
 {
-    // return mAppUI;
-    return nullptr;
+    return mAppUI;
 }
 
 /**
@@ -100,9 +99,9 @@ FCProjectInterface* FCAppCore::getProjectInterface() const
  */
 void FCAppCore::createUi(SARibbonMainWindow* mainwindow)
 {
-    // mAppUI = new FCAppUI(mainwindow, this);
-    // mAppUI->createUi();
-    // mAppCmd = mAppUI->getAppCmd();
+    mAppUI = new FCAppUI(mainwindow, this);
+    mAppUI->createUi();
+    mAppCmd = mAppUI->getAppCmd();
     // if (mDataManager) {
     //     // 把dataManager的undo stack 注册
     //     if (mAppCmd) {
@@ -123,8 +122,7 @@ FCDataManagerInterface *FCAppCore::getDataManagerInterface() const
  */
 FCAppUI* FCAppCore::getAppUi()
 {
-    // return mAppUI;
-    return nullptr;
+    return mAppUI;
 }
 /**
  * @brief 获取工程

@@ -40,6 +40,14 @@ public:
     ~AppMainWindow();
     
 private:
+    // 初始化
+    void init();
+    
+    // 初始化插件
+    void initPlugins();
+    
+    
+private:
     FCAppCore* mCore { nullptr };
     FCAppUI* mUI { nullptr };
     FCAppDockingArea* mDockArea { nullptr };

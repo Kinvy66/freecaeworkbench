@@ -41,7 +41,7 @@
 #include "FCAppCommand.h"
 #include "FCAppCore.h"
 // #include "FCAppDockingArea.h"
-// #include "FCAppActions.h"
+#include "FCAppActions.h"
 // #include "FCRecentFilesManager.h"
 // Qt-Advanced-Docking-System
 #include "DockManager.h"
@@ -99,12 +99,13 @@ using namespace FC;
 // DAAppRibbonArea
 //===================================================
 
-FCAppRibbonArea::FCAppRibbonArea(FCUIInterface* u) : FCRibbonAreaInterface(u)
+FCAppRibbonArea::FCAppRibbonArea(FCUIInterface* u)
+    : FCRibbonAreaInterface(u)
 {
     FCAppUI* appui = qobject_cast< FCAppUI* >(u);
-    // m_app          = qobject_cast< AppMainWindow* >(appui->mainWindow());
-    // m_actions      = qobject_cast< FCAppActions* >(u->getActionInterface());
-    // m_appCmd       = qobject_cast< FCAppCommand* >(u->getCommandInterface());
+    m_app          = qobject_cast< AppMainWindow* >(appui->mainWindow());
+    m_actions      = qobject_cast< FCAppActions* >(u->getActionInterface());
+    m_appCmd       = qobject_cast< FCAppCommand* >(u->getCommandInterface());
     // ribbon的构建在setDockingArea进行，为了保证ribbon在dock之后构建
 }
 
@@ -119,7 +120,7 @@ FCAppRibbonArea::~FCAppRibbonArea()
 void FCAppRibbonArea::buildMenu()
 {
 
-    // m_menuTheme = new SARibbonMenu(m_app);
+    m_menuTheme = new SARibbonMenu(m_app);
     // m_menuTheme->setObjectName(QStringLiteral("menuTheme"));
     // m_menuTheme->setIcon(QIcon(QStringLiteral(":/app/bright/Icon/theme.svg")));
     // m_menuTheme->addAction(m_actions->actionRibbonThemeOffice2013);
@@ -134,7 +135,7 @@ void FCAppRibbonArea::buildMenu()
  */
 void FCAppRibbonArea::retranslateUi()
 {
-    resetText();
+    // resetText();
 }
 
 /**
@@ -142,10 +143,10 @@ void FCAppRibbonArea::retranslateUi()
  */
 void FCAppRibbonArea::resetText()
 {
-    ribbonBar()->applicationButton()->setText(tr("File"));  // 文件
+    ribbonBar()->applicationButton()->setText(tr("文件"));  // 文件
     
-    // m_categoryMain->setCategoryName(tr("Home"));              // cn:主页
-    // m_categoryGeometry->setCategoryName(tr("Gemetry"));       // cn:几何
+    // m_categoryMain->setCategoryName(tr("主页"));              // cn:主页
+    // m_categoryGeometry->setCategoryName(tr("几何"));       // cn:几何
     // m_categoryMesh->setCategoryName(tr("Mesh"));              // cn:网格
     // m_categoryStudy->setCategoryName(tr("Study"));            // cn: 研究
     // m_categoryResult->setCategoryName(tr("Reslut"));          // cn:结果
@@ -160,6 +161,7 @@ void FCAppRibbonArea::resetText()
 void FCAppRibbonArea::buildRibbon()
 {
     ribbonBar()->showMinimumModeButton();
+    ribbonBar()->applicationButton()->setText(tr("文件"));
     buildRibbonMainCategory();
     buildRibbonGeometryCategory();
     buildRibbonMeshCategory();
@@ -182,9 +184,9 @@ void FCAppRibbonArea::buildRibbonMainCategory()
 {
     m_categoryMain = new SARibbonCategory(app());
     m_categoryMain->setObjectName(QStringLiteral("fc-ribbon-category-main"));
-    
+    m_categoryMain->setCategoryName(tr("主页"));
     //---------File Pannel -----------------------------------------------
-    // m_pannelMainFileOpt = m_categoryMain->addPanel(tr("文件"));
+    m_pannelMainFileOpt = m_categoryMain->addPanel(tr("文件"));
     // m_pannelMainFileOpt->setObjectName(QStringLiteral("fc-ribbon-category-main.file"));
     // m_pannelMainFileOpt->addLargeAction(m_actions->actionNew);
     // m_pannelMainFileOpt->addLargeAction(m_actions->actionOpen);
@@ -202,10 +204,12 @@ void FCAppRibbonArea::buildRibbonMainCategory()
  */
 void FCAppRibbonArea::buildRibbonGeometryCategory()
 {
-
+    m_categoryGeometry = new SARibbonCategory(app());
+    m_categoryGeometry->setObjectName(QStringLiteral("fc-ribbon-category-geometry"));
+    m_categoryGeometry->setCategoryName(tr("几何"));
     
     //---------File Pannel -----------------------------------------------
-    // m_pannelGeometryBuildOpt = m_categoryGeometry->addPanel(tr("构建"));
+    m_pannelGeometryBuildOpt = m_categoryGeometry->addPanel(tr("构建"));
     // m_pannelGeometryBuildOpt->setObjectName(QStringLiteral("fc-ribbon-category-geometry.build"));
     // m_pannelGeometryBuildOpt->addLargeAction(m_actions->actionGeometryBuildAll);
     
@@ -222,6 +226,11 @@ void FCAppRibbonArea::buildRibbonMeshCategory()
 {
     m_categoryMesh = new SARibbonCategory(app());
     m_categoryMesh->setObjectName(QStringLiteral("fc-ribbon-category-mesh"));
+    m_categoryMesh->setCategoryName(tr("网格"));
+    m_pannelMeshBuildOpt = m_categoryMesh->addPanel(tr("构建"));
+    
+    ribbonBar()->addCategoryPage(m_categoryMesh);
+    
 }
 
 /**
@@ -232,6 +241,10 @@ void FCAppRibbonArea::buildRibbonStudyCategory()
 {
     m_categoryStudy = new SARibbonCategory(app());
     m_categoryStudy->setObjectName(QStringLiteral("fc-ribbon-category-study"));
+    m_categoryStudy->setCategoryName(tr("研究"));
+    
+    ribbonBar()->addCategoryPage(m_categoryStudy);
+    
 }
 
 /**
@@ -242,6 +255,12 @@ void FCAppRibbonArea::buildRibbonResultCategory()
 {
     m_categoryResult = new SARibbonCategory(app());
     m_categoryResult->setObjectName(QStringLiteral("fc-ribbon-category-result"));
+    m_categoryResult->setCategoryName(tr("结果"));
+    
+    ribbonBar()->addCategoryPage(m_categoryResult);
+    
+    
+    
 }
 
 /**
@@ -252,6 +271,10 @@ void FCAppRibbonArea::buildRibbonToolsCategory()
 {
     m_categoryTools = new SARibbonCategory(app());
     m_categoryTools->setObjectName(QStringLiteral("fc-ribbon-category-tools"));
+    m_categoryTools->setCategoryName(tr("工具"));
+    
+    ribbonBar()->addCategoryPage(m_categoryTools);
+    
 }
 
 /**
@@ -260,10 +283,10 @@ void FCAppRibbonArea::buildRibbonToolsCategory()
  */
 void FCAppRibbonArea::buildRibbonQuickAccessBar()
 {
-    // SARibbonQuickAccessBar* quickAccessBar = ribbonBar()->quickAccessBar();
+    SARibbonQuickAccessBar* quickAccessBar = ribbonBar()->quickAccessBar();
     
-    // quickAccessBar->addAction(m_actions->actionOpen);
-    // quickAccessBar->addSeparator();
+    quickAccessBar->addAction(m_actions->actionOpen);
+    quickAccessBar->addSeparator();
 }
 
 /**
@@ -271,17 +294,17 @@ void FCAppRibbonArea::buildRibbonQuickAccessBar()
  */
 void FCAppRibbonArea::buildApplicationMenu()
 {
-    // mApplicationMenu = new FCAppRibbonApplicationMenu(app());
-    // mApplicationMenu->addAction(m_actions->actionOpen);
-    // mApplicationMenu->addAction(m_actions->actionSave);
-    // mApplicationMenu->addAction(m_actions->actionSaveAs);
+    mApplicationMenu = new FCAppRibbonApplicationMenu(app());
+    mApplicationMenu->addAction(m_actions->actionOpen);
+    mApplicationMenu->addAction(m_actions->actionSave);
+    mApplicationMenu->addAction(m_actions->actionSaveAs);
     // m_actions->recentFilesManager->attachToMenu(mApplicationMenu, tr("Recent Files"));  // cn:最近打开的文件
-    // SARibbonApplicationButton* appBtn = qobject_cast< SARibbonApplicationButton* >(ribbonBar()->applicationButton());
-    // if (nullptr == appBtn) {
-    //     return;
-    // }
-    // mApplicationMenu->update();
-    // appBtn->setMenu(mApplicationMenu);
+    SARibbonApplicationButton* appBtn = qobject_cast< SARibbonApplicationButton* >(ribbonBar()->applicationButton());
+    if (nullptr == appBtn) {
+        return;
+    }
+    mApplicationMenu->update();
+    appBtn->setMenu(mApplicationMenu);
 }
 
 /**

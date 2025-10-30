@@ -150,8 +150,8 @@ void FCAppUI::createCmd()
  */
 void FCAppUI::createDockingArea()
 {
-    // m_dockingArea = new FCAppDockingArea(this);
-    // registeExtend(m_dockingArea);
+    m_dockingArea = new FCAppDockingArea(this);
+    registeExtend(m_dockingArea);
 }
 
 /**
