@@ -26,7 +26,7 @@ class FCGUI_API FCMessageLogViewWidget : public QWidget
     Q_OBJECT
     
 public:
-    explicit FCMessageLogViewWidget(QWidget *parent = nullptr);
+    FCMessageLogViewWidget(QWidget *parent = nullptr);
     ~FCMessageLogViewWidget();
     
 private:

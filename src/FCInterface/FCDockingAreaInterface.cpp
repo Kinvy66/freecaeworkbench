@@ -56,7 +56,7 @@ void FCDockingAreaInterface::PrivateData::buildDock()
     ads::CDockManager::setConfigFlag(ads::CDockManager::OpaqueSplitterResize, true);
     ads::CDockManager::setConfigFlag(ads::CDockManager::XmlCompressionEnabled, false);
     ads::CDockManager::setConfigFlag(ads::CDockManager::FocusHighlighting, true);
-    // mDockManager = new ads::CDockManager(q_ptr->ui()->mainWindow());
+    mDockManager = new ads::CDockManager(q_ptr->ui()->mainWindow());
 }
 //===================================================
 // FCAppDockingAreaInterface
@@ -169,7 +169,7 @@ ads::CDockWidget* FCDockingAreaInterface::getCentralWidget() const
 void FCDockingAreaInterface::resetDefaultSplitterSizes()
 {
     QScreen* screen = QApplication::primaryScreen();
-    int leftwidth   = screen->size().width() / 6;
+    int leftwidth   = screen->size().width() / 4;
     int rightwidth  = leftwidth;
     int centerwidth = screen->size().width() - leftwidth - rightwidth;
     dockManager()->setSplitterSizes(getCenterArea(), { leftwidth, centerwidth, rightwidth });
@@ -235,25 +235,25 @@ std::pair< DAPyDataFrame, QList< int > > DADockingAreaInterface::getCurrentSelec
  * @brief 判断DataOperateWidget是否是在焦点
  * @return
  */
-bool FCDockingAreaInterface::isDataOperateWidgetDockOnFource() const
-{
+// bool FCDockingAreaInterface::isDataOperateWidgetDockOnFource() const
+// {
     // ads::CDockWidget* currentFource = dockManager()->focusedDockWidget();
     // return (currentFource->widget() == getDataOperateWidget());
-    return true;
-}
+    // return true;
+// }
 
 /**
  * @brief 判断DataManageWidget是否是在焦点
  * @return
  */
-bool FCDockingAreaInterface::isDataManageWidgetDockOnFource() const
-{
+// bool FCDockingAreaInterface::isDataManageWidgetDockOnFource() const
+// {
     // ads::CDockWidget* currentFource = dockManager()->focusedDockWidget();
     // return (currentFource->widget() == getDataManageWidget());
     
-    return true;
+    // return true;
     
-}
+// }
 
 // DAWorkFlowGraphicsScene* FCDockingAreaInterface::getCurrentScene() const
 // {
@@ -272,22 +272,14 @@ bool FCDockingAreaInterface::isDataManageWidgetDockOnFource() const
 ads::CDockWidget* FCDockingAreaInterface::dockingAreaToDockWidget(DockingArea area) const
 {
     switch (area) {
-    // case DockingAreaChartManager:
-    //     return getChartManageDock();
-    // case DockingAreaChartOperate:
-    //     return getChartOperateDock();
-    // case DockingAreaDataManager:
-    //     return getDataManageDock();
-    // case DockingAreaDataOperate:
-    //     return getDataOperateDock();
+    case DockingAreaModelOperate:
+        return getModelBuilderDock();
+    case DockingAreaSetting:
+        return getSettingParametersDock();
+    case DockingAreaGraphic:
+        return getGraphicOperateDock();
     case DockingAreaMessageLog:
         return getMessageLogDock();
-    // case DockingAreaSetting:
-    //     return getSettingContainerDock();
-    // case DockingAreaWorkFlowManager:
-    //     return getWorkflowNodeListDock();
-    // case DockingAreaWorkFlowOperate:
-    //     return getWorkFlowOperateDock();
     default:
         break;
     }

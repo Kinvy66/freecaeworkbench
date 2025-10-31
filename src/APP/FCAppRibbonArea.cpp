@@ -259,8 +259,6 @@ void FCAppRibbonArea::buildRibbonResultCategory()
     
     ribbonBar()->addCategoryPage(m_categoryResult);
     
-    
-    
 }
 
 /**

@@ -24,8 +24,11 @@
 #include "FCAppCommand.h"
 // #include "FCAppDataManager.h"
 
-// message相关
-// #include "FCMessageLogViewWidget.h"
+// docking ui
+#include "FCModelBuilderWidget.h"
+#include "FCSettingParametersWidget.h"
+#include "FCGraphicOperateWidget.h"
+#include "FCMessageLogViewWidget.h"
 
 
 
@@ -43,7 +46,7 @@ FCAppDockingArea::FCAppDockingArea(FCUIInterface* u) : FCDockingAreaInterface(u)
     mApp     = qobject_cast< AppMainWindow* >(u->mainWindow());
     mAppCmd  = qobject_cast< FCAppCommand* >(u->getCommandInterface());
     // mDataMgr = qobject_cast< FCAppDataManager* >(core()->getDataManagerInterface());
-    buildDockingArea();
+    buildDockingArea();   // error: 创建dock后无法运行
 }
 
 FCAppDockingArea::~FCAppDockingArea()
@@ -69,34 +72,164 @@ void FCAppDockingArea::resetText()
     // mMessageLogDock->setWindowTitle(tr("log"));                    // cn:消息
 }
 
+/**
+ * @brief 获取模型构建窗口
+ * @return 
+ */
+FCModelBuilderWidget *FCAppDockingArea::getModelBuilderWidge() const
+{
+    return mModelBuilderWidget;   
+}
+
+/**
+ * @brief 获取参数设置构建窗口
+ * @return 
+ */
+FCSettingParametersWidget *FCAppDockingArea::getSettingParametersWidget() const
+{
+    return mSettingParametersWidget;       
+}
+
+/**
+ * @brief 获取图形操作窗口
+ * @return 
+ */
+FCGraphicOperateWidget *FCAppDockingArea::getGraphicOperateWidget() const
+{
+    return mGraphicOperateWidget;       
+}
+
+/**
+ * @brief 获取日志窗口
+ * @return 
+ */
 FCMessageLogViewWidget *FCAppDockingArea::getMessageLogViewWidget() const
 {
-    return mMessageLogViewWidget;
-    
+    return mMessageLogViewWidget;       
 }
 
-ads::CDockWidget *FCAppDockingArea::getMessageLogDock() const
-{
-    return mMessageLogDock;
-}
-
+/**
+ * @brief 构建dockwidget
+ *
+ * 可以通过dockManager()->findDockWidget(objname:QString)函数来找到对应的dockwidget并进行操作
+ *
+ * 所有本APP相关的关键object name都以fc打头:
+ *
+ * fc_modelBuilderWidgetDock
+ * fc_settingParameterWidgetDock
+ * fc_graphicOperateWidgetDock
+ * fc_messageLogViewWidgetDock
+ *
+ */
 void FCAppDockingArea::buildDockingArea()
 {
-    // 日志窗口
+    buildModelBuilderWidget();
+    buildSettingParameterWidget();
+    buildGraphicOperateWidget();
+    // buildMessageLogViewWidget();
+    
+     mGraphicOperateDock = createCenterDockWidget(mGraphicOperateWidget,
+                                           // ads::LeftDockWidgetArea,
+                                           QStringLiteral("fc_graphicOperateWidgetDock"));
+    // mGraphicOperateDock->setIcon(QIcon(nullptr));
+    
+    
+    // mModelBuilderDock = createCenterDockWidget(mModelBuilderDock,
+    //                                      // ads::LeftDockWidgetArea,
+    //                                      QStringLiteral("fc_modelBuilderWidgetDock"));
+    // mModelBuilderDock->setFeature(ads::CDockWidget::DockWidgetClosable, false);
+    
+    // mSettingParametersDock = createCenterDockWidget(mSettingParametersWidget,
+    //                                           //ads::RightDockWidgetArea,
+    //                                           QStringLiteral("fc_settingParameterWidgetDock"));
+    
     // mMessageLogDock = createDockWidget(mMessageLogViewWidget,
     //                                    ads::BottomDockWidgetArea,
     //                                    QStringLiteral("da_messageLogViewWidgetDock"),
-    //                                    mSettingContainerDock->dockAreaWidget());
-    // mMessageLogDock->setIcon(QIcon(":/app/bright/Icon/showInfomation.svg"));
-    
+    //                                    mGraphicOperateDock->dockAreaWidget());
     resetDefaultSplitterSizes();
     
     initConnection();
     resetText();
 }
 
+/**
+ * @brief FCAppDockingArea::buildModelBuilderWidget
+ */
+void FCAppDockingArea::buildModelBuilderWidget()
+{
+    mModelBuilderWidget = new FCModelBuilderWidget(mApp);
+    mModelBuilderWidget->setObjectName("fc_modelBuilderWidgetDock");
+}
+
+/**
+ * @brief FCAppDockingArea::buildSettingParameterWidget
+ */
+void FCAppDockingArea::buildSettingParameterWidget()
+{
+    mSettingParametersWidget = new FCSettingParametersWidget(mApp);
+    mSettingParametersWidget->setObjectName("fc_settingParameterWidgetDock");
+}
+
+/**
+ * @brief FCAppDockingArea::buildGraphicOperateWidget
+ */
+void FCAppDockingArea::buildGraphicOperateWidget()
+{
+    mGraphicOperateWidget = new FCGraphicOperateWidget(mApp);
+    mGraphicOperateWidget->setObjectName("fc_graphicOperateWidgetDock");
+}
+
+/**
+ * @brief FCAppDockingArea::buildMessageLogViewWidget
+ */
+void FCAppDockingArea::buildMessageLogViewWidget()
+{
+    mMessageLogViewWidget = new FCMessageLogViewWidget(mApp);
+    mMessageLogViewWidget->setObjectName("fc_messageLogViewWidgetDock");
+}
+
 void FCAppDockingArea::initConnection()
 {
     
 }
+
+/**
+	 * @brief 模型构建dock
+	 * @return
+	 */
+ads::CDockWidget* FCAppDockingArea::getModelBuilderDock() const
+{
+    return mMessageLogDock;
+}
+
+/**
+	 * @brief 参数设置窗口dock
+	 * @return
+	 */
+ads::CDockWidget* FCAppDockingArea::getSettingParametersDock() const
+{
+    return mSettingParametersDock;
+}
+
+/**
+	 * @brief 图形操作窗口dock
+	 * @return
+	 */
+ads::CDockWidget* FCAppDockingArea::getGraphicOperateDock() const
+{
+    return mGraphicOperateDock;
+}
+/**
+	 * @brief 信息窗口dock
+	 * @return
+	 */
+ads::CDockWidget* FCAppDockingArea::getMessageLogDock() const
+{
+    return mMessageLogDock;    
+}
+
+
+
+
 

@@ -25,7 +25,8 @@ public:
     FCCoreInterface* mCore;
 };
 
-FCBaseInterface::PrivateData::PrivateData(FCBaseInterface* p, FCCoreInterface* c) : q_ptr(p), mCore(c)
+FCBaseInterface::PrivateData::PrivateData(FCBaseInterface* p, FCCoreInterface* c)
+    : q_ptr(p), mCore(c)
 {
 }
 //===================================================

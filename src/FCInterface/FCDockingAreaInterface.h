@@ -20,6 +20,8 @@
 
 // #include "DAWorkFlowOperateWidget.h"
 
+class SARibbonMainWindow;
+
 namespace ads
 {
 class CDockManager;
@@ -32,6 +34,11 @@ namespace FC
 {
 class FCCoreInterface;
 class FCUIInterface;
+class FCModelBuilderWidget;
+class FCSettingParametersWidget;
+class FCGraphicOperateWidget;
+class FCMessageLogViewWidget;
+
 // class FCChartManageWidget;
 // class FCChartOperateWidget;
 // class FCDataManageWidget;
@@ -52,6 +59,7 @@ public:
     {
         DockingAreaModelOperate,
         DockingAreaSetting,
+        DockingAreaGraphic,
         DockingAreaMessageLog
     };
     
@@ -168,29 +176,19 @@ public:
 	 * 接口:
 	 */
     
-    // 获取工作节点管理窗口
-    // virtual FCWorkFlowNodeListWidget* getWorkflowNodeListWidget() const = 0;
+    // 获取模型窗口
+    virtual FCModelBuilderWidget* getModelBuilderWidge() const = 0;
     
-    // 获取workflow操作窗口
-    // virtual DAWorkFlowOperateWidget* getWorkFlowOperateWidget() const = 0;
+    // 获取设置窗口
+    virtual FCSettingParametersWidget* getSettingParametersWidget() const = 0;
     
-    // 绘图管理窗口
-    // virtual DAChartManageWidget* getChartManageWidget() const = 0;
-    
-    // 绘图操作窗口
-    // virtual DAChartOperateWidget* getChartOperateWidget() const = 0;
-    
-    // 数据管理窗口
-    // virtual DADataManageWidget* getDataManageWidget() const = 0;
-    
-    // 数据操作窗口
-    // virtual DADataOperateWidget* getDataOperateWidget() const = 0;
+    // 获取图形可视化窗口
+    virtual FCGraphicOperateWidget* getGraphicOperateWidget() const = 0;
     
     // 获取日志显示窗口
     virtual FCMessageLogViewWidget* getMessageLogViewWidget() const = 0;
     
-    // 获取设置窗口,设置容器可以放置多个设置窗口
-    // virtual DASettingContainerWidget* getSettingContainerWidget() const = 0;
+
     
     /**
 	 * @brief 获取当前选中的数据
@@ -205,11 +203,25 @@ public:
 	 */
     // virtual QList< DAData > getCurrentSelectDatas() const;
     
+    
     /**
-	 * @brief 工作流节点dock
+	 * @brief 模型构建dock
 	 * @return
 	 */
-    // virtual ads::CDockWidget* getWorkflowNodeListDock() const = 0;
+    virtual ads::CDockWidget* getModelBuilderDock() const = 0;
+    
+    /**
+	 * @brief 参数设置窗口dock
+	 * @return
+	 */
+    virtual ads::CDockWidget* getSettingParametersDock() const = 0;
+    
+    /**
+	 * @brief 图形操作窗口dock
+	 * @return
+	 */
+    virtual ads::CDockWidget* getGraphicOperateDock() const = 0;
+    
     
     /**
 	 * @brief 信息窗口dock
@@ -217,57 +229,19 @@ public:
 	 */
     virtual ads::CDockWidget* getMessageLogDock() const = 0;
     
-    /**
-	 * @brief 设置窗口dock
-	 * @return
-	 */
-    // virtual ads::CDockWidget* getSettingContainerDock() const = 0;
-    
-    /**
-	 * @brief 数据操作窗口dock
-	 * @return
-	 */
-    // virtual ads::CDockWidget* getDataOperateDock() const = 0;
-    
-    /**
-	 * @brief 绘图操作窗口dock
-	 * @return
-	 */
-    // virtual ads::CDockWidget* getChartOperateDock() const = 0;
-    
-    /**
-	 * @brief 工作流操作窗口dock
-	 * @return
-	 */
-    // virtual ads::CDockWidget* getWorkFlowOperateDock() const = 0;
-    
-    /**
-	 * @brief 数据管理窗口dock
-	 * @return
-	 */
-    // virtual ads::CDockWidget* getDataManageDock() const = 0;
-    
-    /**
-	 * @brief 图表管理窗口dock
-	 * @return
-	 */
-    // virtual ads::CDockWidget* getChartManageDock() const = 0;
-#if DA_ENABLE_PYTHON
-    // 获取当前选中的Dataframe,如果用户在选中了列，返回选中的列索引
-    virtual std::pair< DAPyDataFrame, QList< int > > getCurrentSelectDataFrame() const;
-#endif
+
     
     /**
 	 * @brief 判断DataOperateWidget是否是在焦点
 	 * @return
 	 */
-    bool isDataOperateWidgetDockOnFource() const;
+    // bool isDataOperateWidgetDockOnFource() const;
     
     /**
 	 * @brief 判断DataManageWidget是否是在焦点
 	 * @return
 	 */
-    bool isDataManageWidgetDockOnFource() const;
+    // bool isDataManageWidgetDockOnFource() const;
     
 public:
     /**
