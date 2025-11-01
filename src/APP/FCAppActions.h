@@ -48,13 +48,132 @@ public:
     //===================================================
     // 主页标签 Main Category
     //===================================================
+    // 1. file pannel
     QAction* actionNew;             ///< 打开
     QAction* actionOpen;           ///< 打开
     QAction* actionSave;           ///< 保存
     QAction* actionSaveAs;         ///< 另存为
-    QAction* actionAppendProject;  ///< 追加工程
+    // QAction* actionAppendProject;  ///< 追加工程
     
-    // todo: 其他标签页的actions
+    // 2. model pannel
+    QAction* actionHomeImportGeometry;     ///< 导入几何
+    QAction* actionHomeImportMesh;          ///< 导入网格
+
+    // 3. layout pannel
+    QAction* actionWindowViews;          ///< 窗口
+    QAction* actionResetLayout;          ///< 重置布局
+    
+    
+    //===================================================
+    // 几何标签 Geometry Category
+    //===================================================
+    // 1. import/export pannel
+    QAction* actionGeometryModelBuildAll; ///< 导入几何模型
+    QAction* actionImportGeometryModel; ///< 导入几何模型
+    QAction* actionExportGeometryModel;     ///< 导出几何模型
+    QAction* actionInsertSequenen;      ///< 导出几何模型
+    
+    // 2. create geometry pannel
+    QAction* actionCreateCUbe;              ///< 立方体
+    QAction* actionCreateCone;              ///< 圆锥体
+    QAction* actionCreateCylinder;          ///< 圆柱体
+    QAction* actionCreateSphere;            ///< 球体
+    QAction* actionCreateTorus;             ///< 圆环
+    QAction* actionCreateHelix;             ///< 螺旋
+    QAction* actionMenuCreateMoreGemetryModel;  ///<< 更多Menu
+    QAction* actionCreatorBezierCurve;      ///<< 贝塞尔曲线
+    QAction* actionCreatorTetrahedron;      ///<< 四面体
+    
+    // 3. work plane pannel
+    QAction* actionMenuSelectWorkPlane;     ///< 选择工作平面
+    QAction* actionWorkPlane;           ///< 工作平面
+    QAction* actionExtrude;             ///< 拉伸
+    QAction* actionRevolve;             ///< 回旋
+    QAction* actionSweep;               ///< 扫掠
+    QAction* actionLoft;                ///< 放样
+    
+    // 4. geometry operator pannel
+    QAction* actionGeometryBooleanOpt;          ///< 布尔操作Menu
+    QAction* actionBooleanUnion;                ///< 并集
+    QAction* actionBooleanIntersection;         ///< 交集
+    QAction* actionBooleanDifference;           ///< 求差
+    QAction* actionBooleanCompose;              ///< 组合
+    QAction* actionMenuGeometryTransformOpt;          ///< 变换操作Menu
+    QAction* actionTransformRigid;                ///< 刚性变换
+    QAction* actionTransformCopy;         ///< 复制
+    QAction* actionTransformScale;           ///< 比例因子
+    QAction* actionTransformMove;              ///< 移动
+    QAction* actionTransformMirror;              ///< 镜像
+    QAction* actionTransformArray;              ///< 阵列
+    QAction* actionChamferOpt;          ///< 倒斜角
+    QAction* actionFilletOpt;          ///< 倒圆角
+    QAction* actionGeometryDelet;       ///< 删除
+    
+    // 5. other pannel
+    QAction* actionGeometryMeasure;     ///< 测量
+    
+    
+    //===================================================
+    // 网格标签 Mesh Category
+    //===================================================
+    // 1.  mesh pannel
+    QAction* actionMeshBuild;       ///< 构建网格
+    QAction* actionMenuSelectMesh;      ///< 选择网格
+    QAction* actionAddMesh;         ///< 添加网格
+    
+    // 2. import/export pannel
+    QAction* actionImportMesh;      ///< 导入网格
+    QAction* actionExportMesh;      ///< 导出网格
+    
+    
+    // 2. clear pannel
+    QAction* actionClearMesh;       ///< 清除网格
+    QAction* actionClearAllMesh;      ///< 清除所有网格
+    QAction* actionDeletMeshSequenen;  ///< 删除网格序列
+    
+    // 3. other pannel
+    QAction* actionMeshMeasure;     ///< 测量
+    QAction* actionMeshStatictic;   ///< 统计
+    QAction* actionMeshPlot;        ///< 绘图
+    
+    
+    //===================================================
+    // 研究标签 Study Category
+    //===================================================
+    //1. solver pannel
+    QAction* actionSolverManager;       ///< 求解器管理
+    QAction* actionCompute;             ///< 计算
+    
+    
+    //===================================================
+    // 结果标签 Result Category
+    //===================================================
+    //1. plot pannel
+    QAction* action3DPlot;          ///< 三维绘图
+    QAction* action2DPlot;          ///< 二维绘图
+    QAction* action1DPlot;          ///< 一维绘图
+    
+    //2. export pannel
+    QAction* actionMenuDataExport;  ///< 数据导出菜单
+    QAction* actionNumericalDataExport;     ///< 数值数据导出
+    QAction* actionPlotDataExport;          ///< 绘图数据导出
+    QAction* actionMeshDataExport;          ///< 网格数据导出
+    QAction* actionTableDataExport;          ///< 表格数据导出
+    
+    QAction* actionImageExport;         ///< 图片导出
+    QAction* actionAnimationExport;         ///< 动画导出
+    
+    
+    //3. Clear pannel
+    QAction* actionClearPlotData;  ///< 清除绘图数据 
+    
+    
+    //===================================================
+    // 工具标签 Tools Category
+    //===================================================
+    QAction* actionPlugin;      ///< 插件
+    QAction* actionAbout;       ///< 关于
+    
     
     //===================================================
     // 主题
@@ -66,7 +185,7 @@ public:
     QActionGroup* actionGroupRibbonTheme;      ///< actionRibbonTheme* 的actionGroup
     
     
-     // FCRecentFilesManager* recentFilesManager { nullptr };
+    // FCRecentFilesManager* recentFilesManager { nullptr };
     
 };
 } // namespace FC

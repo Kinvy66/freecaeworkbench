@@ -45,7 +45,7 @@ QMessageBox::                                                                   
             QCoreApplication::translate("FCAppRibbonArea", "warning", nullptr),                                    \
             QCoreApplication::translate("FCAppRibbonArea",                                                         \
                                         "The current function is not implemented, only the UI is reserved, "       \
-                                        "please pay attention: https://gitee.com/czyt1988/data-work-flow",         \
+                                        "please pay attention: https://github.com/Kinvy66/freecaeworkbench",         \
                                         nullptr))
 
 // 快速链接信号槽
@@ -148,8 +148,7 @@ void FCAppController::initialize()
 }
 
 /**
- * @brief 基本绑定
- * @note 在setDockAreaInterface函数中还有很多绑定操作
+ * @brief action和slot connect
  */
 void FCAppController::initConnection()
 {

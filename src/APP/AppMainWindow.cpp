@@ -57,7 +57,6 @@ namespace FC {
 AppMainWindow::AppMainWindow(QWidget *parent)
     : SARibbonMainWindow(parent)
 {
-    qDebug() << __FUNCTION__ << this;
     // 标签可高亮
     ads::CDockManager::setConfigFlag(ads::CDockManager::FocusHighlighting, true);
     // 让dock可以最小化到一个标签
@@ -95,12 +94,7 @@ AppMainWindow::AppMainWindow(QWidget *parent)
     // retranslateUi();  // 非必要可以验证调用是否正常
     // if (!hasUIStateFile) {
         ribbonBar()->setRibbonStyle(SARibbonBar::RibbonStyleLooseThreeRow);
-    
-    qDebug() << "AppMainWindow children count:" << children().size();
-    for (auto *c : children()) {
-        qDebug() << "  -" << c;
-    }
-      // showMaximized();
+        showMaximized();
     // }
        
 

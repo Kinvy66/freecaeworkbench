@@ -133,12 +133,12 @@ QAction* FCActionsInterface::createAction(const char* objname,
 void FCActionsInterface::recordAction(QAction* act)
 {
     if (nullptr == act) {
-        qWarning() << tr("DAAppActionsInterface::recordAction get null action");
+        qWarning() << tr("FCAppActionsInterface::recordAction get null action");
         return;
     }
 #ifdef QT_DEBUG
     if (d_ptr->mObjectToAction.contains(act->objectName())) {
-        qWarning() << tr("DAAppActionsInterface::recordAction(QAction objname=%1) "
+        qWarning() << tr("FCAppActionsInterface::recordAction(QAction objname=%1) "
                          "receive same object name, and the "
                          "previous record will be overwritten")
                           .arg(act->objectName());

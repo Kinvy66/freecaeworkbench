@@ -17,7 +17,6 @@ namespace FC
 FCGraphicOperateWidget::FCGraphicOperateWidget(QWidget *parent)
  : QWidget(parent)
 {
-    qDebug() << __FUNCTION__ << this;
     
     QPushButton* btn = new QPushButton(this);
 }

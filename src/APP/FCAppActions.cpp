@@ -56,11 +56,25 @@ void FCAppActions::buildActions()
 void FCAppActions::buildMainAction()
 {
     // Main Category
-    actionNew           = createAction("actionNew", ":/app/bright/Icon/file.svg");
-    actionOpen          = createAction("actionOpen", ":/app/bright/Icon/file.svg");
-    actionSave          = createAction("actionSave", ":/app/bright/Icon/save.svg");
-    actionSaveAs        = createAction("actionSaveAs", ":/app/bright/Icon/save-as.svg");
-    actionAppendProject = createAction("actionAppendProject", ":/app/bright/Icon/appendProject.svg");
+    // 1. file pannel
+    actionNew = createAction("actionNew", ":/icon/icon/file_new.svg");
+    actionNew->setText(tr("新建"));
+    actionOpen = createAction("actionOpen", ":/icon/icon/help.svg");
+    actionOpen->setText(tr("打开"));
+    actionSave = createAction("actionSave", ":/icon/icon/help.svg");
+    actionSave->setText(tr("保存"));
+    actionSaveAs = createAction("actionSaveAs", ":/icon/icon/help.svg");
+    
+    // 2. model pannel
+    actionHomeImportGeometry = createAction("actionImportGeometry", ":/icon/icon/file_new.svg");
+    actionHomeImportGeometry->setText(tr("导入几何"));
+    actionImportMesh = createAction("actionImportMesh", ":/icon/icon/file_new.svg");      
+    actionImportMesh->setText(tr("导入网格"));
+    // 3. layout pannel
+    actionWindowViews = createAction("actionWindowViews", ":/icon/icon/file_new.svg");
+    actionWindowViews->setText(tr("窗口"));
+    actionResetLayout = createAction("actionResetLayout", ":/icon/icon/file_new.svg");
+    actionResetLayout->setText(tr("重置布局"));    
 }
 
 /**
@@ -114,11 +128,11 @@ void FCAppActions::buildOtherActions()
 void FCAppActions::retranslateUi()
 {
     // Main Category
-    actionNew->setText(tr("新建"));                     // cn:打开
+    actionNew->setText(tr("New"));                     // cn:打开
     actionOpen->setText(tr("Open"));                     // cn:打开
     actionOpen->setToolTip(tr("Open file or project"));  // cn:打开文件或项目
     actionSave->setText(tr("Save"));
     actionSaveAs->setText(tr("Save As"));
-    actionAppendProject->setText(tr("Append To Project"));
+    // actionAppendProject->setText(tr("Append To Project"));
 }
 

@@ -60,3 +60,33 @@ private:
     ```
 
     
+
+
+
+## Part2: C++是最好的编程语言
+
+#### 1. Qt的 D-Pointer原理 ，PIMPL(pointer to implementation) 设计模式
+
+*TODO*
+
+```c++
+#define Q_DECLARE_PRIVATE(Class) \
+    inline Class##Private* d_func() noexcept \
+    { Q_CAST_IGNORE_ALIGN(return reinterpret_cast<Class##Private *>(qGetPtrHelper(d_ptr));) } \
+    inline const Class##Private* d_func() const noexcept \
+    { Q_CAST_IGNORE_ALIGN(return reinterpret_cast<const Class##Private *>(qGetPtrHelper(d_ptr));) } \
+    friend class Class##Private;
+
+```
+
+
+
+```c++
+#define Q_DECLARE_PUBLIC(Class)                                    \
+    inline Class* q_func() noexcept { return static_cast<Class *>(q_ptr); } \
+    inline const Class* q_func() const noexcept { return static_cast<const Class *>(q_ptr); } \
+    friend class Class; \
+    friend const QObject *QtPrivate::getQObject(const QObjectPrivate *d); \
+    template <typename ObjPrivate> friend void QtPrivate::assertObjectType(QObjectPrivate *d);
+```
+

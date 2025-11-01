@@ -77,6 +77,8 @@ public:
 	 * @return
 	 */
     const ads::CDockManager* dockManager() const;
+        
+    
     
     /**
 	 * @brief 创建中央dock窗体
@@ -84,7 +86,8 @@ public:
 	 * @param widgetName
 	 * @return
 	 */
-    ads::CDockWidget* createCenterDockWidget(QWidget* w, const QString& widgetName);
+    ads::CDockWidget* createCenterDockWidget(QWidget* w,
+                                             const QString& widgetName);
     
     /**
 	 * @brief 创建一个dock窗体
@@ -105,7 +108,9 @@ public:
 	 * @param pos 位置
 	 * @return
 	 */
-    ads::CDockWidget* createFloatingDockWidget(QWidget* w, const QString& widgetName, const QPoint& pos);
+    ads::CDockWidget* createFloatingDockWidget(QWidget* w,
+                                               const QString& widgetName,
+                                               const QPoint& pos);
     
     /**
 	 * @brief 创建一个tab dock
@@ -114,7 +119,9 @@ public:
 	 * @param dockAreaWidget 停靠区域
 	 * @return
 	 */
-    ads::CDockWidget* createDockWidgetAsTab(QWidget* w, const QString& widgetName, ads::CDockAreaWidget* dockAreaWidget);
+    ads::CDockWidget* createDockWidgetAsTab(QWidget* w,
+                                            const QString& widgetName,
+                                            ads::CDockAreaWidget* dockAreaWidget);
     
     /**
 	 * @brief 通过窗口查找对应的CDockWidget

@@ -169,10 +169,11 @@ ads::CDockWidget* FCDockingAreaInterface::getCentralWidget() const
 void FCDockingAreaInterface::resetDefaultSplitterSizes()
 {
     QScreen* screen = QApplication::primaryScreen();
-    int leftwidth   = screen->size().width() / 4;
+    int leftwidth   = screen->size().width() / 6;
     int rightwidth  = leftwidth;
     int centerwidth = screen->size().width() - leftwidth - rightwidth;
-    dockManager()->setSplitterSizes(getCenterArea(), { leftwidth, centerwidth, rightwidth });
+    dockManager()->setSplitterSizes(getCenterArea(), { leftwidth, rightwidth,centerwidth});
+    qDebug() <<  "splitterSizes" << dockManager()->splitterSizes(getCenterArea()).size();
 }
 
 // QList< DAData > FCDockingAreaInterface::getCurrentSelectDatas() const
@@ -325,7 +326,8 @@ bool FCDockingAreaInterface::isDockingAreaFocused(DockingArea area) const
  */
 ads::CDockWidget* FCDockingAreaInterface::createCenterDockWidget(QWidget* w, const QString& widgetName)
 {
-    ads::CDockWidget* dockWidget = new ads::CDockWidget(widgetName);
+    // ads::CDockWidget* dockWidget = new ads::CDockWidget(widgetName);
+    ads::CDockWidget* dockWidget = d_ptr->mDockManager->createDockWidget(widgetName);
     dockWidget->setWidget(w);
     d_ptr->mCenterArea = d_ptr->mDockManager->setCentralWidget(dockWidget);
     return dockWidget;
@@ -344,7 +346,8 @@ ads::CDockWidget* FCDockingAreaInterface::createDockWidget(QWidget* w,
                                                            const QString& widgetName,
                                                            ads::CDockAreaWidget* dockAreaWidget)
 {
-    ads::CDockWidget* dockWidget = new ads::CDockWidget(widgetName);
+    // ads::CDockWidget* dockWidget = new ads::CDockWidget(widgetName);
+    ads::CDockWidget* dockWidget = d_ptr->mDockManager->createDockWidget(widgetName);
     dockWidget->setWidget(w);
     d_ptr->mDockManager->addDockWidget(area, dockWidget, dockAreaWidget);
     return dockWidget;
@@ -359,7 +362,8 @@ ads::CDockWidget* FCDockingAreaInterface::createDockWidget(QWidget* w,
  */
 ads::CDockWidget* FCDockingAreaInterface::createFloatingDockWidget(QWidget* w, const QString& widgetName, const QPoint& pos)
 {
-    ads::CDockWidget* dockWidget = new ads::CDockWidget(widgetName);
+    // ads::CDockWidget* dockWidget = new ads::CDockWidget(widgetName);
+    ads::CDockWidget* dockWidget = d_ptr->mDockManager->createDockWidget(widgetName);
     dockWidget->setWidget(w);
     ads::CFloatingDockContainer* fc = d_ptr->mDockManager->addDockWidgetFloating(dockWidget);
     fc->move(pos);
@@ -377,7 +381,8 @@ ads::CDockWidget* FCDockingAreaInterface::createDockWidgetAsTab(QWidget* w,
                                                                 const QString& widgetName,
                                                                 ads::CDockAreaWidget* dockAreaWidget)
 {
-    ads::CDockWidget* dockWidget = new ads::CDockWidget(widgetName);
+    // ads::CDockWidget* dockWidget = new ads::CDockWidget(widgetName);
+    ads::CDockWidget* dockWidget = d_ptr->mDockManager->createDockWidget(widgetName);
     dockWidget->setWidget(w);
     dockWidget->setFeatures(ads::CDockWidget::DefaultDockWidgetFeatures);
     dockWidget->setMinimumSizeHintMode(ads::CDockWidget::MinimumSizeHintFromDockWidget);

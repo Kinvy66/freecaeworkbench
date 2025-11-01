@@ -128,6 +128,7 @@ private:
     // 日志窗口
     FCMessageLogViewWidget* mMessageLogViewWidget;              ///< 日志窗口
     ads::CDockWidget* mMessageLogDock;                          ///< mMessageLogViewWidget对应的docking
+
 };
 } // namespace FC
 

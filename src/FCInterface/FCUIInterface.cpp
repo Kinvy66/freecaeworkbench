@@ -41,7 +41,6 @@ FCUIInterface::PrivateData::PrivateData(FCUIInterface* p) : q_ptr(p)
 FCUIInterface::FCUIInterface(SARibbonMainWindow* m, FCCoreInterface* c)
     : FCBaseInterface(c, m), FC_PIMPL_CONSTRUCT
 {
-    qDebug() << __FUNCTION__ << this;
     d_ptr->mMainWindow = m;
     if (m) {
         m->installEventFilter(this);

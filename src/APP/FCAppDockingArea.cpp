@@ -31,7 +31,6 @@
 #include "FCMessageLogViewWidget.h"
 
 
-
 //===================================================
 // using FC namespace -- 禁止在头文件using！！
 //===================================================
@@ -47,6 +46,8 @@ FCAppDockingArea::FCAppDockingArea(FCUIInterface* u) : FCDockingAreaInterface(u)
     mAppCmd  = qobject_cast< FCAppCommand* >(u->getCommandInterface());
     // mDataMgr = qobject_cast< FCAppDataManager* >(core()->getDataManagerInterface());
     buildDockingArea();   // error: 创建dock后无法运行
+    
+    
 }
 
 FCAppDockingArea::~FCAppDockingArea()
@@ -126,30 +127,36 @@ void FCAppDockingArea::buildDockingArea()
     buildModelBuilderWidget();
     buildSettingParameterWidget();
     buildGraphicOperateWidget();
-    // buildMessageLogViewWidget();
+    buildMessageLogViewWidget();
     
-     mGraphicOperateDock = createCenterDockWidget(mGraphicOperateWidget,
-                                           // ads::LeftDockWidgetArea,
-                                           QStringLiteral("fc_graphicOperateWidgetDock"));
-    // mGraphicOperateDock->setIcon(QIcon(nullptr));
+
     
+    // mWorkFlowOperateDock->setIcon(QIcon(":/app/bright/Icon/showWorkFlow.svg"));
     
-    // mModelBuilderDock = createCenterDockWidget(mModelBuilderDock,
-    //                                      // ads::LeftDockWidgetArea,
-    //                                      QStringLiteral("fc_modelBuilderWidgetDock"));
-    // mModelBuilderDock->setFeature(ads::CDockWidget::DockWidgetClosable, false);
+    mModelBuilderDock = createDockWidget(mModelBuilderWidget,
+                                         ads::LeftDockWidgetArea,
+                                         tr("模型"));
     
-    // mSettingParametersDock = createCenterDockWidget(mSettingParametersWidget,
-    //                                           //ads::RightDockWidgetArea,
-    //                                           QStringLiteral("fc_settingParameterWidgetDock"));
+    mSettingParametersDock = createDockWidget(mSettingParametersWidget,
+                                              ads::RightDockWidgetArea,
+                                              tr("设置"),
+                                              mModelBuilderDock->dockAreaWidget());
     
-    // mMessageLogDock = createDockWidget(mMessageLogViewWidget,
-    //                                    ads::BottomDockWidgetArea,
-    //                                    QStringLiteral("da_messageLogViewWidgetDock"),
-    //                                    mGraphicOperateDock->dockAreaWidget());
+    mGraphicOperateDock = createDockWidget(mGraphicOperateWidget,
+                                           ads::RightDockWidgetArea,
+                                           tr("图形"),
+                                           mSettingParametersDock->dockAreaWidget());
+    
+    mGraphicOperateDock->setIcon(QIcon(":/icon/icon/help.svg"));
+    // mGraphicOperateDock->setFeature(ads::CDockWidget::DockWidgetClosable, false);
+    
+    mMessageLogDock = createDockWidget(mMessageLogViewWidget,
+                                       ads::BottomDockWidgetArea,
+                                       tr("消息"),
+                                       mGraphicOperateDock->dockAreaWidget());
+    
     resetDefaultSplitterSizes();
-    
-    initConnection();
+
     resetText();
 }
 
@@ -158,7 +165,7 @@ void FCAppDockingArea::buildDockingArea()
  */
 void FCAppDockingArea::buildModelBuilderWidget()
 {
-    mModelBuilderWidget = new FCModelBuilderWidget(mApp);
+    mModelBuilderWidget = new FCModelBuilderWidget();
     mModelBuilderWidget->setObjectName("fc_modelBuilderWidgetDock");
 }
 
@@ -187,6 +194,7 @@ void FCAppDockingArea::buildMessageLogViewWidget()
 {
     mMessageLogViewWidget = new FCMessageLogViewWidget(mApp);
     mMessageLogViewWidget->setObjectName("fc_messageLogViewWidgetDock");
+    
 }
 
 void FCAppDockingArea::initConnection()

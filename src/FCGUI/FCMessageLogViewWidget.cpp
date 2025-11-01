@@ -31,7 +31,7 @@ FCMessageLogViewWidget::FCMessageLogViewWidget(QWidget *parent)
     ui->setupUi(this);
     
     auto btn = new QPushButton(this);
-    // btn->setText("Clear");
+    btn->setText("Log View");
 }
 
 FCMessageLogViewWidget::~FCMessageLogViewWidget()

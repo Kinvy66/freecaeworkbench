@@ -18,7 +18,7 @@ FCSettingParametersWidget::FCSettingParametersWidget(QWidget *parent)
  : QWidget(parent)
 {
     QLabel* lab = new QLabel(this);
-    lab->setText("Test");
+    lab->setText("Setting Docking");
 }
 
 FCSettingParametersWidget::~FCSettingParametersWidget()

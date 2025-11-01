@@ -1,1 +1,6 @@
-<RCC/>
+<RCC>
+    <qresource prefix="/icon">
+        <file>icon/help.svg</file>
+        <file>icon/file_new.svg</file>
+    </qresource>
+</RCC>

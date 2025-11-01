@@ -187,10 +187,10 @@ void FCAppRibbonArea::buildRibbonMainCategory()
     m_categoryMain->setCategoryName(tr("主页"));
     //---------File Pannel -----------------------------------------------
     m_pannelMainFileOpt = m_categoryMain->addPanel(tr("文件"));
-    // m_pannelMainFileOpt->setObjectName(QStringLiteral("fc-ribbon-category-main.file"));
-    // m_pannelMainFileOpt->addLargeAction(m_actions->actionNew);
-    // m_pannelMainFileOpt->addLargeAction(m_actions->actionOpen);
-    // m_pannelMainFileOpt->addSmallAction(m_actions->actionSave);
+    m_pannelMainFileOpt->setObjectName(QStringLiteral("fc-ribbon-category-main.file"));
+    m_pannelMainFileOpt->addLargeAction(m_actions->actionNew);
+    m_pannelMainFileOpt->addLargeAction(m_actions->actionOpen);
+    m_pannelMainFileOpt->addLargeAction(m_actions->actionSave);
     // m_pannelMainFileOpt->addSmallAction(m_actions->actionSaveAs);
     
     // todo:其他pannel
@@ -310,9 +310,9 @@ void FCAppRibbonArea::buildApplicationMenu()
  */
 void FCAppRibbonArea::buildRightButtonBar()
 {
-    ribbonBar()->activeRightButtonGroup();
-    SARibbonButtonGroupWidget* rbar = ribbonBar()->rightButtonGroup();
-    rbar->addMenuAction(m_menuTheme);
+    // ribbonBar()->activeRightButtonGroup();
+    // SARibbonButtonGroupWidget* rbar = ribbonBar()->rightButtonGroup();
+    // rbar->addMenuAction(m_menuTheme);
 }
 
 void FCAppRibbonArea::setDockingArea(FCAppDockingArea *dock)
