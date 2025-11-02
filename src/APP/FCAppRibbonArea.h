@@ -232,61 +232,61 @@ public:
     // Main
     //----------------------------------------------------
     SARibbonCategory* m_categoryMain;           ///< 主页标签
-    SARibbonPanel* m_pannelMainFileOpt;         ///< 文件操作
-    SARibbonPanel* m_pannelModelOpt;            ///< 模型操作
-    SARibbonPanel* m_pannelGeometryOpt;         ///< 几何操作
-    SARibbonPanel* m_pannelMeshOpt;             ///< 网格操作
-    SARibbonPanel* m_pannelStudyOpt;            ///< 研究操作
-    SARibbonPanel* m_pannelLayoutOpt;           ///< 布局操作
+    SARibbonPanel* m_panelMainFileOpt;         ///< 文件操作
+    SARibbonPanel* m_panelModelOpt;            ///< 模型操作
+    SARibbonPanel* m_panelGeometryOpt;         ///< 几何操作
+    SARibbonPanel* m_panelMeshOpt;             ///< 网格操作
+    SARibbonPanel* m_panelStudyOpt;            ///< 研究操作
+    SARibbonPanel* m_panelLayoutOpt;           ///< 布局操作
     
     //----------------------------------------------------
     // Geometry
     //----------------------------------------------------
     SARibbonCategory* m_categoryGeometry;           ///< 几何标签
-    SARibbonPanel* m_pannelGeometryBuildOpt;        ///< 构建操作
-    SARibbonPanel* m_pannelGeometryImpExpOpt;       ///< 导入/导出操作
-    SARibbonPanel* m_pannelGeometryPrimOpt;         ///< 体素操作
-    // SARibbonPanel* m_pannelGeometryPrimOpt;         ///< 体素操作
-    SARibbonPanel* m_pannelGeometryWrkPlaneOpt;     ///< 工作平面操作
-    SARibbonPanel* m_pannelGeometryOperatopsOpt;    ///< 操作
-    SARibbonPanel* m_pannelGeometryOtherOpt;        ///< 其他操作
+    SARibbonPanel* m_panelGeometryBuildOpt;        ///< 构建操作
+    SARibbonPanel* m_panelGeometryImpExpOpt;       ///< 导入/导出操作
+    SARibbonPanel* m_panelGeometryPrimOpt;         ///< 体素操作
+    SARibbonPanel* m_panelGeometryWrkPlaneOpt;     ///< 工作平面操作
+    SARibbonPanel* m_panelGeometryOperatopsOpt;    ///< 操作
+    SARibbonPanel* m_panelGeometryOtherOpt;        ///< 其他操作
     
     //----------------------------------------------------
     // Mesh
     //----------------------------------------------------
     SARibbonCategory* m_categoryMesh;           ///< 网格标签
-    SARibbonPanel* m_pannelMeshBuildOpt;        ///< 构建操作
-    SARibbonPanel* m_pannelMeshImpExpOpt;       ///< 导入/导出操作
-    SARibbonPanel* m_pannelMeshGenerateOpt;     ///< 生成操作
-    SARibbonPanel* m_pannelMeshAttrOpt;         ///< 属性操作
-    SARibbonPanel* m_pannelMeshOperationOpt;    ///< 编辑操作
-    SARibbonPanel* m_pannelMeshEvaluateOpt;     ///< 计算操作
+    SARibbonPanel* m_panelMeshBuildOpt;        ///< 构建操作
+    SARibbonPanel* m_panelMeshImpExpOpt;       ///< 导入/导出操作
+    SARibbonPanel* m_panelMeshGenerateOpt;     ///< 生成操作
+    SARibbonPanel* m_panelMeshAttrOpt;         ///< 属性操作
+    SARibbonPanel* m_panelMeshOperationOpt;    ///< 编辑操作
+    SARibbonPanel* m_panelMeshEvaluateOpt;     ///< 计算操作
     SARibbonPanel* m_pannelMeshClearOpt;        ///< 清除操作
+    SARibbonPanel* m_pannelMeshOtherOpt;        ///< 清除操作
     
     //----------------------------------------------------
     // Study
     //----------------------------------------------------
     SARibbonCategory* m_categoryStudy;           ///< 研究标签
     // SARibbonPanel* m_pannelStudyOpt;             ///< 计算操作
-    SARibbonPanel* m_pannelStudySolverOpt;       ///< 求解器操作
-    SARibbonPanel* m_pannelStudyStepOpt;         ///< 研究步骤
-    SARibbonPanel* m_pannelStudyCleanOpt;        ///< 清除操作
+    SARibbonPanel* m_panelStudySolverOpt;       ///< 求解器操作
+    SARibbonPanel* m_panelStudyStepOpt;         ///< 研究步骤
+    SARibbonPanel* m_panelStudyCleanOpt;        ///< 清除操作
     
     //----------------------------------------------------
     // Result
     //----------------------------------------------------
     SARibbonCategory* m_categoryResult;      ///< 结果标签
-    SARibbonPanel* m_pannelPlotGroupRes;     ///< 绘图组操作
-    SARibbonPanel* m_pannelDataSetRes;       ///< 数据集
-    SARibbonPanel* m_pannelNumrcalRes;       ///< 数值结果
-    SARibbonPanel* m_pannelExportRes;        ///< 导出结果
-    SARibbonPanel* m_pannelClearRes;         ///< 清除操作
+    SARibbonPanel* m_panelPlotGroupRes;     ///< 绘图组操作
+    SARibbonPanel* m_panelDataSetRes;       ///< 数据集
+    SARibbonPanel* m_panelNumrcalRes;       ///< 数值结果
+    SARibbonPanel* m_panelExportRes;        ///< 导出结果
+    SARibbonPanel* m_panelClearRes;         ///< 清除操作
     
     //----------------------------------------------------
     // Tools
     //----------------------------------------------------
     SARibbonCategory* m_categoryTools;   ///< 工具标签
-    SARibbonPanel* m_pannelDevTools;     ///< 开发工具
+    SARibbonPanel* m_panelDevTools;     ///< 开发工具
 
    
     // ApplicationMenu

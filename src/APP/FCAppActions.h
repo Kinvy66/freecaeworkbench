@@ -17,6 +17,7 @@ class QActionGroup;
 
 namespace FC 
 {
+class FCRecentFilesManager;
 class FCAppActions : public FCActionsInterface
 {
     Q_OBJECT
@@ -93,7 +94,7 @@ public:
     QAction* actionLoft;                ///< 放样
     
     // 4. geometry operator pannel
-    QAction* actionGeometryBooleanOpt;          ///< 布尔操作Menu
+    QAction* actionMenuGeometryBooleanOpt;          ///< 布尔操作Menu
     QAction* actionBooleanUnion;                ///< 并集
     QAction* actionBooleanIntersection;         ///< 交集
     QAction* actionBooleanDifference;           ///< 求差
@@ -107,11 +108,11 @@ public:
     QAction* actionTransformArray;              ///< 阵列
     QAction* actionChamferOpt;          ///< 倒斜角
     QAction* actionFilletOpt;          ///< 倒圆角
-    QAction* actionGeometryDelet;       ///< 删除
+    QAction* actionGeometryDelete;       ///< 删除
     
     // 5. other pannel
     QAction* actionGeometryMeasure;     ///< 测量
-    
+     QAction* actionGeometryDeletSequence;     ///< 测量
     
     //===================================================
     // 网格标签 Mesh Category
@@ -176,6 +177,22 @@ public:
     
     
     //===================================================
+    // 其他action
+    //===================================================
+    QAction* actionPreferences;        ///< 首选项
+    QAction* actionExit;               ///< 退出
+    QAction* actionGlobalUndo;         
+    QAction* actionGlobalRedo;
+    QAction* actionGlobalCopy;
+    QAction* actionGlobalPaste;
+    QAction* actionGlobalDuplicate;
+    QAction* actionGlobalDelete;
+    QAction* actionGlobalSelectAll;
+    QAction* actionGlobalClearSelect;
+    QAction* actionGlobaFind;
+        
+    
+    //===================================================
     // 主题
     //===================================================
     QAction* actionRibbonThemeOffice2013;      ///< office2013主题
@@ -184,8 +201,8 @@ public:
     QAction* actionRibbonThemeDark;            ///< dark主题
     QActionGroup* actionGroupRibbonTheme;      ///< actionRibbonTheme* 的actionGroup
     
-    
-    // FCRecentFilesManager* recentFilesManager { nullptr };
+    // 最近打开的文件
+    FCRecentFilesManager* recentFilesManager { nullptr };
     
 };
 } // namespace FC
