@@ -123,8 +123,8 @@ public:
     QAction* actionAddMesh;         ///< 添加网格
     
     // 2. import/export pannel
-    QAction* actionImportMesh;      ///< 导入网格
-    QAction* actionExportMesh;      ///< 导出网格
+    QAction* actionMeshImportMesh;      ///< 导入网格
+    QAction* actionMeshExportMesh;      ///< 导出网格
     
     
     // 2. clear pannel

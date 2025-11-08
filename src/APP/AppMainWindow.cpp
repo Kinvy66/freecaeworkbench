@@ -62,7 +62,7 @@ AppMainWindow::AppMainWindow(QWidget *parent)
     // 让dock可以最小化到一个标签
     ads::CDockManager::setAutoHideConfigFlags({ ads::CDockManager::DefaultAutoHideConfig });
     // 建立ribbonArea，此函数的构造函数会生成界面
-    QIcon icon(QStringLiteral(":/app/bright/Icon/icon.svg"));
+    QIcon icon(QStringLiteral(":/icon/icon/icon.svg"));
     setWindowIcon(icon);
     FCAppCore& core = FCAppCore::getInstance();
     // 创建界面

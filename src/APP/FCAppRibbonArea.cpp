@@ -195,7 +195,7 @@ void FCAppRibbonArea::buildRibbonMainCategory()
     m_panelModelOpt = m_categoryMain->addPanel(tr("模型"));
     m_panelModelOpt->setObjectName(QStringLiteral("fc-ribbon-category-main.model"));
     m_panelModelOpt->addLargeAction(m_actions->actionHomeImportGeometry);
-    m_panelModelOpt->addLargeAction(m_actions->actionImportMesh);
+    m_panelModelOpt->addLargeAction(m_actions->actionHomeImportMesh);
     
     m_panelLayoutOpt = m_categoryMain->addPanel(tr("布局"));
     m_panelLayoutOpt->setObjectName(QStringLiteral("fc-ribbon-category-main.layout"));
@@ -312,8 +312,8 @@ void FCAppRibbonArea::buildRibbonMeshCategory()
     // // 2. import/export panel
     m_panelMeshImpExpOpt = m_categoryMesh->addPanel(tr("导入/导出"));
     m_panelMeshImpExpOpt->setObjectName(QStringLiteral("fc-ribbon-category-mesh.importexport"));
-    m_panelMeshImpExpOpt->addLargeAction(m_actions->actionImportMesh);
-    m_panelMeshImpExpOpt->addLargeAction(m_actions->actionExportMesh);
+    m_panelMeshImpExpOpt->addLargeAction(m_actions->actionMeshImportMesh);
+    m_panelMeshImpExpOpt->addLargeAction(m_actions->actionMeshExportMesh);
     
     
     // // 4. evaluate panel
@@ -427,6 +427,11 @@ void FCAppRibbonArea::buildRibbonQuickAccessBar()
     quickAccessBar->addAction(m_actions->actionGlobalRedo);
     quickAccessBar->addAction(m_actions->actionGlobalCopy);
     quickAccessBar->addAction(m_actions->actionGlobalPaste);
+    quickAccessBar->addAction(m_actions->actionGlobalDuplicate);
+    quickAccessBar->addAction(m_actions->actionGlobalDelete);
+    quickAccessBar->addAction(m_actions->actionGlobalSelectAll);
+    quickAccessBar->addAction(m_actions->actionGlobalClearSelect);
+    quickAccessBar->addAction(m_actions->actionGlobaFind);
     
     quickAccessBar->addSeparator();
 }
