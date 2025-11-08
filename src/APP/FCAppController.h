@@ -146,6 +146,9 @@ public Q_SLOTS:
     void open();
     // 打开工程文件
     bool openProjectFile(const QString& projectFilePath);
+    // 重置布局
+    void resetLayout();
+    
 private Q_SLOTS:
     // 工程的胀状态改变槽
     // void onProjectDirtyStateChanged(bool isdirty);

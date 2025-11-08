@@ -148,7 +148,7 @@ void FCAppActions::buildGeometryAction()
     actionTransformMove->setText(tr("移动"));
     actionTransformMirror = createAction("actionactionTransformMirrorTransformMirror", ":/icon/icon/geometry/transform.png");              ///< 镜像
     actionTransformMirror->setText(tr("镜像"));
-    actionTransformArray = createAction("actionTransformArray", ":/icon/icon/geometry/transform.pngg");              ///< 阵列
+    actionTransformArray = createAction("actionTransformArray", ":/icon/icon/geometry/transform.png");              ///< 阵列
     actionTransformArray->setText(tr("阵列"));
     actionChamferOpt = createAction("actionChamferOpt", ":/icon/icon/geometry/chamfer.png");          ///< 倒斜角
     actionChamferOpt->setText(tr("倒斜角"));

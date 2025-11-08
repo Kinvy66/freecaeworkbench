@@ -178,6 +178,34 @@ public:
 	 */
     void resetDefaultSplitterSizes();
     
+    /**
+     * @brief 重置分割尺寸
+     * @param area 
+     */
+    void resetDefaultSplitterSizes(ads::CDockAreaWidget* area);
+    
+    /**
+     * @brief 重置分割子窗口
+     * @param area
+     * @param sizes
+     */
+    void resetDefaultSplitterSizes(ads::CDockAreaWidget* area, const QList<int>& sizes);
+    
+    /**
+     * @brief 保存布局
+     */
+    void saveState();
+    
+    /**
+     * @brief 恢复布局
+     */
+    void restoreState();
+    
+    /**
+     * @brief 保存预设布局
+     */
+    void savePerspectives();
+    
 public:
     /*
 	 * 接口:

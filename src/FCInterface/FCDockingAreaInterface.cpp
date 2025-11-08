@@ -13,6 +13,7 @@
 #include <QDebug>
 #include <QApplication>
 #include <QScreen>
+#include <QSettings>
 
 // FC
 #include "FCUIInterface.h"
@@ -169,11 +170,63 @@ ads::CDockWidget* FCDockingAreaInterface::getCentralWidget() const
 void FCDockingAreaInterface::resetDefaultSplitterSizes()
 {
     QScreen* screen = QApplication::primaryScreen();
-    int leftwidth   = screen->size().width() / 6;
+    int leftwidth   = screen->size().width() / 4;
     int rightwidth  = leftwidth;
     int centerwidth = screen->size().width() - leftwidth - rightwidth;
     dockManager()->setSplitterSizes(getCenterArea(), { leftwidth, rightwidth,centerwidth});
-    qDebug() <<  "splitterSizes" << dockManager()->splitterSizes(getCenterArea()).size();
+}
+
+/**
+ * @brief 重置分割尺寸
+ * @param area
+ */
+void FCDockingAreaInterface::resetDefaultSplitterSizes(ads::CDockAreaWidget* area)
+{
+    QScreen* screen = QApplication::primaryScreen();
+    int leftwidth   = screen->size().width() / 4;
+    int rightwidth  = leftwidth;
+    int centerwidth = screen->size().width() - leftwidth - rightwidth;
+    dockManager()->setSplitterSizes(area, { leftwidth, rightwidth,centerwidth});
+}
+
+/**
+ * @brief 重置分割子窗口
+ * @param area
+ * @param sizes
+ */
+void FCDockingAreaInterface::resetDefaultSplitterSizes(ads::CDockAreaWidget *area, const QList<int> &sizes)
+{
+    dockManager()->setSplitterSizes(area, sizes);
+}
+
+/**
+     * @brief 保存布局
+     */
+void FCDockingAreaInterface::saveState()
+{
+    
+}
+
+/**
+     * @brief 恢复布局
+     */
+void FCDockingAreaInterface::restoreState()
+{
+    QSettings Settings("Settings.ini", QSettings::IniFormat);
+    
+    
+    dockManager()->restoreState(Settings.value("mainWindow/DockingState").toByteArray());
+    
+}
+
+/**
+     * @brief 保存预设布局
+     */
+void FCDockingAreaInterface::savePerspectives()
+{
+    QSettings Settings("Settings.ini", QSettings::IniFormat);
+    Settings.setValue("mainWindow/State",  d_ptr->mUiInterface->mainWindow()->saveState());
+    dockManager()->savePerspectives(Settings);
 }
 
 // QList< DAData > FCDockingAreaInterface::getCurrentSelectDatas() const

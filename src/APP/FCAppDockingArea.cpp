@@ -29,6 +29,7 @@
 #include "FCSettingParametersWidget.h"
 #include "FCGraphicOperateWidget.h"
 #include "FCMessageLogViewWidget.h"
+#include "FCProgressWidget.h"
 
 
 //===================================================
@@ -133,21 +134,30 @@ void FCAppDockingArea::buildDockingArea()
     
     // mWorkFlowOperateDock->setIcon(QIcon(":/app/bright/Icon/showWorkFlow.svg"));
     
+  
+    
     mModelBuilderDock = createDockWidget(mModelBuilderWidget,
-                                         ads::LeftDockWidgetArea,
+                                         ads::DockWidgetArea::LeftDockWidgetArea,
                                          tr("模型"));
     
     mSettingParametersDock = createDockWidget(mSettingParametersWidget,
-                                              ads::RightDockWidgetArea,
+                                              ads::DockWidgetArea::RightDockWidgetArea,
                                               tr("设置"),
                                               mModelBuilderDock->dockAreaWidget());
     
     mGraphicOperateDock = createDockWidget(mGraphicOperateWidget,
-                                           ads::RightDockWidgetArea,
+                                           ads::DockWidgetArea::RightDockWidgetArea,
                                            tr("图形"),
                                            mSettingParametersDock->dockAreaWidget());
     
-    mGraphicOperateDock->setIcon(QIcon(":/icon/icon/help.svg"));
+ 
+    
+    // mGraphicOperateDock = createDockWidget(mGraphicOperateWidget,
+    //                                        ads::RightDockWidgetArea,
+    //                                        tr("图形"),
+    //                                        mSettingParametersDock->dockAreaWidget());
+    
+    // mGraphicOperateDock->setIcon(QIcon(":/icon/icon/help.svg"));
     // mGraphicOperateDock->setFeature(ads::CDockWidget::DockWidgetClosable, false);
     
     mMessageLogDock = createDockWidget(mMessageLogViewWidget,
@@ -155,8 +165,20 @@ void FCAppDockingArea::buildDockingArea()
                                        tr("消息"),
                                        mGraphicOperateDock->dockAreaWidget());
     
-    resetDefaultSplitterSizes();
-
+    
+    mProgressDock = createDockWidgetAsTab(mProgressWidget,
+                                          tr("进度"),
+                                          mMessageLogDock->dockAreaWidget());
+    
+    resetDefaultSplitterSizes(mSettingParametersDock->dockAreaWidget());
+    
+    int contentAreaHeight = mModelBuilderDock->size().height();
+    int bottomHeight = contentAreaHeight / 5;
+    int topHeight = contentAreaHeight - bottomHeight;
+    
+    resetDefaultSplitterSizes(mGraphicOperateDock->dockAreaWidget(), {topHeight, bottomHeight});
+    
+    savePerspectives();
     resetText();
 }
 
@@ -194,6 +216,9 @@ void FCAppDockingArea::buildMessageLogViewWidget()
 {
     mMessageLogViewWidget = new FCMessageLogViewWidget(mApp);
     mMessageLogViewWidget->setObjectName("fc_messageLogViewWidgetDock");
+    
+    mProgressWidget = new FCProgressWidget(mApp);
+    mProgressWidget->setObjectName("fc_progressWidgettDock");
     
 }
 

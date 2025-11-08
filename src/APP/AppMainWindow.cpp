@@ -64,6 +64,7 @@ AppMainWindow::AppMainWindow(QWidget *parent)
     // 建立ribbonArea，此函数的构造函数会生成界面
     QIcon icon(QStringLiteral(":/icon/icon/icon.svg"));
     setWindowIcon(icon);
+    this->resize(1300, 800);
     FCAppCore& core = FCAppCore::getInstance();
     // 创建界面
     core.createUi(this);

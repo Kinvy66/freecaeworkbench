@@ -39,6 +39,8 @@ class FCSettingParametersWidget;
 // 日志窗口
 class FCMessageLogViewWidget;
 
+class FCProgressWidget;
+
 
 class FCAppDockingArea : public FCDockingAreaInterface
 {
@@ -100,6 +102,8 @@ private:
     void buildSettingParameterWidget();
     void buildGraphicOperateWidget();
     void buildMessageLogViewWidget();
+    // void buildProgressWidget();
+    
     
     // void buildWorkflowAboutWidgets();
     // void buildChartAboutWidgets();
@@ -128,6 +132,10 @@ private:
     // 日志窗口
     FCMessageLogViewWidget* mMessageLogViewWidget;              ///< 日志窗口
     ads::CDockWidget* mMessageLogDock;                          ///< mMessageLogViewWidget对应的docking
+    
+    // 进度窗口
+    FCProgressWidget* mProgressWidget;                      ///< 日志窗口
+    ads::CDockWidget* mProgressDock;                          ///< mMessageLogViewWidget对应的docking
 
 };
 } // namespace FC

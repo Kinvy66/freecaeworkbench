@@ -22,6 +22,7 @@
 #include <QMenu>
 #include <QApplication>
 #include <QActionGroup>
+#include <QDebug>
 // API
 #include "AppMainWindow.h"
 #include "FCAppCore.h"
@@ -156,6 +157,7 @@ void FCAppController::initConnection()
     FCAPPCONTROLLER_ACTION_BIND(mActions->actionOpen, open);
     FCAPPCONTROLLER_ACTION_BIND(mActions->actionSave, save);
     FCAPPCONTROLLER_ACTION_BIND(mActions->actionSaveAs, saveAs);
+    FCAPPCONTROLLER_ACTION_BIND(mActions->actionResetLayout, resetLayout);
     // FCAPPCONTROLLER_ACTION_BIND(mActions->actionAppendProject, onActionAppendProjectTriggered);
 }
 
@@ -235,6 +237,17 @@ bool FCAppController::openProjectFile(const QString &projectFilePath)
 {
     FCAPPCONTROLLER_PASS();
     return true;
+}
+
+/**
+ * @brief 重置布局
+ */
+void FCAppController::resetLayout()
+{
+    qDebug() << "Reset layout";
+    mDock->restoreState();
+    FCAPPCONTROLLER_PASS();
+    
 }
 
 void FCAppController::onActionAddDataTriggered()
