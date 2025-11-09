@@ -8,11 +8,6 @@ fcmacro_app_setting(
     1
 )
 
-
-# set(OpenCASCADE_DIR ${occ_DIR})
-
-# find_package(OpenCASCADE REQUIRED PATHS ${OpenCASCADE_DIR})
-
 ########################################################
 # Qt
 ########################################################
@@ -171,7 +166,9 @@ if(WIN32)
     )
 endif()
 
-# fcmacro_import_vtk(${FC_APP_NAME})
+fcmacro_import_vtk(${FC_APP_NAME})
+
+fcmacro_import_occ(${FC_APP_NAME})
 
 # target_link_libraries(${PROJECT_NAME} PRIVATE  ${OpenCASCADE_LIBRARIES})
 

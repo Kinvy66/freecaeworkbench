@@ -14,6 +14,8 @@
 #include <QWidget>
 #include "FCGuiAPI.h"
 
+#define VTK_TEST_DEMO
+
 #ifdef OCC_TEST_DEMO
 #include <Aspect_Handle.hxx>
 #include <AIS_InteractiveContext.hxx>

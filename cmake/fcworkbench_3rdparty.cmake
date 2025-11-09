@@ -154,28 +154,64 @@ endmacro(fcmacro_import_vtk)
 
 # OCC
 # 修改 fcmacro_import_occ 宏
+# macro(fcmacro_import_occ __target_name)
+#    find_package(OpenCASCADE)
+#     if(OpenCASCADE_FOUND)
+#         message(STATUS "  |-finded OpenCASCADE")
+#     else()
+#         message(STATUS "  |-can not find OpenCASCADE")
+#         if(DEFINED FC_OCC_INSTALL_LIB_CMAKE_PATH)
+#             set(_lib_dir ${occ_DIR} CACHE PATH "Path to OpenCASCADE cmake files")
+#             message(STATUS "  |-try to find in ${_lib_dir}")
+#             find_package(OpenCASCADE PATHS ${_lib_dir})
+#         endif()
+#     endif()
+#     # 链接的第三方库
+#     if(OpenCASCADE_FOUND)
+#         target_link_libraries(${__target_name} PRIVATE
+#             ${OpenCASCADE_LIBRARIES}
+#         )
+#         message(STATUS "  |-link ${OpenCASCADE_LIBRARIES}")
+#     else()
+#         message(ERROR "  can not find OpenCASCADE")
+#     endif()
+# endmacro()
+
+
+#-----------------------------------------
+# fcmacro_import_occ
+# 完全通用版本：支持 Debug/Release
+# 参数：
+#   __target_name - 要链接 OpenCASCADE 的目标
+# 前提：
+#   需要提前定义 FC_OCC_INSTALL_LIB_CMAKE_PATH 指向 OpenCASCADE 安装目录
+#-----------------------------------------
 macro(fcmacro_import_occ __target_name)
-   find_package(OpenCASCADE)
-    if(OpenCASCADE_FOUND)
-        message(STATUS "  |-finded OpenCASCADE")
-    else()
-        message(STATUS "  |-can not find OpenCASCADE")
-        if(DEFINED FC_OCC_INSTALL_LIB_CMAKE_PATH)
-            set(_lib_dir ${occ_DIR})
-            message(STATUS "  |-try to find in ${_lib_dir}")
-            find_package(OpenCASCADE PATHS ${_lib_dir})
-        endif()
+    if(NOT DEFINED FC_OCC_INSTALL_LIB_CMAKE_PATH)
+        message(FATAL_ERROR "FC_OCC_INSTALL_LIB_CMAKE_PATH is not defined. Set it to your OpenCASCADE install cmake path.")
     endif()
-    # 链接的第三方库
-    if(OpenCASCADE_FOUND)
-        target_link_libraries(${__target_name} PRIVATE
-            ${OpenCASCADE_LIBRARIES}
-        )
-        message(STATUS "  |-link ${OpenCASCADE_LIBRARIES}")
-    else()
-        message(ERROR "  can not find OpenCASCADE")
+
+    # 设置 OpenCASCADE_DIR，保证 Multi-Config 构建正确
+    set(OpenCASCADE_DIR "${FC_OCC_INSTALL_LIB_CMAKE_PATH}" CACHE PATH "Path to OpenCASCADE CMake config" FORCE)
+    message(STATUS "  |-Searching OpenCASCADE in: ${OpenCASCADE_DIR}")
+
+    # 使用 CONFIG 模式查找
+    find_package(OpenCASCADE REQUIRED CONFIG)
+
+    # 输出信息
+    message(STATUS "  |-Found OpenCASCADE version: ${OpenCASCADE_VERSION}")
+    message(STATUS "  |-OpenCASCADE include dirs: ${OpenCASCADE_INCLUDE_DIRS}")
+    message(STATUS "  |-OpenCASCADE libraries: ${OpenCASCADE_LIBRARIES}")
+
+    # 链接库
+    target_link_libraries(${__target_name} PRIVATE ${OpenCASCADE_LIBRARIES})
+
+    # 包含头文件（可选，如果 OpenCASCADE_INCLUDE_DIRS 没自动添加）
+    if(DEFINED OpenCASCADE_INCLUDE_DIRS)
+        target_include_directories(${__target_name} PRIVATE ${OpenCASCADE_INCLUDE_DIRS})
     endif()
 endmacro()
+
 
 
 

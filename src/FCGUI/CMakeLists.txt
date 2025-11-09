@@ -8,9 +8,6 @@ fcmacro_lib_setting(
     1
 )
 
-# set(OpenCASCADE_DIR ${occ_DIR})
-
-# find_package(OpenCASCADE REQUIRED PATHS ${OpenCASCADE_DIR})
 
 ########################################################
 # Qt
