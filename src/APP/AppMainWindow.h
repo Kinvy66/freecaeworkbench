@@ -13,6 +13,12 @@
 
 #include "SARibbonMainWindow.h"
 
+// #include <Aspect_Handle.hxx>
+// #include <AIS_InteractiveContext.hxx>
+// #include <V3d_Viewer.hxx>
+// #include <AIS_Shape.hxx>
+// #include <BRepPrimAPI_MakeBox.hxx>
+
 QT_BEGIN_NAMESPACE
 namespace Ui {
 class AppMainWindow;

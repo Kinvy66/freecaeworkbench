@@ -8,6 +8,11 @@ fcmacro_app_setting(
     1
 )
 
+
+# set(OpenCASCADE_DIR ${occ_DIR})
+
+# find_package(OpenCASCADE REQUIRED PATHS ${OpenCASCADE_DIR})
+
 ########################################################
 # Qt
 ########################################################
@@ -108,8 +113,12 @@ endif()
 fcmacro_import_SARibbonBar(${FC_APP_NAME})
 # -------------link 3rdparty QtAdvancedDocking--------------------------
 fcmacro_import_QtAdvancedDocking(${FC_APP_NAME})
-# -------------link 3rdparty--------------------------
+# -------------link 3rdparty qwt--------------------------
 fcmacro_import_qwt(${FC_APP_NAME})
+# -------------link 3rdparty vtk--------------------------
+fcmacro_import_vtk(${FC_APP_NAME})
+# -------------link 3rdparty occ--------------------------
+fcmacro_import_occ(${FC_APP_NAME})
 
 if(FC_ENABLE_PYTHON)
     # -------------link python--------------------------
@@ -161,6 +170,11 @@ if(WIN32)
         Dbghelp
     )
 endif()
+
+# fcmacro_import_vtk(${FC_APP_NAME})
+
+# target_link_libraries(${PROJECT_NAME} PRIVATE  ${OpenCASCADE_LIBRARIES})
+
 
 ########################################################
 # app 属性设置

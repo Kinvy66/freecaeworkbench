@@ -110,7 +110,6 @@ macro(fcmacro_import_SARibbonBar __target_name)
     fcmacro_import_x(SARibbonBar ${__target_name})
 endmacro(fcmacro_import_SARibbonBar)
 
-
 macro(fcmacro_import_QtAdvancedDocking __target_name)
     set(_lib_name qtadvanceddocking-qt${QT_VERSION_MAJOR})
     fcmacro_import_xx(ads ${_lib_name} ${__target_name})
@@ -128,6 +127,57 @@ macro(fcmacro_import_quazip __target_name)
     set(_package_name QuaZip-Qt${QT_VERSION_MAJOR})
     fcmacro_import_xxx(${_package_name} QuaZip QuaZip ${__target_name})
 endmacro(fcmacro_import_quazip)
+
+# VTK
+macro(fcmacro_import_vtk __target_name)
+    find_package(VTK)
+    if(VTK_FOUND)
+        message(STATUS "  |-finded VTK")
+    else()
+        message(STATUS "  |-can not find VTK")
+        if(DEFINED FC_INSTALL_LIB_CMAKE_PATH)
+            set(_lib_dir ${FC_INSTALL_LIB_CMAKE_PATH}/vtk-9.4)
+            message(STATUS "  |-try to find in ${_lib_dir}")
+            find_package(VTK PATHS ${_lib_dir})
+        endif()
+    endif()
+    # 链接的第三方库
+    if(VTK_FOUND)
+        target_link_libraries(${__target_name} PRIVATE
+            ${VTK_LIBRARIES}
+        )
+        message(STATUS "  |-link ${VTK_LIBRARIES}")
+    else()
+        message(ERROR "  can not find VTK")
+    endif()
+endmacro(fcmacro_import_vtk)
+
+# OCC
+# 修改 fcmacro_import_occ 宏
+macro(fcmacro_import_occ __target_name)
+   find_package(OpenCASCADE)
+    if(OpenCASCADE_FOUND)
+        message(STATUS "  |-finded OpenCASCADE")
+    else()
+        message(STATUS "  |-can not find OpenCASCADE")
+        if(DEFINED FC_OCC_INSTALL_LIB_CMAKE_PATH)
+            set(_lib_dir ${occ_DIR})
+            message(STATUS "  |-try to find in ${_lib_dir}")
+            find_package(OpenCASCADE PATHS ${_lib_dir})
+        endif()
+    endif()
+    # 链接的第三方库
+    if(OpenCASCADE_FOUND)
+        target_link_libraries(${__target_name} PRIVATE
+            ${OpenCASCADE_LIBRARIES}
+        )
+        message(STATUS "  |-link ${OpenCASCADE_LIBRARIES}")
+    else()
+        message(ERROR "  can not find OpenCASCADE")
+    endif()
+endmacro()
+
+
 
 macro(fcmacro_import_Python __target_name)
     # Python

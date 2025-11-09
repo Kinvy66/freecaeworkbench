@@ -152,6 +152,7 @@ find_package(QT NAMES Qt6 Qt5 COMPONENTS Core REQUIRED)
 set(FC_SRC_DIR ${CMAKE_CURRENT_LIST_DIR}/src)
 set(FC_CMAKE_DIR ${CMAKE_CURRENT_LIST_DIR}/cmake)
 set(FC_INSTALL_LIB_CMAKE_PATH ${CMAKE_INSTALL_PREFIX}/lib/cmake)
+set(FC_OCC_INSTALL_LIB_CMAKE_PATH ${CMAKE_INSTALL_PREFIX}/occ/cmake)
 set(FC_INSTALL_LIB_SHARE_PATH ${CMAKE_INSTALL_PREFIX}/share/cmake)
 list(APPEND CMAKE_MODULE_PATH ${FC_CMAKE_DIR} ${FC_INSTALL_LIB_CMAKE_PATH})
 
@@ -169,6 +170,9 @@ message(STATUS "qwt_DIR=${qwt_DIR}")
 
 set(spdlog_DIR ${FC_INSTALL_LIB_CMAKE_PATH}/spdlog)
 message(STATUS "spdlog_DIR=${spdlog_DIR}")
+
+set(occ_DIR ${CMAKE_INSTALL_PREFIX}/occ/cmake)
+message(STATUS "occ_DIR=${occ_DIR}")
 
 set(qt${QT_VERSION_MAJOR}advanceddocking_DIR  ${FC_INSTALL_LIB_CMAKE_PATH}/qtadvanceddocking-qt${QT_VERSION_MAJOR})
 message(STATUS "qt${QT_VERSION_MAJOR}advanceddocking_DIR=${qt${QT_VERSION_MAJOR}advanceddocking_DIR}")

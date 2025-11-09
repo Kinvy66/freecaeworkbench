@@ -8,6 +8,10 @@ fcmacro_lib_setting(
     1
 )
 
+# set(OpenCASCADE_DIR ${occ_DIR})
+
+# find_package(OpenCASCADE REQUIRED PATHS ${OpenCASCADE_DIR})
+
 ########################################################
 # Qt
 ########################################################
@@ -65,6 +69,13 @@ fcmacro_import_qwt(${FC_LIB_NAME})
 
 # -------------link quazip--------------------------
 fcmacro_import_quazip(${FC_LIB_NAME})
+
+# -------------link vtk--------------------------
+fcmacro_import_vtk(${FC_LIB_NAME})
+
+# -------------link occ--------------------------
+fcmacro_import_occ(${FC_LIB_NAME})
+
 
 
 ########################################################
