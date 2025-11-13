@@ -75,6 +75,20 @@ fcmacro_import_occ(${FC_LIB_NAME})
 
 
 
+find_package(${FC_PROJECT_NAME} COMPONENTS
+    FCActionManager
+    FCProjectTree
+)
+
+if(${FC_PROJECT_NAME}_FOUND)
+    message(STATUS "  |-linked ${FC_PROJECT_NAME}::FCProjectTree")
+endif()
+target_link_libraries(${FC_LIB_NAME} PUBLIC
+    ${FC_PROJECT_NAME}::FCActionManager
+    ${FC_PROJECT_NAME}::FCProjectTree
+)
+
+
 ########################################################
 # 设置通用库属性
 ########################################################

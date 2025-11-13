@@ -3,19 +3,21 @@
  * Brief    : action管理
  * Author   : Kinvy
  * Email    : kinvy66@163.com
- * Date     : 2025-10-28
+ * Date     : 2025-11-13
  * Version  : V0.0.1
  * Detail   :
  * Copyright: Copyright By Kinvy, All Rights Reserved
 ******************************************************************************/
 #include "FCAppActions.h"
 #include <QActionGroup>
-#include "FCRecentFilesManager.h"
+// #include "FCRecentFilesManager.h"
 
 //===================================================
-// using DA namespace -- 禁止在头文件using！！
+// using FC namespace -- 禁止在头文件using！！
 //===================================================
 using namespace FC;
+
+
 
 //===================================================
 // FCAppActions

@@ -58,7 +58,6 @@ endif()
 # -------------link FCWorkBench--------------------------
 find_package(${FC_PROJECT_NAME} COMPONENTS
     FCInterface
-    FCGui
 )
 
 if(${FC_PROJECT_NAME}_FOUND)
@@ -67,7 +66,6 @@ if(${FC_PROJECT_NAME}_FOUND)
 endif()
 target_link_libraries(${FC_LIB_NAME} PUBLIC
     ${FC_PROJECT_NAME}::FCInterface
-    ${FC_PROJECT_NAME}::FCGui
     
 )
 

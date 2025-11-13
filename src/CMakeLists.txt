@@ -14,7 +14,7 @@ add_subdirectory(FCShared)
 add_subdirectory(FCGui)
 
 add_subdirectory(FCInterface)
-add_dependencies(FCInterface FCGui)
+# add_dependencies(FCInterface FCGui)
 
 add_subdirectory(FCMessageHandler)
 

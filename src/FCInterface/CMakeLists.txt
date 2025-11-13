@@ -66,16 +66,17 @@ if(FC_ENABLE_PYTHON)
 endif()
 
 
-find_package(${FC_PROJECT_NAME} COMPONENTS
-    FCGui
-)
+# find_package(${FC_PROJECT_NAME} COMPONENTS
+#     FCGui
+# )
 
-if(${FC_PROJECT_NAME}_FOUND)
-    message(STATUS "  |-linked ${FC_PROJECT_NAME}::FCGui")
-endif()
-target_link_libraries(${FC_LIB_NAME} PUBLIC
-    ${FC_PROJECT_NAME}::FCGui
-)
+# if(${FC_PROJECT_NAME}_FOUND)
+#     message(STATUS "  |-linked ${FC_PROJECT_NAME}::FCGui")
+# endif()
+# target_link_libraries(${FC_LIB_NAME} PUBLIC
+#     ${FC_PROJECT_NAME}::FCGui
+# )
+
 if(FC_ENABLE_PYTHON)
     # -------------link python--------------------------
     fcmacro_import_Python(${FC_LIB_NAME})

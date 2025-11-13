@@ -19,6 +19,9 @@ public:
     FC_DECLARE_PUBLIC(FCModelBuilderWidget)
     PrivateData(FCModelBuilderWidget* p);
     
+public:
+    
+    
 };
 FCModelBuilderWidget::PrivateData::PrivateData(FCModelBuilderWidget* p)
     : q_ptr(p)

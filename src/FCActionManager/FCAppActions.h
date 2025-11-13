@@ -1,9 +1,9 @@
 /******************************************************************************
- * File     : FCAppActions.h
+ * File     : FCAppActions.cpp
  * Brief    : action管理
  * Author   : Kinvy
  * Email    : kinvy66@163.com
- * Date     : 2025-10-28
+ * Date     : 2025-11-13
  * Version  : V0.0.1
  * Detail   :
  * Copyright: Copyright By Kinvy, All Rights Reserved
@@ -12,13 +12,13 @@
 #define FCAPPACTIONS_H
 
 #include "FCActionsInterface.h"
-
-class QActionGroup;
+#include "FCActionManagerAPI.h"
 
 namespace FC 
 {
+
 class FCRecentFilesManager;
-class FCAppActions : public FCActionsInterface
+class FCACTIONMANAGER_API FCAppActions : public FCActionsInterface
 {
     Q_OBJECT
 public:
@@ -59,7 +59,7 @@ public:
     // 2. model pannel
     QAction* actionHomeImportGeometry;     ///< 导入几何
     QAction* actionHomeImportMesh;          ///< 导入网格
-
+    
     // 3. layout pannel
     QAction* actionWindowViews;          ///< 窗口
     QAction* actionResetLayout;          ///< 重置布局
@@ -112,7 +112,7 @@ public:
     
     // 5. other pannel
     QAction* actionGeometryMeasure;     ///< 测量
-     QAction* actionGeometryDeletSequence;     ///< 测量
+    QAction* actionGeometryDeletSequence;     ///< 测量
     
     //===================================================
     // 网格标签 Mesh Category
@@ -190,7 +190,7 @@ public:
     QAction* actionGlobalSelectAll;
     QAction* actionGlobalClearSelect;
     QAction* actionGlobaFind;
-        
+    
     
     //===================================================
     // 主题
@@ -217,4 +217,4 @@ public:
 #define FC_APP_ACTIONS FC::FCAppCore::getInstance().getUi()->getActions()
 #endif
 
-#endif  // FCAPPACTIONS_H
+#endif // FCAPPACTIONS_H
