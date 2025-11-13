@@ -1,0 +1,12 @@
+#ifndef FCACTIONMANAGERAPI_H
+#define FCACTIONMANAGERAPI_H
+#include <QtCore/QtGlobal>
+#include "FCGlobals.h"
+
+#if defined(FCACTIONMANAGER_BUILDLIB)
+#define FCACTIONMANAGER_API	Q_DECL_EXPORT
+#else
+#define FCACTIONMANAGER_API	Q_DECL_IMPORT
+#endif
+
+#endif // FCACTIONMANAGERAPI_H

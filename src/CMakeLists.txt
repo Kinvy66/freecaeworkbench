@@ -9,7 +9,7 @@ cmake_minimum_required(VERSION 3.12)
 # 加载库
 ########################################################
 add_subdirectory(FCUtils)
-
+add_subdirectory(FCShared)
 
 add_subdirectory(FCGui)
 
@@ -17,6 +17,9 @@ add_subdirectory(FCInterface)
 add_dependencies(FCInterface FCGui)
 
 add_subdirectory(FCMessageHandler)
+
+add_subdirectory(FCProjectTree)
+add_subdirectory(FCActionManager)
 
 
 # add_subdirectory(FCPluginSupport)

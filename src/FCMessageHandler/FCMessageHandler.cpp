@@ -8,8 +8,6 @@
 // #include "FCMessageQueueProxy.h"
 // #include "fc_concurrent_queue.hpp
 
-
-
 #include "spdlog/spdlog.h"
 #include "spdlog/async.h"
 #include "spdlog/sinks/rotating_file_sink.h"

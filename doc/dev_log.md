@@ -59,7 +59,23 @@ private:
     endif()
     ```
 
-    
+
+
+
+#### 2. cmake 第三方库依赖传递问题 （20251109）
+
+工程需要引入OpenCASCADE依赖，在工程`FCGui` 中使用了OCC，通过 `  target_link_libraries(${PROJECT_NAME} PRIVATE ${OpenCASCADE_LIBRARIES})` 添加了OCC依赖，运行Cmake ，没有出现任何错误，并且在qtCreator 也能索引到OCC库对应的头文件。但是在编译的时候就会出现找不到头文件的错误。
+
+错误原因，OCC库依赖使用的权限是 `PRIVATE ` ，`PRIVATE` 的意思是：
+
+> 这些库只在构建 FCGui 时使用，不会传递到链接 FCGui 的其它目标（比如 FCWorkBench）。
+
+也就是说，**FCWorkBench 虽然链接了 FCGui，但编译时并不会自动获得 OCC 或 VTK 的包含路径与库链接信息**。
+
+解决方法：
+
+1. 在主程序的cmake中添加OCC的依赖（当前项目采用的方法）；
+2. 使用 `PUBLIC` 传播依赖。
 
 
 
@@ -90,3 +106,6 @@ private:
     template <typename ObjPrivate> friend void QtPrivate::assertObjectType(QObjectPrivate *d);
 ```
 
+
+
+d指针是指向内部私有类的指针，把一些不想暴露给用户的私有属性和方法写在内部类中，并且声明和定义都写在外部类的cpp文件中，在外部类的方法需要调用这些属性就用d指针，而q指针是内部类的成员，指向外部类。

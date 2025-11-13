@@ -1,0 +1,12 @@
+#ifndef FCPROJCETTREEAPI_H
+#define FCPROJCETTREEAPI_H
+#include <QtCore/QtGlobal>
+#include "FCGlobals.h"
+
+#if defined(FCPROJECTTREE_BUILDLIB)
+#define FCPROJECTTREE_API	Q_DECL_EXPORT
+#else
+#define FCPROJECTTREE_API	Q_DECL_IMPORT
+#endif
+
+#endif // FCPROJCETTREEAPI_H
