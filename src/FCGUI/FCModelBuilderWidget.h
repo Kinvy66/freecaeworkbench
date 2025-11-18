@@ -12,18 +12,30 @@
 #define FCMODELBUILDERWIDGET_H
 #include "FCGuiAPI.h"
 #include <QWidget>
+#include <QList>
 
 namespace FC 
 {
+class FCTree;
+class FCTreeItem;
+class FCProjectTree;
+
 class FCGUI_API FCModelBuilderWidget : public QWidget
 {
     Q_OBJECT
-    FC_DECLARE_PRIVATE(FCModelBuilderWidget)
 public:
     FCModelBuilderWidget(QWidget* parent = nullptr);
     ~FCModelBuilderWidget();
     
 signals:
+    
+private:
+    // 构建空白工程的树形结构
+    void buildBlankProject();
+    
+private:
+    
+    FCProjectTree* mProjectTree;
 };
 
 } // namespace FC

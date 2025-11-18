@@ -46,8 +46,8 @@ FCGraphicOperateWidget::FCGraphicOperateWidget(QWidget *parent)
  : QWidget(parent)
 {
     
-    QLabel* lab = new QLabel(this);
-    lab->setText("GraphicOperateWidget");
+    // QLabel* lab = new QLabel(this);
+    // lab->setText("GraphicOperateWidget");
     
 
 #ifdef VTK_TEST_DEMO

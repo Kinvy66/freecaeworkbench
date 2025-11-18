@@ -74,5 +74,6 @@
         <file>icon/tools/about.png</file>
         <file>icon/tools/plugings.png</file>
         <file>icon/new.png</file>
+        <file>icon/mesh/mesh1.png</file>
     </qresource>
 </RCC>

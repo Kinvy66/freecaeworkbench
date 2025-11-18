@@ -10,33 +10,35 @@
 ******************************************************************************/
 #include "FCModelBuilderWidget.h"
 #include <QDebug>
+#include <QLabel>
+#include <QVBoxLayout>
+#include "FCTreeWidget.h"
+#include "FCTreeItem.h"
+#include "FCProjectTree.h"
 
 namespace FC 
 {
-class FCModelBuilderWidget::PrivateData
-{
-public:
-    FC_DECLARE_PUBLIC(FCModelBuilderWidget)
-    PrivateData(FCModelBuilderWidget* p);
-    
-public:
-    
-    
-};
-FCModelBuilderWidget::PrivateData::PrivateData(FCModelBuilderWidget* p)
-    : q_ptr(p)
-{
-}
 
 FCModelBuilderWidget::FCModelBuilderWidget(QWidget *parent)
     : QWidget(parent)
 {
-    
+
+    mProjectTree = new FCProjectTree(this);
+    QVBoxLayout* layout = new QVBoxLayout(this);
+    layout->addWidget(mProjectTree->treeWidget()); // 需要添加 getter
+    layout->setContentsMargins(2, 2, 2, 2);
 }
 
 FCModelBuilderWidget::~FCModelBuilderWidget()
 {
     
+}
+
+/**
+ * @brief 构建空白工程树形目录
+ */
+void FCModelBuilderWidget::buildBlankProject()
+{
 }
 
 } // namespace FC

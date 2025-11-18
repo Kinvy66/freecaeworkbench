@@ -174,7 +174,7 @@ void FCAppActions::buildMeshtAction()
     // 1.  mesh panel
     actionMeshBuild = createAction("actionMeshBuild", ":/icon/icon/mesh/build_all_mesh.png");       ///< 构建网格
     actionMeshBuild->setText(tr("构建网格"));
-    actionMenuSelectMesh = createAction("actionMenuSelectMesh", ":/icon/icon/mesh/mesh.png");      ///< 选择网格
+    actionMenuSelectMesh = createAction("actionMenuSelectMesh", ":/icon/icon/mesh/mesh1.png");      ///< 选择网格
     actionMenuSelectMesh->setText(tr("选择网格"));
     actionAddMesh = createAction("actionAddMesh", ":/icon/icon/mesh/mesh.png");         ///< 添加网格
     actionAddMesh->setText(tr("添加网格"));

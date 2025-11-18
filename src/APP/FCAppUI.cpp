@@ -16,7 +16,7 @@
 #include "FCAppCore.h"
 // #include "FCAppDataManager.h"
 #include "AppMainWindow.h"
-// #include "FCStatusBar.h"
+#include "FCStatusBar.h"
 //===================================================
 // using FC namespace -- 禁止在头文件using！！
 //===================================================

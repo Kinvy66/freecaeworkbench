@@ -58,14 +58,17 @@ endif()
 # -------------link FCWorkBench--------------------------
 find_package(${FC_PROJECT_NAME} COMPONENTS
     FCInterface
+    FCActionManager
 )
 
 if(${FC_PROJECT_NAME}_FOUND)
     message(STATUS "  |-linked ${FC_PROJECT_NAME}::FCInterface")
+    message(STATUS "  |-linked ${FC_PROJECT_NAME}::FCActionManager")
 
 endif()
 target_link_libraries(${FC_LIB_NAME} PUBLIC
     ${FC_PROJECT_NAME}::FCInterface
+    ${FC_PROJECT_NAME}::FCActionManager
 )
 
 

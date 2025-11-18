@@ -183,8 +183,9 @@ void FCDockingAreaInterface::resetDefaultSplitterSizes()
 void FCDockingAreaInterface::resetDefaultSplitterSizes(ads::CDockAreaWidget* area)
 {
     QScreen* screen = QApplication::primaryScreen();
-    int leftwidth   = screen->size().width() / 4;
-    int rightwidth  = leftwidth;
+    int n = screen->size().width() / 13;
+    int leftwidth   = n * 2;
+    int rightwidth  = n * 3;
     int centerwidth = screen->size().width() - leftwidth - rightwidth;
     dockManager()->setSplitterSizes(area, { leftwidth, rightwidth,centerwidth});
 }

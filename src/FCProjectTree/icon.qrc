@@ -1,0 +1,22 @@
+<RCC>
+    <qresource prefix="/icon">
+        <file>icon/1d_plot.png</file>
+        <file>icon/2d_plot.png</file>
+        <file>icon/3d_plot.png</file>
+        <file>icon/component.png</file>
+        <file>icon/define.png</file>
+        <file>icon/funtion.png</file>
+        <file>icon/geometry.png</file>
+        <file>icon/global_define.png</file>
+        <file>icon/material.png</file>
+        <file>icon/mesh.png</file>
+        <file>icon/parameter.png</file>
+        <file>icon/project.png</file>
+        <file>icon/result.png</file>
+        <file>icon/study.png</file>
+        <file>icon/variable.png</file>
+        <file>icon/help.png</file>
+        <file>icon/mesh1.png</file>
+        <file>icon/study1.png</file>
+    </qresource>
+</RCC>
