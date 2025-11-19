@@ -180,7 +180,7 @@ void FCAppActions::buildMeshtAction()
     actionAddMesh->setText(tr("添加网格"));
     
     // 2. import/export panel
-    actionMeshImportMesh = createAction("actionImportMesh", ":/icon/icon/mesh/import_mesh.png");      ///< 导入网格
+    actionMeshImportMesh = createAction("actionMeshImportMesh", ":/icon/icon/mesh/import_mesh.png");      ///< 导入网格
     actionMeshImportMesh->setText(tr("导入网格"));
     actionMeshExportMesh = createAction("actionExportMesh", ":/icon/icon/mesh/export_mesh.png");      ///< 导出网格
     actionMeshExportMesh->setText(tr("导出网格"));

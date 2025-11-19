@@ -18,5 +18,9 @@
         <file>icon/help.png</file>
         <file>icon/mesh1.png</file>
         <file>icon/study1.png</file>
+        <file>icon/movedown.png</file>
+        <file>icon/moveup.png</file>
+        <file>icon/rename.png</file>
+        <file>icon/undefined.png</file>
     </qresource>
 </RCC>

@@ -14,27 +14,29 @@
 #include <QObject>
 #include <QString>
 
+class QTreeWidgetItem;
+class QAction;
 
 namespace FC 
 {
 class FCTreeWidget;
+
 class FCPROJECTTREE_API FCProjectTree : public QObject
 {
     Q_OBJECT
     
-    enum RoleType
-    {
-        ContextActions = Qt::UserRole + 1,  // 右键菜单数据
-        EntityMetaData,           // 元数据
-    };
-    
+
 public:
     explicit FCProjectTree(QObject *parent = nullptr);
+    ~FCProjectTree() override = default;
     
     // 创建默认工程
     void createDefaultProject(const QString& name = tr("Untitled"));
     
     FCTreeWidget* treeWidget() const;
+    
+private slots:
+    void onTreeActionTriggered(int menuType, const QString &actionText, QTreeWidgetItem *item);
     
 private:
     // 创建全局定义的子树
@@ -45,6 +47,26 @@ private:
     void createStudy();
     // 创建结果子树
     void createResult();
+    
+    // 构建右键菜单
+    void buildProjectRootActions();
+    void buildGlobalDefineuActions();
+    void buildCompnentActions();
+    void buildStudyActions();
+    void buildResultActions();
+    
+    
+    // 添加参数item
+    void addNewParameter(QTreeWidgetItem* parent);
+    // 添加变量item
+    void addNewVariable(QTreeWidgetItem* parent);
+    // 添加函数item
+    void addNewFunction(QTreeWidgetItem* parent);
+    // 查找同类型的编号
+    int findInsertIndexByType(QTreeWidgetItem* parent, int typeValue);
+    // 获取下一个编号
+    QString  nextChildName(QTreeWidgetItem* parent, const QString& prefix);
+    
     
 signals:
     
