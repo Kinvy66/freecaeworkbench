@@ -22,6 +22,7 @@ FCProjectTree::FCProjectTree(QObject *parent)
 {
     mTreeWidget = new FCTreeWidget();
     createDefaultProject();
+    mTreeWidget->expandToDepth(1);
 }
 
 /**
@@ -370,16 +371,84 @@ void FCProjectTree::buildCompnentActions()
     
     // 组件-几何
     QList<AT> componentGeometryActions;
-    componentGeometryActions.append(copy);
-    componentGroupActions.append(duplicate);
-    componentGroupActions.append(delet);
-    componentGroupActions.append(AT::sep());
-    componentGroupActions.append(settings);
-    componentGroupActions.append(property);
-    componentGroupActions.append(AT::sep());
-    componentGroupActions.append(help);
-    mTreeWidget->setActionTemplates(FCTreeWidget::MenuComponent,
-                                    componentGroupActions);
+    
+    componentGeometryActions.append(AT(tr("全部构建"),
+                                       QIcon(":/icon/icon/geometry/buil_all.png"),
+                                       "build_all"));
+    componentGeometryActions.append(AT::sep());
+    componentGeometryActions.append(AT(tr("导入"),
+                                       QIcon(":/icon/icon/geometry/import_geometry.png"),
+                                       "import_geometry"));
+    componentGeometryActions.append(AT(tr("虚拟操作"),
+                                       "virtual_opt"));
+    componentGeometryActions.append(AT::sep());
+    componentGeometryActions.append(AT(tr("圆柱体"),
+                                       QIcon(":/icon/icon/geometry/cylinder.png"),
+                                       "cylinder"));
+    componentGeometryActions.append(AT(tr("圆锥体"),
+                                       QIcon(":/icon/icon/geometry/cone.png"),
+                                       "cone"));
+    componentGeometryActions.append(AT(tr("球体"),
+                                       QIcon(":/icon/icon/geometry/sphere.png"),
+                                       "sphere"));
+    componentGeometryActions.append(AT(tr("长方体"),
+                                       QIcon(":/icon/icon/geometry/cube.png"),
+                                       "cube"));
+    AT moreModel = AT(tr("更多体素"),"moreModel");
+    moreModel.add(AT(tr("圆环"), QIcon(":/icon/icon/geometry/torus.png"), "torus"));
+    moreModel.add(AT(tr("螺旋"), QIcon(":/icon/icon/geometry/helix.png"), "helix"));
+    componentGeometryActions.append(moreModel);
+    componentGeometryActions.append(AT::sep());
+    componentGeometryActions.append(AT(tr("工作平面"),
+                                       QIcon(":/icon/icon/geometry/workplane.png"),
+                                       "workplane"));
+    componentGeometryActions.append(AT(tr("回旋"),
+                                       QIcon(":/icon/icon/geometry/revolve.png"),
+                                       "revolve"));
+    componentGeometryActions.append(AT(tr("拉伸"),
+                                       QIcon(":/icon/icon/geometry/extrude.png"),
+                                       "extrude"));
+    componentGeometryActions.append(AT(tr("扫掠"),
+                                       QIcon(":/icon/icon/geometry/sweep.png"),
+                                       "sweep"));
+    componentGeometryActions.append(AT::sep());
+    
+    AT booleanOpt = AT(tr("布尔操作"),"moreModel");
+    booleanOpt.add(AT(tr("并集"), QIcon(":/icon/icon/geometry/boolean_opt.png"), "union"));
+    booleanOpt.add(AT(tr("交集"), QIcon(":/icon/icon/geometry/boolean_opt.png"), "intersection"));
+    booleanOpt.add(AT(tr("求差"), QIcon(":/icon/icon/geometry/boolean_opt.png"), "difference"));
+    booleanOpt.add(AT(tr("组合"), QIcon(":/icon/icon/geometry/boolean_opt.png"), "compose"));
+    componentGeometryActions.append(booleanOpt);
+    AT transformOpt = AT(tr("变化操作"),"moreModel");
+    transformOpt.add(AT(tr("刚性变换"), QIcon(":/icon/icon/geometry/transform.png"), "transform_rigid"));
+    transformOpt.add(AT(tr("复制"), QIcon(":/icon/icon/geometry/transform.png"), "transform_copy"));
+    transformOpt.add(AT(tr("比例因子"), QIcon(":/icon/icon/geometry/transform.png"), "transform_scale"));
+    transformOpt.add(AT(tr("移动"), QIcon(":/icon/icon/geometry/transform.png"), "transform_move"));
+    transformOpt.add(AT(tr("镜像"), QIcon(":/icon/icon/geometry/transform.png"), "transform_mirror"));
+    transformOpt.add(AT(tr("阵列"), QIcon(":/icon/icon/geometry/transform.png"), "transform_array"));
+    componentGeometryActions.append(transformOpt);
+    componentGeometryActions.append(AT::sep());
+    
+    componentGeometryActions.append(AT(tr("测量"),
+                                       QIcon(":/icon/icon/geometry/measure.png"),
+                                       "measure"));
+    componentGeometryActions.append(AT(tr("插入序列"),
+                                       QIcon(":/icon/icon/geometry/insert_seq.png"),
+                                       "insert_seq"));
+    componentGeometryActions.append(AT(tr("导出"),
+                                       QIcon(":/icon/icon/geometry/export_geometry.png"),
+                                       "export_geometry"));
+    componentGeometryActions.append(AT(tr("删除序列"),
+                                       QIcon(":/icon/icon/geometry/delete_seq.png"),
+                                       "delete_seq"));
+    componentGeometryActions.append(AT::sep());
+    componentGeometryActions.append(settings);
+    componentGeometryActions.append(property);
+    componentGeometryActions.append(AT::sep());
+    componentGeometryActions.append(help);
+    
+    mTreeWidget->setActionTemplates(FCTreeWidget::MenuComponentGeometry,
+                                    componentGeometryActions);
 }
 
 /**

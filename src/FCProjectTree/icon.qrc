@@ -22,5 +22,36 @@
         <file>icon/moveup.png</file>
         <file>icon/rename.png</file>
         <file>icon/undefined.png</file>
+        <file>icon/geometry/array.png</file>
+        <file>icon/geometry/bezier.png</file>
+        <file>icon/geometry/boolean_opt.png</file>
+        <file>icon/geometry/chamfer.png</file>
+        <file>icon/geometry/colors.png</file>
+        <file>icon/geometry/cone.png</file>
+        <file>icon/geometry/cube.png</file>
+        <file>icon/geometry/cylinder.png</file>
+        <file>icon/geometry/delete.png</file>
+        <file>icon/geometry/delete_seq.png</file>
+        <file>icon/geometry/export.png</file>
+        <file>icon/geometry/export_geometry.png</file>
+        <file>icon/geometry/extrude.png</file>
+        <file>icon/geometry/fillet.png</file>
+        <file>icon/geometry/helix.png</file>
+        <file>icon/geometry/import.png</file>
+        <file>icon/geometry/import_geometry.png</file>
+        <file>icon/geometry/insert_seq.png</file>
+        <file>icon/geometry/loft.png</file>
+        <file>icon/geometry/measure.png</file>
+        <file>icon/geometry/mirror.png</file>
+        <file>icon/geometry/more_model.png</file>
+        <file>icon/geometry/revolve.png</file>
+        <file>icon/geometry/scale.png</file>
+        <file>icon/geometry/sphere.png</file>
+        <file>icon/geometry/sweep.png</file>
+        <file>icon/geometry/tetrahedron.png</file>
+        <file>icon/geometry/torus.png</file>
+        <file>icon/geometry/transform.png</file>
+        <file>icon/geometry/workplane.png</file>
+        <file>icon/geometry/buil_all.png</file>
     </qresource>
 </RCC>

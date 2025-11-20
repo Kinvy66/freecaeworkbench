@@ -118,6 +118,8 @@ protected:
     
 private:
      MenuType getItemMenuType(QTreeWidgetItem* item) const;
+    void buildMenuFromTemplate(QMenu* menu,const QList<ActionTemplate>& templates,
+                            QTreeWidgetItem* item, MenuType type);
     
  signals:
      void actionTriggered(int menuType, const QString &actionText, QTreeWidgetItem *item);

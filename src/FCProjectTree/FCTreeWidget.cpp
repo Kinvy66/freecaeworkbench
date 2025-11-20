@@ -33,7 +33,8 @@ FCTreeWidget::FCTreeWidget(QWidget *parent)
  * @param type
  * @param templates
  */
-void FCTreeWidget::setActionTemplates(MenuType type, const QList<ActionTemplate> &templates)
+void FCTreeWidget::setActionTemplates(MenuType type,
+                                      const QList<ActionTemplate> &templates)
 {
     mActionTemplates[type] = templates;    
 }
@@ -53,23 +54,61 @@ void FCTreeWidget::contextMenuEvent(QContextMenuEvent *event)
     
     QMenu menu(this);
     
-    for (const ActionTemplate &tpl : templates) {
+    buildMenuFromTemplate(&menu, templates, item, type);
+    
+    menu.exec(event->globalPos());
+}
+
+/**
+ * @brief 从模板构建右键action
+ * @param menu
+ * @param templates
+ * @param item
+ * @param type
+ */
+void FCTreeWidget::buildMenuFromTemplate(QMenu *menu,
+                                         const QList<ActionTemplate> &templates,
+                                         QTreeWidgetItem *item, MenuType type)
+{
+    for (const ActionTemplate& tpl : templates)
+    {
         if (tpl.isSeparator()) {
-            menu.addSeparator();
+            menu->addSeparator();
             continue;
         }
         
-        QAction* act = tpl.icon.isNull() ? menu.addAction(tpl.text) : menu.addAction(tpl.icon, tpl.text);
+        // 1 子菜单：递归构建
+        if (tpl.hasSubMenu()) {
+            QMenu* sub = new QMenu(tpl.text, menu); // 绑定父级
+            if (!tpl.icon.isNull())
+                sub->setIcon(tpl.icon);
+            
+            // 递归构建子菜单
+            buildMenuFromTemplate(sub, tpl.subActions, item, type);
+            
+            menu->addMenu(sub);
+            continue;
+        }
+        
+        // 2 普通 QAction
+        QAction* act = nullptr;
+        if (!tpl.icon.isNull())
+            act = menu->addAction(tpl.icon, tpl.text);
+        else
+            act = menu->addAction(tpl.text);
+        
         if (!tpl.objectName.isEmpty())
             act->setObjectName(tpl.objectName);
         
-        const QString objName = act->objectName();
-        connect(act, &QAction::triggered, this, [this, type, objName, item]() {
-            emit actionTriggered(static_cast<int>(type), objName, item);
-        });
+        // 绑定 item + actionName
+        QString actionName = tpl.objectName.isEmpty() ? tpl.text : tpl.objectName;
+        
+        connect(act, &QAction::triggered, this,
+                [this, type, actionName, item]() {
+                    emit actionTriggered(type, actionName, item);
+                }
+                );
     }
-    
-    menu.exec(event->globalPos());
 }
 
 /**
