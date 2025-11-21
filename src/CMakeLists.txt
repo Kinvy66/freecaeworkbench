@@ -29,3 +29,4 @@ add_subdirectory(FCActionManager)
 # add_dependencies(FCPluginSupport FCInterface)
 
 add_subdirectory(APP)
+add_subdirectory(TestDemo)

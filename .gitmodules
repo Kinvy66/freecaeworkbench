@@ -22,3 +22,6 @@
 [submodule "3rdparty/vtk"]
 	path = 3rdparty/vtk
 	url = https://github.com/Kitware/VTK.git
+[submodule "3rdparty/gmsh"]
+	path = 3rdparty/gmsh
+	url = https://gitlab.onelab.info/gmsh/gmsh.git

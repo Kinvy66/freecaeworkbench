@@ -1,8 +1,8 @@
 cmake_minimum_required(VERSION 3.12)
 
 fcmacro_app_setting(
-    "FCWorkBench"
-    "FCWorkBench App"
+    "TestDemo"
+    "Demo App"
     0
     0
     1
@@ -18,9 +18,6 @@ find_package(Qt${QT_VERSION_MAJOR} ${FC_MIN_QT_VERSION} COMPONENTS
     Gui
     Widgets
     Xml
-    Svg
-    Concurrent
-    PrintSupport
     REQUIRED
 )
 
@@ -93,9 +90,6 @@ target_link_libraries(${FC_APP_NAME} PUBLIC
     Qt${QT_VERSION_MAJOR}::Gui
     Qt${QT_VERSION_MAJOR}::Widgets
     Qt${QT_VERSION_MAJOR}::Xml
-    Qt${QT_VERSION_MAJOR}::Svg
-    Qt${QT_VERSION_MAJOR}::Concurrent
-    Qt${QT_VERSION_MAJOR}::AxContainer
 )
 if(WIN32)
     target_link_libraries(${FC_APP_NAME} PUBLIC
@@ -104,36 +98,20 @@ if(WIN32)
 endif()
 
 
-# -------------link 3rdparty --------------------------
+# -------------link 3rdparty SARibbon--------------------------
 fcmacro_import_SARibbonBar(${FC_APP_NAME})
+# -------------link 3rdparty QtAdvancedDocking--------------------------
 fcmacro_import_QtAdvancedDocking(${FC_APP_NAME})
+# -------------link 3rdparty qwt--------------------------
 fcmacro_import_qwt(${FC_APP_NAME})
+# -------------link 3rdparty vtk--------------------------
 fcmacro_import_vtk(${FC_APP_NAME})
+# -------------link 3rdparty occ--------------------------
 fcmacro_import_occ(${FC_APP_NAME})
+
 fcmacro_import_gmsh(${FC_APP_NAME})
 
 
-if(FC_ENABLE_PYTHON)
-    # -------------link python--------------------------
-    fcmacro_import_Python(${FC_APP_NAME})
-endif()
-
-find_package(${FC_PROJECT_NAME} COMPONENTS
-    FCInterface
-    FCGui
-    FCActionManager
-    FCMessageHandler
-)
-
-if(${FC_PROJECT_NAME}_FOUND)
-    message(STATUS "  |-linked ${FC_PROJECT_NAME}::FCInterface")
-endif()
-target_link_libraries(${FC_APP_NAME} PUBLIC
-    ${FC_PROJECT_NAME}::FCInterface
-    ${FC_PROJECT_NAME}::FCGui
-    ${FC_PROJECT_NAME}::FCActionManager
-    ${FC_PROJECT_NAME}::FCMessageHandler    
-)
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.
 # If you are developing for iOS or macOS you should consider setting an
@@ -167,6 +145,7 @@ if(WIN32)
         Dbghelp
     )
 endif()
+
 
 # target_link_libraries(${PROJECT_NAME} PRIVATE  ${OpenCASCADE_LIBRARIES})
 

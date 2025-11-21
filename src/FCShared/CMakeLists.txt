@@ -11,7 +11,7 @@ fcmacro_lib_setting(
 # Qt
 ########################################################
 find_package(QT NAMES Qt6 Qt5 COMPONENTS Core REQUIRED)
-find_package(Qt${QT_VERSION_MAJOR} ${DA_MIN_QT_VERSION} COMPONENTS
+find_package(Qt${QT_VERSION_MAJOR} ${FC_MIN_QT_VERSION} COMPONENTS
     Core
     REQUIRED
 )

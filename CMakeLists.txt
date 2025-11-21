@@ -26,10 +26,6 @@ message(STATUS "FreeCAEWorkbench Version is ${FC_VERSION}")
 ########################################################
 set(FC_PROJECT_NAME "FCWorkbench")
 
-# set(ZLIB_DIR "C:/opt/zlib")
-# set(ZLIB_INCLUDE_DIR "C:/opt/zlib/include")
-# set(ZLIB_LIBRARY "C:/opt/zlib/lib/zlib.lib")
-
 project(${FC_PROJECT_NAME}
         VERSION ${FC_VERSION}
         LANGUAGES CXX
@@ -68,7 +64,7 @@ option(FC_AUTO_INSTALL_PREFIX
 # 此选项将让fc自动生成FCConfig.h文件，此选项仅库开发者需要设置为ON，库使用者默认应该为OFF
 option(FC_AUTO_GENERATE_CONFIG_INFO
     "This option will allow FC to automatically generate FCConfig.h, This option only needs to be set to ON by library developers, and library users should default to OFF"
-    OFF)
+    ON)
 # 此选项将让fc自动生成构建plugin
 option(FC_BUILD_PLUGINS
     "This option will build plugin"
@@ -153,6 +149,7 @@ set(FC_SRC_DIR ${CMAKE_CURRENT_LIST_DIR}/src)
 set(FC_CMAKE_DIR ${CMAKE_CURRENT_LIST_DIR}/cmake)
 set(FC_INSTALL_LIB_CMAKE_PATH ${CMAKE_INSTALL_PREFIX}/lib/cmake)
 set(FC_OCC_INSTALL_LIB_CMAKE_PATH ${CMAKE_INSTALL_PREFIX}/occ/cmake)
+set(FC_GMSH_INSTALL_LIB_CMAKE_PATH ${CMAKE_INSTALL_PREFIX}/gmsh/share/gmsh)
 set(FC_INSTALL_LIB_SHARE_PATH ${CMAKE_INSTALL_PREFIX}/share/cmake)
 list(APPEND CMAKE_MODULE_PATH ${FC_CMAKE_DIR} ${FC_INSTALL_LIB_CMAKE_PATH})
 
@@ -174,6 +171,9 @@ message(STATUS "spdlog_DIR=${spdlog_DIR}")
 set(occ_DIR ${CMAKE_INSTALL_PREFIX}/occ/cmake)
 message(STATUS "occ_DIR=${occ_DIR}")
 
+set(gmsh_DIR ${CMAKE_INSTALL_PREFIX}/gmsh/share/gmsh)
+message(STATUS "gmsh_DIR=${gmsh_DIR}")
+
 set(qt${QT_VERSION_MAJOR}advanceddocking_DIR  ${FC_INSTALL_LIB_CMAKE_PATH}/qtadvanceddocking-qt${QT_VERSION_MAJOR})
 message(STATUS "qt${QT_VERSION_MAJOR}advanceddocking_DIR=${qt${QT_VERSION_MAJOR}advanceddocking_DIR}")
 
@@ -187,21 +187,21 @@ message(STATUS "${FC_PROJECT_NAME} install dir is : ${CMAKE_INSTALL_PREFIX}")
 include(CMakePackageConfigHelpers)
 write_basic_package_version_file(
     "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake"
-    VERSION ${DA_VERSION}
+    VERSION ${FC_VERSION}
     COMPATIBILITY AnyNewerVersion
 )
 
 configure_package_config_file(
     "${CMAKE_CURRENT_SOURCE_DIR}/${PROJECT_NAME}Config.cmake.in"
     "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}Config.cmake"
-    INSTALL_DESTINATION lib/cmake/${DA_PROJECT_NAME}
+    INSTALL_DESTINATION lib/cmake/${FC_PROJECT_NAME}
     NO_CHECK_REQUIRED_COMPONENTS_MACRO
 )
 
 install(FILES
     "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake"
     "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}Config.cmake"
-    DESTINATION lib/cmake/${DA_PROJECT_NAME}
+    DESTINATION lib/cmake/${FC_PROJECT_NAME}
 )
 
 

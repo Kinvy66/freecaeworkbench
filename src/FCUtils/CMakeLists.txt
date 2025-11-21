@@ -13,7 +13,7 @@ fcmacro_lib_setting(
 # Qt
 ########################################################
 find_package(QT NAMES Qt6 Qt5 COMPONENTS Core REQUIRED)
-find_package(Qt${QT_VERSION_MAJOR} ${DA_MIN_QT_VERSION} COMPONENTS
+find_package(Qt${QT_VERSION_MAJOR} ${FC_MIN_QT_VERSION} COMPONENTS
     Core
     Gui
     Xml
@@ -37,7 +37,7 @@ add_library(${FC_LIB_NAME} SHARED
         ${FC_LIB_SOURCE_FILES}
         ${FC_GLOBAL_HEADER}
 )	
-# 定义别名让DAWorkbench::${DA_LIB_NAME}也能获取到
+# 定义别名让DAWorkbench::${FC_LIB_NAME}也能获取到
 add_library(${FC_PROJECT_NAME}::${FC_LIB_NAME} ALIAS ${FC_LIB_NAME})
 # 构建库定义的宏,必须为Private
 target_compile_definitions(${FC_LIB_NAME} PRIVATE FCUTILS_BUILD)

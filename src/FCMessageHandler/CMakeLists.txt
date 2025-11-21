@@ -16,9 +16,9 @@ fcmacro_lib_setting(
 ########################################################
 # Qt
 ########################################################
-set(DA_MIN_QT_VERSION 5.14)
+set(FC_MIN_QT_VERSION 5.14)
 find_package(QT NAMES Qt6 Qt5 COMPONENTS Core REQUIRED)
-find_package(Qt${QT_VERSION_MAJOR} ${DA_MIN_QT_VERSION} COMPONENTS
+find_package(Qt${QT_VERSION_MAJOR} ${FC_MIN_QT_VERSION} COMPONENTS
     Core
     Gui
     Widgets
