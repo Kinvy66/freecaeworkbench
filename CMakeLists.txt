@@ -64,7 +64,7 @@ option(FC_AUTO_INSTALL_PREFIX
 # 此选项将让fc自动生成FCConfig.h文件，此选项仅库开发者需要设置为ON，库使用者默认应该为OFF
 option(FC_AUTO_GENERATE_CONFIG_INFO
     "This option will allow FC to automatically generate FCConfig.h, This option only needs to be set to ON by library developers, and library users should default to OFF"
-    ON)
+    OFF)
 # 此选项将让fc自动生成构建plugin
 option(FC_BUILD_PLUGINS
     "This option will build plugin"

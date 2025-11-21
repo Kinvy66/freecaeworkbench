@@ -110,7 +110,6 @@ fcmacro_import_QtAdvancedDocking(${FC_APP_NAME})
 fcmacro_import_qwt(${FC_APP_NAME})
 fcmacro_import_vtk(${FC_APP_NAME})
 fcmacro_import_occ(${FC_APP_NAME})
-fcmacro_import_gmsh(${FC_APP_NAME})
 
 
 if(FC_ENABLE_PYTHON)

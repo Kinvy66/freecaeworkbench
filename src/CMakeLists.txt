@@ -22,11 +22,9 @@ add_subdirectory(FCMessageHandler)
 add_subdirectory(FCProjectTree)
 add_subdirectory(FCActionManager)
 
-
-
+# add_subdirectory(TestDemo)
 
 # add_subdirectory(FCPluginSupport)
 # add_dependencies(FCPluginSupport FCInterface)
 
 add_subdirectory(APP)
-add_subdirectory(TestDemo)

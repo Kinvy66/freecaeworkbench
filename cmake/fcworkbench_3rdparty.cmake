@@ -191,32 +191,6 @@ macro(fcmacro_import_occ __target_name)
 endmacro()
 
 
-macro(fcmacro_import_gmsh __target_name)
-    find_package(gmsh)
-    if(gmsh_FOUND)
-        message(STATUS "  |-finded gmsh")
-    else()
-        message(STATUS "  |-can not find gmsh")
-        if(DEFINED FC_GMSH_INSTALL_LIB_CMAKE_PATH)
-            set(_lib_dir ${FC_GMSH_INSTALL_LIB_CMAKE_PATH})
-            message(STATUS "  |-try to find in ${_lib_dir}")
-            find_package(gmsh PATHS ${_lib_dir})
-        endif()
-    endif()
-    # 链接的第三方库
-    if(gmsh_FOUND)
-        target_link_libraries(${__target_name} PRIVATE
-            ${GMSH_LIB}
-        )
-        message(STATUS "  |-link  ${GMSH_LIB}")
-    else()
-        message(ERROR "  can not find GMSH")
-    endif()
-endmacro()
-
-
-
-
 macro(fcmacro_import_Python __target_name)
     # Python
     # https://zhuanlan.zhihu.com/p/666367728

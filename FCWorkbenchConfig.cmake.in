@@ -5,7 +5,7 @@ include(CMakeFindDependencyMacro)
 # 这里PROJECT_NAME就作为包名
 set(_package_name @PROJECT_NAME@)
 
-set(_${_package_name}_supported_components FCUtils FCAxOfficeWrapper FCMessageHandler FCPyBindQt FCPyScripts FCData FCCommonWidgets FCPyCommonWidgets FCGraphicsView FCWorkFlow FCFigure FCGui FCInterface FCPluginSupport)
+set(_${_package_name}_supported_components FCUtils  FCActionManager FCProjectTree FCMessageHandler FCPyBindQt FCPyScripts FCData FCCommonWidgets FCPyCommonWidgets FCGraphicsView FCWorkFlow FCFigure FCGui FCInterface FCPluginSupport)
 set(_${_package_name}_available_components "")
 
 # 把FC_ENABLE_PYTHON变量传递到此处
@@ -20,10 +20,10 @@ foreach(_component ${${_package_name}_FIND_COMPONENTS})
             # 避免重复加载
             continue()
         else()
-            find_package(${_component} 
-                REQUIRED 
-                PATHS ${CMAKE_CURRENT_LIST_DIR}
-            )
+            # find_package(${_component} 
+            #     REQUIRED 
+            #     PATHS ${CMAKE_CURRENT_LIST_DIR}
+            # )
         endif()
     else()
         set(${_package_name}_FOUND FALSE)

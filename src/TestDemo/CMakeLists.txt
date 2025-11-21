@@ -109,10 +109,6 @@ fcmacro_import_vtk(${FC_APP_NAME})
 # -------------link 3rdparty occ--------------------------
 fcmacro_import_occ(${FC_APP_NAME})
 
-fcmacro_import_gmsh(${FC_APP_NAME})
-
-
-
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.
 # If you are developing for iOS or macOS you should consider setting an
 # explicit, fixed bundle identifier manually though.
