@@ -13,29 +13,29 @@ namespace FC
  * @brief 禁止MessageQueueCapture，如果针对一些qDebug、qInfo不想被捕获的，可以调用此函数，次数消息不会推入队列中，但会被spdlog写入文件中
  */
 
-void FCMESSAGEHANDLER_API daDisableMessageQueueCapture();
+void FCMESSAGEHANDLER_API fcDisableMessageQueueCapture();
 /**
    @brief 允许MessageQueueCapture
  */
-void FCMESSAGEHANDLER_API daEnableMessageQueueCapture();
+void FCMESSAGEHANDLER_API fcEnableMessageQueueCapture();
 
 /**
    @brief 判断当前是否运行消息捕获
    @return
  */
-bool FCMESSAGEHANDLER_API daIsEnableMessageQueueCapture();
+bool FCMESSAGEHANDLER_API fcIsEnableMessageQueueCapture();
 
 // 注册控制台的消息处理
-void FCMESSAGEHANDLER_API daRegisterConsolMessageHandler(int flush_every_sec = 1, bool async_logger = true);
+void FCMESSAGEHANDLER_API fcRegisterConsolMessageHandler(int flush_every_sec = 1, bool async_logger = true);
 
 // 注册一个旋转文件的消息处理
-void FCMESSAGEHANDLER_API daRegisterRotatingMessageHandler(const QString& filename,
+void FCMESSAGEHANDLER_API fcRegisterRotatingMessageHandler(const QString& filename,
                                                            int maxfile_size    = 1048576 * 10,
                                                            int maxfile_counts  = 5,
                                                            int flush_every_sec = 15,
                                                            bool output_stdout  = true,
                                                            bool async_logger   = true);
-void FCMESSAGEHANDLER_API daRegisterRotatingMessageHandler(const std::string& filename,
+void FCMESSAGEHANDLER_API fcRegisterRotatingMessageHandler(const std::string& filename,
                                                            int maxfile_size    = 1048576 * 10,
                                                            int maxfile_counts  = 5,
                                                            int flush_every_sec = 15,
@@ -54,20 +54,20 @@ void FCMESSAGEHANDLER_API daRegisterRotatingMessageHandler(const std::string& fi
  * - {msg} 代表消息主体
  * @param p patter字符串，默认为[{datetime}][{line}]{msg}
  */
-void FCMESSAGEHANDLER_API daSetMessagePattern(const QString& p);
+void FCMESSAGEHANDLER_API fcSetMessagePattern(const QString& p);
 
 /**
  * @brief 设置记录进入全局消息队列的消息等级，默认为QtWarningMsg
  * @sa QtMsgType
  * @param type
  */
-void FCMESSAGEHANDLER_API daSetMsgQueueRecordMsgType(QtMsgType type);
+void FCMESSAGEHANDLER_API fcSetMsgQueueRecordMsgType(QtMsgType type);
 
 /**
  * @brief 注销
  * @note 最后需要调用此函数进行释放
  */
-void FCMESSAGEHANDLER_API daUnregisterMessageHandler();
+void FCMESSAGEHANDLER_API fcUnregisterMessageHandler();
 } // namespace FC
 
 

@@ -316,4 +316,3 @@ if(FC_ENABLE_AUTO_TRANSLATE)
                 COMPONENT translations)
     message(STATUS "Translation enabled,qm files is ${FC_QM_FILES}")
 endif()
-

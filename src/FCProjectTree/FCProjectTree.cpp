@@ -49,7 +49,7 @@ void FCProjectTree::createDefaultProject(const QString &name)
     buildStudyActions();
     buildResultActions();
     
-    connect(mTreeWidget,&FCTreeWidget::actionTriggered,
+      connect(mTreeWidget,&FCTreeWidget::actionTriggered,
             this, &FCProjectTree::onTreeActionTriggered);
 }
 
@@ -73,7 +73,6 @@ void FCProjectTree::onTreeActionTriggered(int menuType,
                                           QTreeWidgetItem *item)
 {
     
-    qDebug() << "action triggle";
     QString actionName = objectName;
     
     if (actionName == "actionParameter") {

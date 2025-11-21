@@ -5,8 +5,8 @@
 #include <QDir>
 #include <QList>
 #include <QDateTime>
-// #include "FCMessageQueueProxy.h"
-// #include "fc_concurrent_queue.hpp
+#include "FCMessageQueueProxy.h"
+#include "fc_concurrent_queue.hpp"
 
 #include "spdlog/spdlog.h"
 #include "spdlog/async.h"
@@ -14,7 +14,7 @@
 #include "spdlog/sinks/stdout_color_sinks.h"
 #include "spdlog/sinks/rotating_file_sink.h"
 #include <QByteArray>
-// #include "FCStringUtil.h"
+#include "FCStringUtil.h"
 #ifndef globalMessageHandleValues
 #define globalMessageHandleValues FCMessageHandlerGlobalValues_Private::getInstance()
 #endif
@@ -53,7 +53,7 @@ public:
     void setEnableSpdLog(bool on);
     bool enableSpdLog() const;
     // 获取全局队列的引用
-    // DAMessageQueueProxy& msgQueue();
+    FCMessageQueueProxy& msgQueue();
     // 设置消息的类型
     void setMsgHandleType(MsgHandleType t);
     MsgHandleType getMsgHandleType() const;
@@ -80,7 +80,7 @@ private:
 	 *
 	 * @note DFCMessageQueueProxy内部有个单例，当前这个类也是单例，不能实例化，否则有不可预估的错误可能
 	 */
-    // FCMessageQueueProxy* _msgQueue { nullptr };
+    FCMessageQueueProxy* _msgQueue { nullptr };
     /**
 	 * @brief 消息处理的类型
 	 */
@@ -106,9 +106,9 @@ FCMessageHandlerGlobalValues_Private::FCMessageHandlerGlobalValues_Private()
 
 FCMessageHandlerGlobalValues_Private::~FCMessageHandlerGlobalValues_Private()
 {
-    // if (_msgQueue) {
-    //     delete _msgQueue;
-    // }
+    if (_msgQueue) {
+        delete _msgQueue;
+    }
 }
 
 FCMessageHandlerGlobalValues_Private& FCMessageHandlerGlobalValues_Private::getInstance()
@@ -147,13 +147,13 @@ bool FCMessageHandlerGlobalValues_Private::enableSpdLog() const
     return _enableSpdlog.load();
 }
 
-// DAMessageQueueProxy& FCMessageHandlerGlobalValues_Private::msgQueue()
-// {
-//     if (nullptr == _msgQueue) {
-//         _msgQueue = new DAMessageQueueProxy(nullptr);
-//     }
-//     return *_msgQueue;
-// }
+FCMessageQueueProxy& FCMessageHandlerGlobalValues_Private::msgQueue()
+{
+    if (nullptr == _msgQueue) {
+        _msgQueue = new FCMessageQueueProxy(nullptr);
+    }
+    return *_msgQueue;
+}
 
 void FCMessageHandlerGlobalValues_Private::setMsgHandleType(FCMessageHandlerGlobalValues_Private::MsgHandleType t)
 {
@@ -196,7 +196,7 @@ void _initializeRotatingSpdlog(const spdlog::filename_t& filename,
  * @param context
  * @param msg
  */
-void daMessageHandler(QtMsgType type, const QMessageLogContext& context, const QString& msg);
+void fcMessageHandler(QtMsgType type, const QMessageLogContext& context, const QString& msg);
 
 /**
  * @brief 初始化控制台日志
@@ -282,66 +282,66 @@ void _initializeRotatingSpdlog(const spdlog::filename_t& filename,
  * @param context
  * @param msg
  */
-void daMessageHandler(QtMsgType type, const QMessageLogContext& context, const QString& msg)
+void fcMessageHandler(QtMsgType type, const QMessageLogContext& context, const QString& msg)
 {
-    // DAMessageLogItem item(type, context, msg);
-    // if (type >= globalMessageHandleValues.getMsgQueueRecordMsgType()) {
-    //     // 只有type大于等于设定的msgtype才会记录到队列中
-    //     if (globalMessageHandleValues.isEnableMessageCaptureToQueue()) {
-    //         // 只有允许消息捕获时，消息才会推入到队列中
-    //         globalMessageHandleValues.msgQueue().append(item);
-    //     }
-    // }
+    FCMessageLogItem item(type, context, msg);
+    if (type >= globalMessageHandleValues.getMsgQueueRecordMsgType()) {
+        // 只有type大于等于设定的msgtype才会记录到队列中
+        if (globalMessageHandleValues.isEnableMessageCaptureToQueue()) {
+            // 只有允许消息捕获时，消息才会推入到队列中
+            globalMessageHandleValues.msgQueue().append(item);
+        }
+    }
     
-    // if (globalMessageHandleValues.enableSpdLog()) {
-    //     std::string dt         = item.datetimeToString().toStdString();
-    //     std::string ms         = item.getMsg().toStdString();
-    //     int line               = item.getLine();
-    //     const char* file       = context.file ? context.file : "";
-    //     const char* fun        = context.function ? context.function : "";
-    //     spdlog::logger* logger = globalMessageHandleValues.logger();
-    //     if (logger) {
-    //         //        const char* pattern    = "[{0}][{1}][{2}:{3}]:{4}";
-    //         const char* pattern = globalMessageHandleValues.getPatternChar();
-    //         switch (type) {
-    //         case QtDebugMsg:
-    //             logger->debug(pattern, "debug", dt, line, fun, file, ms);
-    //             break;
-    //         case QtWarningMsg:
-    //             logger->warn(pattern, "warn", dt, line, fun, file, ms);
-    //             break;
-    //         case QtCriticalMsg:
-    //             logger->critical(pattern, "critical", dt, line, fun, file, ms);
-    //             break;
-    //         case QtFatalMsg:
-    //             logger->error(pattern, "error", dt, line, fun, file, ms);
-    //             break;
-    //         case QtInfoMsg:
-    //         default:
-    //             logger->info(pattern, "info", dt, line, fun, file, ms);
-    //             break;
-    //         }
-    //     }
-    // }
+    if (globalMessageHandleValues.enableSpdLog()) {
+        std::string dt         = item.datetimeToString().toStdString();
+        std::string ms         = item.getMsg().toStdString();
+        int line               = item.getLine();
+        const char* file       = context.file ? context.file : "";
+        const char* fun        = context.function ? context.function : "";
+        spdlog::logger* logger = globalMessageHandleValues.logger();
+        if (logger) {
+            //        const char* pattern    = "[{0}][{1}][{2}:{3}]:{4}";
+            const char* pattern = globalMessageHandleValues.getPatternChar();
+            switch (type) {
+            case QtDebugMsg:
+                logger->debug(pattern, "debug", dt, line, fun, file, ms);
+                break;
+            case QtWarningMsg:
+                logger->warn(pattern, "warn", dt, line, fun, file, ms);
+                break;
+            case QtCriticalMsg:
+                logger->critical(pattern, "critical", dt, line, fun, file, ms);
+                break;
+            case QtFatalMsg:
+                logger->error(pattern, "error", dt, line, fun, file, ms);
+                break;
+            case QtInfoMsg:
+            default:
+                logger->info(pattern, "info", dt, line, fun, file, ms);
+                break;
+            }
+        }
+    }
 }
 
 /**
  * @brief 注销
  */
-void daUnregisterMessageHandler()
+void fcUnregisterMessageHandler()
 {
-    // qInstallMessageHandler(0);
-    // globalMessageHandleValues.setEnableSpdLog(false);
-    // switch (globalMessageHandleValues.getMsgHandleType()) {
-    // case DAMessageHandlerGlobalValues_Private::MsgHandleType::HandleMsgRotateFile:
-    // case DAMessageHandlerGlobalValues_Private::MsgHandleType::HandleMsgStdout: {
-    //     // 这些需要调用spdlog
-    //     spdlog::drop_all();
-    //     spdlog::shutdown();
-    // } break;
-    // default:
-    //     break;
-    // }
+    qInstallMessageHandler(0);
+    globalMessageHandleValues.setEnableSpdLog(false);
+    switch (globalMessageHandleValues.getMsgHandleType()) {
+    case FCMessageHandlerGlobalValues_Private::MsgHandleType::HandleMsgRotateFile:
+    case FCMessageHandlerGlobalValues_Private::MsgHandleType::HandleMsgStdout: {
+        // 这些需要调用spdlog
+        spdlog::drop_all();
+        spdlog::shutdown();
+    } break;
+    default:
+        break;
+    }
 }
 
 /**
@@ -359,14 +359,14 @@ void daUnregisterMessageHandler()
  * @param output_stdout 输出到stdout
  * @param async_logger 使用异步日志,默认使用
  */
-void daRegisterRotatingMessageHandler(const QString& filename,
+void fcRegisterRotatingMessageHandler(const QString& filename,
                                       int maxfile_size,
                                       int maxfile_counts,
                                       int flush_every_sec,
                                       bool output_stdout,
                                       bool async_logger)
 {
-/*#ifdef SPDLOG_WCHAR_FILENAMES
+#ifdef SPDLOG_WCHAR_FILENAMES
     spdlog::filename_t path = qstringToSystemWString(filename);
 #else
     // 不要直接使用tostdstring
@@ -375,26 +375,26 @@ void daRegisterRotatingMessageHandler(const QString& filename,
 #endif
     _initializeRotatingSpdlog(path, maxfile_size, maxfile_counts, flush_every_sec, output_stdout, async_logger);
     globalMessageHandleValues.setEnableSpdLog(true);
-    globalMessageHandleValues.setMsgHandleType(DAMessageHandlerGlobalValues_Private::MsgHandleType::HandleMsgRotateFile);
-    qInstallMessageHandler(daMessageHandler)*/;
+    globalMessageHandleValues.setMsgHandleType(FCMessageHandlerGlobalValues_Private::MsgHandleType::HandleMsgRotateFile);
+    qInstallMessageHandler(fcMessageHandler);
 }
 
-void daRegisterRotatingMessageHandler(const std::string& filename,
+void fcRegisterRotatingMessageHandler(const std::string& filename,
                                       int maxfile_size,
                                       int maxfile_counts,
                                       int flush_every_sec,
                                       bool output_stdout,
                                       bool async_logger)
 {
-// #ifdef SPDLOG_WCHAR_FILENAMES
-//     spdlog::filename_t path = stringToSystemWString(filename);
-// #else
-//     spdlog::filename_t path = filename;
-// #endif
-//     _initializeRotatingSpdlog(path, maxfile_size, maxfile_counts, flush_every_sec, output_stdout, async_logger);
-//     globalMessageHandleValues.setEnableSpdLog(true);
-//     globalMessageHandleValues.setMsgHandleType(DAMessageHandlerGlobalValues_Private::MsgHandleType::HandleMsgRotateFile);
-//     qInstallMessageHandler(daMessageHandler);
+#ifdef SPDLOG_WCHAR_FILENAMES
+    spdlog::filename_t path = stringToSystemWString(filename);
+#else
+    spdlog::filename_t path = filename;
+#endif
+    _initializeRotatingSpdlog(path, maxfile_size, maxfile_counts, flush_every_sec, output_stdout, async_logger);
+    globalMessageHandleValues.setEnableSpdLog(true);
+    globalMessageHandleValues.setMsgHandleType(FCMessageHandlerGlobalValues_Private::MsgHandleType::HandleMsgRotateFile);
+    qInstallMessageHandler(fcMessageHandler);
 }
 
 /**
@@ -402,20 +402,20 @@ void daRegisterRotatingMessageHandler(const std::string& filename,
  * @param flush_every_sec 刷新时间
  * @param async_logger 使用异步日志,默认使用
  */
-void daRegisterConsolMessageHandler(int flush_every_sec, bool async_logger)
+void fcRegisterConsolMessageHandler(int flush_every_sec, bool async_logger)
 {
-    // _initializeConsolSpdlog(flush_every_sec, async_logger);
-    // globalMessageHandleValues.setEnableSpdLog(true);
-    // globalMessageHandleValues.setMsgHandleType(DAMessageHandlerGlobalValues_Private::MsgHandleType::HandleMsgStdout);
-    // qInstallMessageHandler(daMessageHandler);
+    _initializeConsolSpdlog(flush_every_sec, async_logger);
+    globalMessageHandleValues.setEnableSpdLog(true);
+    globalMessageHandleValues.setMsgHandleType(FCMessageHandlerGlobalValues_Private::MsgHandleType::HandleMsgStdout);
+    qInstallMessageHandler(fcMessageHandler);
 }
 
-void daSetMsgQueueRecordMsgType(QtMsgType type)
+void fcSetMsgQueueRecordMsgType(QtMsgType type)
 {
     globalMessageHandleValues.setMsgQueueRecordMsgType(type);
 }
 
-void daSetMessagePattern(const QString& p)
+void fcSetMessagePattern(const QString& p)
 {
     globalMessageHandleValues.setPattern(p);
 }
@@ -452,17 +452,17 @@ const char* FCMessageHandlerGlobalValues_Private::getPatternChar() const
     return _pattern.c_str();
 }
 
-void daDisableMessageQueueCapture()
+void fcDisableMessageQueueCapture()
 {
     globalMessageHandleValues.setEnableMessageCaptureToQueue(false);
 }
 
-void daEnableMessageQueueCapture()
+void fcEnableMessageQueueCapture()
 {
     globalMessageHandleValues.setEnableMessageCaptureToQueue(true);
 }
 
-bool daIsEnableMessageQueueCapture()
+bool fcIsEnableMessageQueueCapture()
 {
     return globalMessageHandleValues.isEnableMessageCaptureToQueue();
 }

@@ -1,0 +1,18 @@
+#ifndef FCGRAPHICSVIEWGLOBAL_H
+#define FCGRAPHICSVIEWGLOBAL_H
+
+#include <QtCore/QtGlobal>
+#include "FCGlobals.h"
+
+#if defined(FCGRAPHICSVIEW_BUILDLIB)
+#define FCGRAPHICSVIEW_API Q_DECL_EXPORT
+#else
+#ifdef Q_CC_MSVC
+#define FCGRAPHICSVIEW_API Q_DECL_IMPORT
+#else
+#define FCGRAPHICSVIEW_API Q_DECL_IMPORT
+#endif
+#endif
+
+
+#endif // FCGRAPHICSVIEWGLOBAL_H
