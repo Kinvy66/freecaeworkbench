@@ -21,6 +21,7 @@ add_subdirectory(FCMessageHandler)
 
 add_subdirectory(FCProjectTree)
 add_subdirectory(FCActionManager)
+add_subdirectory(FCGeometryModel)
 
 # add_subdirectory(TestDemo)
 
@@ -28,3 +29,5 @@ add_subdirectory(FCActionManager)
 # add_dependencies(FCPluginSupport FCInterface)
 
 add_subdirectory(APP)
+add_subdirectory(FCGeometryParameter)
+add_subdirectory(FCData)

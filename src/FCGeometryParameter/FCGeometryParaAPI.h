@@ -1,0 +1,13 @@
+#ifndef FCGEOMETRYPARAAPI_H
+#define FCGEOMETRYPARAAPI_H
+#include <QtCore/QtGlobal>
+#include "FCGlobals.h"
+
+#if defined(FCGEOMETYRPARA_BUILDLIB)
+#define FCGEOMETRYPARA_API Q_DECL_EXPORT
+#else
+#define FCGEOMETRYPARA_API Q_DECL_IMPORT
+#endif
+
+
+#endif // FCGEOMETRYPARAAPI_H
