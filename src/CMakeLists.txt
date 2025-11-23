@@ -15,19 +15,17 @@ add_subdirectory(FCGui)
 add_subdirectory(FCGraphicsView)
 
 add_subdirectory(FCInterface)
-# add_dependencies(FCInterface FCGui)
 
 add_subdirectory(FCMessageHandler)
 
 add_subdirectory(FCProjectTree)
 add_subdirectory(FCActionManager)
-add_subdirectory(FCGeometryModel)
-
-# add_subdirectory(TestDemo)
+add_subdirectory(FCGeometryModelCreator)
+add_subdirectory(FCGeometryParameter)
+add_subdirectory(FCData)
 
 # add_subdirectory(FCPluginSupport)
 # add_dependencies(FCPluginSupport FCInterface)
 
 add_subdirectory(APP)
-add_subdirectory(FCGeometryParameter)
-add_subdirectory(FCData)
+

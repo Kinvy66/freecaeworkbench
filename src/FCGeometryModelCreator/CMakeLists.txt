@@ -3,8 +3,8 @@
 cmake_minimum_required(VERSION 3.12)
 
 fcmacro_lib_setting(
-    "FCGeometryModel"
-    "FC GeometryModel | https://github.com/kinvy66"
+    "FCGeometryModelCreator"
+    "FC Geometry Model Creator | https://github.com/kinvy66"
     0
     0
     1
@@ -39,7 +39,7 @@ add_library(${FC_LIB_NAME} SHARED
 )
 
 # 构建库定义的宏
-target_compile_definitions(${FC_LIB_NAME} PRIVATE FCGEOMETYRMODEL_BUILDLIB)#!!!!** 注意变更 **!!!!
+target_compile_definitions(${FC_LIB_NAME} PRIVATE FCGEOMETYRMODELCREATOR_BUILDLIB)#!!!!** 注意变更 **!!!!
 add_library(${FC_PROJECT_NAME}::${FC_LIB_NAME} ALIAS ${FC_LIB_NAME})
 ########################################################
 # 依赖链接 #!!!!** 注意变更 **!!!!
@@ -71,18 +71,17 @@ fcmacro_import_occ(${FC_LIB_NAME})
 
 
 
-# find_package(${FC_PROJECT_NAME} COMPONENTS
-#     FCActionManager
-#     FCProjectTree
-# )
+find_package(${FC_PROJECT_NAME} COMPONENTS
+    FCGeometryParameter
+    
+)
 
-# if(${FC_PROJECT_NAME}_FOUND)
-#     message(STATUS "  |-linked ${FC_PROJECT_NAME}::FCProjectTree")
-# endif()
-# target_link_libraries(${FC_LIB_NAME} PUBLIC
-#     ${FC_PROJECT_NAME}::FCActionManager
-#     ${FC_PROJECT_NAME}::FCProjectTree
-# )
+if(${FC_PROJECT_NAME}_FOUND)
+    message(STATUS "  |-linked ${FC_PROJECT_NAME}::FCGeometryParameter")
+endif()
+target_link_libraries(${FC_LIB_NAME} PUBLIC
+    ${FC_PROJECT_NAME}::FCGeometryParameter
+)
 
 
 ########################################################

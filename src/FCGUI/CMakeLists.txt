@@ -28,12 +28,20 @@ file(GLOB FC_LIB_SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp)
 file(GLOB FC_LIB_QT_UI_FILES  ${CMAKE_CURRENT_SOURCE_DIR}/*.ui)
 file(GLOB FC_LIB_QT_RC_FILES  ${CMAKE_CURRENT_SOURCE_DIR}/*.qrc)
 
+file(GLOB FC_LIB_MODELSETTINGS_HEADER_FILES ${CMAKE_CURRENT_SOURCE_DIR}/ModelSettings/*.h)
+file(GLOB FC_LIB_MODELSETTINGS_SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/ModelSettings/*.cpp)
+file(GLOB FC_LIB_MODELSETTINGS_QT_UI_FILES  ${CMAKE_CURRENT_SOURCE_DIR}/ModelSettings/*.ui)
+
 
 add_library(${FC_LIB_NAME} SHARED   
             ${FC_LIB_HEADER_FILES}
             ${FC_LIB_SOURCE_FILES}
             ${FC_LIB_QT_UI_FILES}
             ${FC_LIB_QT_RC_FILES}
+            
+            ${FC_LIB_MODELSETTINGS_HEADER_FILES}
+            ${FC_LIB_MODELSETTINGS_SOURCE_FILES}
+            ${FC_LIB_MODELSETTINGS_QT_UI_FILES}
 )
 
 # 构建库定义的宏
@@ -78,6 +86,8 @@ fcmacro_import_occ(${FC_LIB_NAME})
 find_package(${FC_PROJECT_NAME} COMPONENTS
     FCActionManager
     FCProjectTree
+    FCGeometryParameter
+    FCGeometryModelCreator
 )
 
 if(${FC_PROJECT_NAME}_FOUND)
@@ -86,6 +96,8 @@ endif()
 target_link_libraries(${FC_LIB_NAME} PUBLIC
     ${FC_PROJECT_NAME}::FCActionManager
     ${FC_PROJECT_NAME}::FCProjectTree
+    ${FC_PROJECT_NAME}::FCGeometryParameter
+    ${FC_PROJECT_NAME}::FCGeometryModelCreator
 )
 
 
@@ -95,10 +107,10 @@ target_link_libraries(${FC_LIB_NAME} PUBLIC
 fcmacro_set_lib_properties(${FC_LIB_NAME} ${FC_LIB_VERSION})
 
 # 添加这两个位置主要是为了ui文件进行窗口提升时能找到头文件
-# target_include_directories(${FC_LIB_NAME} PUBLIC
-#     $<INSTALL_INTERFACE:include/${FC_PROJECT_NAME}/${FC_LIB_NAME}/Dialog>
-#     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/Dialog>
-# )
+target_include_directories(${FC_LIB_NAME} PUBLIC
+    $<INSTALL_INTERFACE:include/${FC_PROJECT_NAME}/${FC_LIB_NAME}/ModelSettings>
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/ModelSettings>
+)
 # target_include_directories(${FC_LIB_NAME} PUBLIC
 #     $<INSTALL_INTERFACE:include/${FC_PROJECT_NAME}/${FC_LIB_NAME}/ChartSetting>
 #     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/ChartSetting>
@@ -124,3 +136,10 @@ install(FILES
     DESTINATION include/${FC_PROJECT_NAME}/${FC_LIB_NAME}
     COMPONENT headers
 )
+
+install(FILES
+    ${FC_LIB_MODELSETTINGS_HEADER_FILES}
+    DESTINATION include/${FC_PROJECT_NAME}/${FC_LIB_NAME}/ModelSettings
+    COMPONENT headers
+)
+

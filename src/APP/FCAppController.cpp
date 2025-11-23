@@ -35,6 +35,8 @@
 // Qt-Advanced-Docking-System
 #include "DockManager.h"
 #include "DockAreaWidget.h"
+// Widget
+#include "FCSettingParametersWidget.h"
 
 #ifndef FCAPPRIBBONAREA_WINDOW_NAME
 #define FCAPPRIBBONAREA_WINDOW_NAME QCoreApplication::translate("FCAppController", "FC", nullptr)
@@ -158,6 +160,7 @@ void FCAppController::initConnection()
     FCAPPCONTROLLER_ACTION_BIND(mActions->actionSave, save);
     FCAPPCONTROLLER_ACTION_BIND(mActions->actionSaveAs, saveAs);
     FCAPPCONTROLLER_ACTION_BIND(mActions->actionResetLayout, resetLayout);
+    FCAPPCONTROLLER_ACTION_BIND(mActions->actionCreateCube, createCube);
     // FCAPPCONTROLLER_ACTION_BIND(mActions->actionAppendProject, onActionAppendProjectTriggered);
 }
 
@@ -248,6 +251,14 @@ void FCAppController::resetLayout()
     mDock->restoreState();
     FCAPPCONTROLLER_PASS();
     
+}
+
+/**
+ * @brief 创建立方体
+ */
+void FCAppController::createCube()
+{
+    mDock->getSettingParametersWidget()->createCube();
 }
 
 void FCAppController::onActionAddDataTriggered()

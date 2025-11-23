@@ -30,7 +30,7 @@ public:
      * @brief 设置数据的ID值
      * @param id ID值
      */
-    virtual void setID(uint64_t id);
+    virtual void setID(int id);
     
     /**
      * @brief 获取数据的ID值
@@ -69,7 +69,7 @@ public:
     QString getName();
     
 protected:
-    uint64_t mId{0};
+    int mId{-1};
     // int MIndex{-1};
     QString mName{"FFFFFF"};
     

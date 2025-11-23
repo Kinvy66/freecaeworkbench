@@ -10,6 +10,8 @@
 ******************************************************************************/
 #include "FCSettingParametersWidget.h"
 #include <QLabel>
+#include <QVBoxLayout>
+#include "FCBoxSettingsWidget.h"
 
 namespace FC 
 {
@@ -17,13 +19,20 @@ namespace FC
 FCSettingParametersWidget::FCSettingParametersWidget(QWidget *parent)
  : QWidget(parent)
 {
-    QLabel* lab = new QLabel(this);
-    lab->setText("Setting Docking");
+    // QLabel* lab = new QLabel(this);
+    // lab->setText("Setting Docking");
 }
 
 FCSettingParametersWidget::~FCSettingParametersWidget()
 {
     
+}
+
+void FCSettingParametersWidget::createCube()
+{
+    QVBoxLayout* vLayout = new QVBoxLayout(this);
+    FCBoxSettingsWidget* cubeSettingsWidget = new FCBoxSettingsWidget(this);
+    vLayout->addWidget(cubeSettingsWidget);
 }
 
 } // namespace FC

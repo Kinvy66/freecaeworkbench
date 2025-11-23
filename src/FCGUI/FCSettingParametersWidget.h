@@ -23,6 +23,8 @@ public:
     FCSettingParametersWidget(QWidget* parent = nullptr);
     ~FCSettingParametersWidget();
     
+    void createCube();
+    
 signals:
 };
 } // namespace FC

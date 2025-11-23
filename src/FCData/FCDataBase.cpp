@@ -25,7 +25,7 @@ void FCDataBase::copy(FCDataBase *data)
     
 }
 
-void FCDataBase::setID(uint64_t id)
+void FCDataBase::setID(int id)
 {
     mId = id;
     

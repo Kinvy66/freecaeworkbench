@@ -149,6 +149,8 @@ public Q_SLOTS:
     // 重置布局
     void resetLayout();
     
+    void createCube();
+    
 private Q_SLOTS:
     // 工程的胀状态改变槽
     // void onProjectDirtyStateChanged(bool isdirty);
@@ -162,8 +164,11 @@ private Q_SLOTS:
     
    
 private slots:
+    
     // DockWidget的焦点变化
     void onFocusedDockWidgetChanged(ads::CDockWidget* old, ads::CDockWidget* now);
+    
+    
 private:
     // 初始化信号槽
     void initConnection();

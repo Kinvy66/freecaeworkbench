@@ -1,3 +1,11 @@
+/**
+ * @file FCGeometryModelBase.h
+ * @brief 
+ * @date 2025-11-23
+ * @version V0.0.1
+ * @details 
+ * @copyright Copyright (c) 2025 Kinvy. All rights reserved.
+ */
 #ifndef FCGEOMETRYMODELBASE_H
 #define FCGEOMETRYMODELBASE_H
 
@@ -7,7 +15,7 @@
 #endif
 
 #include <QObject>
-#include "FCGeometryModelAPI.h"
+#include "FCGeometryModelCreatorAPI.h"
 
 class TopoDS_Shape;
 
@@ -20,7 +28,9 @@ namespace FC
         Sketch,	   ///< 草绘特征
     };
 
-class FCGEOMETRYMODEL_API FCGeometryModelBase : public QObject
+class FCGeometrySet;
+
+class FCGEOMETRYMODELCREATOR_API FCGeometryModelBase : public QObject
 {
     Q_OBJECT
 public:
@@ -60,7 +70,7 @@ public:
     
 signals:
     void updateGeoTree();
-    // void showSet(Geometry::GeometrySet *s, bool r = true);
+    void showSet(FCGeometrySet *s, bool r = true);
     // void showDatum(Geometry::GeometryDatum *);
     // void removeDisplayActor(Geometry::GeometrySet *s);
     // void removeDisplayDatumActor(Geometry::GeometryDatum *);

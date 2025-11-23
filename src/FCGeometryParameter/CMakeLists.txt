@@ -70,18 +70,16 @@ fcmacro_import_occ(${FC_LIB_NAME})
 
 
 
-# find_package(${FC_PROJECT_NAME} COMPONENTS
-#     FCActionManager
-#     FCProjectTree
-# )
+find_package(${FC_PROJECT_NAME} COMPONENTS
+    FCData
+)
 
-# if(${FC_PROJECT_NAME}_FOUND)
-#     message(STATUS "  |-linked ${FC_PROJECT_NAME}::FCProjectTree")
-# endif()
-# target_link_libraries(${FC_LIB_NAME} PUBLIC
-#     ${FC_PROJECT_NAME}::FCActionManager
-#     ${FC_PROJECT_NAME}::FCProjectTree
-# )
+if(${FC_PROJECT_NAME}_FOUND)
+    message(STATUS "  |-linked ${FC_PROJECT_NAME}::FCData")
+endif()
+target_link_libraries(${FC_LIB_NAME} PUBLIC
+    ${FC_PROJECT_NAME}::FCData
+)
 
 
 ########################################################

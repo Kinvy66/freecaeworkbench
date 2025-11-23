@@ -232,7 +232,7 @@ void FCAppRibbonArea::buildRibbonGeometryCategory()
     // 2. create geometry panel
     m_panelGeometryPrimOpt = m_categoryGeometry->addPanel(tr("模型创建"));         ///< 体素操作
     m_panelGeometryPrimOpt->setObjectName(QStringLiteral("fc-ribbon-category-geometry.createmodel"));
-    m_panelGeometryPrimOpt->addSmallAction(m_actions->actionCreateCUbe);
+    m_panelGeometryPrimOpt->addSmallAction(m_actions->actionCreateCube);
     m_panelGeometryPrimOpt->addSmallAction(m_actions->actionCreateCone);
     m_panelGeometryPrimOpt->addSmallAction(m_actions->actionCreateCylinder);
     m_panelGeometryPrimOpt->addSmallAction(m_actions->actionCreateSphere);

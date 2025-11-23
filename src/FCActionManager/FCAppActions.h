@@ -75,7 +75,7 @@ public:
     QAction* actionInsertSequenen;      ///< 导出几何模型
     
     // 2. create geometry pannel
-    QAction* actionCreateCUbe;              ///< 立方体
+    QAction* actionCreateCube;              ///< 立方体
     QAction* actionCreateCone;              ///< 圆锥体
     QAction* actionCreateCylinder;          ///< 圆柱体
     QAction* actionCreateSphere;            ///< 球体
