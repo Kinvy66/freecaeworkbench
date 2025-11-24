@@ -1,3 +1,11 @@
+/**
+ * @file FCMessageHandler.h
+ * @brief 全局消息handler
+ * @date 2025-11-24
+ * @version V0.0.1
+ * @details 
+ * @copyright Copyright (c) 2025 Kinvy. All rights reserved.
+ */
 #ifndef FCMESSAGEHANDLER_H
 #define FCMESSAGEHANDLER_H
 

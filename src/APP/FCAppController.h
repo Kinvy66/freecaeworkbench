@@ -1,13 +1,11 @@
-/******************************************************************************
- * File     : FCAppController.h
- * Brief    : 控制层负责逻辑的对接
- * Author   : Kinvy
- * Email    : kinvy66@163.com
- * Date     : 2025-10-29
- * Version  : V0.0.1
- * Detail   :
- * Copyright: Copyright By Kinvy, All Rights Reserved
-******************************************************************************/
+/**
+ * @file FCAppController.h
+ * @brief 控制层负责逻辑的对接
+ * @date 2025-10-29
+ * @version V0.0.1
+ * @details 
+ * @copyright Copyright (c) 2025 Kinvy. All rights reserved.
+ */
 #ifndef FCAPPCONTROLLER_H
 #define FCAPPCONTROLLER_H
 

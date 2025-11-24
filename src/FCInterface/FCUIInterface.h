@@ -1,13 +1,11 @@
-/******************************************************************************
- * File     : FCUIInterface.h
- * Brief    : 界面相关接口
- * Author   : Kinvy
- * Email    : kinvy66@163.com
- * Date     : 2025-10-27
- * Version  : V0.0.1
- * Detail   : 界面相关的接口都继承此接口
- * Copyright: Copyright By Kinvy, All Rights Reserved
-******************************************************************************/
+/**
+ * @file FCUIInterface.h
+ * @brief 界面相关接口
+ * @date 2025-10-27
+ * @version V0.0.1
+ * @details 界面相关的接口都继承此接口
+ * @copyright Copyright (c) 2025 Kinvy. All rights reserved.
+ */
 #ifndef FCUIINTERFACE_H
 #define FCUIINTERFACE_H
 

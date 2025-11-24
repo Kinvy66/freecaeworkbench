@@ -1,13 +1,11 @@
-/******************************************************************************
- * File     : FCAppCore.cpp
- * Brief    : 
- * Author   : Kinvy
- * Email    : kinvy66@163.com
- * Date     : 2025-10-28
- * Version  : V0.0.1
- * Detail   :
- * Copyright: Copyright By Kinvy, All Rights Reserved
-******************************************************************************/
+/**
+ * @file FCAppCore.cpp
+ * @brief FC的核心接口,作为单例存在
+ * @date 2025-10-27
+ * @version V0.0.1
+ * @details 
+ * @copyright Copyright (c) 2025 Kinvy. All rights reserved.
+ */
 #include "FCAppCore.h"
 #include <QFileInfo>
 #include <QApplication>

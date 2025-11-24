@@ -1,13 +1,11 @@
-/******************************************************************************
- * File     : FCCoreInterface.cpp
- * Brief    : APP 的核心接口
- * Author   : Kinvy
- * Email    : kinvy66@163.com
- * Date     : 2025-10-27
- * Version  : V0.0.1
- * Detail   :
- * Copyright: Copyright By Kinvy, All Rights Reserved
-******************************************************************************/
+/**
+ * @file FCCoreInterface.cpp
+ * @brief APP的核心接口
+ * @date 2025-10-27
+ * @version V0.0.1
+ * @details 所有接口都可以通过此接口获取，这个接口是最关键的接口
+ * @copyright Copyright (c) 2025 Kinvy. All rights reserved.
+ */
 #include "FCCoreInterface.h"
 #include "FCUIInterface.h"
 #include <QPointer>

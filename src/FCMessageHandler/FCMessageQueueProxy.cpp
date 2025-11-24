@@ -1,15 +1,13 @@
-/******************************************************************************
- * File     : FCMessageQueueProxy.cpp
- * Brief    : 这是一个全局的日志队列，所有的qdebug相关的消息都会推入这个队列中
- * Author   : Kinvy
- * Email    : kinvy66@163.com
- * Date     : 2025-11-09
- * Version  : V0.0.1
- * Detail   :队列提供一个惰性的信号，所谓惰性信号是指不会一直触发，而是会限制触发的频度，避免过多的消息导致
- *            系统缓慢，默认每个信号间隔1s，可以通过setSignalEmitInterval来改变
- *
- * Copyright: Copyright By Kinvy, All Rights Reserved
-******************************************************************************/
+/**
+ * @file FCMessageQueueProxy.h
+ * @brief 全局的日志队列，所有的qdebug相关的消息都会推入这个队列中
+ * @date 2025-11-09
+ * @version V0.0.1
+ * @details 所有的qdebug相关的消息都会推入这个队列中,队列提供一个惰性的信号，
+ * 所谓惰性信号是指不会一直触发，而是会限制触发的频度，避免过多的消息导致
+ * 系统缓慢，默认每个信号间隔1s，可以通过setSignalEmitInterval来改变
+ * @copyright Copyright (c) 2025 Kinvy. All rights reserved.
+ */
 #include "FCMessageQueueProxy.h"
 // stl
 #include <memory>

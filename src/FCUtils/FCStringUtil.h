@@ -1,13 +1,11 @@
-/******************************************************************************
- * File     : FCStringUtil.h
- * Brief    : 字符串相关的工具方法
- * Author   : Kinvy
- * Email    : kinvy66@163.com
- * Date     : 2025-11-20
- * Version  : V0.0.1
- * Detail   :
- * Copyright: Copyright By Kinvy, All Rights Reserved
-******************************************************************************/
+/**
+ * @file FCStringUtil.h
+ * @brief 字符串相关的工具方法
+ * @date 2025-11-20
+ * @version V0.0.1
+ * @details 
+ * @copyright Copyright (c) 2025 Kinvy. All rights reserved.
+ */
 #ifndef FCSTRINGUTIL_H
 #define FCSTRINGUTIL_H
 #include "FCUtilsAPI.h"

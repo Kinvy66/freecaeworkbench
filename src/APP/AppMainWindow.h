@@ -1,13 +1,11 @@
-/******************************************************************************
- * File     : AppMainWindow.h
- * Brief    : 主窗口
- * Author   : Kinvy
- * Email    : kinvy66@163.com
- * Date     : 2025-10-27
- * Version  : V0.0.1
- * Detail   :
- * Copyright: Copyright By Kinvy, All Rights Reserved
-******************************************************************************/
+/**
+ * @file AppMainWindow.h
+ * @brief 主窗口
+ * @date 2025-10-27
+ * @version V0.0.1
+ * @details 
+ * @copyright Copyright (c) 2025 Kinvy. All rights reserved.
+ */
 #ifndef DAMETHODEDITORMAINWINDOW_H
 #define DAMETHODEDITORMAINWINDOW_H
 

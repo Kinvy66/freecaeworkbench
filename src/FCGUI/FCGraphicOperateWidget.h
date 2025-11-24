@@ -1,13 +1,11 @@
-/******************************************************************************
- * File     : FCGraphicOperateWidget.h
- * Brief    : 可视化交互窗口
- * Author   : Kinvy
- * Email    : kinvy66@163.com
- * Date     : 2025-10-31
- * Version  : V0.0.1
- * Detail   :
- * Copyright: Copyright By Kinvy, All Rights Reserved
-******************************************************************************/
+/**
+ * @file FCGraphicOperateWidget.h
+ * @brief 可视化交互窗口
+ * @date 2025-10-31
+ * @version V0.0.1
+ * @details 
+ * @copyright Copyright (c) 2025 Kinvy. All rights reserved.
+ */
 #ifndef FCGRAPHICOPERATEWIDGET_H
 #define FCGRAPHICOPERATEWIDGET_H
 

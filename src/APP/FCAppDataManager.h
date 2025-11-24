@@ -1,13 +1,11 @@
-/******************************************************************************
- * File     : FCAppDataManager.h
- * Brief    : FC的工程数据管理
- * Author   : Kinvy
- * Email    : kinvy66@163.com
- * Date     : 2025-11-18
- * Version  : V0.0.1
- * Detail   :
- * Copyright: Copyright By Kinvy, All Rights Reserved
-******************************************************************************/
+/**
+ * @file FCAppDataManager.h
+ * @brief FC的工程数据管理
+ * @date 2025-11-18
+ * @version V0.0.1
+ * @details 
+ * @copyright Copyright (c) 2025 Kinvy. All rights reserved.
+ */
 #ifndef FCAPPDATAMANAGER_H
 #define FCAPPDATAMANAGER_H
 #include <QObject>

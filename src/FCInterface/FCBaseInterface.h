@@ -1,13 +1,11 @@
-/******************************************************************************
- * File     : FCBaseInterface.h
- * Brief    : 基础接口类
- * Author   : Kinvy
- * Email    : kinvy66@163.com
- * Date     : 2025-10-27
- * Version  : V0.0.1
- * Detail   : 数据，action,ui等都继承自此类
- * Copyright: Copyright By Kinvy, All Rights Reserved
-******************************************************************************/
+/**
+ * @file FCBaseInterface.h
+ * @brief 基础接口类
+ * @date 2025-10-27
+ * @version V0.0.1
+ * @details 数据，action,ui等都继承自此类
+ * @copyright Copyright (c) 2025 Kinvy. All rights reserved.
+ */
 #ifndef FCBASEINTERFACE_H
 #define FCBASEINTERFACE_H
 

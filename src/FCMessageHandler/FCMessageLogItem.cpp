@@ -1,13 +1,11 @@
-/******************************************************************************
- * File     : FCMessageLogItem.cpp
- * Brief    : 包含了一个信息的所有内容
- * Author   : Kinvy
- * Email    : kinvy66@163.com
- * Date     : 2025-11-09
- * Version  : V0.0.1
- * Detail   :
- * Copyright: Copyright By Kinvy, All Rights Reserved
-******************************************************************************/
+/**
+ * @file FCMessageLogItem.cpp
+ * @brief 包含了一个信息的所有内容
+ * @date 2025-11-09
+ * @version V0.0.1
+ * @details 
+ * @copyright Copyright (c) 2025 Kinvy. All rights reserved.
+ */
 #include "FCMessageLogItem.h"
 //===================================================
 // using DA namespace -- 禁止在头文件using！！

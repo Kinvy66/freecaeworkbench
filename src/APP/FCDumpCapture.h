@@ -1,13 +1,11 @@
-/******************************************************************************
- * File     : FCDunpCapture.h
- * Brief    : dump 捕获
- * Author   : Kinvy
- * Email    : kinvy66@163.com
- * Date     : 2025-11-20
- * Version  : V0.0.1
- * Detail   :
- * Copyright: Copyright By Kinvy, All Rights Reserved
-******************************************************************************/
+/**
+ * @file FCDumpCapture.h
+ * @brief dump 捕获
+ * @date 2025-11-20
+ * @version V0.0.1
+ * @details 
+ * @copyright Copyright (c) 2025 Kinvy. All rights reserved.
+ */
 #ifndef FCDUMPCAPTURE_H
 #define FCDUMPCAPTURE_H
 

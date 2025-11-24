@@ -1,13 +1,11 @@
-/******************************************************************************
- * File     : FCAppDockingArea.h
- * Brief    : 负责docking窗口区域的管理
- * Author   : Kinvy
- * Email    : kinvy66@163.com
- * Date     : 2025-10-28
- * Version  : V0.0.1
- * Detail   :
- * Copyright: Copyright By Kinvy, All Rights Reserved
-******************************************************************************/
+/**
+ * @file FCAppDockingArea.h
+ * @brief 负责docking窗口区域的管理
+ * @date 2025-10-28
+ * @version V0.0.1
+ * @details 
+ * @copyright Copyright (c) 2025 Kinvy. All rights reserved.
+ */
 #ifndef FCAPPDOCKINGAREA_H
 #define FCAPPDOCKINGAREA_H
 

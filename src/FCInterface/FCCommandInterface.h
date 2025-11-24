@@ -1,13 +1,11 @@
-/******************************************************************************
- * File     : FCCommandInterface.h
- * Brief    : 命令接口
- * Author   : Kinvy
- * Email    : kinvy66@163.com
- * Date     : 2025-10-27
- * Version  : V0.0.1
- * Detail   : 程序自己维护QUndoStack，并注册到QUndoGroup中
- * Copyright: Copyright By Kinvy, All Rights Reserved
-******************************************************************************/
+/**
+ * @file FCCommandInterface.h
+ * @brief 命令接口
+ * @date 2025-10-27
+ * @version V0.0.1
+ * @details 程序自己维护QUndoStack，并注册到QUndoGroup中
+ * @copyright Copyright (c) 2025 Kinvy. All rights reserved.
+ */
 #ifndef FCCOMMANDINTERFACE_H
 #define FCCOMMANDINTERFACE_H
 

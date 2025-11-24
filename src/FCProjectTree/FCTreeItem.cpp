@@ -1,13 +1,11 @@
-/******************************************************************************
- * File     : FCTreeItem.cpp
- * Brief    : 树形结构的条目, 
- * Author   : Kinvy
- * Email    : kinvy66@163.com
- * Date     : 2025-11-13
- * Version  : V0.0.1
- * Detail   :
- * Copyright: Copyright By Kinvy, All Rights Reserved
-******************************************************************************/
+/**
+ * @file FCTreeItem.cpp
+ * @brief 树形结构的条目
+ * @date 2025-11-12
+ * @version V0.0.1
+ * @details 继承自QTreeWidgetItem 添加右键菜单功能
+ * @copyright Copyright (c) 2025 Kinvy. All rights reserved.
+ */
 #include "FCTreeItem.h"
 #include <QMenu>
 #include <QDebug>

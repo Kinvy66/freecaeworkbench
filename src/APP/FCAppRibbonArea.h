@@ -1,13 +1,11 @@
-/******************************************************************************
- * File     : FCAppRibbonArea.h
- * Brief    : App的Ribbon区域接口，负责ribbon层的管理和调度
- * Author   : Kinvy
- * Email    : kinvy66@163.com
- * Date     : 2025-10-28
- * Version  : V0.0.1
- * Detail   :
- * Copyright: Copyright By Kinvy, All Rights Reserved
-******************************************************************************/
+/**
+ * @file FCAppRibbonArea.h
+ * @brief App的Ribbon区域接口，负责ribbon层的管理和调度
+ * @date 2025-10-28
+ * @version V0.0.1
+ * @details 
+ * @copyright Copyright (c) 2025 Kinvy. All rights reserved.
+ */
 #ifndef FCAPPRIBBONAREA_H
 #define FCAPPRIBBONAREA_H
 

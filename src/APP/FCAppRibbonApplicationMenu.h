@@ -1,13 +1,11 @@
-/******************************************************************************
- * File     : FCAppRibbonApplicationMenu.cpp
- * Brief    : ribbon application button 弹出的菜单
- * Author   : Kinvy
- * Email    : kinvy66@163.com
- * Date     : 2025-10-28
- * Version  : V0.0.1
- * Detail   :
- * Copyright: Copyright By Kinvy, All Rights Reserved
-******************************************************************************/
+/**
+ * @file FCAppRibbonApplicationMenu.h
+ * @brief ribbon application button 弹出的菜单
+ * @date 2025-10-28
+ * @version V0.0.1
+ * @details 
+ * @copyright Copyright (c) 2025 Kinvy. All rights reserved.
+ */
 #ifndef FCAPPRIBBONAPPLICATIONMENU_H
 #define FCAPPRIBBONAPPLICATIONMENU_H
 

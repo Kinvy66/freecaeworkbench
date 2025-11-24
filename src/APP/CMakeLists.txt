@@ -1,3 +1,4 @@
+# 主程序模块
 cmake_minimum_required(VERSION 3.12)
 
 fcmacro_app_setting(
@@ -112,6 +113,7 @@ fcmacro_import_vtk(${FC_APP_NAME})
 fcmacro_import_occ(${FC_APP_NAME})
 
 
+# -------------link sub module --------------------------
 if(FC_ENABLE_PYTHON)
     # -------------link python--------------------------
     fcmacro_import_Python(${FC_APP_NAME})
@@ -126,6 +128,9 @@ find_package(${FC_PROJECT_NAME} COMPONENTS
 
 if(${FC_PROJECT_NAME}_FOUND)
     message(STATUS "  |-linked ${FC_PROJECT_NAME}::FCInterface")
+    message(STATUS "  |-linked ${FC_PROJECT_NAME}::FCGui")
+    message(STATUS "  |-linked ${FC_PROJECT_NAME}::FCActionManager")
+    message(STATUS "  |-linked ${FC_PROJECT_NAME}::FCMessageHandler")
 endif()
 target_link_libraries(${FC_APP_NAME} PUBLIC
     ${FC_PROJECT_NAME}::FCInterface
@@ -166,8 +171,6 @@ if(WIN32)
         Dbghelp
     )
 endif()
-
-# target_link_libraries(${PROJECT_NAME} PRIVATE  ${OpenCASCADE_LIBRARIES})
 
 
 ########################################################

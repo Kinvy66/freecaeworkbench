@@ -1,13 +1,11 @@
-/******************************************************************************
- * File     : FCStatusBar.h
- * Brief    : 状态栏
- * Author   : Kinvy
- * Email    : kinvy66@163.com
- * Date     : 2025-11-14
- * Version  : V0.0.1
- * Detail   :
- * Copyright: Copyright By Kinvy, All Rights Reserved
-******************************************************************************/
+/**
+ * @file FCStatusBar.cpp
+ * @brief 状态栏
+ * @date 2025-11-14
+ * @version V0.0.1
+ * @details 
+ * @copyright Copyright (c) 2025 Kinvy. All rights reserved.
+ */
 #include "FCStatusBar.h"
 #include <QLabel>
 

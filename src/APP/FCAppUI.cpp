@@ -1,13 +1,11 @@
-/******************************************************************************
- * File     : FCAppUI.cpp
- * Brief    : 总体界面接口，负责生成FCAppDockingArea和FCAppRibbonArea
- * Author   : Kinvy
- * Email    : kinvy66@163.com
- * Date     : 2025-10-28
- * Version  : V0.0.1
- * Detail   :
- * Copyright: Copyright By Kinvy, All Rights Reserved
-******************************************************************************/
+/**
+ * @file FCAppUI.cpp
+ * @brief 总体界面接口，负责生成FCAppDockingArea和FCAppRibbonArea
+ * @date 2025-10-28
+ * @version V0.0.1
+ * @details 
+ * @copyright Copyright (c) 2025 Kinvy. All rights reserved.
+ */
 #include "FCAppUI.h"
 #include "FCAppDockingArea.h"
 #include "FCAppRibbonArea.h"

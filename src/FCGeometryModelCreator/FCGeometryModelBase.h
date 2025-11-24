@@ -1,6 +1,6 @@
 /**
  * @file FCGeometryModelBase.h
- * @brief 
+ * @brief 模型创建基类
  * @date 2025-11-23
  * @version V0.0.1
  * @details 

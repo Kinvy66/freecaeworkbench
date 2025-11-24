@@ -1,13 +1,11 @@
-/******************************************************************************
- * File     : FCUniqueIDGenerater.h
- * Brief    : id生成器
- * Author   : Kinvy
- * Email    : kinvy66@163.com
- * Date     : 2025-11-19
- * Version  : V0.0.1
- * Detail   :
- * Copyright: Copyright By Kinvy, All Rights Reserved
-******************************************************************************/
+/**
+ * @file FCUniqueIDGenerater.h
+ * @brief id生成器
+ * @date 2025-11-19
+ * @version V0.0.1
+ * @details 生成当前进程唯一uint64_t类型的id
+ * @copyright Copyright (c) 2025 Kinvy. All rights reserved.
+ */
 #ifndef FCUNIQUEIDGENERATER_H
 #define FCUNIQUEIDGENERATER_H
 #include "FCUtilsAPI.h"

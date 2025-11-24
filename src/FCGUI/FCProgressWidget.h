@@ -1,13 +1,11 @@
-/******************************************************************************
- * File     : FCProgressWidget.h
- * Brief    : 进度显示窗口
- * Author   : Kinvy
- * Email    : kinvy66@163.com
- * Date     : 2025-11-08
- * Version  : V0.0.1
- * Detail   :
- * Copyright: Copyright By Kinvy, All Rights Reserved
-******************************************************************************/
+/**
+ * @file FCProgressWidget.h
+ * @brief 进度显示窗口
+ * @date 2025-11-08
+ * @version V0.0.1
+ * @details 
+ * @copyright Copyright (c) 2025 Kinvy. All rights reserved.
+ */
 #ifndef FCPROGRESSWIDGET_H
 #define FCPROGRESSWIDGET_H
 

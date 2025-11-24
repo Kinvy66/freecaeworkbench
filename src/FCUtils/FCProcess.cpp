@@ -1,13 +1,11 @@
-/******************************************************************************
- * File     : FCProcess.cpp
- * Brief    : 对QProcess的封装
- * Author   : Kinvy
- * Email    : kinvy66@163.com
- * Date     : 2025-11-09
- * Version  : V0.0.1
- * Detail   :
- * Copyright: Copyright By Kinvy, All Rights Reserved
-******************************************************************************/
+/**
+ * @file FCProcess.cpp
+ * @brief 对QProcess的封装
+ * @date 2025-11-09
+ * @version V0.0.1
+ * @details 
+ * @copyright Copyright (c) 2025 Kinvy. All rights reserved.
+ */
 #include "FCProcess.h"
 
 namespace FC  

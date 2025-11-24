@@ -1,13 +1,11 @@
-/******************************************************************************
- * File     : FCDir.cpp
- * Brief    : 这个类定义了FC的固定路径，包括临时目录，配置文件目录等路径
- * Author   : Kinvy
- * Email    : kinvy66@163.com
- * Date     : 2025-11-20
- * Version  : V0.0.1
- * Detail   :
- * Copyright: Copyright By Kinvy, All Rights Reserved
-******************************************************************************/
+/**
+ * @file FCDir.h
+ * @brief 定义了DA的固定路径，包括临时目录，配置文件目录等路径
+ * @date 2025-11-20
+ * @version V0.0.1
+ * @details 
+ * @copyright Copyright (c) 2025 Kinvy. All rights reserved.
+ */
 #ifndef FCDIR_H
 #define FCDIR_H
 #include "FCUtilsAPI.h"

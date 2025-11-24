@@ -1,14 +1,12 @@
-/******************************************************************************
- * File     : FCAppCommand.cpp
- * Brief    : App的命令管理类
- * Author   : Kinvy
- * Email    : kinvy66@163.com
- * Date     : 2025-10-28
- * Version  : V0.0.1
- * Detail   : 所有的固定stack都从这里能获取到，一些非固定stack不进行管理
- *            QUndoGroup管理所有的栈
- * Copyright: Copyright By Kinvy, All Rights Reserved
-******************************************************************************/
+/**
+ * @file FCAppCommand.cpp
+ * @brief App的命令管理类
+ * @date 2025-10-28
+ * @version V0.0.1
+ * @details 所有的固定stack都从这里能获取到，一些非固定stack不进行管理 
+ * QUndoGroup管理所有的栈
+ * @copyright Copyright (c) 2025 Kinvy. All rights reserved.
+ */
 #include "FCAppCommand.h"
 
 //===================================================

@@ -1,14 +1,12 @@
-/******************************************************************************
- * File     : FCAppProject.h
- * Brief    : 负责整个工程管理
- * Author   : Kinvy
- * Email    : kinvy66@163.com
- * Date     : 2025-10-31
- * Version  : V0.0.1
- * Detail   :工程文件是一个压缩包，因此打开工程文件时，会在临时目录把这个压缩包解压
- *           在保存文件时，把临时文件对应的压缩包进行压缩并移动到指定位置
- * Copyright: Copyright By Kinvy, All Rights Reserved
-******************************************************************************/
+/**
+ * @file FCAppProject.h
+ * @brief 负责整个工程管理
+ * @date 2025-10-31
+ * @version V0.0.1
+ * @details 工程文件是一个压缩包，因此打开工程文件时，会在临时目录把这个压缩包解压
+ * 在保存文件时，把临时文件对应的压缩包进行压缩并移动到指定位置
+ * @copyright Copyright (c) 2025 Kinvy. All rights reserved.
+ */
 #ifndef FCAPPPROJECT_H
 #define FCAPPPROJECT_H
 

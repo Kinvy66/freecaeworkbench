@@ -1,13 +1,11 @@
-/******************************************************************************
- * File     : FCDockingAreaInterface.h
- * Brief    : dock 区域的接口
- * Author   : Kinvy
- * Email    : kinvy66@163.com
- * Date     : 2025-10-27
- * Version  : V0.0.1
- * Detail   :
- * Copyright: Copyright By Kinvy, All Rights Reserved
-******************************************************************************/
+/**
+ * @file FCDockingAreaInterface.h
+ * @brief dock 区域的接口
+ * @date 2025-10-27
+ * @version V0.0.1
+ * @details 
+ * @copyright Copyright (c) 2025 Kinvy. All rights reserved.
+ */
 #ifndef FCDOCKINGAREAINTERFACE_H
 #define FCDOCKINGAREAINTERFACE_H
 #include "FCInterfaceAPI.h"

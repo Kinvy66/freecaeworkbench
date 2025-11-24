@@ -1,6 +1,6 @@
 /**
  * @file FCGeometryData.cpp
- * @brief 几何数据管理基类头文件
+ * @brief 几何数据管理基类
  * @date 2025-11-23
  * @version V0.0.1
  * @details 

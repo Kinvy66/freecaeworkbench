@@ -1,13 +1,11 @@
-/******************************************************************************
- * File     : FCTree.h
- * Brief    : 树形目录
- * Author   : Kinvy
- * Email    : kinvy66@163.com
- * Date     : 2025-11-13
- * Version  : V0.0.1
- * Detail   :
- * Copyright: Copyright By Kinvy, All Rights Reserved
-******************************************************************************/
+/**
+ * @file FCTreeWidget.h
+ * @brief 树形目录
+ * @date 2025-11-13
+ * @version V0.0.1
+ * @details 
+ * @copyright Copyright (c) 2025 Kinvy. All rights reserved.
+ */
 #ifndef FCTREEWIDGET_H
 #define FCTREEWIDGET_H
 #include "FCProjcetTreeAPI.h"

@@ -1,13 +1,11 @@
-/******************************************************************************
- * File     : FCMessageLogViewWidget.h
- * Brief    : 日志窗口，用于显示全局的消息
- * Author   : Kinvy
- * Email    : kinvy66@163.com
- * Date     : 2025-10-28
- * Version  : V0.0.1
- * Detail   :
- * Copyright: Copyright By Kinvy, All Rights Reserved
-******************************************************************************/
+/**
+ * @file FCMessageLogViewWidget.cpp
+ * @brief 日志窗口，用于显示全局的消息
+ * @date 2025-10-28
+ * @version V0.0.1
+ * @details 
+ * @copyright Copyright (c) 2025 Kinvy. All rights reserved.
+ */
 #include "FCMessageLogViewWidget.h"
 #include "ui_FCMessageLogViewWidget.h"
 #include <QDebug>

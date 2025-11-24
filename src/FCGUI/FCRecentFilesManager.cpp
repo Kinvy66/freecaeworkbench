@@ -1,13 +1,11 @@
-/******************************************************************************
- * File     : FCRecentFilesManager.cpp
- * Brief    : 最近打开文件管理
- * Author   : Kinvy
- * Email    : kinvy66@163.com
- * Date     : 2025-11-01
- * Version  : V0.0.1
- * Detail   :
- * Copyright: Copyright By Kinvy, All Rights Reserved
-******************************************************************************/
+/**
+ * @file FCRecentFilesManager.cpp
+ * @brief 最近打开文件管理
+ * @date 2025-11-01
+ * @version V0.0.1
+ * @details 
+ * @copyright Copyright (c) 2025 Kinvy. All rights reserved.
+ */
 #include "FCRecentFilesManager.h"
 #include <QCoreApplication>
 #include <QSettings>

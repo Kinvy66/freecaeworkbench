@@ -1,13 +1,11 @@
-/******************************************************************************
- * File     : FCRibbonAreaInterface.h
- * Brief    : 这个接口管理了AppRibbon区域的相关操作
- * Author   : Kinvy
- * Email    : kinvy66@163.com
- * Date     : 2025-10-28
- * Version  : V0.0.1
- * Detail   :
- * Copyright: Copyright By Kinvy, All Rights Reserved
-******************************************************************************/
+/**
+ * @file FCRibbonAreaInterface.cpp
+ * @brief 管理AppRibbon区域的相关操作
+ * @date 2025-10-28
+ * @version V0.0.1
+ * @details 
+ * @copyright Copyright (c) 2025 Kinvy. All rights reserved.
+ */
 #include "FCRibbonAreaInterface.h"
 #include "SARibbonMainWindow.h"
 #include "SARibbonCategory.h"

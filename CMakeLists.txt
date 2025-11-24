@@ -1,11 +1,9 @@
-
-# Cmake的命令不区分打下写，例如message，set等命令；但Cmake的变量区分大小写
+# Cmake的命令不区分大小写，例如message，set等命令；但Cmake的变量区分大小写
 # 为统一风格，本项目的Cmake命令全部采用小写，变量全部采用大写加下划线组合。
-# DA WorkBench 顶层Cmake文件
+# FC WorkBench 顶层Cmake文件
 # 在运行次CMakeLists.txt之前，请确保3rdparty已经运行并进行了install，3rdparty位于./3rdparty/CMakeLists.txt
 # 请先单独编译第三方库后，安装，并把安装目录设置到和此安装目录一致
 
-#3.16是qt6要求的最低版本
 cmake_minimum_required(VERSION 3.12)
 
 ########################################################

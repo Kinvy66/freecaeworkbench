@@ -1,3 +1,11 @@
+/**
+ * @file FCDataBase.h
+ * @brief 数据基类
+ * @date 2025-11-22
+ * @version V0.0.1
+ * @details 
+ * @copyright Copyright (c) 2025 Kinvy. All rights reserved.
+ */
 #ifndef FCDATABASE_H
 #define FCDATABASE_H
 

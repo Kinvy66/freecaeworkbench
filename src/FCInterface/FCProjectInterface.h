@@ -1,3 +1,11 @@
+/**
+ * @file FCProjectInterface.h
+ * @brief 工程管理接口
+ * @date 2025-11-24
+ * @version V0.0.1
+ * @details 
+ * @copyright Copyright (c) 2025 Kinvy. All rights reserved.
+ */
 #ifndef FCPROJECTINTERFACE_H
 #define FCPROJECTINTERFACE_H
 #include <QObject>
