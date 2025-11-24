@@ -61,7 +61,9 @@ void FCBoxSettingsWidget::on_pushButton_build_clicked()
     
     QString name  = ui->lineEdit_name->text();
     
-    FCGeometryCreateBox* c = new FCGeometryCreateBox();
+    FCGeometryCreateBox* c = new FCGeometryCreateBox(this);
+    
+    connect(c, &FCGeometryCreateBox::showSet, this, &FCBoxSettingsWidget::boxModelCreated);
     
     c->setName(name);
     c->setLocation(corner);
@@ -70,6 +72,7 @@ void FCBoxSettingsWidget::on_pushButton_build_clicked()
     c->execute();
 
 }
+
 
 
 } // namespace FC

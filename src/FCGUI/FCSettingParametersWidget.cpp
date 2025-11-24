@@ -32,6 +32,10 @@ void FCSettingParametersWidget::createCube()
 {
     QVBoxLayout* vLayout = new QVBoxLayout(this);
     FCBoxSettingsWidget* cubeSettingsWidget = new FCBoxSettingsWidget(this);
+    connect(cubeSettingsWidget, &FCBoxSettingsWidget::boxModelCreated,
+            this, &FCSettingParametersWidget::boxModelCreated);
+    
+    
     vLayout->addWidget(cubeSettingsWidget);
 }
 

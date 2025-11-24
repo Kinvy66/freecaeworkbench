@@ -42,6 +42,7 @@ class FCAppRibbonArea;
 class FCAppDockingArea;
 class FCAppCommand;
 class FCAppActions;
+class FCGeometrySet;
 // class FCAppDataManager;
 // class FCSettingContainerWidget;
 // class FCDataOperateOfDataFrameWidget;
@@ -151,6 +152,7 @@ public Q_SLOTS:
     
     void createCube();
     
+    
 private Q_SLOTS:
     // 工程的胀状态改变槽
     // void onProjectDirtyStateChanged(bool isdirty);
@@ -167,6 +169,10 @@ private slots:
     
     // DockWidget的焦点变化
     void onFocusedDockWidgetChanged(ads::CDockWidget* old, ads::CDockWidget* now);
+    
+    
+signals:
+    void showModel(FCGeometrySet* set, bool r);
     
     
 private:

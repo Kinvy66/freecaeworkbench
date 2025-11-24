@@ -16,6 +16,8 @@
 
 namespace FC 
 {
+class FCGeometrySet;
+
 class FCGUI_API FCSettingParametersWidget : public QWidget
 {
     Q_OBJECT
@@ -26,6 +28,8 @@ public:
     void createCube();
     
 signals:
+    void boxModelCreated(FCGeometrySet* set, bool r);
+    
 };
 } // namespace FC
 

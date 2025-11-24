@@ -20,7 +20,7 @@ class FCGEOMETRYMODELCREATOR_API FCGeometryCreateBox : public FCGeometryModelBas
 {
     Q_OBJECT
 public:
-    FCGeometryCreateBox();
+    FCGeometryCreateBox(QObject* parent=nullptr);
     ~FCGeometryCreateBox() = default;
     
     void setName(QString name);

@@ -12,12 +12,15 @@
 #include <QWidget>
 #include "FCGuiAPI.h"
 
+
+
 namespace Ui {
 class FCBoxSettingsWidget;
 }
 
 namespace FC 
 {
+class FCGeometrySet;
 class FCGUI_API FCBoxSettingsWidget : public QWidget
 {
     Q_OBJECT
@@ -29,8 +32,12 @@ public:
 private:
     bool getPara(double* p);
     
+signals:
+    void boxModelCreated(FCGeometrySet* set, bool r);
+    
 private slots:
     void on_pushButton_build_clicked();
+    
     
 private:
     Ui::FCBoxSettingsWidget *ui;

@@ -14,7 +14,13 @@
 
 namespace FC 
 {
-FCGeometryCreateBox::FCGeometryCreateBox() {}
+// FCGeometryCreateBox::FCGeometryCreateBox() {}
+
+FCGeometryCreateBox::FCGeometryCreateBox(QObject *parent)
+    : FCGeometryModelBase(parent)
+{
+    
+}
 
 void FCGeometryCreateBox::setName(QString name)
 {

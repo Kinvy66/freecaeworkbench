@@ -15,6 +15,7 @@ namespace FC
 {
 
 FCGeometryModelBase::FCGeometryModelBase(QObject *parent)
+    : QObject(parent)
 {
     
 }

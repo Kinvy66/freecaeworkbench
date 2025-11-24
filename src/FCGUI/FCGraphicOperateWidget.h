@@ -13,23 +13,16 @@
 
 #include <QWidget>
 #include "FCGuiAPI.h"
+#include <vtkSmartPointer.h>
 
-#define VTK_TEST_DEMO
 
-#ifdef OCC_TEST_DEMO
-#include <Aspect_Handle.hxx>
-#include <AIS_InteractiveContext.hxx>
-#include <V3d_Viewer.hxx>
-#include <AIS_Shape.hxx>
-#include <BRepPrimAPI_MakeBox.hxx>
-#endif
-
-#ifdef VTK_TEST_DEMO
 class QVTKOpenGLNativeWidget;
-#endif
+class vtkRenderer;
+
 
 namespace FC 
 {
+class FCGeometrySet;
 
 class FCGUI_API FCGraphicOperateWidget : public QWidget
 {
@@ -38,21 +31,16 @@ public:
     FCGraphicOperateWidget(QWidget* parent = nullptr);
     ~FCGraphicOperateWidget();
     
+public slots:
+    void showModel(FCGeometrySet* set, bool r);
+
+    
 private:
    
-    #ifdef VTK_TEST_DEMO
-    QVTKOpenGLNativeWidget* _pVTKWidget = NULL;
-    #endif
+    QVTKOpenGLNativeWidget* mVTKWidget = NULL;
+    vtkSmartPointer<vtkRenderer> mRenderer;
     
-#ifdef OCC_TEST_DEMO
-    Handle(V3d_Viewer) mViewer;
-    Handle(V3d_View) mView;
-    Handle(AIS_InteractiveContext) mContext;
     
-protected:
-    void paintEvent(QPaintEvent* ) override;
-    void resizeEvent(QResizeEvent *) override;
-#endif
 signals:
 };
 } // namespace FC
