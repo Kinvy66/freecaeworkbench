@@ -18,6 +18,7 @@ add_subdirectory(FCActionManager)
 add_subdirectory(FCGeometryModelCreator)
 add_subdirectory(FCGeometryParameter)
 add_subdirectory(FCData)
+# add_subdirectory(TestDemo)
 
 add_subdirectory(APP)
 

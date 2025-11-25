@@ -69,6 +69,7 @@ fcmacro_import_occ(${FC_LIB_NAME})
 
 find_package(${FC_PROJECT_NAME} COMPONENTS
     FCUtils
+    FCGeometryParameter
 )
 
 if(${FC_PROJECT_NAME}_FOUND)
@@ -76,6 +77,7 @@ if(${FC_PROJECT_NAME}_FOUND)
 endif()
 target_link_libraries(${FC_LIB_NAME} PUBLIC
     ${FC_PROJECT_NAME}::FCUtils
+    ${FC_PROJECT_NAME}::FCGeometryParameter
 )
 
 
