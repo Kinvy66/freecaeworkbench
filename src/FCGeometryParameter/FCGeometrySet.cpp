@@ -117,6 +117,11 @@ void FCGeometrySet::setVisible(bool v)
     
 }
 
+bool FCGeometrySet::isVisible()
+{
+    return true;
+}
+
 void FCGeometrySet::setType(GeometryType type)
 {
     mType = type;

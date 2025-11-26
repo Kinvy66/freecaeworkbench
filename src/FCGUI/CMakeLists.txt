@@ -89,6 +89,7 @@ find_package(${FC_PROJECT_NAME} COMPONENTS
     FCProjectTree
     FCGeometryParameter
     FCGeometryModelCreator
+    FCGraphicsView
 )
 
 if(${FC_PROJECT_NAME}_FOUND)
@@ -99,6 +100,8 @@ target_link_libraries(${FC_LIB_NAME} PUBLIC
     ${FC_PROJECT_NAME}::FCProjectTree
     ${FC_PROJECT_NAME}::FCGeometryParameter
     ${FC_PROJECT_NAME}::FCGeometryModelCreator
+    ${FC_PROJECT_NAME}::FCGraphicsView
+    
 )
 
 

@@ -12,6 +12,7 @@
 #include <QVBoxLayout>
 #include <array>
 #include "FCGeometrySet.h"
+#include "FCGraphViewWindow.h"
 
 // vtk
 #include <QVTKOpenGLNativeWidget.h>
@@ -51,34 +52,62 @@ FCGraphicOperateWidget::FCGraphicOperateWidget(QWidget *parent)
  : QWidget(parent)
 {
     
-    // QLabel* lab = new QLabel(this);
-    // lab->setText("GraphicOperateWidget");
     
-    mVTKWidget = new QVTKOpenGLNativeWidget(this);
-    // 使用布局让 _pVTKWidget 填满整个 FCGraphicOperateWidget
+    // mVTKWidget = new QVTKOpenGLNativeWidget(this);
+    // // 使用布局让 _pVTKWidget 填满整个 FCGraphicOperateWidget
+    
+    // QVBoxLayout *layout = new QVBoxLayout(this);
+    // layout->setContentsMargins(3, 3, 3, 3);  // 去掉边距
+    // // layout->addWidget(mVTKWidget);
+    // layout->addWidget(mGraphViewWindow);
+    
+    // mRenderer = vtkSmartPointer<vtkRenderer>::New();
+    
+    // mRenderer->SetBackground(1.0, 1.0, 1.0);
+    
+    // mVTKWidget->renderWindow()->AddRenderer(mRenderer);
+    
+    // vtkSmartPointer<vtkInteractorStyleTrackballCamera> interractor =
+    //     vtkSmartPointer<vtkInteractorStyleTrackballCamera>::New();
+    
+    // interractor->SetDefaultRenderer(mRenderer);
+    // mVTKWidget->interactor()->SetInteractorStyle(interractor);
+    
+    
+    mGraphViewWindow = new FCGraphViewWindow(-1, this);
+    
     QVBoxLayout *layout = new QVBoxLayout(this);
-    layout->setContentsMargins(3, 3, 3, 3);  // 去掉边距
-    layout->addWidget(mVTKWidget);
+    layout->setContentsMargins(0, 0, 0, 0);  // 去掉边距
+    layout->addWidget(mGraphViewWindow);
     
-    mRenderer = vtkSmartPointer<vtkRenderer>::New();
-    
-    // vtkSmartPointer<vtkRenderer> renderer = vtkSmartPointer<vtkRenderer>::New();
-    mRenderer->SetBackground(1.0, 1.0, 1.0);
-    
-    // vtkSmartPointer<Snar
-    mVTKWidget->renderWindow()->AddRenderer(mRenderer);
-    
-    vtkSmartPointer<vtkInteractorStyleTrackballCamera> interractor =
-        vtkSmartPointer<vtkInteractorStyleTrackballCamera>::New();
-    
-    interractor->SetDefaultRenderer(mRenderer);
-    mVTKWidget->interactor()->SetInteractorStyle(interractor);
-    
+    connect(this, &FCGraphicOperateWidget::showGeoSet,
+            mGraphViewWindow, &FCGraphViewWindow::showGeoSet);
 }
 
 FCGraphicOperateWidget::~FCGraphicOperateWidget()
 {
     
+}
+
+void FCGraphicOperateWidget::updateActors()
+{
+    updateGeometryActor();
+    updateMeshActor();
+}
+
+void FCGraphicOperateWidget::updateMeshActor()
+{
+    if(mGraphViewWindow != nullptr) {
+        mGraphViewWindow->updateMeshActor();
+    }
+}
+
+void FCGraphicOperateWidget::updateGeometryActor()
+{
+
+    if(mGraphViewWindow != nullptr) {
+        mGraphViewWindow->updateGeometryActor();
+    }
 }
 
 void FCGraphicOperateWidget::showModel(FCGeometrySet *set, bool r)

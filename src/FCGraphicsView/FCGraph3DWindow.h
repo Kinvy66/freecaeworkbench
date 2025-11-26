@@ -58,7 +58,7 @@ class FCGRAPHICSVIEW_API  FCGraph3DWindow : public FCGraphWindowBase
 {
     Q_OBJECT
 public:
-    FCGraph3DWindow(int id, GraphWindowType type, bool connectToMainwindow = false);
+    FCGraph3DWindow(int id, QWidget* parent = nullptr);
     virtual ~FCGraph3DWindow() = 0;
     //添加渲染对象
     void AppendActor(vtkProp* actor, ActorType type = ActorType::D3, bool reRender = true, bool reset = true);

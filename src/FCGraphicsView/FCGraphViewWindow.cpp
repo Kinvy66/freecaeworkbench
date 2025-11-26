@@ -8,40 +8,47 @@
  */
 #include "FCGraphViewWindow.h"
 #include "FCGeometrySet.h"
+#include "FCGeometryData.h"
+#include "FCGeometryViewProvider.h"
 
 namespace FC 
 {
 
-FCGraphViewWindow::FCGraphViewWindow(int id, GraphWindowType type)
-    : FCGraph3DWindow(id, type)
+FCGraphViewWindow::FCGraphViewWindow(int id, QWidget* parent)
+    : FCGraph3DWindow(id, parent)
 {
-    // todo 创建成员变量， 连接signal 和 slot
+    mGeometryData = FCGeometryData::getInstance();
+    mGeoProvider = new FCGeometryViewProvider(this);
+    connect(this, &FCGraphViewWindow::showGeoSet,
+            mGeoProvider, &FCGeometryViewProvider::showGeoSet);
 }
 
 FCGraphViewWindow::~FCGraphViewWindow()
 {
-    
+    if (mGeoProvider != nullptr)
+        delete mGeoProvider;
+    emit closed();
 }
 
 void FCGraphViewWindow::updateGeometryActor()
 {
-    // _geoProvider->updateGeoActors();
+    mGeoProvider->updateGeoActors();
 }
 void FCGraphViewWindow::updateGeoDispaly(int index, bool display)
 {
-    // Geometry::GeometrySet *s = _geometryData->getGeometrySetAt(index);
-    // if (s == nullptr)
-    //     return;
-    // _geoProvider->updateDiaplayStates(s, display);
+    FCGeometrySet *s = mGeometryData->getGeometrySetAt(index);
+    if (s == nullptr)
+        return;
+    mGeoProvider->updateDiaplayStates(s, display);
 }
 void FCGraphViewWindow::removeGemoActor(const int index)
 {
-    // Geometry::GeometrySet *set = _geometryData->getGeometrySetAt(index);
-    // if (set == nullptr)
-    //     return;
-    // _geoProvider->removeActors(set);
-    // _geometryData->removeTopGeometrySet(set);
-    // delete set;
+    FCGeometrySet *set = mGeometryData->getGeometrySetAt(index);
+    if (set == nullptr)
+        return;
+    mGeoProvider->removeActors(set);
+    mGeometryData->removeTopGeometrySet(set);
+    delete set;
 }
 
 // FCGeometrySet *FCGraphViewWindow::getSelectedGeoSet()
@@ -62,6 +69,11 @@ void FCGraphViewWindow::setDisplay()
 {
     // _meshProvider->updateDisplayModel();
     this->reRender();
+}
+
+void FCGraphViewWindow::updateMeshActor()
+{
+    
 }
 
 // 	void FCGraphViewWindow::updateMeshActor()
@@ -91,7 +103,7 @@ void FCGraphViewWindow::setSelectModel(int mode)
 
 SelectModel FCGraphViewWindow::getSelectModel()
 {
-    return _selectModel;
+    return mSelectModel;
 }
 
 void FCGraphViewWindow::highLighSet(QMultiHash<int, int> *items)

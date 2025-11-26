@@ -11,7 +11,8 @@
 namespace FC 
 {
 
-FCGraphWindowBase::FCGraphWindowBase(int proID, GraphWindowType type, QWidget *parent)
+FCGraphWindowBase::FCGraphWindowBase(int proID, QWidget *parent)
+    : mProjectId(proID), QWidget(parent)
 {
     
 }

@@ -19,7 +19,7 @@ class FCGRAPHICSVIEW_API FCGraphWindowBase : public QWidget
 {
     Q_OBJECT
 public:
-    FCGraphWindowBase(int proID, GraphWindowType type = GraphWindowType::UnDefined, QWidget* parent=nullptr);
+    FCGraphWindowBase(int proID, QWidget* parent=nullptr);
     virtual ~FCGraphWindowBase() = 0;
     
     //获取类型

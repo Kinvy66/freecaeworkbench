@@ -17,10 +17,10 @@
 class QVTKOpenGLNativeWidget;
 class vtkRenderer;
 
-
 namespace FC 
 {
 class FCGeometrySet;
+class FCGraphViewWindow;
 
 class FCGUI_API FCGraphicOperateWidget : public QWidget
 {
@@ -28,6 +28,20 @@ class FCGUI_API FCGraphicOperateWidget : public QWidget
 public:
     FCGraphicOperateWidget(QWidget* parent = nullptr);
     ~FCGraphicOperateWidget();
+    
+    // 更新前处理Actor
+    void updateActors();
+    
+    // 更新前处理网格Actor
+    void updateMeshActor();
+    
+    // 更新前处理几何Actor
+    void updateGeometryActor();
+    
+    FCGraphViewWindow*	getGraphViewWindow();
+    
+signals:
+    void showGeoSet(FCGeometrySet *set, bool render = true);
     
 public slots:
     void showModel(FCGeometrySet* set, bool r);
@@ -38,8 +52,9 @@ private:
     QVTKOpenGLNativeWidget* mVTKWidget = NULL;
     vtkSmartPointer<vtkRenderer> mRenderer;
     
+    // 图形显示窗口
+    FCGraphViewWindow* mGraphViewWindow;
     
-signals:
 };
 } // namespace FC
 

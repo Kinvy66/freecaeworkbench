@@ -4,6 +4,7 @@
  * @date 2025-11-25
  * @version V0.0.1
  * @details 
+ * @todo 改成继承的方式
  * @copyright Copyright (c) 2025 Kinvy. All rights reserved.
  */
 #include "FCPropPickerInteractionStyle.h"
@@ -48,8 +49,8 @@ namespace FC
 FCPropPickerInteractionStyle::FCPropPickerInteractionStyle(QObject* parent)
     : QObject(parent)
 {
-    m_interactorStyle = vtkSmartPointer<vtkInteractorStyleRubberBandPick>::New();
-    m_callback = vtkSmartPointer<CommandCallback>::New(this);
+    mInteractorStyle = vtkSmartPointer<vtkInteractorStyleRubberBandPick>::New();
+    mCallback = vtkSmartPointer<CommandCallback>::New(this);
     SetupCallbacks();
     
     // 初始化其他成员
@@ -79,26 +80,26 @@ void FCPropPickerInteractionStyle::setRender(vtkRenderer* r)
 void FCPropPickerInteractionStyle::SetInteractor(vtkRenderWindowInteractor* interactor)
 {
     if (interactor) {
-        m_interactorStyle->SetInteractor(interactor);
-        interactor->SetInteractorStyle(m_interactorStyle);
+        mInteractorStyle->SetInteractor(interactor);
+        interactor->SetInteractorStyle(mInteractorStyle);
     }
 }
 
 void FCPropPickerInteractionStyle::SetupCallbacks()
 {
-    if (m_interactorStyle) {
+    if (mInteractorStyle) {
         // 监听所有需要的VTK事件
-        m_interactorStyle->AddObserver(vtkCommand::LeftButtonPressEvent, m_callback);
-        m_interactorStyle->AddObserver(vtkCommand::LeftButtonReleaseEvent, m_callback);
-        m_interactorStyle->AddObserver(vtkCommand::MiddleButtonPressEvent, m_callback);
-        m_interactorStyle->AddObserver(vtkCommand::MiddleButtonReleaseEvent, m_callback);
-        m_interactorStyle->AddObserver(vtkCommand::RightButtonPressEvent, m_callback);
-        m_interactorStyle->AddObserver(vtkCommand::RightButtonReleaseEvent, m_callback);
-        m_interactorStyle->AddObserver(vtkCommand::MouseMoveEvent, m_callback);
-        m_interactorStyle->AddObserver(vtkCommand::MouseWheelForwardEvent, m_callback);
-        m_interactorStyle->AddObserver(vtkCommand::MouseWheelBackwardEvent, m_callback);
-        m_interactorStyle->AddObserver(vtkCommand::KeyPressEvent, m_callback);
-        m_interactorStyle->AddObserver(vtkCommand::KeyReleaseEvent, m_callback);
+        mInteractorStyle->AddObserver(vtkCommand::LeftButtonPressEvent, mCallback);
+        mInteractorStyle->AddObserver(vtkCommand::LeftButtonReleaseEvent, mCallback);
+        mInteractorStyle->AddObserver(vtkCommand::MiddleButtonPressEvent, mCallback);
+        mInteractorStyle->AddObserver(vtkCommand::MiddleButtonReleaseEvent, mCallback);
+        mInteractorStyle->AddObserver(vtkCommand::RightButtonPressEvent, mCallback);
+        mInteractorStyle->AddObserver(vtkCommand::RightButtonReleaseEvent, mCallback);
+        mInteractorStyle->AddObserver(vtkCommand::MouseMoveEvent, mCallback);
+        mInteractorStyle->AddObserver(vtkCommand::MouseWheelForwardEvent, mCallback);
+        mInteractorStyle->AddObserver(vtkCommand::MouseWheelBackwardEvent, mCallback);
+        mInteractorStyle->AddObserver(vtkCommand::KeyPressEvent, mCallback);
+        mInteractorStyle->AddObserver(vtkCommand::KeyReleaseEvent, mCallback);
     }
 }
 
@@ -150,7 +151,7 @@ void FCPropPickerInteractionStyle::HandleVTKEvent(vtkObject* caller, unsigned lo
 void FCPropPickerInteractionStyle::setSelectModel(int m)
 {
     mSelectModel = (SelectModel)m;
-    if (m_interactorStyle) {
+    if (mInteractorStyle) {
         // m_interactorStyle->SetCurrentMode(0);
     }
     if (mActor != nullptr && mProperty != nullptr)
@@ -201,7 +202,7 @@ void FCPropPickerInteractionStyle::OnLeftButtonDown()
     mLeftButtonDown = true;
     mMouseMoved = false;
     
-    vtkRenderWindowInteractor* interactor = m_interactorStyle->GetInteractor();
+    vtkRenderWindowInteractor* interactor = mInteractorStyle->GetInteractor();
     if (interactor) {
         interactor->GetEventPosition(mStartPos);
         qDebug() << "start  " << mStartPos[0] << "   " << mStartPos[1];
@@ -210,7 +211,7 @@ void FCPropPickerInteractionStyle::OnLeftButtonDown()
     mSelected = false;
     
     // 调用原有的左键按下逻辑
-    m_interactorStyle->vtkInteractorStyleRubberBandPick::OnLeftButtonDown();
+    mInteractorStyle->vtkInteractorStyleRubberBandPick::OnLeftButtonDown();
 }
 
 /**
@@ -218,14 +219,14 @@ void FCPropPickerInteractionStyle::OnLeftButtonDown()
  */
 void FCPropPickerInteractionStyle::OnLeftButtonUp()
 {
-    vtkRenderWindowInteractor* interactor = m_interactorStyle->GetInteractor();
+    vtkRenderWindowInteractor* interactor = mInteractorStyle->GetInteractor();
     
     if (mSelectModel == None && !mMouseMoved)
         emit this->clearAllHighLight();
     
     if ((mSelectModel != BoxMeshCell) && (mSelectModel != BoxMeshNode) && (mSelectModel != DrawSketch))
     {
-        m_interactorStyle->vtkInteractorStyleRubberBandPick::OnLeftButtonUp();
+        mInteractorStyle->vtkInteractorStyleRubberBandPick::OnLeftButtonUp();
         return;
     }
     
@@ -248,7 +249,7 @@ void FCPropPickerInteractionStyle::OnLeftButtonUp()
         if (areaPicker) {
             vtkActor* ac = areaPicker->GetActor();
             if (ac == nullptr) {
-                m_interactorStyle->vtkInteractorStyleRubberBandPick::OnLeftButtonUp();
+                mInteractorStyle->vtkInteractorStyleRubberBandPick::OnLeftButtonUp();
                 return;
             }
         }
@@ -257,7 +258,7 @@ void FCPropPickerInteractionStyle::OnLeftButtonUp()
     mMouseMoved = false;
     mLeftButtonDown = false;
     
-    m_interactorStyle->vtkInteractorStyleRubberBandPick::OnLeftButtonUp();
+    mInteractorStyle->vtkInteractorStyleRubberBandPick::OnLeftButtonUp();
 }
 
 /**
@@ -267,7 +268,7 @@ void FCPropPickerInteractionStyle::OnMouseMove()
 {
     mMouseMoved = true;
     
-    vtkRenderWindowInteractor* interactor = m_interactorStyle->GetInteractor();
+    vtkRenderWindowInteractor* interactor = mInteractorStyle->GetInteractor();
     if ((mSelectModel == BoxMeshCell) || (mSelectModel == BoxMeshNode) || (mSelectModel == DrawSketch))
     {
         if (interactor) {
@@ -290,7 +291,7 @@ void FCPropPickerInteractionStyle::OnMouseMove()
         clickSelectGeometry(true);
     }
     
-    m_interactorStyle->vtkInteractorStyleRubberBandPick::OnMouseMove();
+    mInteractorStyle->vtkInteractorStyleRubberBandPick::OnMouseMove();
 }
 
 /**
@@ -303,7 +304,7 @@ void FCPropPickerInteractionStyle::OnMiddleButtonDown()
     
     if ((mSelectModel != BoxMeshCell) && (mSelectModel != BoxMeshNode))
     {
-        m_interactorStyle->vtkInteractorStyleTrackballCamera::OnMiddleButtonDown();
+        mInteractorStyle->vtkInteractorStyleTrackballCamera::OnMiddleButtonDown();
         return;
     }
     
@@ -312,7 +313,7 @@ void FCPropPickerInteractionStyle::OnMiddleButtonDown()
     // else
     //     m_interactorStyle->SetCurrentMode(0);
         
-    m_interactorStyle->vtkInteractorStyleTrackballCamera::OnMiddleButtonDown();
+    mInteractorStyle->vtkInteractorStyleTrackballCamera::OnMiddleButtonDown();
 }
 
 /**
@@ -326,18 +327,18 @@ void FCPropPickerInteractionStyle::OnMiddleButtonUp()
     if (mSelectModel == DrawSketch)
     {
         emit mouseMiddleUp();
-        m_interactorStyle->vtkInteractorStyleTrackballCamera::OnMiddleButtonUp();
+        mInteractorStyle->vtkInteractorStyleTrackballCamera::OnMiddleButtonUp();
         return;
     }
     
     if ((mSelectModel != BoxMeshCell) && (mSelectModel != BoxMeshNode))
     {
-        m_interactorStyle->vtkInteractorStyleTrackballCamera::OnMiddleButtonUp();
+        mInteractorStyle->vtkInteractorStyleTrackballCamera::OnMiddleButtonUp();
         return;
     }
     
     // m_interactorStyle->SetCurrentMode(1);
-    m_interactorStyle->vtkInteractorStyleTrackballCamera::OnMiddleButtonUp();
+    mInteractorStyle->vtkInteractorStyleTrackballCamera::OnMiddleButtonUp();
 }
 
 /**
@@ -345,7 +346,7 @@ void FCPropPickerInteractionStyle::OnMiddleButtonUp()
  */
 void FCPropPickerInteractionStyle::OnMouseWheelForward()
 {
-    m_interactorStyle->vtkInteractorStyleRubberBandPick::OnMouseWheelForward();
+    mInteractorStyle->vtkInteractorStyleRubberBandPick::OnMouseWheelForward();
     emit mouseWhellMove();
 }
 
@@ -354,7 +355,7 @@ void FCPropPickerInteractionStyle::OnMouseWheelForward()
  */
 void FCPropPickerInteractionStyle::OnMouseWheelBackward()
 {
-    m_interactorStyle->vtkInteractorStyleRubberBandPick::OnMouseWheelBackward();
+    mInteractorStyle->vtkInteractorStyleRubberBandPick::OnMouseWheelBackward();
     emit mouseWhellMove();
 }
 
@@ -371,7 +372,7 @@ void FCPropPickerInteractionStyle::OnRightButtonDown()
     // {
     //     emit rightDownMenu();
     // }
-    m_interactorStyle->vtkInteractorStyleRubberBandPick::OnRightButtonDown();
+    mInteractorStyle->vtkInteractorStyleRubberBandPick::OnRightButtonDown();
 }
 
 /**
@@ -381,7 +382,7 @@ void FCPropPickerInteractionStyle::OnRightButtonUp()
 {
     mMouseMoved = false;
     mLeftButtonDown = false;
-    m_interactorStyle->vtkInteractorStyleRubberBandPick::OnRightButtonUp();
+    mInteractorStyle->vtkInteractorStyleRubberBandPick::OnRightButtonUp();
     emit mouseRightUp();
 }
 
@@ -451,7 +452,7 @@ void FCPropPickerInteractionStyle::OnKeyBoardDown()
  */
 void FCPropPickerInteractionStyle::clickSelectGeometry(bool preSelect)
 {
-    vtkRenderWindowInteractor* interactor = m_interactorStyle->GetInteractor();
+    vtkRenderWindowInteractor* interactor = mInteractorStyle->GetInteractor();
     if (!interactor) return;
     
     int* clickPos = interactor->GetEventPosition();
@@ -461,7 +462,7 @@ void FCPropPickerInteractionStyle::clickSelectGeometry(bool preSelect)
     if (mSelectModel == GeometryPoint || mSelectModel == GeometryWinPoint)
     {
         vtkSmartPointer<vtkPointPicker> picker = vtkSmartPointer<vtkPointPicker>::New();
-        success = picker->Pick(clickPos[0], clickPos[1], 0, m_interactorStyle->GetDefaultRenderer());
+        success = picker->Pick(clickPos[0], clickPos[1], 0, mInteractorStyle->GetDefaultRenderer());
         if (0 != success)
         {
             index = picker->GetPointId();
@@ -473,7 +474,7 @@ void FCPropPickerInteractionStyle::clickSelectGeometry(bool preSelect)
         vtkSmartPointer<vtkCellPicker> picker = vtkSmartPointer<vtkCellPicker>::New();
         if (mSelectModel == GeometryCurve || mSelectModel == GeometryWinCurve)
             picker->SetTolerance(0.0025);
-        success = picker->Pick(clickPos[0], clickPos[1], 0, m_interactorStyle->GetDefaultRenderer());
+        success = picker->Pick(clickPos[0], clickPos[1], 0, mInteractorStyle->GetDefaultRenderer());
         if (0 != success)
         {
             index = picker->GetCellId();
@@ -490,12 +491,12 @@ void FCPropPickerInteractionStyle::clickSelectMeshNode()
 {
     emit clearAllHighLight();
     
-    vtkRenderWindowInteractor* interactor = m_interactorStyle->GetInteractor();
+    vtkRenderWindowInteractor* interactor = mInteractorStyle->GetInteractor();
     if (!interactor) return;
     
     int* clickPos = interactor->GetEventPosition();
     vtkSmartPointer<vtkPointPicker> picker = vtkSmartPointer<vtkPointPicker>::New();
-    picker->Pick(clickPos[0], clickPos[1], 0, m_interactorStyle->GetDefaultRenderer());
+    picker->Pick(clickPos[0], clickPos[1], 0, mInteractorStyle->GetDefaultRenderer());
     if (picker->GetPointId() >= 0)
     {
         if (!mCtrlPressed)
@@ -516,12 +517,12 @@ void FCPropPickerInteractionStyle::clickSelectMeshCell()
 {
     emit clearAllHighLight();
     
-    vtkRenderWindowInteractor* interactor = m_interactorStyle->GetInteractor();
+    vtkRenderWindowInteractor* interactor = mInteractorStyle->GetInteractor();
     if (!interactor) return;
     
     int* clickPos = interactor->GetEventPosition();
     vtkSmartPointer<vtkCellPicker> picker = vtkSmartPointer<vtkCellPicker>::New();
-    picker->Pick(clickPos[0], clickPos[1], 0, m_interactorStyle->GetDefaultRenderer());
+    picker->Pick(clickPos[0], clickPos[1], 0, mInteractorStyle->GetDefaultRenderer());
     if (picker->GetCellId() >= 0)
     {
         if (!mCtrlPressed)

@@ -11,6 +11,7 @@
 #include <QDebug>
 #include <QColor>
 #include <QDir>
+#include <QVBoxLayout>
 #include <assert.h>
 // vtk
 #include <QVTKOpenGLNativeWidget.h>
@@ -49,9 +50,14 @@ namespace FC
 {
 
 
-FCGraph3DWindow::FCGraph3DWindow(int id, GraphWindowType type, bool connectToMainwindow)
-: FCGraphWindowBase(id, type)
+FCGraph3DWindow::FCGraph3DWindow(int id,QWidget* parent)
+: FCGraphWindowBase(id, parent)
 {
+    QVBoxLayout *layout = new QVBoxLayout(this);
+    mVTKWidget = new QVTKOpenGLNativeWidget(this);
+    layout->setContentsMargins(2, 2, 2, 2);  // 去掉边距
+    layout->addWidget(mVTKWidget);
+    
     init();
     mRender->GlobalWarningDisplayOff();
     this->setFocusPolicy(Qt::ClickFocus);
@@ -88,8 +94,8 @@ void FCGraph3DWindow::init()
     
     mRender = vtkSmartPointer<vtkRenderer>::New();
     mRender->SetGradientBackground(true);
-    // 		_render->SetBackground2(0.0, 0.333, 1.0);
-    // 		_render->SetBackground(1.0, 1.0, 1.0);
+    mRender->SetBackground2(250/255.0, 251/255.0, 254/255.0);
+    mRender->SetBackground(230/255.0, 242/255.0, 255/255.0);
     mInteractor = mRenderWindow->GetInteractor();
     mRenderWindow->AddRenderer(mRender);
     // if (_graphWindowType == PreWindows)

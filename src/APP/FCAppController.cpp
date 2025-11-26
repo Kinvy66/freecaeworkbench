@@ -165,7 +165,7 @@ void FCAppController::initConnection()
     FCGraphicOperateWidget* grapicWidget = mDock->getGraphicOperateWidget();
     FCSettingParametersWidget* settingsWidget = mDock->getSettingParametersWidget();
     connect(settingsWidget, &FCSettingParametersWidget::boxModelCreated,
-            grapicWidget, &FCGraphicOperateWidget::showModel);
+            grapicWidget, &FCGraphicOperateWidget::showGeoSet);
 }
 
 

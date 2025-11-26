@@ -14,11 +14,15 @@
 namespace FC 
 {
 
+class FCGeometryData;
 class FCGeometrySet;
+class FCGeometryViewProvider;
+
 class FCGRAPHICSVIEW_API FCGraphViewWindow : public FCGraph3DWindow
 {
+    Q_OBJECT
 public:
-    FCGraphViewWindow(int id = -1, GraphWindowType type = PreWindows);
+    FCGraphViewWindow(int id = -1, QWidget* parent = nullptr);
     ~FCGraphViewWindow();
     
     //获取选择的几何
@@ -72,7 +76,7 @@ public slots:
     //选择网格类型
     void setDisplay();
     //更新网格渲染
-    //		void updateMeshActor();
+    void updateMeshActor();
     //
     void highLighSet(QMultiHash<int, int> *items);
     //更新几何渲染
@@ -92,18 +96,18 @@ private slots:
     void startSketch(bool start, double *loc, double *dir);
     
 private:
-    // QList<vtkActor*> _meshActors{};
-    // QList<vtkActor*> _geometryActors{};
-    SelectModel _selectModel;
-    QMultiHash<vtkDataSet *, int> *_selectItems{};
+    QList<vtkActor*> mMeshActors{};
+    QList<vtkActor*> mGeometryActors{};
+    SelectModel mSelectModel;
+    QMultiHash<vtkDataSet *, int> *mSelectItems{};
     //
     // MeshData::MeshData *_meshData{};
-    // Geometry::GeometryData *_geometryData{};
+    FCGeometryData *mGeometryData{};
     
     // ModelData::ModelDataSingleton *_modelData{};
-    int _selectedGeoIndex{-1};
+    int mSelectedGeoIndex{-1};
     
-    // GeometryViewProvider *_geoProvider{};
+    FCGeometryViewProvider *mGeoProvider{};
     // MeshViewProvider *_meshProvider{};
     // SketchViewProvider *_sketchProvider{};
 };

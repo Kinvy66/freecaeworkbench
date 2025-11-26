@@ -44,7 +44,7 @@ public:
     
     // 获取VTK交互样式
     vtkInteractorStyleRubberBandPick* GetInteractorStyle() { 
-        return m_interactorStyle; 
+        return mInteractorStyle; 
     }
     
     // 设置渲染窗口和渲染器
@@ -105,7 +105,7 @@ private:
     void HandleVTKEvent(vtkObject* caller, unsigned long eventId, void* callData);
     void SetupCallbacks();
     
-    // 原保护方法转为私有
+    // 鼠标事件
     void OnLeftButtonDown();
     void OnLeftButtonUp();
     void OnMiddleButtonDown();
@@ -121,8 +121,8 @@ private:
     bool isActorHightLighted(vtkActor* ac);
     
 private:
-    vtkSmartPointer<vtkInteractorStyleRubberBandPick> m_interactorStyle;
-    vtkSmartPointer<CommandCallback> m_callback;
+    vtkSmartPointer<vtkInteractorStyleRubberBandPick> mInteractorStyle;
+    vtkSmartPointer<CommandCallback> mCallback;
     
     vtkActor* mActor{};
     vtkProperty* mProperty{};
