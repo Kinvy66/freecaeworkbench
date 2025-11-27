@@ -149,6 +149,7 @@ public Q_SLOTS:
     void resetLayout();
     
     void createCube();
+    void createCylinder();
     
     
 private Q_SLOTS:

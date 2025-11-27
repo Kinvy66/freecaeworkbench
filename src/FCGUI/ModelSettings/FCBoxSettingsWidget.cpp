@@ -9,6 +9,7 @@
 #include "FCBoxSettingsWidget.h"
 #include "ui_FCBoxSettingsWidget.h"
 #include "FCGeometryCreateBox.h"
+#include "FCGeometrySet.h"
 
 namespace FC 
 {

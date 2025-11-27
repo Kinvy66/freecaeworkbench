@@ -16,19 +16,21 @@
 
 #include <QObject>
 #include "FCGeometryModelCreatorAPI.h"
+#include "FCGeometryData.h"
 
 class TopoDS_Shape;
 
 namespace FC 
 {
+class FCGeometryData;
+class FCGeometrySet;
+
     // 几何模型类型
     enum GeometryModelType
     {
         D3Feature, ///< 三维特征
         Sketch,	   ///< 草绘特征
     };
-
-class FCGeometrySet;
 
 class FCGEOMETRYMODELCREATOR_API FCGeometryModelBase : public QObject
 {
@@ -42,37 +44,44 @@ public:
      * @brief 析构函数
      */
     ~FCGeometryModelBase() = default;
+    
     /**
      * @brief 命令执行调用的函数
      * @return bool 返回执行结果
      */
     virtual bool execute() = 0;
+    
     /**
      * @brief 撤销操作
      */
     virtual void undo();
+    
     /**
      * @brief 重做操作
      */
     virtual void redo();
+    
     virtual void releaseResult();
+    
     /**
      * @brief 获取命令执行后的结果形状
      * @return TopoDS_Shape* 返回结果形状
      */
     TopoDS_Shape *getResultShape();
+    
     /**
      * @brief 获取命令类型
      * @return CommandType 返回命令类型
      */
     GeometryModelType getGeometryModelType() const;
-    // void setEditData(Geometry::GeometrySet *set);
+    
+    void setEditData(FCGeometrySet *set);
     
 signals:
     void updateGeoTree();
     void showSet(FCGeometrySet *s, bool r = true);
     // void showDatum(Geometry::GeometryDatum *);
-    // void removeDisplayActor(Geometry::GeometrySet *s);
+    void removeDisplayActor(FCGeometrySet *s);
     // void removeDisplayDatumActor(Geometry::GeometryDatum *);
     /**
      * @brief 命令执行后会触发此信号
@@ -95,14 +104,14 @@ protected:
      */
     TopoDS_Shape *mResShape{};
     
-    // GeometryData *_geoData{};
+    FCGeometryData *mGeoData{};
     /**
      * @brief 命令列表
      */
     // GeoComandList *_commandList{};
     
     bool mIsEdit{false};
-    // Geometry::GeometrySet *_editSet{};
+    FCGeometrySet* mEditSet{};
 };
 } // namespace FC
 

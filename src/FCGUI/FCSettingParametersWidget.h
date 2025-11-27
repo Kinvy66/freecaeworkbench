@@ -12,6 +12,8 @@
 #include <QWidget>
 #include "FCGuiAPI.h"
 
+class QVBoxLayout;
+
 namespace FC 
 {
 class FCGeometrySet;
@@ -24,10 +26,19 @@ public:
     ~FCSettingParametersWidget();
     
     void createCube();
+    void createCylinder();
+    
+private:
+    void setCurrentWidget(QWidget* w);
     
 signals:
     void boxModelCreated(FCGeometrySet* set, bool r);
+    void geometryModelCreated(FCGeometrySet* set, bool r);
     
+private:
+    
+    QVBoxLayout* mLayout = nullptr;
+    QWidget* mCurrentWidget = nullptr;
 };
 } // namespace FC
 

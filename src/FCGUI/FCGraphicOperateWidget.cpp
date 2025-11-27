@@ -52,28 +52,6 @@ FCGraphicOperateWidget::FCGraphicOperateWidget(QWidget *parent)
  : QWidget(parent)
 {
     
-    
-    // mVTKWidget = new QVTKOpenGLNativeWidget(this);
-    // // 使用布局让 _pVTKWidget 填满整个 FCGraphicOperateWidget
-    
-    // QVBoxLayout *layout = new QVBoxLayout(this);
-    // layout->setContentsMargins(3, 3, 3, 3);  // 去掉边距
-    // // layout->addWidget(mVTKWidget);
-    // layout->addWidget(mGraphViewWindow);
-    
-    // mRenderer = vtkSmartPointer<vtkRenderer>::New();
-    
-    // mRenderer->SetBackground(1.0, 1.0, 1.0);
-    
-    // mVTKWidget->renderWindow()->AddRenderer(mRenderer);
-    
-    // vtkSmartPointer<vtkInteractorStyleTrackballCamera> interractor =
-    //     vtkSmartPointer<vtkInteractorStyleTrackballCamera>::New();
-    
-    // interractor->SetDefaultRenderer(mRenderer);
-    // mVTKWidget->interactor()->SetInteractorStyle(interractor);
-    
-    
     mGraphViewWindow = new FCGraphViewWindow(-1, this);
     
     QVBoxLayout *layout = new QVBoxLayout(this);

@@ -160,11 +160,16 @@ void FCAppController::initConnection()
     FCAPPCONTROLLER_ACTION_BIND(mActions->actionSaveAs, saveAs);
     FCAPPCONTROLLER_ACTION_BIND(mActions->actionResetLayout, resetLayout);
     FCAPPCONTROLLER_ACTION_BIND(mActions->actionCreateCube, createCube);
+    FCAPPCONTROLLER_ACTION_BIND(mActions->actionCreateCylinder, createCylinder);
+    
     // FCAPPCONTROLLER_ACTION_BIND(mActions->actionAppendProject, onActionAppendProjectTriggered);
     
     FCGraphicOperateWidget* grapicWidget = mDock->getGraphicOperateWidget();
     FCSettingParametersWidget* settingsWidget = mDock->getSettingParametersWidget();
     connect(settingsWidget, &FCSettingParametersWidget::boxModelCreated,
+            grapicWidget, &FCGraphicOperateWidget::showGeoSet);
+    
+    connect(settingsWidget, &FCSettingParametersWidget::geometryModelCreated,
             grapicWidget, &FCGraphicOperateWidget::showGeoSet);
 }
 
@@ -263,6 +268,12 @@ void FCAppController::resetLayout()
 void FCAppController::createCube()
 {
     mDock->getSettingParametersWidget()->createCube();
+}
+
+void FCAppController::createCylinder()
+{
+    mDock->getSettingParametersWidget()->createCylinder();
+    
 }
 
 void FCAppController::onActionAddDataTriggered()

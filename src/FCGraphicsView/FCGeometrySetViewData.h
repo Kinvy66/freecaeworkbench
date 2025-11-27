@@ -1,5 +1,13 @@
-#ifndef FCGEOMETRYSETVIEWOBJECT_H
-#define FCGEOMETRYSETVIEWOBJECT_H
+/**
+ * @file FCGeometrySetViewData.h
+ * @brief 几何集合可视化对象
+ * @date 2025-11-26
+ * @version V0.0.1
+ * @details 管理一个几何集合模型的基础图元(点、线、面、体）
+ * @copyright Copyright (c) 2025 Kinvy. All rights reserved.
+ */
+#ifndef FCGEOMETRYSETVIEWDATA_H
+#define FCGEOMETRYSETVIEWDATA_H
 
 #include "FCGraphicsViewGlobal.h"
 #include <QHash>
@@ -17,11 +25,11 @@ class FCGeometryViewObject;
 class FCGeometrySet;
 class FCGeometryData;
 
-class FCGRAPHICSVIEW_API FCGeometrySetViewObject
+class FCGRAPHICSVIEW_API FCGeometrySetViewData
 {
 public:
-    FCGeometrySetViewObject(FCGeometrySet* set);
-    ~FCGeometrySetViewObject();
+    FCGeometrySetViewData(FCGeometrySet* set);
+    ~FCGeometrySetViewData();
     FCGeometrySet* getGeometrySet();
     
     void setFacePoly(vtkPolyData* p);
@@ -70,4 +78,4 @@ private:
 
 
 
-#endif // FCGEOMETRYSETVIEWOBJECT_H
+#endif // FCGEOMETRYSETVIEWDATA_H

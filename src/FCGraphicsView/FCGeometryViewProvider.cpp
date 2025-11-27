@@ -1,9 +1,11 @@
 /**
  * @file FCGeometryViewProvider.cpp
- * @brief 
+ * @brief 几何模型可视化管理器
  * @date 2025-11-26
  * @version V0.0.1
- * @details 
+ * @details 功能：FCGeometryViewProvider 是几何模块的「可视化管理器」，
+ * 负责把 OCCT 的几何对象（FCGeometrySet）转换为 VTK Actor 并管理其
+ * 显示、隐藏、选中、高亮等图形状态。 
  * @copyright Copyright (c) 2025 Kinvy. All rights reserved.
  */
 #include "FCGeometryViewProvider.h"
@@ -70,7 +72,9 @@ FCGeometryViewProvider::FCGeometryViewProvider(FCGraphViewWindow* viewWindow, QO
 
 FCGeometryViewProvider::~FCGeometryViewProvider()
 {
-    
+    // 手动管理没有继承qt类的对象
+    if (mViewData != nullptr)
+        delete mViewData;
 }
 
 void FCGeometryViewProvider::updateGeoActors()
@@ -80,25 +84,6 @@ void FCGeometryViewProvider::updateGeoActors()
 
 void FCGeometryViewProvider::updateGraphOption()
 {
-    // _viewData->updateGraphOption();
-    // QList<GeoViewObj> vieobjs = _geoViewHash.values();
-    // int trans = Setting::BusAPI::instance()->getGraphOption()->getTransparency();
-    // float ps = Setting::BusAPI::instance()->getGraphOption()->getGeoPointSize();
-    // float cw = Setting::BusAPI::instance()->getGraphOption()->getGeoCurveWidth();
-    // for (GeoViewObj object : vieobjs)
-    // {
-    //     vtkActor *actor = nullptr;
-    //     actor = object._faceObj.first;
-    //     if (actor != nullptr)
-    //         actor->GetProperty()->SetOpacity(1.0 - trans / 100.00);
-    //     actor = object._edgeObj.first;
-    //     if (actor != nullptr)
-    //         actor->GetProperty()->SetLineWidth(cw);
-    //     actor = object._pointObj.first;
-    //     if (actor != nullptr)
-    //         actor->GetProperty()->SetLineWidth(ps);
-    // }
-    // _preWindow->reRender();
 }
 
 void FCGeometryViewProvider::updateDiaplayStates(FCGeometrySet *s, bool visibility)
@@ -120,8 +105,14 @@ QMultiHash<FCGeometrySet *, int> FCGeometryViewProvider::getGeoSelectItems()
     return setHash;
 }
 
+/**
+ * @brief 显示几何模型
+ * @param set
+ * @param render
+ */
 void FCGeometryViewProvider::showGeoSet(FCGeometrySet *set, bool render)
 {
+    removeAllActors();
     QList<vtkPolyData *> viewPolys = mViewData->transferToPoly(set);
     vtkPolyData *facePoly = viewPolys.at(0);
     vtkPolyData *edgePoly = viewPolys.at(1);
@@ -187,9 +178,24 @@ void FCGeometryViewProvider::showDatum(FCGeometrySet *datm)
     
 }
 
+/**
+ * @brief 从vtk渲染窗口中移除指定的几何actor
+ * @param set
+ */
 void FCGeometryViewProvider::removeActors(FCGeometrySet *set)
 {
-    
+    if (!mGeoViewHash.contains(set))
+        return;
+    GeoViewObj views = mGeoViewHash.value(set);
+    mGeoViewHash.remove(set);
+    vtkActor *ac = views.mFaceObj.first;
+    mGraphViewWindow->RemoveActor(ac);
+    ac = views.mEdgeObj.first;
+    mGraphViewWindow->RemoveActor(ac);
+    ac = views.mPointObj.first;
+    mGraphViewWindow->RemoveActor(ac);
+    mGraphViewWindow->reRender();
+    mViewData->removeViewObjs(set);
 }
 
 void FCGeometryViewProvider::setGeometryDisplay(bool v, bool c, bool f)
@@ -244,7 +250,62 @@ void FCGeometryViewProvider::clearAllHighLight()
 
 void FCGeometryViewProvider::init()
 {
+    const int n = mGeoData->getGeometrySetCount();
+    for (int i = 0; i < n; ++i)
+    {
+        FCGeometrySet *set = mGeoData->getGeometrySetAt(i);
+        TopoDS_Shape *shape = set->getShape();
+        if (shape == nullptr)
+            continue;
+        showGeoSet(set, false);
+    }
+    mGraphViewWindow->resetCamera();
+    QList<FCGeometryDatum *> dl = mGeoData->getGeometryDatum();
+    for (auto da : dl)
+    {
+        TopoDS_Shape *shape = da->getShape();
+        if (shape == nullptr)
+            continue;
+        showDatum(da);
+    }
+}
+
+void FCGeometryViewProvider::removeAllActors()
+{
+    // 遍历 mGeoViewHash 中的所有 GeoViewObj
+    for (auto it = mGeoViewHash.begin(); it != mGeoViewHash.end(); ++it)
+    {
+        GeoViewObj views = it.value();
+        
+        // 移除 Face Actor
+        if (views.mFaceObj.first != nullptr)
+        {
+            mGraphViewWindow->RemoveActor(views.mFaceObj.first);
+        }
+        
+        // 移除 Edge Actor
+        if (views.mEdgeObj.first != nullptr)
+        {
+            mGraphViewWindow->RemoveActor(views.mEdgeObj.first);
+        }
+        
+        // 移除 Point Actor
+        if (views.mPointObj.first != nullptr)
+        {
+            mGraphViewWindow->RemoveActor(views.mPointObj.first);
+        }
+        
+        // 删除对应的 ViewData
+        mViewData->removeViewObjs(it.key());
+    }
     
+    // 清空 Hash
+    mGeoViewHash.clear();
+    
+    // 触发重新渲染
+    mGraphViewWindow->reRender();
+    
+    qDebug() << "FCGeometryViewProvider::removeAllActors -- All actors removed";
 }
 
 } // namespace FC

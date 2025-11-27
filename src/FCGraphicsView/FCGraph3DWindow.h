@@ -91,6 +91,7 @@ public:
 public slots:
     //重绘
     void reRender();
+    void toggleProjection();
     
 protected slots:
     void setSelectType(int model);

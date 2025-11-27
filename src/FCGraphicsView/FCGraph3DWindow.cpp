@@ -13,6 +13,7 @@
 #include <QDir>
 #include <QVBoxLayout>
 #include <assert.h>
+#include <QPushButton>
 // vtk
 #include <QVTKOpenGLNativeWidget.h>
 #include <vtkRenderWindow.h>
@@ -54,17 +55,30 @@ FCGraph3DWindow::FCGraph3DWindow(int id,QWidget* parent)
 : FCGraphWindowBase(id, parent)
 {
     QVBoxLayout *layout = new QVBoxLayout(this);
-    mVTKWidget = new QVTKOpenGLNativeWidget(this);
     layout->setContentsMargins(2, 2, 2, 2);  // 去掉边距
-    layout->addWidget(mVTKWidget);
+    
+    // ===== 新增：按钮行 =====
+    QHBoxLayout *topBar = new QHBoxLayout();
+    QPushButton *btnProjection = new QPushButton("切换投影模式", this);
+    topBar->addWidget(btnProjection);
+    topBar->addStretch();    // 靠左
+    layout->addLayout(topBar);
+    
+    
+    // ===== VTK Widget =====
+    mVTKWidget = new QVTKOpenGLNativeWidget(this);
+    layout->addWidget(mVTKWidget);;
     
     init();
     mRender->GlobalWarningDisplayOff();
     this->setFocusPolicy(Qt::ClickFocus);
-    // connect(_mainWindow, SIGNAL(enableGraphWindowKeyBoard(bool)), this, SLOT(enableKeyBoard(bool)));
-    // connect(this, SIGNAL(reRenderSig()), this, SLOT(reRender()));
     vtkCamera *camera = mRender->GetActiveCamera();
-    camera->SetParallelProjection(1);
+    camera->SetParallelProjection(false);
+    
+    // ===== 信号槽：切换投影 =====
+    // connect(btnProjection, &QPushButton::clicked, this, [this]() {
+    //     this->toggleProjection();
+    // });
 }
 
 
@@ -98,34 +112,6 @@ void FCGraph3DWindow::init()
     mRender->SetBackground(230/255.0, 242/255.0, 255/255.0);
     mInteractor = mRenderWindow->GetInteractor();
     mRenderWindow->AddRenderer(mRender);
-    // if (_graphWindowType == PreWindows)
-    // {
-    //     FCPropPickerInteractionStyle *style = PropPickerInteractionStyle::New();
-    //     style->connectToMainWindow(_mainWindow, this);
-    //     style->SetDefaultRenderer(_render);
-    //     style->setRender(_render);
-    //     style->setRenderWindow(_renderWindow);
-    //     _interactor->SetInteractorStyle(style);
-    //     vtkSmartPointer<vtkAreaPicker> areaPicker = vtkSmartPointer<vtkAreaPicker>::New();
-    //     _interactor->SetPicker(areaPicker);
-    //     _interactionStyle = style;
-        
-    //     //关联信号
-    //     //			connect(style, SIGNAL(selectGeometry(bool)), this, SIGNAL(selectGeometry(bool)));
-    //     connect(style, SIGNAL(selectGeometry(bool, vtkActor *, int)), this, SIGNAL(selectGeometry(bool, vtkActor *, int)));
-        
-    //     connect(this, SIGNAL(keyEvent(int, QKeyEvent *)), style, SLOT(keyEvent(int, QKeyEvent *)));
-    //     connect(style, SIGNAL(highLight(QMultiHash<int, int> *)), this, SIGNAL(highLighSet(QMultiHash<int, int> *)));
-    //     //			connect(style, SIGNAL(higtLightActorDisplayPoint(bool)), this, SIGNAL(highLightActorDispalyPoint(bool)));
-    //     connect(style, SIGNAL(clearAllHighLight()), this, SIGNAL(clearAllHighLight()));
-        
-    //     connect(_mainWindow, SIGNAL(selectModelChangedSig(int)), this, SLOT(setSelectType(int)));
-    //     //
-    //     connect(style, SIGNAL(grabKeyBoard(bool)), this, SLOT(enableKeyBoard(bool)));
-    //     connect(style, SIGNAL(mouseWhellMove()), this, SLOT(mouseWheelMove()));
-    //     connect(style, SIGNAL(rightDownMenu()), this, SIGNAL(rightDownMenuSig()));
-    // }
-    
     initAxes();
     updateGraphOption();
 }
@@ -384,6 +370,21 @@ void FCGraph3DWindow::addCaption(double *pos, QString cap)
 
 void FCGraph3DWindow::reRender()
 {
+    mRenderWindow->Render();
+}
+
+void FCGraph3DWindow::toggleProjection()
+{
+    vtkCamera* cam = mRender->GetActiveCamera();
+    bool isParallel = cam->GetParallelProjection();
+    
+    cam->SetParallelProjection(!isParallel);   // 切换
+    
+    if (isParallel)
+        qDebug() << "Parallel";
+    else
+        qDebug() << "Parallel false";
+    
     mRenderWindow->Render();
 }
 

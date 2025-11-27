@@ -10,6 +10,7 @@
 #include <QLabel>
 #include <QVBoxLayout>
 #include "FCBoxSettingsWidget.h"
+#include "FCCylinderSettingsWidget.h"
 
 namespace FC 
 {
@@ -19,6 +20,8 @@ FCSettingParametersWidget::FCSettingParametersWidget(QWidget *parent)
 {
     // QLabel* lab = new QLabel(this);
     // lab->setText("Setting Docking");
+    mLayout = new QVBoxLayout(this);
+    
 }
 
 FCSettingParametersWidget::~FCSettingParametersWidget()
@@ -28,13 +31,31 @@ FCSettingParametersWidget::~FCSettingParametersWidget()
 
 void FCSettingParametersWidget::createCube()
 {
-    QVBoxLayout* vLayout = new QVBoxLayout(this);
     FCBoxSettingsWidget* cubeSettingsWidget = new FCBoxSettingsWidget(this);
     connect(cubeSettingsWidget, &FCBoxSettingsWidget::boxModelCreated,
             this, &FCSettingParametersWidget::boxModelCreated);
     
+    setCurrentWidget(cubeSettingsWidget);
     
-    vLayout->addWidget(cubeSettingsWidget);
+}
+
+void FCSettingParametersWidget::createCylinder()
+{
+    FCCylinderSettingsWidget* cylinderSettingsWidget = new FCCylinderSettingsWidget(this);
+    connect(cylinderSettingsWidget, &FCCylinderSettingsWidget::modelCreated,
+            this, &FCSettingParametersWidget::geometryModelCreated);
+    
+    setCurrentWidget(cylinderSettingsWidget);
+}
+
+void FCSettingParametersWidget::setCurrentWidget(QWidget *w)
+{
+    if (mCurrentWidget) {
+        mLayout->removeWidget(mCurrentWidget);
+        mCurrentWidget->deleteLater();
+    }
+    mCurrentWidget = w;
+    mLayout->addWidget(w);
 }
 
 } // namespace FC

@@ -1,6 +1,6 @@
 /**
  * @file FCGeometryViewData.h
- * @brief 
+ * @brief 几何对象可视化管理类
  * @date 2025-11-26
  * @version V0.0.1
  * @details 
@@ -25,7 +25,7 @@ namespace FC
 class FCGeometryViewObject;
 class FCGeometryData;
 class FCGeometrySet;
-class FCGeometrySetViewObject;
+class FCGeometrySetViewData;
 
 class FCGRAPHICSVIEW_API FCGeometryViewData
 {
@@ -57,18 +57,16 @@ private:
     vtkPolyData *transferFace(FCGeometrySet *gset);
     vtkPolyData *transferEdge(FCGeometrySet *gset);
     vtkPolyData *transferPoint(FCGeometrySet *gset);
-    FCGeometrySetViewObject *getGeosetObj(FCGeometrySet *set);
+    FCGeometrySetViewData *getGeosetObj(FCGeometrySet *set);
     
     vtkCell *getLineCellIn(vtkPolyData *p);
     int getIndexInPoly(vtkPolyData *part, vtkPolyData *poly, QList<int> lineIndexs);
     bool isSameCell(vtkKdTree *tree, vtkCell *cell, vtkPolyData *allPoly);
     
 private:
-    FCGeometryViewObject *mPreViewObjct{};
-    QHash<FCGeometrySet *, FCGeometrySetViewObject *> mViewObjs{};
+    FCGeometryViewObject *mViewObject{};
+    QHash<FCGeometrySet *, FCGeometrySetViewData *> mViewObjs{};
 };
 } // namespace FC
-
-
 
 #endif // FCGEOMETRYVIEWDATA_H

@@ -1,13 +1,13 @@
 /**
  * @file FCGeometryViewData.cpp
- * @brief 
+ * @brief 几何对象可视化管理类
  * @date 2025-11-26
  * @version V0.0.1
  * @details 
  * @copyright Copyright (c) 2025 Kinvy. All rights reserved.
  */
 #include "FCGeometryViewData.h"
-#include "FCGeometrySetViewObject.h"
+#include "FCGeometrySetViewData.h"
 #include "FCGeometryViewObject.h"
 #include "FCGeometrySet.h"
 #include <QDebug>
@@ -38,17 +38,26 @@
 namespace FC 
 {
 
+/**
+ * @brief 析构函数
+ * @note 手动释放没有被qt对象树管理的对象实例
+ */
 FCGeometryViewData::~FCGeometryViewData()
 {
-    QList<FCGeometrySetViewObject *> setViews = mViewObjs.values();
+    QList<FCGeometrySetViewData *> setViews = mViewObjs.values();
     for (auto v : setViews)
         delete v;
     mViewObjs.clear();
 }
 
+/**
+ * @brief occt topo_ds转换成vtkPolyData
+ * @param gset occt topo_ds以及对应的参数
+ * @return 
+ */
 QList<vtkPolyData *> FCGeometryViewData::transferToPoly(FCGeometrySet *gset)
 {
-    removeViewObjs(gset);
+    removeViewObjs(gset);  // 删除旧的 View 数据
     QList<vtkPolyData *> polys;
     auto p = this->transferFace(gset);
     polys.append(p);
@@ -61,6 +70,10 @@ QList<vtkPolyData *> FCGeometryViewData::transferToPoly(FCGeometrySet *gset)
     return polys;
 }
 
+/**
+ * @brief 移除可视化对象
+ * @param gset
+ */
 void FCGeometryViewData::removeViewObjs(FCGeometrySet *gset)
 {
     if (!mViewObjs.contains(gset))
@@ -70,13 +83,22 @@ void FCGeometryViewData::removeViewObjs(FCGeometrySet *gset)
     delete obj;
 }
 
+/**
+ * @brief 更新显示配置
+ * @note 主要是更新颜色
+ */
 void FCGeometryViewData::updateGraphOption()
 {
-    QList<FCGeometrySetViewObject *> setViews = mViewObjs.values();
+    QList<FCGeometrySetViewData *> setViews = mViewObjs.values();
     for (auto setView : setViews)
         setView->resetColor();
 }
 
+/**
+ * @brief 高亮显示
+ * @param set
+ * @param on
+ */
 void FCGeometryViewData::highLight(FCGeometrySet *set, bool on)
 {
     auto setView = mViewObjs.value(set);
@@ -84,6 +106,12 @@ void FCGeometryViewData::highLight(FCGeometrySet *set, bool on)
         setView->highLight(on);
 }
 
+/**
+ * @brief 高亮显示面
+ * @param set
+ * @param index
+ * @param on
+ */
 void FCGeometryViewData::highLightFace(FCGeometrySet *set, int index, bool on)
 {
     auto setView = mViewObjs.value(set);
@@ -91,6 +119,12 @@ void FCGeometryViewData::highLightFace(FCGeometrySet *set, int index, bool on)
         setView->highLightFace(index, on);
 }
 
+/**
+ * @brief 高亮显示边
+ * @param set
+ * @param index
+ * @param on
+ */
 void FCGeometryViewData::highLightEdge(FCGeometrySet *set, int index, bool on)
 {
     auto setView = mViewObjs.value(set);
@@ -98,6 +132,12 @@ void FCGeometryViewData::highLightEdge(FCGeometrySet *set, int index, bool on)
         setView->highLightEdge(index, on);
 }
 
+/**
+ * @brief 高亮显示点
+ * @param set
+ * @param index
+ * @param on
+ */
 void FCGeometryViewData::highLightPoint(FCGeometrySet *set, int index, bool on)
 {
     auto setView = mViewObjs.value(set);
@@ -105,6 +145,12 @@ void FCGeometryViewData::highLightPoint(FCGeometrySet *set, int index, bool on)
         setView->highLightPoint(index, on);
 }
 
+/**
+ * @brief 高亮显示实体
+ * @param set
+ * @param index
+ * @param on
+ */
 void FCGeometryViewData::highLightSolid(FCGeometrySet *set, int index, bool on)
 {
     auto setView = mViewObjs.value(set);
@@ -112,6 +158,12 @@ void FCGeometryViewData::highLightSolid(FCGeometrySet *set, int index, bool on)
         setView->highLightSolid(index, on);
 }
 
+/**
+ * @brief 获取实体的可视化对象
+ * @param solidPoly
+ * @param cellIndex
+ * @return 
+ */
 FCGeometryViewObject *FCGeometryViewData::getSolidViewObj(vtkPolyData *solidPoly, int cellIndex)
 {
     
@@ -119,16 +171,22 @@ FCGeometryViewObject *FCGeometryViewData::getSolidViewObj(vtkPolyData *solidPoly
     if (face == nullptr)
         return nullptr;
     int faceIndex = face->getIndex();
-    FCGeometrySetViewObject *sv = face->getGeoSetViewObject();
+    FCGeometrySetViewData *sv = face->getGeoSetViewObject();
     if (sv == nullptr || faceIndex < 0)
         return nullptr;
     return sv->getSolidViewObjByFaceIndex(faceIndex);
 }
 
+/**
+ * @brief 获取面的可视化对象
+ * @param facePoly
+ * @param cellIndex
+ * @return 
+ */
 FCGeometryViewObject *FCGeometryViewData::getFaceViewObj(vtkPolyData *facePoly, int cellIndex)
 {
-    QList<FCGeometrySetViewObject *> setViews = mViewObjs.values();
-    FCGeometrySetViewObject *setView = nullptr;
+    QList<FCGeometrySetViewData *> setViews = mViewObjs.values();
+    FCGeometrySetViewData *setView = nullptr;
     for (auto view : setViews)
     {
         vtkPolyData *tpoly = view->getFacePoly();
@@ -143,10 +201,16 @@ FCGeometryViewObject *FCGeometryViewData::getFaceViewObj(vtkPolyData *facePoly, 
     return setView->getFaceViewObjByCellIndex(cellIndex);
 }
 
+/**
+ * @brief 获取边的可视化对象
+ * @param edgePoly
+ * @param cellIndex
+ * @return 
+ */
 FCGeometryViewObject *FCGeometryViewData::getEdgeViewObj(vtkPolyData *edgePoly, int cellIndex)
 {
-    QList<FCGeometrySetViewObject *> setViews = mViewObjs.values();
-    FCGeometrySetViewObject *setView = nullptr;
+    QList<FCGeometrySetViewData *> setViews = mViewObjs.values();
+    FCGeometrySetViewData *setView = nullptr;
     for (auto view : setViews)
     {
         vtkPolyData *tpoly = view->getEdgePoly();
@@ -161,10 +225,16 @@ FCGeometryViewObject *FCGeometryViewData::getEdgeViewObj(vtkPolyData *edgePoly, 
     return setView->getEdgeViewObjByCellIndex(cellIndex);
 }
 
+/**
+ * @brief 获取点的可视化对象
+ * @param pointPoly
+ * @param pointIndex
+ * @return 
+ */
 FCGeometryViewObject *FCGeometryViewData::getPointViewObj(vtkPolyData *pointPoly, int pointIndex)
 {
-    QList<FCGeometrySetViewObject *> setViews = mViewObjs.values();
-    FCGeometrySetViewObject *setView = nullptr;
+    QList<FCGeometrySetViewData *> setViews = mViewObjs.values();
+    FCGeometrySetViewData *setView = nullptr;
     for (auto view : setViews)
     {
         vtkPolyData *tpoly = view->getPointPoly();
@@ -179,11 +249,17 @@ FCGeometryViewObject *FCGeometryViewData::getPointViewObj(vtkPolyData *pointPoly
     return setView->getPointViewObjByCellIndex(pointIndex);
 }
 
+/**
+ * @brief 获取某个(选中状态)的所有可视化对象
+ * @param selectStates
+ * @param states
+ * @return 
+ */
 QList<FCGeometryViewObject *> FCGeometryViewData::getViewObjectByStates(int selectStates,
                                                                         int states)
 {
     QList<FCGeometryViewObject *> objects;
-    QList<FCGeometrySetViewObject *> setList = mViewObjs.values();
+    QList<FCGeometrySetViewData *> setList = mViewObjs.values();
     for (auto sv : setList)
     {
         if (sv == nullptr)
@@ -194,27 +270,40 @@ QList<FCGeometryViewObject *> FCGeometryViewData::getViewObjectByStates(int sele
     return objects;
 }
 
+/**
+ * @brief 悬停高亮
+ * @param vob
+ */
 void FCGeometryViewData::preHighLight(FCGeometryViewObject *vob)
 {
-    if (mPreViewObjct != nullptr && mPreViewObjct->getStates() == FCGeometryViewObject::HighLigh)
-        mPreViewObjct = nullptr;
+    if (mViewObject != nullptr && mViewObject->getStates() == FCGeometryViewObject::HighLigh)
+        mViewObject = nullptr;
     if (vob != nullptr && vob->getStates() == FCGeometryViewObject::HighLigh)
         return;
-    if (vob == mPreViewObjct && vob != nullptr)
+    if (vob == mViewObject && vob != nullptr)
         return;
-    if (mPreViewObjct != nullptr)
-        mPreViewObjct->resetColor();
-    mPreViewObjct = vob;
-    if (mPreViewObjct != nullptr)
-        mPreViewObjct->preHighLight();
+    if (mViewObject != nullptr)
+        mViewObject->resetColor();
+    mViewObject = vob;
+    if (mViewObject != nullptr)
+        mViewObject->preHighLight();
 }
 
+/**
+ * @brief 获取悬停高新的对象
+ * @return 
+ */
 FCGeometryViewObject *FCGeometryViewData::getPreHighLightObj()
 {
-    return mPreViewObjct;
+    return mViewObject;
     
 }
 
+/**
+ * @brief 转换成面
+ * @param gset
+ * @return 
+ */
 vtkPolyData *FCGeometryViewData::transferFace(FCGeometrySet *gset)
 {
     TopoDS_Shape *shape = gset->getShape();
@@ -296,6 +385,11 @@ vtkPolyData *FCGeometryViewData::transferFace(FCGeometrySet *gset)
     return polyData;
 }
 
+/**
+ * @brief 转换成边
+ * @param gset
+ * @return 
+ */
 vtkPolyData *FCGeometryViewData::transferEdge(FCGeometrySet *gset)
 {
     TopoDS_Shape *shape = gset->getShape();
@@ -360,6 +454,11 @@ vtkPolyData *FCGeometryViewData::transferEdge(FCGeometrySet *gset)
     
 }
 
+/**
+ * @brief 转换成点
+ * @param gset
+ * @return 
+ */
 vtkPolyData *FCGeometryViewData::transferPoint(FCGeometrySet *gset)
 {
     TopoDS_Shape *shape = gset->getShape();
@@ -400,15 +499,26 @@ vtkPolyData *FCGeometryViewData::transferPoint(FCGeometrySet *gset)
     
 }
 
-FCGeometrySetViewObject *FCGeometryViewData::getGeosetObj(FCGeometrySet *set)
+/**
+ * @brief 获取几何模型的可视化对象
+ * @param set
+ * @return set几何模型对应的可视化对象
+ * @note 如果第一次创建的模型会插入mViewObjs中统一管理
+ */
+FCGeometrySetViewData *FCGeometryViewData::getGeosetObj(FCGeometrySet *set)
 {
     if (mViewObjs.contains(set))
         return mViewObjs.value(set);
-    auto viewObj = new FCGeometrySetViewObject(set);
+    auto viewObj = new FCGeometrySetViewData(set);
     mViewObjs.insert(set, viewObj);
     return viewObj;
 }
 
+/**
+ * @brief 获取线的vtk cell
+ * @param p
+ * @return 
+ */
 vtkCell *FCGeometryViewData::getLineCellIn(vtkPolyData *p)
 {
     const int n = p->GetNumberOfCells();
@@ -423,6 +533,13 @@ vtkCell *FCGeometryViewData::getLineCellIn(vtkPolyData *p)
     
 }
 
+/**
+ * @brief FCGeometryViewData::getIndexInPoly
+ * @param part
+ * @param poly
+ * @param lineIndexs
+ * @return 
+ */
 int FCGeometryViewData::getIndexInPoly(vtkPolyData *part, vtkPolyData *poly, QList<int> lineIndexs)
 {
     if (part == nullptr || poly == nullptr)
@@ -449,6 +566,13 @@ int FCGeometryViewData::getIndexInPoly(vtkPolyData *part, vtkPolyData *poly, QLi
     return -1;
 }
 
+/**
+ * @brief 判断是否为同一个cell
+ * @param tree
+ * @param cell
+ * @param allPoly
+ * @return 
+ */
 bool FCGeometryViewData::isSameCell(vtkKdTree *tree, vtkCell *cell, vtkPolyData *allPoly)
 {
     const int npt = cell->GetNumberOfPoints();

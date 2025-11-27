@@ -1,9 +1,9 @@
 /**
  * @file FCGeometryViewObject.h
- * @brief 
+ * @brief 单个可视化对象
  * @date 2025-11-26
  * @version V0.0.1
- * @details 
+ * @details 几何的的最小单元(面/边/点/实体)管理类
  * @copyright Copyright (c) 2025 Kinvy. All rights reserved.
  */
 #ifndef FCGEOMETRYVIEWOBJECT_H
@@ -19,7 +19,7 @@ class QColor;
 namespace FC 
 {
 class FCGeometrySet;
-class FCGeometrySetViewObject;
+class FCGeometrySetViewData;
 class FCGeometryViewObject
 {
 public:
@@ -34,9 +34,9 @@ public:
     
     enum ViewStates
     {
-        Normal,
-        PreHigh,
-        HighLigh
+        Normal,  
+        PreHigh,  // 鼠标悬停高亮
+        HighLigh  // 选中高亮
     };
     
     FCGeometryViewObject(ViewObjType type, int beg, int end, Handle(TopoDS_TShape) ts);
@@ -47,11 +47,11 @@ public:
     void setIndex(int index);
     int getIndex();
     FCGeometrySet* getGeometySet();
-    FCGeometrySetViewObject* getGeoSetViewObject();
+    FCGeometrySetViewData* getGeoSetViewObject();
     ViewStates getStates();
     void setStates(ViewStates s);
     
-    void setConnectionData(vtkPolyData* poly, FCGeometrySetViewObject* setViewObj);
+    void setConnectionData(vtkPolyData* poly, FCGeometrySetViewData* setViewObj);
     void resetColor();
     void preHighLight();
     void highLight();
@@ -70,7 +70,7 @@ private:
     Handle(TopoDS_TShape) mTshape {};
     
     vtkPolyData* mPolys{};
-    FCGeometrySetViewObject* mSetViewObj{};
+    FCGeometrySetViewData* mSetViewObj{};
 };
 
 } // namespace FC

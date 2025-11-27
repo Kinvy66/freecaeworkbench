@@ -56,19 +56,17 @@ bool FCGeometryCreateBox::execute()
     FCGeometrySet *set = new FCGeometrySet(STEP);
     
     set->setShape(shape);
-    mRes = set;
-
+    mResult = set;
     
+ 
     FCGeometryParaBox  *para = new FCGeometryParaBox;
     para->setName(mName);
     para->setLocation(mLoaction);
     para->setGeoPara(mGeoPara);
-    mRes->setParameter(para);
+    mResult->setParameter(para);
     
-    emit showSet(mRes);
+    emit showSet(mResult);
     
-    // FCGeometryModelBase::execute();
-
     return true;
 }
 

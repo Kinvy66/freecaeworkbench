@@ -1,9 +1,11 @@
 /**
  * @file FCGeometryViewProvider.h
- * @brief 
+ * @brief 几何模型可视化管理器
  * @date 2025-11-26
  * @version V0.0.1
- * @details 
+ * @details 功能：FCGeometryViewProvider 是几何模块的「可视化管理器」，
+ * 负责把 OCCT 的几何对象（FCGeometrySet）转换为 VTK Actor 并管理其
+ * 显示、隐藏、选中、高亮等图形状态。 
  * @copyright Copyright (c) 2025 Kinvy. All rights reserved.
  */
 #ifndef FCGEOMETRYVIEWPROVIDER_H
@@ -62,6 +64,7 @@ private slots:
     
 private:
     void init();
+    void removeAllActors();  // todo 调试使用
     
 private:
     struct GeoViewObj

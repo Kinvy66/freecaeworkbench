@@ -35,23 +35,10 @@ public:
     
     
 private:
-    /**
-		 * @brief 名称
-		 * @since 2.5.0
-		 */
     QString mName{};
-    /**
-		 * @brief 位置
-		 * @since 2.5.0
-		 */
     double mLoaction[3];
-    /**
-		 * @brief 定形尺寸
-		 * @since 2.5.0
-		 */
     double mGeoPara[3];
-    
-    FCGeometrySet *mRes{};
+    FCGeometrySet *mResult{};
     
 };
 } // namespace FC
