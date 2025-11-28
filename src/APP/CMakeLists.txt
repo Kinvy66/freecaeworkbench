@@ -124,6 +124,7 @@ find_package(${FC_PROJECT_NAME} COMPONENTS
     FCGui
     FCActionManager
     FCMessageHandler
+    FCProjectArchive
 )
 
 if(${FC_PROJECT_NAME}_FOUND)
@@ -136,7 +137,8 @@ target_link_libraries(${FC_APP_NAME} PUBLIC
     ${FC_PROJECT_NAME}::FCInterface
     ${FC_PROJECT_NAME}::FCGui
     ${FC_PROJECT_NAME}::FCActionManager
-    ${FC_PROJECT_NAME}::FCMessageHandler    
+    ${FC_PROJECT_NAME}::FCMessageHandler
+    ${FC_PROJECT_NAME}::FCProjectArchive  
 )
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.

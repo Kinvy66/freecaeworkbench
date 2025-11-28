@@ -63,8 +63,8 @@ public:
      */
     void getGeoPara(double *para);
     
-    // QDomElement &writeToProjectFile(QDomDocument *doc, QDomElement *parent) override;
-    // virtual void readDataFromProjectFile(QDomElement *e) override;
+    QDomElement &writeToProjectFile(QDomDocument *doc, QDomElement *parent) override;
+    virtual void readDataFromProjectFile(QDomElement *e) override;
     
 private:
     /**

@@ -1,0 +1,13 @@
+#ifndef FCPROJECTARCHIVEAPI_H
+#define FCPROJECTARCHIVEAPI_H
+
+#include <QtCore/QtGlobal>
+#include "FCGlobals.h"
+
+#if defined(FCPROJECTARCHIVE_BUILDLIB)
+#define FCPROJECTARCHIVE_API Q_DECL_EXPORT
+#else
+#define FCPROJECTARCHIVE_API Q_DECL_IMPORT
+#endif
+
+#endif // FCPROJECTARCHIVEAPI_H

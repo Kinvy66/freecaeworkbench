@@ -22,3 +22,4 @@ add_subdirectory(FCData)
 
 add_subdirectory(APP)
 
+add_subdirectory(FCProjectArchive)

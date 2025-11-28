@@ -10,6 +10,7 @@
 #define FCGEOMETRYMODELPARABASE_H
 #include <QObject>
 #include "FCGeometryParaAPI.h"
+#include "FCDataBase.h"
 
 namespace FC 
 {
@@ -46,7 +47,7 @@ enum GeometryParaType
     GeometryParaFillGap,			///< 
 };
 
-class FCGEOMETRYPARA_API FCGeometryModelParaBase : public QObject
+class FCGEOMETRYPARA_API FCGeometryModelParaBase : public FCDataBase
 {
     Q_OBJECT
 public:

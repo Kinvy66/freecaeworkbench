@@ -46,13 +46,41 @@ FCGeometrySet::~FCGeometrySet()
         delete mParameter;
     }
 }
-
+/**
+ * @brief 设置id
+ * @param id
+ */ 
 void FCGeometrySet::setID(int id)
 {
     FCDataBase::setID(id);
-  
+    if(id > s_idOffset)
+        s_idOffset = id;
 }
 
+/**
+ * @brief 重置最大id
+ * @note 不用轻易调用
+ */
+void FCGeometrySet::resetMaxID()
+{
+    s_idOffset = 0;
+}
+
+/**
+ * @brief 获取最大id
+ * @return 
+ */
+int FCGeometrySet::getMaxID()
+{
+    return s_idOffset;
+}
+
+/**
+ * @brief 获取topo数据
+ * @param type
+ * @param index
+ * @return 
+ */
 TopoDS_Shape *FCGeometrySet::getShape(int type, int index)
 {
     *s_tempShape = TopoDS_Shape();
@@ -83,6 +111,12 @@ TopoDS_Shape *FCGeometrySet::getShape(int type, int index)
     return s_tempShape;
 }
 
+/**
+ * @brief 获取形状
+ * @param type
+ * @param index
+ * @return 
+ */
 const TopoDS_Shape &FCGeometrySet::getRealShape(int type, int index)
 {
     *s_tempShape = TopoDS_Shape();
@@ -111,22 +145,38 @@ const TopoDS_Shape &FCGeometrySet::getRealShape(int type, int index)
     return *s_tempShape;
 }
 
+/**
+ * @brief 设置可见
+ * @param v
+ */
 void FCGeometrySet::setVisible(bool v)
 {
     mVisible = v;
     
 }
 
+/**
+ * @brief 是否可见
+ * @return 
+ */
 bool FCGeometrySet::isVisible()
 {
     return true;
 }
 
+/**
+ * @brief 设置类型
+ * @param type
+ */
 void FCGeometrySet::setType(GeometryType type)
 {
     mType = type;
 }
 
+/**
+ * @brief 设置形状的拓扑
+ * @param shape
+ */
 void FCGeometrySet::setShape(TopoDS_Shape *shape)
 {
     mShape = shape;
@@ -138,31 +188,81 @@ void FCGeometrySet::setShape(TopoDS_Shape *shape)
     qDebug() << "surface number: " << i;
 }
 
+/**
+ * @brief 获取形状的拓扑
+ * @return 
+ */
 TopoDS_Shape *FCGeometrySet::getShape()
 {
     return mShape;
 }
 
+/**
+ * @brief 设置poly data
+ * @param poly
+ */
 void FCGeometrySet::setPoly(vtkPolyData *poly)
 {
     mPolyData = poly;
 }
 
+/**
+ * @brief 获取poly data
+ * @return 
+ */
 vtkPolyData *FCGeometrySet::getPoly()
 {
     return mPolyData;
 }
 
+
+/**
+ * @brief 根据ID获取子形状
+ * @param id 要获取ID的子形状
+ * @return GeometrySet* 返回的子形状
+ */
+FCGeometrySet *FCGeometrySet::getSetByID(int id)
+{
+    FCGeometrySet* s = nullptr;
+    if(id == mId) {
+        s = this;        
+    }
+    // else {
+    //     const int n = _subSetList.size();
+    //     for(int i = 0; i < n; ++i) {
+    //         GeometrySet* temp = _subSetList.at(i);
+    //         if(id == temp->getID()) {
+    //             s = temp;
+    //             break;
+    //         }
+    //     }
+    // }
+    return s;
+}
+
+/**
+ * @brief 设置操作参数
+ * @param p
+ */
 void FCGeometrySet::setParameter(FCGeometryModelParaBase *p)
 {
     mParameter = p;
 }
 
+/**
+ * @brief 转成流数据
+ * @param s
+ */
 void FCGeometrySet::dataToStream(QDataStream *s)
 {
     // todo
 }
 
+/**
+ * @brief 写出brep文件
+ * @param name 要写出的brep文件
+ * @return bool 返回写出结果
+ */
 bool FCGeometrySet::writeBrep(QString name)
 {
     QByteArray		arr = name.toLatin1();
@@ -179,6 +279,11 @@ bool FCGeometrySet::writeBrep(QString name)
     return BRepTools::Write(aRes, ch);
 }
 
+/**
+ * @brief 写出vtk文件
+ * @param name
+ * @return 
+ */
 bool FCGeometrySet::writePoly(QString name)
 {
     QByteArray		  arr = name.toLatin1();
@@ -194,6 +299,12 @@ bool FCGeometrySet::writePoly(QString name)
     return true;
 }
 
+/**
+ * @brief 读入brep文件
+ * @param name 要读取的brep文件
+ * @attention 路径不能出现中文
+ * @return bool 返回读取结果
+ */
 bool FCGeometrySet::readBrep(QString name)
 {
     QByteArray	  arr	 = name.toLatin1();
@@ -209,6 +320,11 @@ bool FCGeometrySet::readBrep(QString name)
     return true;
 }
 
+/**
+ * @brief 读入vtk文件
+ * @param name
+ * @return 
+ */
 bool FCGeometrySet::readPoly(QString name)
 {
     QByteArray arr = name.toLatin1();
@@ -222,6 +338,66 @@ bool FCGeometrySet::readPoly(QString name)
     mPolyData->DeepCopy(reader->GetOutput());
     reader->Delete();
     return true;
+}
+
+/**
+ * @brief 写出几何到工程文件
+ * @param doc
+ * @param ele
+ * @param isDisp
+ * @return 
+ */
+QDomElement &FCGeometrySet::writeToProjectFile(QDomDocument *doc, QDomElement *ele, bool isDiso)
+{
+    QDomElement element = doc->createElement("GeoSet"); // 创建子节点
+    // QDomAttr	idattr	= doc->createAttribute("ID");
+    // idattr.setValue(QString::number(_id));
+    // element.setAttributeNode(idattr);
+    // QDomAttr visible = doc->createAttribute("Visible");
+    // visible.setValue("True");
+    // if(!mVisible)
+    //     visible.setValue("False");
+    // element.setAttributeNode(visible);
+    
+    // QDomAttr isSTL = doc->createAttribute("ISSTL");
+    // isSTL.setValue("True");
+    // if(mType != STL)
+    //     isSTL.setValue("False");
+    // element.setAttributeNode(isSTL);
+    
+    // QDomElement nameele	 = doc->createElement("Name");
+    // QDomText	nameText = doc->createTextNode(mName);
+    // nameele.appendChild(nameText);
+    // element.appendChild(nameele);
+    // // 		QDomElement pathele = doc->createElement("Path");
+    // // 		QDomText pathtext = doc->createTextNode(_filePath);
+    // // 		pathele.appendChild(pathtext);
+    // // 		element.appendChild(pathele);
+    
+    // ele->appendChild(element); // 子节点挂载
+    // // todo
+    // if(mParameter != nullptr)
+    //     // mParameter->writeToProjectFile(doc, &element);
+    
+    // if(isDiso) {
+    //     QString		  exelPath = QCoreApplication::applicationDirPath();
+    //     const QString tempPath = exelPath + "/../tempIO/" + QString("%1.brep").arg(_id);
+    //     if(mType != STL)
+    //         this->writeBrep(tempPath);
+    //     else
+    //         this->writePoly(tempPath);
+    // }
+    return element;
+}
+
+/**
+ * @brief 从工程文件几何读入
+ * @param e
+ * @param isDiso
+ */
+void FCGeometrySet::readDataFromProjectFile(QDomElement *e, bool isDiso)
+{
+    
 }
 
 

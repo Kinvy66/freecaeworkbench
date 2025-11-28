@@ -148,7 +148,7 @@ QString FCDir::getConfigPath(const QString& folderName)
 
 /**
  * @brief 获取程序运行路径
- * @note 这个路径不会应该工作路径的改变而改变，就是exe所在文件夹
+ * @note 这个路径不会因为工作路径的改变而改变，就是exe所在文件夹
  * @return
  */
 QString FCDir::getExecutablePath()

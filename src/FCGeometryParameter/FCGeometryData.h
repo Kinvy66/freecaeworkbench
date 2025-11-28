@@ -3,7 +3,7 @@
  * @brief 几何数据管理基类（单例）
  * @date 2025-11-23
  * @version V0.0.1
- * @details 
+ * @details 管理创建的所有几何模型数据
  * @copyright Copyright (c) 2025 Kinvy. All rights reserved.
  */
 #ifndef FCGEOMETRYDATA_H
