@@ -32,6 +32,7 @@ public:
     void undo() override;
     void redo() override;
     void releaseResult() override;
+    void setVisible(bool r);
     
     
 private:

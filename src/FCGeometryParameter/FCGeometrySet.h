@@ -38,7 +38,7 @@ class FCGeometryModelParaBase;
 class FCGEOMETRYPARA_API FCGeometrySet : public FCDataBase
 {
 public:
-    FCGeometrySet(GeometryType type = NONE);
+    FCGeometrySet(GeometryType type = NONE, bool needID = true);
     ~FCGeometrySet();
     
     /**

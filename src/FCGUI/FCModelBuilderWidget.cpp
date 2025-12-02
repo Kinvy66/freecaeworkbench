@@ -32,6 +32,18 @@ FCModelBuilderWidget::~FCModelBuilderWidget()
     
 }
 
+void FCModelBuilderWidget::addGeometryCube()
+{
+    
+}
+
+void FCModelBuilderWidget::addGeometry(const QString &name)
+{
+    qDebug() << "FCModelBuilderWidget::addGeometry";
+    mProjectTree->addGeometry(name);
+}
+
+
 /**
  * @brief 构建空白工程树形目录
  */

@@ -204,6 +204,22 @@ QString FCGeometryData::getMD5()
     return md5;
 }
 
+QDomElement &FCGeometryData::writeToProjectFile(QDomDocument *doc, QDomElement *element, bool isdiso)
+{
+    QDomElement georoot = doc->createElement("Geometry");
+    element->appendChild(georoot);
+    
+    int n = mGeometryList.size();
+    if (n > 0)
+    {
+        QDomElement geoSetsRoot = doc->createElement("GeometrySets");
+        georoot.appendChild(geoSetsRoot);
+        for (auto geoSet : mGeometryList)
+            geoSet->writeToProjectFile(doc, &geoSetsRoot, isdiso);
+    }
+    return georoot;
+}
+
 void FCGeometryData::setSketchPlane(double *loc, double *dir)
 {
     if (mSketchPlan == nullptr)

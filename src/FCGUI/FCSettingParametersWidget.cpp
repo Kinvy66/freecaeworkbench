@@ -32,8 +32,12 @@ FCSettingParametersWidget::~FCSettingParametersWidget()
 void FCSettingParametersWidget::createCube()
 {
     FCBoxSettingsWidget* cubeSettingsWidget = new FCBoxSettingsWidget(this);
-    connect(cubeSettingsWidget, &FCBoxSettingsWidget::boxModelCreated,
-            this, &FCSettingParametersWidget::boxModelCreated);
+    connect(cubeSettingsWidget, &FCBoxSettingsWidget::modelCreated,
+            this, &FCSettingParametersWidget::geometryModelCreated);
+    connect(cubeSettingsWidget, &FCBoxSettingsWidget::updateGeoTree,
+            this, &FCSettingParametersWidget::updateGeoTree);
+    
+    cubeSettingsWidget->create();
     
     setCurrentWidget(cubeSettingsWidget);
     

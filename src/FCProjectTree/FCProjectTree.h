@@ -32,6 +32,8 @@ public:
     void createDefaultProject(const QString& name = tr("Untitled"));
     
     FCTreeWidget* treeWidget() const;
+    // 添加几何模型
+    void addGeometry(const QString& name);
     
 private slots:
     void onTreeActionTriggered(int menuType, const QString &actionText, QTreeWidgetItem *item);
@@ -65,13 +67,15 @@ private:
     // 获取下一个编号
     QString  nextChildName(QTreeWidgetItem* parent, const QString& prefix);
     
-    
-signals:
-    
+// signals:
+//     void addGeometry();
     
     
 private:
     FCTreeWidget* mTreeWidget;
+    // 几何根节点
+    QTreeWidgetItem* mGeoRoot;
+    
     
 };
 } // namespace FC

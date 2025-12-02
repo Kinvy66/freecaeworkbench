@@ -31,6 +31,17 @@ class FCGeometrySet;
         D3Feature, ///< 三维特征
         Sketch,	   ///< 草绘特征
     };
+    
+    // 几何模型名称
+    enum GeometyCategory
+    {
+        Cube,   ///< 立方体
+        Cone,   ///< 圆锤体
+        Cylinder, ///< 圆柱体
+        Sphere,     ///< 球体
+        Torous,     ///< 圆环
+        Helix,      /// 螺旋    
+    };
 
 class FCGEOMETRYMODELCREATOR_API FCGeometryModelBase : public QObject
 {
@@ -78,7 +89,7 @@ public:
     void setEditData(FCGeometrySet *set);
     
 signals:
-    void updateGeoTree();
+    void updateGeoTree(const QString& name);
     void showSet(FCGeometrySet *s, bool r = true);
     // void showDatum(Geometry::GeometryDatum *);
     void removeDisplayActor(FCGeometrySet *s);

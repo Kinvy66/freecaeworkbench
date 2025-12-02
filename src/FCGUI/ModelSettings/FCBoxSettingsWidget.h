@@ -13,7 +13,6 @@
 #include "FCGuiAPI.h"
 
 
-
 namespace Ui {
 class FCBoxSettingsWidget;
 }
@@ -21,19 +20,24 @@ class FCBoxSettingsWidget;
 namespace FC 
 {
 class FCGeometrySet;
+class FCGeometryCreateBox;
 class FCGUI_API FCBoxSettingsWidget : public QWidget
 {
     Q_OBJECT
     
 public:
-    explicit FCBoxSettingsWidget(QWidget *parent = nullptr);
+    FCBoxSettingsWidget(QWidget *parent = nullptr);
     ~FCBoxSettingsWidget();
+    bool create();
     
 private:
     bool getPara(double* p);
+    bool getCoordinate(double *coor);
+    void init();
     
 signals:
-    void boxModelCreated(FCGeometrySet* set, bool r);
+    void modelCreated(FCGeometrySet* set, bool r);
+    void updateGeoTree(const QString& name);
     
 private slots:
     void on_pushButton_build_clicked();
@@ -41,6 +45,7 @@ private slots:
     
 private:
     Ui::FCBoxSettingsWidget *ui;
+    FCGeometryCreateBox* mCreateBox;
     
 };
 } // namespace FC

@@ -7,6 +7,10 @@
  * @copyright Copyright (c) 2025 Kinvy. All rights reserved.
  */
 #include "FCParameterGroup.h"
+#include <QDomElement>
+#include <QDomDocument>
+#include <QDomAttr>
+
 
 namespace FC 
 {
@@ -55,6 +59,13 @@ void FCParameterGroup::copyStates(FCParameterGroup *g)
 
 void FCParameterGroup::writeParameters(QDomDocument *doc, QDomElement *parent)
 {
+    QDomElement groupele = doc->createElement("FCParameterGroup");
+    groupele.setAttribute("Describe", _describe);
+    QString svis = "false";
+    if (_visible) svis = "true";
+    groupele.setAttribute("Visible", svis);
+    FCParameterList::writeParameters(doc, &groupele);
+    parent->appendChild(groupele);
 }
 
 void FCParameterGroup::readParameters(QDomElement *ele)

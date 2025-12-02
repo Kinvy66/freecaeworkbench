@@ -112,6 +112,7 @@ QMultiHash<FCGeometrySet *, int> FCGeometryViewProvider::getGeoSelectItems()
  */
 void FCGeometryViewProvider::showGeoSet(FCGeometrySet *set, bool render)
 {
+    // todo 
     removeAllActors();
     QList<vtkPolyData *> viewPolys = mViewData->transferToPoly(set);
     vtkPolyData *facePoly = viewPolys.at(0);
@@ -169,7 +170,7 @@ void FCGeometryViewProvider::showGeoSet(FCGeometrySet *set, bool render)
     if (render)
         mGraphViewWindow->resetCamera();
     
-    // qDebug() << "FCGeometryViewProvider::showGeoSet--OK";
+    qDebug() << "FCGeometryViewProvider::showGeoSet--OK";
 }
 
 void FCGeometryViewProvider::showDatum(FCGeometrySet *datm)

@@ -18,11 +18,41 @@ FCBoxSettingsWidget::FCBoxSettingsWidget(QWidget *parent)
     , ui(new Ui::FCBoxSettingsWidget)
 {
     ui->setupUi(this);
+    init();
 }
 
 FCBoxSettingsWidget::~FCBoxSettingsWidget()
 {
     delete ui;
+}
+
+bool FCBoxSettingsWidget::create()
+{
+    double corner[3] = {0.0};
+    double para[3] = {0.0};
+    
+    bool ok = false;
+    ok = getPara(para);
+    ok= getCoordinate(corner);
+    
+    QString name  = ui->lineEdit_name->text();
+    
+    mCreateBox = new FCGeometryCreateBox(this);
+    
+    connect(mCreateBox, &FCGeometryCreateBox::showSet,
+            this, &FCBoxSettingsWidget::modelCreated);
+    
+    connect(mCreateBox, &FCGeometryCreateBox::updateGeoTree,
+            this, &FCBoxSettingsWidget::updateGeoTree);
+    
+    
+    mCreateBox->setName(name);
+    mCreateBox->setLocation(corner);
+    mCreateBox->setGeoPara(para);
+        
+    mCreateBox->execute();
+    
+    return true;
 }
 
 /**
@@ -50,28 +80,50 @@ bool FCBoxSettingsWidget::getPara(double *p)
 }
 
 /**
+ * @brief 获取坐标
+ * @param coor
+ * @return 
+ */
+bool FCBoxSettingsWidget::getCoordinate(double *coor)
+{
+    bool ok = false;
+    
+    QString text = ui->lineEdit_locationX->text();
+    coor[0] = text.toDouble(&ok);
+    if (!ok)
+        return false;
+    
+    text = ui->lineEdit_locationY->text();
+    coor[1] = text.toDouble(&ok);
+    if (!ok)
+        return false;
+    
+    text = ui->lineEdit_locationZ->text();
+    coor[2] = text.toDouble(&ok);
+    if (!ok)
+        return false;
+    
+    return true;
+}
+
+/**
+ * @brief 初始化，设置默认名称和参数
+ * @todo 默认参数设置到
+ */
+void FCBoxSettingsWidget::init()
+{
+    // mCreateBox = new FCGeometryCreateBox(this);
+    int id = FCGeometrySet::getMaxID() + 1;
+    ui->lineEdit_name->setText(QString("Cube_%1").arg(id));
+    
+}
+
+/**
  * @brief 构建立方体
  */
 void FCBoxSettingsWidget::on_pushButton_build_clicked()
 {
-    double corner[3] = {0.0};
-    double para[3] = {0.0};
-    
-    bool ok = false;
-    ok = getPara(para);
-    
-    QString name  = ui->lineEdit_name->text();
-    
-    FCGeometryCreateBox* c = new FCGeometryCreateBox(this);
-    
-    connect(c, &FCGeometryCreateBox::showSet, this, &FCBoxSettingsWidget::boxModelCreated);
-    
-    c->setName(name);
-    c->setLocation(corner);
-    c->setGeoPara(para);
-    
-    c->execute();
-
+    mCreateBox->setVisible(true);
 }
 
 

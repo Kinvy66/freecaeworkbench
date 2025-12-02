@@ -43,7 +43,6 @@ int main(int argc, char* argv[])
 {
     // 进行dump捕获
     FC::FCDumpCapture::initDump([]() -> QString { return appPreposeDump(); });
-    //
     
     // 注册旋转文件消息捕获
     FC::fcRegisterRotatingMessageHandler(FC::FCDir::getLogFilePath());

@@ -76,7 +76,7 @@ AppMainWindow::AppMainWindow(QWidget *parent)
         .setAppCore(&core)                            // core
         .setAppActions(mUI->getAppActions())          // action
         .setAppCommand(mUI->getAppCmd())              // cmd
-        // .setAppDataManager(core.getAppDatas())        // data
+        .setAppDataManager(core.getAppDatas())        // data
         .setAppDockingArea(mUI->getAppDockingArea())  // dock
         .setAppRibbonArea(mUI->getAppRibbonArea())    // ribbon
         ;

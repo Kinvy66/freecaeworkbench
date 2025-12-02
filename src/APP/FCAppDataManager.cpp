@@ -7,6 +7,7 @@
  * @copyright Copyright (c) 2025 Kinvy. All rights reserved.
  */
 #include "FCAppDataManager.h"
+#include "FCGeometryData.h"
 
 namespace FC 
 {
@@ -17,10 +18,16 @@ namespace FC
 FCAppDataManager::FCAppDataManager(FCCoreInterface* c, QObject* p)
     : FCDataManagerInterface(c, p)
 {
+    mGeoData = FCGeometryData::getInstance();
 }
 
 FCAppDataManager::~FCAppDataManager()
 {
+}
+
+FCGeometryData *FCAppDataManager::getGeometryData()
+{
+    return FCGeometryData::getInstance();
 }
 
 } // namespace FC

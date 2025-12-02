@@ -18,7 +18,7 @@ namespace FC
 FC_IMPL_FORWARD_DECL(FCAppDataManager)
 
 class FCCoreInterface;
-
+class FCGeometryData;
 
 class FCAppDataManager : public FCDataManagerInterface
 {
@@ -27,6 +27,10 @@ public:
     FCAppDataManager(FCCoreInterface* c, QObject* p = nullptr);
     ~FCAppDataManager();
     
+    static FCGeometryData* getGeometryData();
+    
+private:
+    FCGeometryData* mGeoData;
     
 };
 } // namespace FC

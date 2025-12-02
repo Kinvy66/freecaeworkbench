@@ -138,9 +138,9 @@ public:
     void sort();
     
     //文件写出至工程文件
-    // QDomElement &writeToProjectFile(QDomDocument *doc, QDomElement *element, bool isdiso = false);
+    QDomElement &writeToProjectFile(QDomDocument *doc, QDomElement *element, bool isdiso = false);
     //从工程文件读入数据
-    // void readFromProjectFile(QDomNodeList *nodelist, bool isdiso = false);
+    void readFromProjectFile(QDomNodeList *nodelist, bool isdiso = false);
     /**
      * @brief 设置草绘平面
      * @param loc 草绘平面的坐标原点

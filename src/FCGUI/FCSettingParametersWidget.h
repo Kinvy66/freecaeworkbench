@@ -32,8 +32,9 @@ private:
     void setCurrentWidget(QWidget* w);
     
 signals:
-    void boxModelCreated(FCGeometrySet* set, bool r);
+    void modelCreated(FCGeometrySet* set, bool r);
     void geometryModelCreated(FCGeometrySet* set, bool r);
+    void updateGeoTree(const QString& name);
     
 private:
     

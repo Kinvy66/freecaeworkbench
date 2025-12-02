@@ -91,7 +91,15 @@ FCParameterBase *FCParameterList::copyParameter(FCParameterBase *p)
 
 void FCParameterList::writeParameters(QDomDocument *doc, QDomElement *parent)
 {
-    
+    const int n = this->getParameterCount();
+    for (int i = 0; i < n; ++i)
+    {
+        FCParameterBase* p = _paraList.at(i);
+        if (p == nullptr) continue;
+        QDomElement ele = doc->createElement("Parameter");
+        p->writeParameter(doc, &ele);
+        parent->appendChild(ele);
+    }
 }
 
 void FCParameterList::readParameters(QDomElement *ele)

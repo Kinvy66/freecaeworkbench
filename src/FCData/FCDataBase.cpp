@@ -7,6 +7,7 @@
  * @copyright Copyright (c) 2025 Kinvy. All rights reserved.
  */
 #include "FCDataBase.h"
+#include "FCParameterGroup.h"
 #include <QDomElement>
 #include <QDomNodeList>
 #include <QDebug>
@@ -61,11 +62,11 @@ void FCDataBase::dataToStream(QDataStream *datas)
     
 }
 
-QDomElement &FCDataBase::writeToProjectFile(QDomDocument *doc, QDomElement *parent)
+QDomElement &FCDataBase::writeToProjectFile(QDomDocument *doc, QDomElement *ele)
 {
-    // todo
-    static QDomElement dummy;  
-    return dummy;
+
+    this->writeParameters(doc, ele);
+    return *ele;
 }
 
 void FCDataBase::readDataFromProjectFile(QDomElement *e)
@@ -78,9 +79,20 @@ void FCDataBase::readParameters(QDomElement *ele)
     
 }
 
+/**
+ * @brief 参数写出
+ * @param doc
+ * @param parent
+ */
 void FCDataBase::writeParameters(QDomDocument *doc, QDomElement *parent)
 {
-    
+    const int ngroup = mParaGroupList.size();
+    for (int i = 0; i < ngroup; ++i)
+    {
+        FCParameterGroup *g = mParaGroupList.at(i);
+        g->writeParameters(doc, parent);
+    }
+    FCParameterList::writeParameters(doc, parent);
 }
 
 QString FCDataBase::getName()

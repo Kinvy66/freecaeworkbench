@@ -7,6 +7,7 @@
  * @copyright Copyright (c) 2025 Kinvy. All rights reserved.
  */
 #include "FCGeometrySet.h"
+#include "FCGeometryModelParaBase.h"
 
 #include <BRep_Builder.hxx>
 #include <BRepTools.hxx>
@@ -31,10 +32,13 @@ namespace FC
 int FCGeometrySet::s_idOffset = 0;
 TopoDS_Shape* FCGeometrySet::s_tempShape = new TopoDS_Shape;
 
-FCGeometrySet::FCGeometrySet(GeometryType type)
+FCGeometrySet::FCGeometrySet(GeometryType type,  bool needID)
     : mType(type)
 {
-    
+    if (needID) {
+        s_idOffset++;
+        setID(s_idOffset);        
+    }
 }
 
 FCGeometrySet::~FCGeometrySet()
@@ -349,35 +353,39 @@ bool FCGeometrySet::readPoly(QString name)
  */
 QDomElement &FCGeometrySet::writeToProjectFile(QDomDocument *doc, QDomElement *ele, bool isDiso)
 {
-    QDomElement element = doc->createElement("GeoSet"); // 创建子节点
-    // QDomAttr	idattr	= doc->createAttribute("ID");
-    // idattr.setValue(QString::number(_id));
-    // element.setAttributeNode(idattr);
-    // QDomAttr visible = doc->createAttribute("Visible");
-    // visible.setValue("True");
-    // if(!mVisible)
-    //     visible.setValue("False");
-    // element.setAttributeNode(visible);
+    QDomElement element = doc->createElement("GeometrySet"); // 创建子节点
+    QDomAttr	idattr	= doc->createAttribute("ID");
+    idattr.setValue(QString::number(mId));
+    element.setAttributeNode(idattr);
+    QDomAttr visible = doc->createAttribute("Visible");
+    visible.setValue("True");
+    if(!mVisible)
+        visible.setValue("False");
+    element.setAttributeNode(visible);
     
-    // QDomAttr isSTL = doc->createAttribute("ISSTL");
-    // isSTL.setValue("True");
-    // if(mType != STL)
-    //     isSTL.setValue("False");
-    // element.setAttributeNode(isSTL);
+    QDomAttr isSTL = doc->createAttribute("ISSTL");
+    isSTL.setValue("True");
+    if(mType != STL)
+        isSTL.setValue("False");
+    element.setAttributeNode(isSTL);
     
-    // QDomElement nameele	 = doc->createElement("Name");
-    // QDomText	nameText = doc->createTextNode(mName);
-    // nameele.appendChild(nameText);
-    // element.appendChild(nameele);
-    // // 		QDomElement pathele = doc->createElement("Path");
-    // // 		QDomText pathtext = doc->createTextNode(_filePath);
-    // // 		pathele.appendChild(pathtext);
-    // // 		element.appendChild(pathele);
+    QDomAttr fileAttr = doc->createAttribute("File");
+    fileAttr.setValue(QString("geometry/%1_%2").arg(mName).arg(mId));
+    element.setAttributeNode(fileAttr);
     
-    // ele->appendChild(element); // 子节点挂载
-    // // todo
-    // if(mParameter != nullptr)
-    //     // mParameter->writeToProjectFile(doc, &element);
+    QDomElement nameele	 = doc->createElement("Name");
+    QDomText	nameText = doc->createTextNode(mName);
+    nameele.appendChild(nameText);
+    element.appendChild(nameele);
+    // QDomElement pathele = doc->createElement("Path");
+    // QDomText pathtext = doc->createTextNode(_filePath);
+    // pathele.appendChild(pathtext);
+    // element.appendChild(pathele);
+    
+    ele->appendChild(element); // 子节点挂载
+    // todo
+    if(mParameter != nullptr)
+        mParameter->writeToProjectFile(doc, &element);
     
     // if(isDiso) {
     //     QString		  exelPath = QCoreApplication::applicationDirPath();

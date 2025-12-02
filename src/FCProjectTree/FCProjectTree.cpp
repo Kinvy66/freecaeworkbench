@@ -147,6 +147,7 @@ void FCProjectTree::createComponent()
     gemometry->setText(0, tr("几何"));
     gemometry->setIcon(0,QIcon(":/icon/icon/geometry.png"));
     gemometry->setData(0, RoleType::ContextActions, FCTreeWidget::MenuComponentGeometry);
+    mGeoRoot = gemometry;
     
     // QTreeWidgetItem* material = new QTreeWidgetItem(component);
     // material->setText(0, tr("材料"));
@@ -163,7 +164,6 @@ void FCProjectTree::createComponent()
     mesh->setText(0, tr("网格"));
     mesh->setIcon(0,QIcon(":/icon/icon/mesh.png"));
     mesh->setData(0, RoleType::ContextActions, FCTreeWidget::MenuComponentMesh);
-    
     
 }
 
@@ -569,6 +569,20 @@ QString  FCProjectTree::nextChildName(QTreeWidgetItem *parent, const QString &pr
     }
     return prefix + QString::number(maxIndex + 1);
 }
+
+void FCProjectTree::addGeometry(const QString& name)
+{
+    qDebug() << "FCProjectTree::addGeometry";
+    QTreeWidgetItem* item = new QTreeWidgetItem();
+    
+    item->setText(0, name);
+    item->setIcon(0, QIcon(":/icon/icon/geometry/cube.png"));
+    item->setData(0, RoleType::ContextActions, FCTreeWidget::MenuComponentGeometryEntity);
+    mGeoRoot->addChild(item);
+    mTreeWidget->expandItem(mGeoRoot);
+    mTreeWidget->setCurrentItem(item);
+}
+
 
 } // namespace FC
 

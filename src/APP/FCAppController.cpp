@@ -28,7 +28,7 @@
 #include "FCAppDockingArea.h"
 #include "FCAppCommand.h"
 #include "FCAppActions.h"
-// #include "FCAppDataManager.h"
+#include "FCAppDataManager.h"
 #include "FCProjectInterface.h"
 // Qt-Advanced-Docking-System
 #include "DockManager.h"
@@ -36,6 +36,9 @@
 // Widget
 #include "FCSettingParametersWidget.h"
 #include "FCGraphicOperateWidget.h"
+#include "FCModelBuilderWidget.h"
+// sub module
+#include "FCGeometryData.h"
 
 #ifndef FCAPPRIBBONAREA_WINDOW_NAME
 #define FCAPPRIBBONAREA_WINDOW_NAME QCoreApplication::translate("FCAppController", "FC", nullptr)
@@ -133,6 +136,17 @@ FCAppController &FCAppController::setAppActions(FCAppActions *act)
 }
 
 /**
+ * @brief 设置app数据管理
+ * @param d
+ * @return 
+ */
+FCAppController &FCAppController::setAppDataManager(FCAppDataManager *d)
+{
+    mDatas = d;
+    return (*this);
+}
+
+/**
  * @brief 获取app
  * @return
  */
@@ -166,11 +180,13 @@ void FCAppController::initConnection()
     
     FCGraphicOperateWidget* grapicWidget = mDock->getGraphicOperateWidget();
     FCSettingParametersWidget* settingsWidget = mDock->getSettingParametersWidget();
-    connect(settingsWidget, &FCSettingParametersWidget::boxModelCreated,
+    connect(settingsWidget, &FCSettingParametersWidget::modelCreated,
             grapicWidget, &FCGraphicOperateWidget::showGeoSet);
     
     connect(settingsWidget, &FCSettingParametersWidget::geometryModelCreated,
             grapicWidget, &FCGraphicOperateWidget::showGeoSet);
+    connect(settingsWidget, &FCSettingParametersWidget::updateGeoTree,
+            this, &FCAppController::onUpdateGeoTree);
 }
 
 
@@ -232,7 +248,9 @@ QString FCAppController::makeWindowTitle(FCProjectInterface *proj)
 
 void FCAppController::save()
 {
-    FCAPPCONTROLLER_PASS();
+    // FCAPPCONTROLLER_PASS();
+    FCGeometryData* geoData = mDatas->getGeometryData();
+    qDebug() << "geometry count : " << geoData->getGeometrySetCount();
 }
 
 void FCAppController::saveAs()
@@ -268,12 +286,19 @@ void FCAppController::resetLayout()
 void FCAppController::createCube()
 {
     mDock->getSettingParametersWidget()->createCube();
+    // mDock->getModelBuilderWidge()->addGeometryCube();
 }
 
 void FCAppController::createCylinder()
 {
     mDock->getSettingParametersWidget()->createCylinder();
     
+}
+
+void FCAppController::onUpdateGeoTree(const QString &name)
+{
+    qDebug() << "onUpdateGeoTree";
+    mDock->getModelBuilderWidge()->addGeometry(name);
 }
 
 void FCAppController::onActionAddDataTriggered()

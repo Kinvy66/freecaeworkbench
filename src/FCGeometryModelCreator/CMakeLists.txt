@@ -50,7 +50,6 @@ target_link_libraries(${FC_LIB_NAME} PRIVATE
     Qt${QT_VERSION_MAJOR}::Gui
     Qt${QT_VERSION_MAJOR}::Widgets
     Qt${QT_VERSION_MAJOR}::Xml
-    Qt${QT_VERSION_MAJOR}::Svg
 )
 if(${QT_VERSION_MAJOR} EQUAL 6)
     find_package(Qt6 REQUIRED COMPONENTS Core5Compat)

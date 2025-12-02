@@ -24,9 +24,11 @@ class FCGUI_API FCModelBuilderWidget : public QWidget
 public:
     FCModelBuilderWidget(QWidget* parent = nullptr);
     ~FCModelBuilderWidget();
+    void addGeometryCube();
+    void addGeometry(const QString& name);
     
-signals:
-    
+// signals:
+//     void addGeometry(int type);
 private:
     // 构建空白工程的树形结构
     void buildBlankProject();

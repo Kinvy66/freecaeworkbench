@@ -8,19 +8,21 @@
  */
 #ifndef FCDATABASE_H
 #define FCDATABASE_H
-
+#include "FCDataAPI.h"
+#include "FCParameterList.h"
 #include <QObject>
 #include <QString>
 #include <QList>
 #include <QStringList>
-#include "FCDataAPI.h"
+
 
 class QDomDocument;
 class QDomElement;
 
 namespace FC 
 {
-class FCDATA_API FCDataBase : public QObject
+class FCParameterGroup;
+class FCDATA_API FCDataBase : public QObject,  public FCParameterList
 {
     Q_OBJECT
 public:
@@ -65,7 +67,7 @@ public:
 		 */
     virtual void dataToStream(QDataStream *datas);
     ///数据写入工程文件
-    virtual QDomElement &writeToProjectFile(QDomDocument *doc, QDomElement *parent);
+    virtual QDomElement &writeToProjectFile(QDomDocument *doc, QDomElement *ele);
     ///从工程文件读入数据
     virtual void readDataFromProjectFile(QDomElement *e);
     //读取参数
@@ -78,8 +80,10 @@ public:
     
 protected:
     int mId{-1};
-    // int MIndex{-1};
+    int mIndex{-1};
     QString mName{"FFFFFF"};
+    
+    QList<FCParameterGroup *> mParaGroupList{};
     
 };
 

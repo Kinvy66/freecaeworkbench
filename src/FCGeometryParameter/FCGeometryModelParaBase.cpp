@@ -9,7 +9,7 @@
 #include "FCGeometryModelParaBase.h"
 #include "FCGeometryData.h"
 #include "FCGeometryParaBox.h"
-#include "FCGeometryData.h"
+#include "FCGeometryParaCylinder.h"
 
 
 namespace FC 
@@ -32,7 +32,7 @@ FCGeometryModelParaBase *FCGeometryModelParaBase::createParaByString(QString s)
     FCGeometryModelParaBase* p = nullptr;
     
     if (s == "CreateBox") p = new FCGeometryParaBox;
-    // else if (s == "CreateCylinder") p = new GeometryParaCylinder;
+    else if (s == "CreateCylinder") p = new FCGeometryParaCylinder;
     // else if (s == "CreateCone") p = new GeometryParaCone;
     // else if (s == "CreateFillet") p = new GeometryParaFillet;
     // else if (s == "CreateSphere") p = new GeometryParaSphere;

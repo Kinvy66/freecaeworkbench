@@ -41,7 +41,7 @@ class FCAppDockingArea;
 class FCAppCommand;
 class FCAppActions;
 class FCGeometrySet;
-// class FCAppDataManager;
+class FCAppDataManager;
 // class FCSettingContainerWidget;
 // class FCDataOperateOfDataFrameWidget;
 // class FCWorkFlowOperateWidget;
@@ -90,7 +90,7 @@ public:
     // 设置AppActions
     FCAppController& setAppActions(FCAppActions* act);
     // 设置AppDataManager
-    // FCAppController& setAppDataManager(DAAppDataManager* d);
+    FCAppController& setAppDataManager(FCAppDataManager* d);
     // 获取app
     AppMainWindow* app() const;
     // 初始化--必须初始化才能生效
@@ -151,6 +151,8 @@ public Q_SLOTS:
     void createCube();
     void createCylinder();
     
+    void onUpdateGeoTree(const QString& name);
+    
     
 private Q_SLOTS:
     // 工程的胀状态改变槽
@@ -188,7 +190,7 @@ private:
     FCAppDockingArea* mDock { nullptr };
     FCAppCommand* mCommand { nullptr };
     FCAppActions* mActions { nullptr };
-    // FCAppDataManager* mDatas { nullptr };
+    FCAppDataManager* mDatas { nullptr };
     
     QStringList mFileReadFilters;  ///< 包含支持的文件[Images (*.png *.xpm *.jpg)] [Text files (*.txt)]
     //

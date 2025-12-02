@@ -7,6 +7,7 @@
  * @copyright Copyright (c) 2025 Kinvy. All rights reserved.
  */
 #include "FCGeometryCreateBox.h"
+#include <QDebug>
 #include <BRepPrimAPI_MakeBox.hxx>
 #include <TopoDS.hxx>
 #include "FCGeometrySet.h"
@@ -58,15 +59,21 @@ bool FCGeometryCreateBox::execute()
     set->setShape(shape);
     mResult = set;
     
- 
+   mGeoData->appendGeometrySet(set);
+    
     FCGeometryParaBox  *para = new FCGeometryParaBox;
     para->setName(mName);
     para->setLocation(mLoaction);
     para->setGeoPara(mGeoPara);
     mResult->setParameter(para);
     
-    emit showSet(mResult);
+    emit updateGeoTree(mName);    
+    emit showSet(mResult, true);
     
+    qDebug() << "Create Cube,name:" << mName
+             << ", para:" <<  mGeoPara[0] << mGeoPara[1] << mGeoPara[2]
+             << ", location:" << mLoaction[0] << mLoaction[1] << mLoaction[2];     
+
     return true;
 }
 
@@ -83,6 +90,12 @@ void FCGeometryCreateBox::redo()
 void FCGeometryCreateBox::releaseResult()
 {
     
+}
+
+void FCGeometryCreateBox::setVisible(bool r)
+{
+    if (mResult == nullptr) return;
+    emit showSet(mResult, r);   
 }
 
 } // namespace FC
