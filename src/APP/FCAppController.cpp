@@ -183,10 +183,20 @@ void FCAppController::initConnection()
     connect(settingsWidget, &FCSettingParametersWidget::modelCreated,
             grapicWidget, &FCGraphicOperateWidget::showGeoSet);
     
+    connect(settingsWidget, &FCSettingParametersWidget::removeGeometryAcotr,
+            grapicWidget,&FCGraphicOperateWidget::removeGeometryAcotr);
+    
     connect(settingsWidget, &FCSettingParametersWidget::geometryModelCreated,
             grapicWidget, &FCGraphicOperateWidget::showGeoSet);
+    
+    
     connect(settingsWidget, &FCSettingParametersWidget::updateGeoTree,
             this, &FCAppController::onUpdateGeoTree);
+    
+    
+    FCModelBuilderWidget* modelBuilderWidget = mDock->getModelBuilderWidget();
+    connect(modelBuilderWidget, &FCModelBuilderWidget::currentItemChanged,
+            settingsWidget, &FCSettingParametersWidget::updateCurrentSettingWidget);
 }
 
 
@@ -295,10 +305,10 @@ void FCAppController::createCylinder()
     
 }
 
-void FCAppController::onUpdateGeoTree(const QString &name)
+void FCAppController::onUpdateGeoTree(const IdType id, const QString &name)
 {
     qDebug() << "onUpdateGeoTree";
-    mDock->getModelBuilderWidge()->addGeometry(name);
+    mDock->getModelBuilderWidget()->updateGeometryTree(id, name);
 }
 
 void FCAppController::onActionAddDataTriggered()

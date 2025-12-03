@@ -11,6 +11,7 @@
 #include <QVBoxLayout>
 #include "FCBoxSettingsWidget.h"
 #include "FCCylinderSettingsWidget.h"
+#include "FCGeometryData.h"
 
 namespace FC 
 {
@@ -39,8 +40,7 @@ void FCSettingParametersWidget::createCube()
     
     cubeSettingsWidget->create();
     
-    setCurrentWidget(cubeSettingsWidget);
-    
+    // setCurrentWidget(cubeSettingsWidget);
 }
 
 void FCSettingParametersWidget::createCylinder()
@@ -50,6 +50,35 @@ void FCSettingParametersWidget::createCylinder()
             this, &FCSettingParametersWidget::geometryModelCreated);
     
     setCurrentWidget(cylinderSettingsWidget);
+}
+
+/**
+ * @brief 显示当前选中的item的参数页面
+ * @param id
+ * @param name
+ */
+void FCSettingParametersWidget::updateCurrentSettingWidget(const IdType id,
+                                                           const QString& name)
+{
+    Q_UNUSED(name)
+    FCGeometrySet* editSet = FCGeometryData::getInstance()->getGeometrySetByID(id);
+    if (!editSet) {
+        return;
+    }
+
+    FCBoxSettingsWidget* cubeSettingsWidget = new FCBoxSettingsWidget(id, this);
+    connect(cubeSettingsWidget, &FCBoxSettingsWidget::modelCreated,
+            this, &FCSettingParametersWidget::geometryModelCreated);
+    connect(cubeSettingsWidget, &FCBoxSettingsWidget::updateGeoTree,
+            this, &FCSettingParametersWidget::updateGeoTree);
+    
+    connect(cubeSettingsWidget, &FCBoxSettingsWidget::removeActor, this,
+            &FCSettingParametersWidget::removeGeometryAcotr);
+    
+    
+    setCurrentWidget(cubeSettingsWidget);
+    
+    // qDebug() << "updateCurrentWidget id" << id;
 }
 
 void FCSettingParametersWidget::setCurrentWidget(QWidget *w)

@@ -21,6 +21,9 @@ FCProjectTree::FCProjectTree(QObject *parent)
     mTreeWidget = new FCTreeWidget();
     createDefaultProject();
     mTreeWidget->expandToDepth(1);
+    
+    connect(mTreeWidget, &QTreeWidget::currentItemChanged,
+            this, &FCProjectTree::currentItemChanged);
 }
 
 /**
@@ -34,6 +37,7 @@ void FCProjectTree::createDefaultProject(const QString &name)
     projectRoot->setText(0, name);
     projectRoot->setIcon(0,QIcon(":/icon/icon/project.png"));
     mTreeWidget->addTopLevelItem(projectRoot);
+    mTreeWidget->setCurrentItem(projectRoot);
     
     createGlobalDefine();
     createComponent();
@@ -47,7 +51,7 @@ void FCProjectTree::createDefaultProject(const QString &name)
     buildStudyActions();
     buildResultActions();
     
-      connect(mTreeWidget,&FCTreeWidget::actionTriggered,
+    connect(mTreeWidget,&FCTreeWidget::actionTriggered,
             this, &FCProjectTree::onTreeActionTriggered);
 }
 
@@ -570,14 +574,37 @@ QString  FCProjectTree::nextChildName(QTreeWidgetItem *parent, const QString &pr
     return prefix + QString::number(maxIndex + 1);
 }
 
-void FCProjectTree::addGeometry(const QString& name)
+/**
+ * @brief 更新几何体节点
+ * @param id
+ * @param name
+ */
+void FCProjectTree::updateGeometryTree(const IdType id, const QString& name)
 {
-    qDebug() << "FCProjectTree::addGeometry";
-    QTreeWidgetItem* item = new QTreeWidgetItem();
+   
+    // 遍历 GeoRoot 的所有子节点
+    for (int i = 0; i < mGeoRoot->childCount(); ++i) {
+        QTreeWidgetItem* child = mGeoRoot->child(i);
+        
+        QVariant var = child->data(0, RoleType::EntityItmeID);
+        if (var.canConvert<IdType>()) {
+            IdType itemId = var.value<IdType>();
+            
+            if (itemId == id) {
+                // 找到，更新名字
+                child->setText(0, name);
+                return;
+            }
+        }
+    }
     
+    // 添加新 item
+    QTreeWidgetItem* item = new QTreeWidgetItem();
     item->setText(0, name);
     item->setIcon(0, QIcon(":/icon/icon/geometry/cube.png"));
     item->setData(0, RoleType::ContextActions, FCTreeWidget::MenuComponentGeometryEntity);
+    item->setData(0, RoleType::EntityItmeID, QVariant::fromValue(id));
+    
     mGeoRoot->addChild(item);
     mTreeWidget->expandItem(mGeoRoot);
     mTreeWidget->setCurrentItem(item);

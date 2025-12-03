@@ -48,9 +48,12 @@ GeometryModelType FCGeometryModelBase::getGeometryModelType() const
  * @brief 设置last set
  * @param set
  */
-void FCGeometryModelBase::setEditData(FCGeometrySet *set)
+void FCGeometryModelBase::setEditData(const IdType setID)
 {
-    mEditSet = set;
+    if (setID != 0) {
+        mEditSetID = setID;
+    }
+    mIsEdit = true;
 }
 
 } // namespace FC

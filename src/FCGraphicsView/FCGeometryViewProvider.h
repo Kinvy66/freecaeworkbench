@@ -32,6 +32,8 @@ class FCGRAPHICSVIEW_API FCGeometryViewProvider : public QObject
 {
     Q_OBJECT
 public:
+    using IdType  = uint64_t;  ///< id类型
+public:
     FCGeometryViewProvider(FCGraphViewWindow* viewWindow, QObject *parent = nullptr);
     ~FCGeometryViewProvider();
     
@@ -44,7 +46,7 @@ public:
 public slots:
     void showGeoSet(FCGeometrySet *set, bool render = true);
     void showDatum(FCGeometrySet *datm);
-    void removeActors(FCGeometrySet *set);
+    void removeActors(const IdType id);
     void setGeometryDisplay(bool v, bool c, bool f);
     void setGeoSelectMode(int);
     

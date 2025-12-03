@@ -3,7 +3,7 @@
  * @brief 几何形状表示类
  * @date 2025-11-23
  * @version V0.0.1
- * @details 
+ * @details GeometrySet 内部的id使用的是有序的索引值
  * @copyright Copyright (c) 2025 Kinvy. All rights reserved.
  */
 #ifndef FCGEOMETRYSET_H
@@ -45,7 +45,7 @@ public:
      * @brief 设置id
      * @param id
      */ 
-    void setID(int id) override;
+    void setID(IdType id) override;
     
     /**
      * @brief 重置最大id
@@ -64,7 +64,7 @@ public:
      * @param id 要获取ID的子形状
      * @return GeometrySet* 返回的子形状
      */
-    FCGeometrySet *getSetByID(int id);
+    FCGeometrySet *getSetByID(IdType id);
     
     /**
      * @brief 获取topo数据

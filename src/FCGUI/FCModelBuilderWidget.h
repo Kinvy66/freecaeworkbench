@@ -12,6 +12,8 @@
 #include <QWidget>
 #include <QList>
 
+class QTreeWidgetItem;
+
 namespace FC 
 {
 class FCTree;
@@ -22,13 +24,20 @@ class FCGUI_API FCModelBuilderWidget : public QWidget
 {
     Q_OBJECT
 public:
+    using IdType  = uint64_t;  ///< id类型
+public:
     FCModelBuilderWidget(QWidget* parent = nullptr);
     ~FCModelBuilderWidget();
     void addGeometryCube();
-    void addGeometry(const QString& name);
+    void updateGeometryTree(const IdType id, const QString& name);
     
-// signals:
+private slots:
+    void onCurrentItemChanged(QTreeWidgetItem *current, QTreeWidgetItem *previous);
+    
+signals:
 //     void addGeometry(int type);
+    void currentItemChanged(const IdType, const QString& name);
+    
 private:
     // 构建空白工程的树形结构
     void buildBlankProject();

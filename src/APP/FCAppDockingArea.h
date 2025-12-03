@@ -55,7 +55,7 @@ public:
     
 public:
     // 获取模型窗口
-    virtual FCModelBuilderWidget* getModelBuilderWidge() const override;
+    virtual FCModelBuilderWidget* getModelBuilderWidget() const override;
     
     // 获取设置窗口
     virtual FCSettingParametersWidget* getSettingParametersWidget() const override;

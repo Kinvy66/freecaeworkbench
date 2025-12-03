@@ -25,6 +25,8 @@ FCModelBuilderWidget::FCModelBuilderWidget(QWidget *parent)
     QVBoxLayout* layout = new QVBoxLayout(this);
     layout->addWidget(mProjectTree->treeWidget()); // 需要添加 getter
     layout->setContentsMargins(2, 2, 2, 2);
+    connect(mProjectTree, &FCProjectTree::currentItemChanged,
+            this, &FCModelBuilderWidget::onCurrentItemChanged);
 }
 
 FCModelBuilderWidget::~FCModelBuilderWidget()
@@ -37,10 +39,34 @@ void FCModelBuilderWidget::addGeometryCube()
     
 }
 
-void FCModelBuilderWidget::addGeometry(const QString &name)
+void FCModelBuilderWidget::updateGeometryTree(const IdType id, const QString &name)
 {
-    qDebug() << "FCModelBuilderWidget::addGeometry";
-    mProjectTree->addGeometry(name);
+    qDebug() << "FCModelBuilderWidget::addGeometry, id:" << id;
+    mProjectTree->updateGeometryTree(id, name);
+}
+
+void FCModelBuilderWidget::onCurrentItemChanged(QTreeWidgetItem *current, QTreeWidgetItem *previous)
+{
+    QString currentName = "None";
+    QString previousName = "None";
+    IdType id = 0;
+    
+    if (current) {
+        
+        QVariant var = current->data(0, RoleType::EntityItmeID);
+        if(!var.isValid() || var.isNull()) {
+            return;
+        } else {
+            id = current->data(0, RoleType::EntityItmeID).value<IdType>();
+            // qDebug() << "Current item id:" << id;
+        }
+        currentName = current->text(0);
+    }
+    if (previous) {
+        previousName = previous->text(0);
+    }
+    // qDebug().noquote()<< "Select item changeed, previous:"<< previousName << ", current:" << currentName;
+    emit currentItemChanged(id, currentName);
 }
 
 

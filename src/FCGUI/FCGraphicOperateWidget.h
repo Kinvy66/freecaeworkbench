@@ -26,6 +26,8 @@ class FCGUI_API FCGraphicOperateWidget : public QWidget
 {
     Q_OBJECT
 public:
+    using IdType  = uint64_t;  ///< id类型
+public:
     FCGraphicOperateWidget(QWidget* parent = nullptr);
     ~FCGraphicOperateWidget();
     
@@ -42,7 +44,7 @@ public:
     
 signals:
     void showGeoSet(FCGeometrySet *set, bool render = true);
-    
+    void removeGeometryAcotr(const IdType id);
 public slots:
     void showModel(FCGeometrySet* set, bool r);
 

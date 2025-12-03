@@ -76,7 +76,7 @@ void FCAppDockingArea::resetText()
  * @brief 获取模型构建窗口
  * @return 
  */
-FCModelBuilderWidget *FCAppDockingArea::getModelBuilderWidge() const
+FCModelBuilderWidget *FCAppDockingArea::getModelBuilderWidget() const
 {
     return mModelBuilderWidget;   
 }

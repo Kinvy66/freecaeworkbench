@@ -60,6 +60,8 @@ FCGraphicOperateWidget::FCGraphicOperateWidget(QWidget *parent)
     
     connect(this, &FCGraphicOperateWidget::showGeoSet,
             mGraphViewWindow, &FCGraphViewWindow::showGeoSet);
+    connect(this, &FCGraphicOperateWidget::removeGeometryAcotr,
+            mGraphViewWindow, &FCGraphViewWindow::removeGemoActors);
 }
 
 FCGraphicOperateWidget::~FCGraphicOperateWidget()

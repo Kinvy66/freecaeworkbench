@@ -22,6 +22,8 @@ class FCGRAPHICSVIEW_API FCGraphViewWindow : public FCGraph3DWindow
 {
     Q_OBJECT
 public:
+    using IdType  = uint64_t;  ///< id类型
+public:
     FCGraphViewWindow(int id = -1, QWidget* parent = nullptr);
     ~FCGraphViewWindow();
     
@@ -39,7 +41,7 @@ signals:
     //显示几何形状
     void showGeoSet(FCGeometrySet *set, bool render = true);
     //移除几何形状的显示
-    void removeGemoActors(FCGeometrySet *set);
+    void removeGemoActors(const IdType id);
     //显示基准
     // void showDatum(GeometryDatum *);
     //移除几何基准显示
@@ -88,7 +90,7 @@ private slots:
     void updateGraphOption() override;
     //几何
     void updateGeoDispaly(int index, bool display);
-    void removeGemoActor(const int index);
+    void removeGemoActor(const IdType id);
     //网格
     void updateMeshDispaly(int index, bool display);
     void removeMeshActor(const int index);

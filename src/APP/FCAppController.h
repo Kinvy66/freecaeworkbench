@@ -59,6 +59,8 @@ class FCAppController : public QObject
 {
     Q_OBJECT
 public:
+    using IdType  = uint64_t;  ///< id类型
+public:
     
     /**
 	 * @brief 针对Operate窗口的最后焦点枚举，用于识别最后用户所在的操作窗口
@@ -151,7 +153,7 @@ public Q_SLOTS:
     void createCube();
     void createCylinder();
     
-    void onUpdateGeoTree(const QString& name);
+    void onUpdateGeoTree(const IdType id, const QString& name);
     
     
 private Q_SLOTS:

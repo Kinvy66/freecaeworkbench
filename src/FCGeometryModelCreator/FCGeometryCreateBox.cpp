@@ -12,6 +12,7 @@
 #include <TopoDS.hxx>
 #include "FCGeometrySet.h"
 #include "FCGeometryParaBox.h"
+#include "FCUniqueIDGenerater.h"
 
 namespace FC 
 {
@@ -47,6 +48,7 @@ bool FCGeometryCreateBox::execute()
     gp_Pnt pt(mLoaction[0], mLoaction[1], mLoaction[2]);
     TopoDS_Shape aTopoBox = BRepPrimAPI_MakeBox(pt, mGeoPara[0], mGeoPara[1], mGeoPara[2]).Shape();
     TopoDS_Shape *shape = new TopoDS_Shape;
+    IdType id = 0;
     *shape = aTopoBox;
     if (shape->IsNull())
     {
@@ -59,17 +61,27 @@ bool FCGeometryCreateBox::execute()
     set->setShape(shape);
     mResult = set;
     
-   mGeoData->appendGeometrySet(set);
+    if (mIsEdit) {
+        id = mEditSetID;
+        mGeoData->replaceSet(id, set);
+        emit removeDisplayGeometryActor(id);        
+    } else {
+        id  = FCUniqueIDGenerater::id_uint64();
+        mGeoData->appendGeometrySet(id, set);
+    }
+    
+    
     
     FCGeometryParaBox  *para = new FCGeometryParaBox;
     para->setName(mName);
     para->setLocation(mLoaction);
     para->setGeoPara(mGeoPara);
     mResult->setParameter(para);
+    set->setName(mName);
     
-    emit updateGeoTree(mName);    
+    emit updateGeoTree(id, mName);    
     emit showSet(mResult, true);
-    
+        
     qDebug() << "Create Cube,name:" << mName
              << ", para:" <<  mGeoPara[0] << mGeoPara[1] << mGeoPara[2]
              << ", location:" << mLoaction[0] << mLoaction[1] << mLoaction[2];     

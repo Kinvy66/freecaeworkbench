@@ -26,6 +26,9 @@ class FCDATA_API FCDataBase : public QObject,  public FCParameterList
 {
     Q_OBJECT
 public:
+    using IdType  = uint64_t;  ///< id类型
+    
+public:
     
     FCDataBase() = default;
     ~FCDataBase() = default;
@@ -40,13 +43,13 @@ public:
      * @brief 设置数据的ID值
      * @param id ID值
      */
-    virtual void setID(int id);
+    virtual void setID(IdType id);
     
     /**
      * @brief 获取数据的ID值
      * @return int 返回ID值
      */
-    int64_t getID() const;
+    IdType getID() const;
     
     /**
      * @brief 设置数据的名称
@@ -79,7 +82,7 @@ public:
     QString getName();
     
 protected:
-    int mId{-1};
+    IdType mId;
     int mIndex{-1};
     QString mName{"FFFFFF"};
     

@@ -54,7 +54,7 @@ FCGeometrySet::~FCGeometrySet()
  * @brief 设置id
  * @param id
  */ 
-void FCGeometrySet::setID(int id)
+void FCGeometrySet::setID(IdType id)
 {
     FCDataBase::setID(id);
     if(id > s_idOffset)
@@ -177,6 +177,11 @@ void FCGeometrySet::setType(GeometryType type)
     mType = type;
 }
 
+GeometryType FCGeometrySet::getType()
+{
+    return mType;
+}
+
 /**
  * @brief 设置形状的拓扑
  * @param shape
@@ -225,7 +230,7 @@ vtkPolyData *FCGeometrySet::getPoly()
  * @param id 要获取ID的子形状
  * @return GeometrySet* 返回的子形状
  */
-FCGeometrySet *FCGeometrySet::getSetByID(int id)
+FCGeometrySet *FCGeometrySet::getSetByID(IdType id)
 {
     FCGeometrySet* s = nullptr;
     if(id == mId) {
@@ -251,6 +256,11 @@ FCGeometrySet *FCGeometrySet::getSetByID(int id)
 void FCGeometrySet::setParameter(FCGeometryModelParaBase *p)
 {
     mParameter = p;
+}
+
+FCGeometryModelParaBase *FCGeometrySet::getParameter()
+{
+    return mParameter;
 }
 
 /**

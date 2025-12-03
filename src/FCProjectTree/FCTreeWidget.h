@@ -23,6 +23,7 @@ namespace FC
 enum RoleType
 {
     ContextActions = Qt::UserRole + 1,  // 右键菜单数据
+    EntityItmeID,                       // 实体条目id
     EntityItmeType,                     // 条目类型
     EntityMetaData,                     // 实体元数据
 };

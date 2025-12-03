@@ -210,7 +210,7 @@ public:
 	 */
     
     // 获取模型窗口
-    virtual FCModelBuilderWidget* getModelBuilderWidge() const = 0;
+    virtual FCModelBuilderWidget* getModelBuilderWidget() const = 0;
     
     // 获取设置窗口
     virtual FCSettingParametersWidget* getSettingParametersWidget() const = 0;

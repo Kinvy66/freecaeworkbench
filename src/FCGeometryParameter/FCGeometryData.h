@@ -28,6 +28,9 @@ class FCGeometryDatum;
 class FCGEOMETRYPARA_API FCGeometryData : public FCDataBase
 {
 public:
+    using IdType  = uint64_t;  ///< id类型
+    
+public:
     /**
      * @brief 获取单例指针
      * @return 返回单例指针
@@ -39,6 +42,8 @@ public:
      * @param set
      */
     void appendGeometrySet(FCGeometrySet *set);
+    
+    void appendGeometrySet(IdType id, FCGeometrySet *set);
     /**
      * @brief 添加基准
      */
@@ -74,11 +79,17 @@ public:
      * @attention 获取失败时返回-1
      */
     int getIndexByGeoometrySet(FCGeometrySet *s);
+    
+
+    IdType getIDByGeoometrySet(FCGeometrySet *s);
+    
+
     /**
-     * @brief 移除索引值为index的形状
-     * @param index 要移除形状的索引
+     * @brief 删除set
+     * @param id
+     * @return 
      */
-    void removeGeometrySet(const int index);
+    bool removeGeometrySet(const IdType id);
     /**
      * @brief 替换形状
      * @param newset 替换后的形状
@@ -86,6 +97,10 @@ public:
      * @attention 如果oldset不是当前对象的形状，则不会执行替换操作
      */
     void replaceSet(FCGeometrySet *newset, FCGeometrySet *oldset);
+    
+    void replaceSet(const IdType id, FCGeometrySet *newset);
+    
+    
     /**
      * @brief 移除直接子形状
      * @param set 要移除的直接子形状
@@ -120,7 +135,7 @@ public:
      * @return GeometrySet* 返回获取到的几何形状
      * @attention 如果ID值不合法，则返回nullptr
      */
-    FCGeometrySet *getGeometrySetByID(const int id);
+    FCGeometrySet *getGeometrySetByID(const IdType id);
     /**
      * @brief 获取索引为index的基准
      * @param index 要获取基准的索引值
@@ -197,6 +212,9 @@ private:
      * @brief 几何形状列表
      */
     QList<FCGeometrySet *> mGeometryList{};
+    
+    QHash<IdType, FCGeometrySet *> mGeometrySets{};
+    
     /**
      * @brief 基准列表
      */

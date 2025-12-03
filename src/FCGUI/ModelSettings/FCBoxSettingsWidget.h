@@ -24,9 +24,11 @@ class FCGeometryCreateBox;
 class FCGUI_API FCBoxSettingsWidget : public QWidget
 {
     Q_OBJECT
-    
+public:
+    using IdType  = uint64_t;  ///< id类型
 public:
     FCBoxSettingsWidget(QWidget *parent = nullptr);
+    FCBoxSettingsWidget(const IdType editSetID, QWidget *parent = nullptr);
     ~FCBoxSettingsWidget();
     bool create();
     
@@ -37,7 +39,8 @@ private:
     
 signals:
     void modelCreated(FCGeometrySet* set, bool r);
-    void updateGeoTree(const QString& name);
+    void updateGeoTree(const IdType id, const QString& name);
+    void removeActor(const IdType id);
     
 private slots:
     void on_pushButton_build_clicked();
@@ -46,6 +49,9 @@ private slots:
 private:
     Ui::FCBoxSettingsWidget *ui;
     FCGeometryCreateBox* mCreateBox;
+    bool mIsEdit;
+    
+    IdType mEidtSetID;
     
 };
 } // namespace FC

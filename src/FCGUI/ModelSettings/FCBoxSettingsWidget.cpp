@@ -10,6 +10,7 @@
 #include "ui_FCBoxSettingsWidget.h"
 #include "FCGeometryCreateBox.h"
 #include "FCGeometrySet.h"
+#include "FCGeometryParaBox.h"
 
 namespace FC 
 {
@@ -18,6 +19,18 @@ FCBoxSettingsWidget::FCBoxSettingsWidget(QWidget *parent)
     , ui(new Ui::FCBoxSettingsWidget)
 {
     ui->setupUi(this);
+    mIsEdit = false;
+    mEidtSetID = 0;
+    init();
+}
+
+FCBoxSettingsWidget::FCBoxSettingsWidget(const IdType editSetID, QWidget *parent)
+    : QWidget(parent)
+    , ui(new Ui::FCBoxSettingsWidget)
+{
+    ui->setupUi(this);
+    mIsEdit = true;
+    mEidtSetID = editSetID;
     init();
 }
 
@@ -37,20 +50,20 @@ bool FCBoxSettingsWidget::create()
     
     QString name  = ui->lineEdit_name->text();
     
-    mCreateBox = new FCGeometryCreateBox(this);
-    
-    connect(mCreateBox, &FCGeometryCreateBox::showSet,
+    FCGeometryCreateBox* creator = new FCGeometryCreateBox(this);
+        
+    connect(creator, &FCGeometryCreateBox::showSet,
             this, &FCBoxSettingsWidget::modelCreated);
     
-    connect(mCreateBox, &FCGeometryCreateBox::updateGeoTree,
+    connect(creator, &FCGeometryCreateBox::updateGeoTree,
             this, &FCBoxSettingsWidget::updateGeoTree);
     
     
-    mCreateBox->setName(name);
-    mCreateBox->setLocation(corner);
-    mCreateBox->setGeoPara(para);
+    creator->setName(name);
+    creator->setLocation(corner);
+    creator->setGeoPara(para);
         
-    mCreateBox->execute();
+    creator->execute();
     
     return true;
 }
@@ -113,9 +126,33 @@ bool FCBoxSettingsWidget::getCoordinate(double *coor)
 void FCBoxSettingsWidget::init()
 {
     // mCreateBox = new FCGeometryCreateBox(this);
-    int id = FCGeometrySet::getMaxID() + 1;
-    ui->lineEdit_name->setText(QString("Cube_%1").arg(id));
     
+    if (!mIsEdit) {     // 新建几何模型
+        int id = FCGeometrySet::getMaxID() + 1;
+        ui->lineEdit_name->setText(QString("Cube_%1").arg(id));
+    } else {   // 编辑现有的几何模型
+        FCGeometrySet* eidtSet= FCGeometryData::getInstance()->getGeometrySetByID(mEidtSetID);
+        if (eidtSet == nullptr){
+            return;
+        }
+        ui->lineEdit_name->setText(eidtSet->getName());
+        FCGeometryModelParaBase *pb = eidtSet->getParameter();
+        FCGeometryParaBox *p = dynamic_cast<FCGeometryParaBox *>(pb);
+        
+        if (p == nullptr)
+            return;
+        double loc[3] = {0.0}, para[3] = {0.0};
+        p->getLocation(loc);
+        p->getGeoPara(para);
+        // _pw->setCoordinate(loc);
+        ui->lineEdit_locationX->setText(QString::number(loc[0]));
+        ui->lineEdit_locationY->setText(QString::number(loc[1]));
+        ui->lineEdit_locationZ->setText(QString::number(loc[2]));
+
+        ui->lineEdit_length->setText(QString::number(para[0]));
+        ui->lineEdit_width->setText(QString::number(para[1]));
+        ui->lineEdit_height->setText(QString::number(para[2]));
+    }
 }
 
 /**
@@ -123,7 +160,35 @@ void FCBoxSettingsWidget::init()
  */
 void FCBoxSettingsWidget::on_pushButton_build_clicked()
 {
-    mCreateBox->setVisible(true);
+    qDebug() << "current id: " << mEidtSetID;
+    
+    double corner[3] = {0.0};
+    double para[3] = {0.0};
+    
+    bool ok = false;
+    ok = getPara(para);
+    ok= getCoordinate(corner);
+    
+    QString name  = ui->lineEdit_name->text();
+    
+    FCGeometryCreateBox* creator = new FCGeometryCreateBox(this);
+    
+    connect(creator, &FCGeometryCreateBox::showSet,
+            this, &FCBoxSettingsWidget::modelCreated);
+    
+    connect(creator, &FCGeometryCreateBox::updateGeoTree,
+            this, &FCBoxSettingsWidget::updateGeoTree);
+    connect(creator, &FCGeometryCreateBox::removeDisplayGeometryActor,
+            this, &FCBoxSettingsWidget::removeActor);
+    
+    creator->setName(name);
+    creator->setLocation(corner);
+    creator->setGeoPara(para);
+    
+    creator->setEditData(mEidtSetID);
+    
+    creator->execute(); 
+    // this->create();
 }
 
 

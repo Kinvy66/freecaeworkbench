@@ -70,7 +70,7 @@ private:
     /**
      * @brief 名称
      */
-    QString mName{};
+    // QString mName{};
     
     /**
      * @brief 位置

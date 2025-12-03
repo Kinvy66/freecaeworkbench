@@ -46,6 +46,9 @@ class FCGeometrySet;
 class FCGEOMETRYMODELCREATOR_API FCGeometryModelBase : public QObject
 {
     Q_OBJECT
+    
+public:
+    using IdType  = uint64_t;  ///< id类型
 public:
     /**
      * @brief 构造函数
@@ -86,13 +89,13 @@ public:
      */
     GeometryModelType getGeometryModelType() const;
     
-    void setEditData(FCGeometrySet *set);
+    void setEditData(const IdType setID);
     
 signals:
-    void updateGeoTree(const QString& name);
+    void updateGeoTree(const IdType id, const QString& name);
     void showSet(FCGeometrySet *s, bool r = true);
     // void showDatum(Geometry::GeometryDatum *);
-    void removeDisplayActor(FCGeometrySet *s);
+    void removeDisplayGeometryActor(const IdType id);
     // void removeDisplayDatumActor(Geometry::GeometryDatum *);
     /**
      * @brief 命令执行后会触发此信号
@@ -122,7 +125,7 @@ protected:
     // GeoComandList *_commandList{};
     
     bool mIsEdit{false};
-    FCGeometrySet* mEditSet{};
+    IdType mEditSetID{};    ///< @note 该id不是索引值id
 };
 } // namespace FC
 

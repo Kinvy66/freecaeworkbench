@@ -22,11 +22,16 @@ class FCGUI_API FCSettingParametersWidget : public QWidget
 {
     Q_OBJECT
 public:
+    using IdType  = uint64_t;  ///< id类型
+public:
     FCSettingParametersWidget(QWidget* parent = nullptr);
     ~FCSettingParametersWidget();
     
     void createCube();
     void createCylinder();
+    
+public slots:
+    void updateCurrentSettingWidget(const IdType id, const QString& name);
     
 private:
     void setCurrentWidget(QWidget* w);
@@ -34,7 +39,8 @@ private:
 signals:
     void modelCreated(FCGeometrySet* set, bool r);
     void geometryModelCreated(FCGeometrySet* set, bool r);
-    void updateGeoTree(const QString& name);
+    void updateGeoTree(const IdType id, const QString& name);
+    void removeGeometryAcotr(const IdType id);
     
 private:
     

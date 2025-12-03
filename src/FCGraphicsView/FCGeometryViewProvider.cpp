@@ -113,7 +113,7 @@ QMultiHash<FCGeometrySet *, int> FCGeometryViewProvider::getGeoSelectItems()
 void FCGeometryViewProvider::showGeoSet(FCGeometrySet *set, bool render)
 {
     // todo 
-    removeAllActors();
+    // removeAllActors();
     QList<vtkPolyData *> viewPolys = mViewData->transferToPoly(set);
     vtkPolyData *facePoly = viewPolys.at(0);
     vtkPolyData *edgePoly = viewPolys.at(1);
@@ -183,8 +183,9 @@ void FCGeometryViewProvider::showDatum(FCGeometrySet *datm)
  * @brief 从vtk渲染窗口中移除指定的几何actor
  * @param set
  */
-void FCGeometryViewProvider::removeActors(FCGeometrySet *set)
+void FCGeometryViewProvider::removeActors(const IdType id)
 {
+    FCGeometrySet* set = mGeoData->getGeometrySetByID(id);
     if (!mGeoViewHash.contains(set))
         return;
     GeoViewObj views = mGeoViewHash.value(set);
@@ -197,6 +198,8 @@ void FCGeometryViewProvider::removeActors(FCGeometrySet *set)
     mGraphViewWindow->RemoveActor(ac);
     mGraphViewWindow->reRender();
     mViewData->removeViewObjs(set);
+    
+    mGraphViewWindow->reRender();    
 }
 
 void FCGeometryViewProvider::setGeometryDisplay(bool v, bool c, bool f)

@@ -24,7 +24,7 @@ void FCDataBase::copy(FCDataBase *data)
     
 }
 
-void FCDataBase::setID(int id)
+void FCDataBase::setID(IdType id)
 {
     mId = id;
     
@@ -34,7 +34,7 @@ void FCDataBase::setID(int id)
  * @brief 获取数据的ID值
  * @return int 返回ID值
  */
-int64_t FCDataBase::getID() const
+FCDataBase::IdType FCDataBase::getID() const
 {
     return mId;
 }
@@ -97,7 +97,7 @@ void FCDataBase::writeParameters(QDomDocument *doc, QDomElement *parent)
 
 QString FCDataBase::getName()
 {
-    return "FFFF";
+    return mName;
 }
 
 } // namespace FC

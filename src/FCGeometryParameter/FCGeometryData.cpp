@@ -8,8 +8,10 @@
  */
 
 #include "FCGeometryData.h"
+#include "FCUniqueIDGenerater.h"
 #include <gp_Ax3.hxx>
 #include <assert.h>
+#include <QDebug>
 #include <QCryptographicHash>
 #include <gp_Ax3.hxx>
 #include <QDomDocument>
@@ -39,7 +41,26 @@ FCGeometryData::~FCGeometryData()
 
 void FCGeometryData::appendGeometrySet(FCGeometrySet *set)
 {
-    mGeometryList.append(set);
+    // mGeometryList.append(set);
+    mGeometrySets.insert(FCUniqueIDGenerater::id_uint64(), set);
+}
+
+void FCGeometryData::appendGeometrySet(IdType id, FCGeometrySet *set)
+{
+    bool isExist = false;
+    for (const auto& key : mGeometrySets.keys()) {
+        if (id == key) {
+            isExist = true;
+        }
+    }
+    if (isExist) {
+        qDebug() << "Modify Geometry Set id: " << id;
+        
+    } else {
+        qDebug() << "Add Geometry Set id: " << id;
+        
+    }
+    mGeometrySets.insert(id, set);
 }
 
 void FCGeometryData::appendGeometryDatum(FCGeometryDatum *plane)
@@ -56,20 +77,21 @@ QList<FCGeometryDatum *> FCGeometryData::getGeometryDatum()
 
 int FCGeometryData::getGeometrySetCount()
 {
-    return mGeometryList.size();
+    // return mGeometryList.size();
+    return mGeometrySets.size();
 }
 
 bool FCGeometryData::isEmpty()
 {
-    int n = mGeometryList.size();
+    int n = mGeometrySets.size();
     bool b = n < 1;
     return b;
 }
 
 FCGeometrySet *FCGeometryData::getGeometrySetAt(const int index)
 {
-    if (index >= 0 && index < mGeometryList.size())
-        return mGeometryList.at(index);
+    // if (index >= 0 && index < mGeometryList.size())
+    //     return mGeometryList.at(index);
     return nullptr;
 }
 
@@ -85,12 +107,20 @@ int FCGeometryData::getIndexByGeoometrySet(FCGeometrySet *s)
     return -1;
 }
 
-void FCGeometryData::removeGeometrySet(const int index)
+FCGeometryData::IdType FCGeometryData::getIDByGeoometrySet(FCGeometrySet *s)
 {
-    assert(index >= 0 && index < mGeometryList.size());
-    FCGeometrySet *set = mGeometryList.at(index);
-    delete set;
-    mGeometryList.removeAt(index);
+    for (auto it = mGeometrySets.constBegin(); it != mGeometrySets.constEnd(); ++it) {
+        if (it.value() == s)
+            return it.key();
+    }
+    return 0;  // not found
+}
+
+bool FCGeometryData::removeGeometrySet(const IdType id)
+{   
+    int n =  mGeometrySets.remove(id);
+    
+    return (n == 1);
 }
 
 void FCGeometryData::replaceSet(FCGeometrySet *newset, FCGeometrySet *oldset)
@@ -100,6 +130,17 @@ void FCGeometryData::replaceSet(FCGeometrySet *newset, FCGeometrySet *oldset)
     {
         mGeometryList.replace(index, newset);
     }
+}
+
+void FCGeometryData::replaceSet(const IdType id, FCGeometrySet *newset)
+{
+    for (const auto& key : mGeometrySets.keys()) {
+        if (id == key) {
+            this->appendGeometrySet(id, newset);
+            return;
+        }
+    }
+    qDebug() << "Error, set " << id << " not exist!";
 }
 
 void FCGeometryData::removeTopGeometrySet(FCGeometrySet *set)
@@ -165,15 +206,20 @@ void FCGeometryData::clear()
     // GeometrySet::resetMaxID();
 }
 
-FCGeometrySet *FCGeometryData::getGeometrySetByID(const int id)
+FCGeometrySet *FCGeometryData::getGeometrySetByID(const IdType id)
 {
-    const int n = this->getGeometrySetCount();
-    for (int i = 0; i < n; ++i)
-    {
-        FCGeometrySet *set = mGeometryList.at(i);
-        FCGeometrySet *res = nullptr;// set->getSetByID(id);
-        if (res != nullptr)
-            return res;
+    // const int n = this->getGeometrySetCount();
+    // for (int i = 0; i < n; ++i)
+    // {
+    //     FCGeometrySet *set = mGeometryList.at(i);
+    //     FCGeometrySet *res = set->getSetByID(id);
+    //     if (res != nullptr)
+    //         return res;
+    // }
+    // return nullptr;
+    FCGeometrySet* set = mGeometrySets.value(id);
+    if(set->getType()) {
+        return set;
     }
     return nullptr;
 }

@@ -4,6 +4,7 @@
  * @date 2025-11-19
  * @version V0.0.1
  * @details 生成当前进程唯一uint64_t类型的id
+ * @todo 加入进程id和机器id，确保跨进程，跨机器的唯一性
  * @copyright Copyright (c) 2025 Kinvy. All rights reserved.
  */
 #include "FCUniqueIDGenerater.h"
