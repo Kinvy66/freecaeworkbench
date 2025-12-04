@@ -40,7 +40,7 @@ public:
     // virtual void readDataFromProjectFile(QDomElement* e) override;
     
 private:
-    QString mName{};
+    // QString mName{};
     double mLocation[3];
     double mRadius;
     double mLength;

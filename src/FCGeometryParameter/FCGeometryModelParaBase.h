@@ -25,6 +25,8 @@ enum GeometryParaType
     GeometryParaCreateBox,			///< 创建长方体（包括立方体）的操作参数
     GeometryParaCreateCylinder,		///< 创建圆柱的操作参数
     GeometryParaCreateCone,			///< 创建锥体的操作参数
+    GeometryParaCreateHelix,		///< 创建螺旋的操作参数
+    GeometryParaCreateTorus,		///< 创建螺旋的操作参数
     GeometryParaCreateFillet,		///< 创建倒圆角的操作参数
     GeometryParaCreateSphere,		///< 创建球体的操作参数
     GeometryParaCreatePoint,		///< 创建点的操作参数
