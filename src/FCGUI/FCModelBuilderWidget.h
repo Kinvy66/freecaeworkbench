@@ -28,8 +28,8 @@ public:
 public:
     FCModelBuilderWidget(QWidget* parent = nullptr);
     ~FCModelBuilderWidget();
-    void addGeometryCube();
     void updateGeometryTree(const IdType id, const QString& name);
+    void deleteGeometryItem();
     
 private slots:
     void onCurrentItemChanged(QTreeWidgetItem *current, QTreeWidgetItem *previous);
@@ -37,6 +37,7 @@ private slots:
 signals:
 //     void addGeometry(int type);
     void currentItemChanged(const IdType, const QString& name);
+    void deleteGeometryEntity(const IdType, const QString& name);
     
 private:
     // 构建空白工程的树形结构

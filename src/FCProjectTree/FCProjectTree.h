@@ -36,6 +36,8 @@ public:
     // 添加几何模型
     void updateGeometryTree(const IdType id, const QString& name);
     
+    void deleteGeometryItem();
+    
 private slots:
     void onTreeActionTriggered(int menuType, const QString &actionText, QTreeWidgetItem *item);
     
@@ -71,6 +73,7 @@ private:
 signals:
 //     void addGeometry();
     void currentItemChanged(QTreeWidgetItem*, QTreeWidgetItem*);
+    void deleteGeometryEntity(const IdType id, const QString& name);
     
     
 private:

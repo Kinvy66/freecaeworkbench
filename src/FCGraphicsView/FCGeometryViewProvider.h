@@ -37,8 +37,8 @@ public:
     FCGeometryViewProvider(FCGraphViewWindow* viewWindow, QObject *parent = nullptr);
     ~FCGeometryViewProvider();
     
-    
     void updateGeoActors();
+    void removeGeoActors();
     void updateGraphOption();
     void updateDiaplayStates(const IdType id, bool visibility);
     QMultiHash<IdType, int> getGeoSelectItems();
@@ -46,7 +46,7 @@ public:
 public slots:
     void showGeoSet(const IdType id, bool render = true);
     // void showDatum(const IdType id);
-    void removeActors(const IdType id);
+    void updateGeomtryDisplayActor(const IdType id);
     void setGeometryDisplay(bool v, bool c, bool f);
     void setGeoSelectMode(int);
     

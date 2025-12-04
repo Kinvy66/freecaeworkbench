@@ -21,8 +21,8 @@ FCGraphViewWindow::FCGraphViewWindow(int id, QWidget* parent)
     mGeoProvider = new FCGeometryViewProvider(this);
     connect(this, &FCGraphViewWindow::showGeoSet,
             mGeoProvider, &FCGeometryViewProvider::showGeoSet);
-    connect(this, &FCGraphViewWindow::removeGemoActors, mGeoProvider
-            , &FCGeometryViewProvider::removeActors);
+    connect(this, &FCGraphViewWindow::updateGeometryActors, mGeoProvider
+            , &FCGeometryViewProvider::updateGeomtryDisplayActor);
 }
 
 FCGraphViewWindow::~FCGraphViewWindow()
@@ -49,7 +49,7 @@ void FCGraphViewWindow::removeGemoActor(const IdType id)
     FCGeometrySet *set = mGeometryData->getGeometrySetByID(id);
     if (set == nullptr)
         return;
-    mGeoProvider->removeActors(id);
+    mGeoProvider->updateGeomtryDisplayActor(id);
     mGeometryData->removeGeometrySet(id);
     delete set;
 }

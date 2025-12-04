@@ -24,19 +24,34 @@ class FCGeometrySet;
 class FCGUI_API FCCylinderSettingsWidget : public QWidget
 {
     Q_OBJECT
-    
+public:
+    using IdType  = uint64_t;  ///< id类型
 public:
     explicit FCCylinderSettingsWidget(QWidget *parent = nullptr);
+    FCCylinderSettingsWidget(const IdType editSetID, QWidget *parent = nullptr);
+    
     ~FCCylinderSettingsWidget();
+    bool create();
+        
+private:
+    bool getRadius(double* p);
+    bool getLength(double* p);
+    bool getCoordinate(double *coor);
+    bool getAxis(double *axis);
+    void init();
     
 signals:
-    void modelCreated(FCGeometrySet* set, bool r);
+    void modelCreated(const IdType id, bool r);
+    void updateGeoTree(const IdType id, const QString& name);
+    void updateGeometryActor(const IdType id);
     
 private slots:
     void on_pushButton_build_clicked();
     
 private:
     Ui::FCCylinderSettingsWidget *ui;
+    bool mIsEdit;
+    IdType mEidtSetID;
 };
 } // namespace FC
 

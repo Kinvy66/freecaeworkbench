@@ -1,5 +1,5 @@
 /**
- * @file FCGeometryCreateBoxCylinder.h
+ * @file FCGeometryCreateCylinder.h
  * @brief 创建圆柱体
  * @date 2025-11-27
  * @version V0.0.1
@@ -16,12 +16,12 @@ namespace FC
 {
 class FCGeometrySet;
 
-class FCGEOMETRYMODELCREATOR_API FCGeometryCreateBoxCylinder : public FCGeometryModelBase
+class FCGEOMETRYMODELCREATOR_API FCGeometryCreateCylinder : public FCGeometryModelBase
 {
     Q_OBJECT
 public:
-    FCGeometryCreateBoxCylinder(QObject* parent=nullptr);
-    ~FCGeometryCreateBoxCylinder() = default;
+    FCGeometryCreateCylinder(QObject* parent=nullptr);
+    ~FCGeometryCreateCylinder() = default;
     
     
     bool execute() override;

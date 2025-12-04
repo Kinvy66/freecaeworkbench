@@ -172,6 +172,8 @@ void FCAppController::initConnection()
     FCAPPCONTROLLER_ACTION_BIND(mActions->actionOpen, open);
     FCAPPCONTROLLER_ACTION_BIND(mActions->actionSave, save);
     FCAPPCONTROLLER_ACTION_BIND(mActions->actionSaveAs, saveAs);
+    FCAPPCONTROLLER_ACTION_BIND(mActions->actionGlobalDelete, deleteProjectItem);
+    
     FCAPPCONTROLLER_ACTION_BIND(mActions->actionResetLayout, resetLayout);
     FCAPPCONTROLLER_ACTION_BIND(mActions->actionCreateCube, createCube);
     FCAPPCONTROLLER_ACTION_BIND(mActions->actionCreateCylinder, createCylinder);
@@ -180,23 +182,19 @@ void FCAppController::initConnection()
     
     FCGraphicOperateWidget* grapicWidget = mDock->getGraphicOperateWidget();
     FCSettingParametersWidget* settingsWidget = mDock->getSettingParametersWidget();
-    connect(settingsWidget, &FCSettingParametersWidget::modelCreated,
-            grapicWidget, &FCGraphicOperateWidget::showGeoSet);
-    
-    connect(settingsWidget, &FCSettingParametersWidget::removeGeometryAcotr,
-            grapicWidget,&FCGraphicOperateWidget::removeGeometryAcotr);
-    
     connect(settingsWidget, &FCSettingParametersWidget::geometryModelCreated,
             grapicWidget, &FCGraphicOperateWidget::showGeoSet);
-    
-    
     connect(settingsWidget, &FCSettingParametersWidget::updateGeoTree,
             this, &FCAppController::onUpdateGeoTree);
-    
+    connect(settingsWidget, &FCSettingParametersWidget::updateGeometryAcotr,
+            grapicWidget,&FCGraphicOperateWidget::updateGeometryAcotr);
     
     FCModelBuilderWidget* modelBuilderWidget = mDock->getModelBuilderWidget();
     connect(modelBuilderWidget, &FCModelBuilderWidget::currentItemChanged,
             settingsWidget, &FCSettingParametersWidget::updateCurrentSettingWidget);
+    
+    connect(modelBuilderWidget, &FCModelBuilderWidget::deleteGeometryEntity,
+            this, &FCAppController::deletGeometryEntity);
 }
 
 
@@ -256,6 +254,19 @@ QString FCAppController::makeWindowTitle(FCProjectInterface *proj)
     return QString("%1 [*]").arg(FCAPPRIBBONAREA_WINDOW_NAME);    
 }
 
+/**
+ * @brief 删除几何实体
+ * @param id
+ * @param name
+ */
+void FCAppController::deletGeometryEntity(const IdType id, QString name)
+{
+    // FCGeometrySet* set = FCGeometryData::getInstance()->getGeometrySetByID(id);
+    FCGraphicOperateWidget* grapicWidget = mDock->getGraphicOperateWidget();
+    grapicWidget->deleteGeometryActor(id);
+    // qDebug() << "Remove"
+}
+
 void FCAppController::save()
 {
     // FCAPPCONTROLLER_PASS();
@@ -277,6 +288,14 @@ bool FCAppController::openProjectFile(const QString &projectFilePath)
 {
     FCAPPCONTROLLER_PASS();
     return true;
+}
+
+/**
+ * @brief 删除item实体
+ */
+void FCAppController::deleteProjectItem()
+{
+    mDock->getModelBuilderWidget()->deleteGeometryItem();
 }
 
 /**

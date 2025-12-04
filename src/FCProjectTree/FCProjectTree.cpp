@@ -450,6 +450,26 @@ void FCProjectTree::buildCompnentActions()
     
     mTreeWidget->setActionTemplates(FCTreeWidget::MenuComponentGeometry,
                                     componentGeometryActions);
+    
+    // 几何体实体
+    QList<AT> geometryEntityActions;
+    
+    geometryEntityActions.append(moveUp);
+    geometryEntityActions.append(moveDown);
+    geometryEntityActions.append(copy);
+    geometryEntityActions.append(duplicate);
+    geometryEntityActions.append(delet);
+    geometryEntityActions.append(disable);
+    geometryEntityActions.append(rename);
+    geometryEntityActions.append(AT::sep());
+    geometryEntityActions.append(settings);
+    geometryEntityActions.append(property);
+    geometryEntityActions.append(AT::sep());
+    geometryEntityActions.append(help);
+    
+    mTreeWidget->setActionTemplates(FCTreeWidget::MenuComponentGeometryEntity,
+                                    geometryEntityActions);
+    
 }
 
 /**
@@ -575,7 +595,7 @@ QString  FCProjectTree::nextChildName(QTreeWidgetItem *parent, const QString &pr
 }
 
 /**
- * @brief 更新几何体节点
+ * @brief 更新/添加几何体节点
  * @param id
  * @param name
  */
@@ -608,6 +628,69 @@ void FCProjectTree::updateGeometryTree(const IdType id, const QString& name)
     mGeoRoot->addChild(item);
     mTreeWidget->expandItem(mGeoRoot);
     mTreeWidget->setCurrentItem(item);
+}
+
+/**
+ * @brief 删除当前选中的几何体
+ */
+void FCProjectTree::deleteGeometryItem()
+{
+    QTreeWidgetItem* item = mTreeWidget->currentItem();
+    if (!item) return;
+    
+    // 获取 item 的父节点或顶层节点管理器
+    QTreeWidgetItem* parent = item->parent();
+    
+    // 删除几何实体（你的工程逻辑）
+    QVariant var = item->data(0, RoleType::EntityItmeID);
+    
+    if (var.canConvert<IdType>()) {
+        IdType itemId = var.value<IdType>();
+        if (itemId != 0) {
+            QString name = item->text(0);
+            emit deleteGeometryEntity(itemId, name);
+        }
+    }
+    
+    // 计算删除后的新选中项
+    QTreeWidgetItem* newSelected = nullptr;
+    
+    if (parent) {
+        // 子节点情况
+        int index = parent->indexOfChild(item);
+        
+        // 1. 优先选中“下一项”
+        if (index + 1 < parent->childCount()) {
+            newSelected = parent->child(index + 1);
+        }
+        // 2. 无下一项 → 选中“上一项”
+        else if (index - 1 >= 0) {
+            newSelected = parent->child(index - 1);
+        }
+    }
+    else {
+        // 顶层节点情况
+        int index = mTreeWidget->indexOfTopLevelItem(item);
+        
+        if (index + 1 < mTreeWidget->topLevelItemCount()) {
+            newSelected = mTreeWidget->topLevelItem(index + 1);
+        }
+        else if (index - 1 >= 0) {
+            newSelected = mTreeWidget->topLevelItem(index - 1);
+        }
+    }
+    
+    // 真正删除节点
+    delete item;
+    item = nullptr;
+    
+    // 设置新的选中项
+    if (newSelected) {
+        mTreeWidget->setCurrentItem(newSelected);
+    } else {
+        // 删除完后树空了，则发出空选中信号
+        mTreeWidget->setCurrentItem(nullptr);
+    }
 }
 
 

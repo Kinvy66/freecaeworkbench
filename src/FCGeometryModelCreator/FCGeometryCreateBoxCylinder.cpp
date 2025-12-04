@@ -9,6 +9,7 @@
 #include "FCGeometryCreateBoxCylinder.h"
 #include "FCGeometrySet.h"
 #include "FCGeometryParaCylinder.h"
+#include "FCUniqueIDGenerater.h"
 #include <QDebug>
 // occ
 #include <gp_Ax2.hxx>
@@ -16,21 +17,20 @@
 
 namespace FC 
 {
-FCGeometryCreateBoxCylinder::FCGeometryCreateBoxCylinder(QObject *parent)
+FCGeometryCreateCylinder::FCGeometryCreateCylinder(QObject *parent)
     : FCGeometryModelBase(parent)
 {
     
 }
 
-bool FCGeometryCreateBoxCylinder::execute()
+bool FCGeometryCreateCylinder::execute()
 {
     gp_Ax2 anAxis;
     anAxis.SetLocation(gp_Pnt(mLocation[0], mLocation[1], mLocation[2]));
     anAxis.SetDirection(gp_Dir(mAxis[0], mAxis[1], mAxis[2]));
-    
     TopoDS_Shape aTopoCylinder = BRepPrimAPI_MakeCylinder(anAxis, mRadius, mLength).Shape();
-    
     TopoDS_Shape *shape = new TopoDS_Shape;
+    IdType id = 0;
     *shape = aTopoCylinder;
     if (shape->IsNull())
     {
@@ -39,9 +39,19 @@ bool FCGeometryCreateBoxCylinder::execute()
     }
     
     FCGeometrySet *set = new FCGeometrySet(STEP);
+    
     set->setName(mName);
     set->setShape(shape);
     mResult = set;
+    
+    if (mIsEdit) {
+        id = mEditSetID;
+        mGeoData->replaceSet(id, set);
+        emit updateDisplayGeometryActor(id);        
+    } else {
+        id  = FCUniqueIDGenerater::id_uint64();
+        mGeoData->appendGeometrySet(id, set);
+    }
 
     FCGeometryParaCylinder *para = new FCGeometryParaCylinder;
     para->setName(mName);
@@ -51,55 +61,60 @@ bool FCGeometryCreateBoxCylinder::execute()
     para->setDirection(mAxis);
     mResult->setParameter(para);
     
-    // emit showSet(set);
+    emit showSet(id);
+    emit updateGeoTree(id, mName);
+    
+    qDebug() << "Create Cylinder,name:" << mName
+             << ", r:" <<  mRadius << ", l" <<mLength
+             << ", location:" << mLocation[0] << mLocation[1] << mLocation[2];    
     
     return true;
 }
 
-void FCGeometryCreateBoxCylinder::undo()
+void FCGeometryCreateCylinder::undo()
 {
 
 }
 
-void FCGeometryCreateBoxCylinder::redo()
+void FCGeometryCreateCylinder::redo()
 {
 
 }
 
-void FCGeometryCreateBoxCylinder::releaseResult()
+void FCGeometryCreateCylinder::releaseResult()
 {
     if (mResult != nullptr)
         delete mResult;
     mResult = nullptr;
 }
 
-void FCGeometryCreateBoxCylinder::setName(QString name)
+void FCGeometryCreateCylinder::setName(QString name)
 {
     mName = name;
     
 }
 
-void FCGeometryCreateBoxCylinder::setLocation(double *loc)
+void FCGeometryCreateCylinder::setLocation(double *loc)
 {
     mLocation[0] = loc[0];
     mLocation[1] = loc[1];
     mLocation[2] = loc[2];
 }
 
-void FCGeometryCreateBoxCylinder::setAxis(double *axis)
+void FCGeometryCreateCylinder::setAxis(double *axis)
 {
     mAxis[0] = axis[0];
     mAxis[1] = axis[1];
     mAxis[2] = axis[2];
 }
 
-void FCGeometryCreateBoxCylinder::setRadius(double r)
+void FCGeometryCreateCylinder::setRadius(double r)
 {
     mRadius = r;
     
 }
 
-void FCGeometryCreateBoxCylinder::setLength(double l)
+void FCGeometryCreateCylinder::setLength(double l)
 {
     mLength = l;
     

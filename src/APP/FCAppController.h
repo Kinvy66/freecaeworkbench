@@ -136,6 +136,8 @@ public:
     static QString makeWindowTitle();
     static QString makeWindowTitle(FCProjectInterface* proj);
     
+    void deletGeometryEntity(const IdType id, QString name);
+    
 public Q_SLOTS:
     // 保存
     void save();
@@ -147,6 +149,7 @@ public Q_SLOTS:
     void open();
     // 打开工程文件
     bool openProjectFile(const QString& projectFilePath);
+    void deleteProjectItem();
     // 重置布局
     void resetLayout();
     

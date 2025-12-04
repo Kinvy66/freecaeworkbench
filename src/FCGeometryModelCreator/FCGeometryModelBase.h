@@ -95,7 +95,7 @@ signals:
     void updateGeoTree(const IdType id, const QString& name);
     void showSet(const IdType id, bool r = true);
     // void showDatum(Geometry::GeometryDatum *);
-    void removeDisplayGeometryActor(const IdType id);
+    void updateDisplayGeometryActor(const IdType id);
     // void removeDisplayDatumActor(Geometry::GeometryDatum *);
     /**
      * @brief 命令执行后会触发此信号

@@ -178,8 +178,8 @@ void FCBoxSettingsWidget::on_pushButton_build_clicked()
     
     connect(creator, &FCGeometryCreateBox::updateGeoTree,
             this, &FCBoxSettingsWidget::updateGeoTree);
-    connect(creator, &FCGeometryCreateBox::removeDisplayGeometryActor,
-            this, &FCBoxSettingsWidget::removeActor);
+    connect(creator, &FCGeometryCreateBox::updateDisplayGeometryActor,
+            this, &FCBoxSettingsWidget::updateGeometryActor);
     
     creator->setName(name);
     creator->setLocation(corner);

@@ -82,6 +82,11 @@ void FCGeometryViewProvider::updateGeoActors()
     
 }
 
+void FCGeometryViewProvider::removeGeoActors()
+{
+    
+}
+
 void FCGeometryViewProvider::updateGraphOption()
 {
 }
@@ -182,9 +187,9 @@ void FCGeometryViewProvider::showGeoSet(const IdType id, bool render)
 
 /**
  * @brief 从vtk渲染窗口中移除指定的几何actor
- * @param set
+ * @param id
  */
-void FCGeometryViewProvider::removeActors(const IdType id)
+void FCGeometryViewProvider::updateGeomtryDisplayActor(const IdType id)
 {
     // FCGeometrySet* set = mGeoData->getGeometrySetByID(id);
     if (!mGeoViewHash.contains(id))

@@ -227,6 +227,9 @@ FCGeometrySet *FCGeometryData::getGeometrySetByID(const IdType id)
     //         return res;
     // }
     // return nullptr;
+    if (id==0) {
+        return nullptr;
+    }
     FCGeometrySet* set = mGeometrySets.value(id);
     if(set->getType()) {
         return set;

@@ -42,9 +42,11 @@ public:
     
     FCGraphViewWindow*	getGraphViewWindow();
     
+    void deleteGeometryActor(const IdType id);
+    
 signals:
     void showGeoSet(const IdType id, bool render = true);
-    void removeGeometryAcotr(const IdType id);
+    void updateGeometryAcotr(const IdType id);
 public slots:
     void showModel(FCGeometrySet* set, bool r);
 

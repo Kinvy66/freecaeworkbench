@@ -41,7 +41,7 @@ signals:
     //显示几何形状
     void showGeoSet(const IdType id, bool render = true);
     //移除几何形状的显示
-    void removeGemoActors(const IdType id);
+    void updateGeometryActors(const IdType id);
     //显示基准
     // void showDatum(GeometryDatum *);
     //移除几何基准显示
@@ -80,9 +80,11 @@ public slots:
     //更新网格渲染
     void updateMeshActor();
     //
+    
     void highLighSet(QMultiHash<int, int> *items);
     //更新几何渲染
     void updateGeometryActor();
+    void removeGemoActor(const IdType id);
     //高亮一个几何组件;
     // void highLightGeoComponentSlot(GeoComponent *);
     
@@ -90,7 +92,7 @@ private slots:
     void updateGraphOption() override;
     //几何
     void updateGeoDispaly(int index, bool display);
-    void removeGemoActor(const IdType id);
+    
     //网格
     void updateMeshDispaly(int index, bool display);
     void removeMeshActor(const int index);

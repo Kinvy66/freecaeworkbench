@@ -12,6 +12,8 @@
 #include "FCBoxSettingsWidget.h"
 #include "FCCylinderSettingsWidget.h"
 #include "FCGeometryData.h"
+#include "FCGeometrySet.h"
+#include "FCGeometryParaCylinder.h"
 
 namespace FC 
 {
@@ -45,10 +47,14 @@ void FCSettingParametersWidget::createCube()
 
 void FCSettingParametersWidget::createCylinder()
 {
-    // FCCylinderSettingsWidget* cylinderSettingsWidget = new FCCylinderSettingsWidget(this);
-    // connect(cylinderSettingsWidget, &FCCylinderSettingsWidget::modelCreated,
-    //         this, &FCSettingParametersWidget::geometryModelCreated);
+    FCCylinderSettingsWidget* cylinderSettingsWidget = new FCCylinderSettingsWidget(this);
+    connect(cylinderSettingsWidget, &FCCylinderSettingsWidget::modelCreated,
+            this, &FCSettingParametersWidget::geometryModelCreated);
     
+    connect(cylinderSettingsWidget, &FCCylinderSettingsWidget::updateGeoTree,
+            this, &FCSettingParametersWidget::updateGeoTree);
+    
+    cylinderSettingsWidget->create();
     // setCurrentWidget(cylinderSettingsWidget);
 }
 
@@ -61,32 +67,63 @@ void FCSettingParametersWidget::updateCurrentSettingWidget(const IdType id,
                                                            const QString& name)
 {
     Q_UNUSED(name)
+    QWidget *w= nullptr;
     FCGeometrySet* editSet = FCGeometryData::getInstance()->getGeometrySetByID(id);
     if (!editSet) {
+        setCurrentWidget(w);        
         return;
     }
+    GeometryParaType paraType =  editSet->getParameter()->getParaType();
+    
+    switch (paraType) {
+    case GeometryParaCreateBox:
+    {
+        FCBoxSettingsWidget* settingsWidget = new FCBoxSettingsWidget(id, this);
+        connect(settingsWidget, &FCBoxSettingsWidget::modelCreated,
+                this, &FCSettingParametersWidget::geometryModelCreated);
+        connect(settingsWidget, &FCBoxSettingsWidget::updateGeoTree,
+                this, &FCSettingParametersWidget::updateGeoTree);
+        
+        connect(settingsWidget, &FCBoxSettingsWidget::updateGeometryActor, this,
+                &FCSettingParametersWidget::updateGeometryAcotr);
+        w = settingsWidget;
+    }
+        break;
+    case GeometryParaCreateCylinder:
+    {
+        FCCylinderSettingsWidget* settingsWidget = new FCCylinderSettingsWidget(id, this);
+        connect(settingsWidget, &FCCylinderSettingsWidget::modelCreated,
+                this, &FCSettingParametersWidget::geometryModelCreated);
+        connect(settingsWidget, &FCCylinderSettingsWidget::updateGeoTree,
+                this, &FCSettingParametersWidget::updateGeoTree);
+        connect(settingsWidget, &FCCylinderSettingsWidget::updateGeometryActor, this,
+                &FCSettingParametersWidget::updateGeometryAcotr);
+        w = settingsWidget;
+    }
+    default:
+        break;
+    }
+    setCurrentWidget(w);
 
-    FCBoxSettingsWidget* cubeSettingsWidget = new FCBoxSettingsWidget(id, this);
-    connect(cubeSettingsWidget, &FCBoxSettingsWidget::modelCreated,
-            this, &FCSettingParametersWidget::geometryModelCreated);
-    connect(cubeSettingsWidget, &FCBoxSettingsWidget::updateGeoTree,
-            this, &FCSettingParametersWidget::updateGeoTree);
-    
-    connect(cubeSettingsWidget, &FCBoxSettingsWidget::removeActor, this,
-            &FCSettingParametersWidget::removeGeometryAcotr);
-    
-    
-    setCurrentWidget(cubeSettingsWidget);
     
     // qDebug() << "updateCurrentWidget id" << id;
 }
 
 void FCSettingParametersWidget::setCurrentWidget(QWidget *w)
 {
+    // 移除旧的 widget
     if (mCurrentWidget) {
         mLayout->removeWidget(mCurrentWidget);
         mCurrentWidget->deleteLater();
+        mCurrentWidget = nullptr;
     }
+    
+    // 接收到 nullptr，直接显示空白（不添加控件）
+    if (!w) {
+        return;
+    }
+    
+    // 设置新的 widget
     mCurrentWidget = w;
     mLayout->addWidget(w);
 }

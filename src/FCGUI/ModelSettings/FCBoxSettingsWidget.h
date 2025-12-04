@@ -40,7 +40,7 @@ private:
 signals:
     void modelCreated(const IdType id, bool r);
     void updateGeoTree(const IdType id, const QString& name);
-    void removeActor(const IdType id);
+    void updateGeometryActor(const IdType id);
     
 private slots:
     void on_pushButton_build_clicked();

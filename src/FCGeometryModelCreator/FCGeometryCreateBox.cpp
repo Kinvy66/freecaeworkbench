@@ -31,9 +31,9 @@ void FCGeometryCreateBox::setName(QString name)
 
 void FCGeometryCreateBox::setLocation(double *loca)
 {
-    mLoaction[0] = loca[0];
-    mLoaction[1] = loca[1];
-    mLoaction[2] = loca[2];
+    mLocation[0] = loca[0];
+    mLocation[1] = loca[1];
+    mLocation[2] = loca[2];
 }
 
 void FCGeometryCreateBox::setGeoPara(double *para)
@@ -50,7 +50,7 @@ void FCGeometryCreateBox::setGeoPara(double *para)
  */
 bool FCGeometryCreateBox::execute()
 {
-    gp_Pnt pt(mLoaction[0], mLoaction[1], mLoaction[2]);
+    gp_Pnt pt(mLocation[0], mLocation[1], mLocation[2]);
     TopoDS_Shape aTopoBox = BRepPrimAPI_MakeBox(pt, mGeoPara[0], mGeoPara[1], mGeoPara[2]).Shape();
     TopoDS_Shape *shape = new TopoDS_Shape;
     IdType id = 0;
@@ -69,7 +69,7 @@ bool FCGeometryCreateBox::execute()
     if (mIsEdit) {
         id = mEditSetID;
         mGeoData->replaceSet(id, set);
-        emit removeDisplayGeometryActor(id);        
+        emit updateDisplayGeometryActor(id);        
     } else {
         id  = FCUniqueIDGenerater::id_uint64();
         mGeoData->appendGeometrySet(id, set);
@@ -77,7 +77,7 @@ bool FCGeometryCreateBox::execute()
     
     FCGeometryParaBox  *para = new FCGeometryParaBox;
     para->setName(mName);
-    para->setLocation(mLoaction);
+    para->setLocation(mLocation);
     para->setGeoPara(mGeoPara);
     mResult->setParameter(para);
     set->setName(mName);
@@ -87,7 +87,7 @@ bool FCGeometryCreateBox::execute()
         
     qDebug() << "Create Cube,name:" << mName
              << ", para:" <<  mGeoPara[0] << mGeoPara[1] << mGeoPara[2]
-             << ", location:" << mLoaction[0] << mLoaction[1] << mLoaction[2];     
+             << ", location:" << mLocation[0] << mLocation[1] << mLocation[2];     
 
     return true;
 }

@@ -37,7 +37,7 @@ public:
     
 private:
     QString mName{};
-    double mLoaction[3];
+    double mLocation[3];
     double mGeoPara[3];
     FCGeometrySet *mResult{};
     

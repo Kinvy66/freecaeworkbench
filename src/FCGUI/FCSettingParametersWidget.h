@@ -37,10 +37,10 @@ private:
     void setCurrentWidget(QWidget* w);
     
 signals:
-    void modelCreated(const IdType id, bool r);
+    // void modelCreated(const IdType id, bool r);
     void geometryModelCreated(const IdType id, bool r);
     void updateGeoTree(const IdType id, const QString& name);
-    void removeGeometryAcotr(const IdType id);
+    void updateGeometryAcotr(const IdType id);
     
 private:
     

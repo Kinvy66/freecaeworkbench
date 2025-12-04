@@ -27,14 +27,11 @@ FCModelBuilderWidget::FCModelBuilderWidget(QWidget *parent)
     layout->setContentsMargins(2, 2, 2, 2);
     connect(mProjectTree, &FCProjectTree::currentItemChanged,
             this, &FCModelBuilderWidget::onCurrentItemChanged);
+    connect(mProjectTree, &FCProjectTree::deleteGeometryEntity,
+            this,&FCModelBuilderWidget::deleteGeometryEntity);
 }
 
 FCModelBuilderWidget::~FCModelBuilderWidget()
-{
-    
-}
-
-void FCModelBuilderWidget::addGeometryCube()
 {
     
 }
@@ -44,6 +41,15 @@ void FCModelBuilderWidget::updateGeometryTree(const IdType id, const QString &na
     qDebug() << "FCModelBuilderWidget::addGeometry, id:" << id;
     mProjectTree->updateGeometryTree(id, name);
 }
+
+/**
+ * @brief 删除当前选中的几何实体
+ */
+void FCModelBuilderWidget::deleteGeometryItem()
+{
+    mProjectTree->deleteGeometryItem();
+}
+
 
 void FCModelBuilderWidget::onCurrentItemChanged(QTreeWidgetItem *current, QTreeWidgetItem *previous)
 {
@@ -55,7 +61,8 @@ void FCModelBuilderWidget::onCurrentItemChanged(QTreeWidgetItem *current, QTreeW
         
         QVariant var = current->data(0, RoleType::EntityItmeID);
         if(!var.isValid() || var.isNull()) {
-            return;
+            qDebug() << "Current item is None";
+            // return;
         } else {
             id = current->data(0, RoleType::EntityItmeID).value<IdType>();
             // qDebug() << "Current item id:" << id;

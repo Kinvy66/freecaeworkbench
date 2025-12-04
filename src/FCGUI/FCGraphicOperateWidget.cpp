@@ -60,8 +60,8 @@ FCGraphicOperateWidget::FCGraphicOperateWidget(QWidget *parent)
     
     connect(this, &FCGraphicOperateWidget::showGeoSet,
             mGraphViewWindow, &FCGraphViewWindow::showGeoSet);
-    connect(this, &FCGraphicOperateWidget::removeGeometryAcotr,
-            mGraphViewWindow, &FCGraphViewWindow::removeGemoActors);
+    connect(this, &FCGraphicOperateWidget::updateGeometryAcotr,
+            mGraphViewWindow, &FCGraphViewWindow::updateGeometryActors);
 }
 
 FCGraphicOperateWidget::~FCGraphicOperateWidget()
@@ -88,6 +88,11 @@ void FCGraphicOperateWidget::updateGeometryActor()
     if(mGraphViewWindow != nullptr) {
         mGraphViewWindow->updateGeometryActor();
     }
+}
+
+void FCGraphicOperateWidget::deleteGeometryActor(const IdType id)
+{
+    mGraphViewWindow->removeGemoActor(id);
 }
 
 void FCGraphicOperateWidget::showModel(FCGeometrySet *set, bool r)
