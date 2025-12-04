@@ -37,8 +37,8 @@ private:
     void setCurrentWidget(QWidget* w);
     
 signals:
-    void modelCreated(FCGeometrySet* set, bool r);
-    void geometryModelCreated(FCGeometrySet* set, bool r);
+    void modelCreated(const IdType id, bool r);
+    void geometryModelCreated(const IdType id, bool r);
     void updateGeoTree(const IdType id, const QString& name);
     void removeGeometryAcotr(const IdType id);
     

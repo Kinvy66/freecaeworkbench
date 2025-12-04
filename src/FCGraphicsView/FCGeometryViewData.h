@@ -3,7 +3,7 @@
  * @brief 几何对象可视化管理类
  * @date 2025-11-26
  * @version V0.0.1
- * @details 
+ * @details 管理所有的可视化对象
  * @copyright Copyright (c) 2025 Kinvy. All rights reserved.
  */
 #ifndef FCGEOMETRYVIEWDATA_H
@@ -30,18 +30,20 @@ class FCGeometrySetViewData;
 class FCGRAPHICSVIEW_API FCGeometryViewData
 {
 public:
+    using IdType  = uint64_t;  ///< id类型   
+public:
     FCGeometryViewData() = default;
     ~FCGeometryViewData();
     
-    QList<vtkPolyData *> transferToPoly(FCGeometrySet *gset);
-    void removeViewObjs(FCGeometrySet *gset);
+    QList<vtkPolyData *> transferToPoly(const IdType id);
+    void removeViewObjs(const IdType id);
     
     void updateGraphOption();
-    void highLight(FCGeometrySet *set, bool on);
-    void highLightFace(FCGeometrySet *set, int index, bool on);
-    void highLightEdge(FCGeometrySet *set, int index, bool on);
-    void highLightPoint(FCGeometrySet *set, int index, bool on);
-    void highLightSolid(FCGeometrySet *set, int index, bool on);
+    void highLight(const IdType id, bool on);
+    void highLightFace(const IdType id, int index, bool on);
+    void highLightEdge(const IdType id, int index, bool on);
+    void highLightPoint(const IdType id, int index, bool on);
+    void highLightSolid(const IdType id, int index, bool on);
     
     FCGeometryViewObject *getSolidViewObj(vtkPolyData *solidPoly, int cellIndex);
     FCGeometryViewObject *getFaceViewObj(vtkPolyData *facePoly, int cellIndex);
@@ -54,10 +56,10 @@ public:
     FCGeometryViewObject *getPreHighLightObj();
     
 private:
-    vtkPolyData *transferFace(FCGeometrySet *gset);
-    vtkPolyData *transferEdge(FCGeometrySet *gset);
-    vtkPolyData *transferPoint(FCGeometrySet *gset);
-    FCGeometrySetViewData *getGeosetObj(FCGeometrySet *set);
+    vtkPolyData *transferFace(const IdType id);
+    vtkPolyData *transferEdge(const IdType id);
+    vtkPolyData *transferPoint(const IdType id);
+    FCGeometrySetViewData *getGeosetObj(const IdType id);
     
     vtkCell *getLineCellIn(vtkPolyData *p);
     int getIndexInPoly(vtkPolyData *part, vtkPolyData *poly, QList<int> lineIndexs);
@@ -65,7 +67,7 @@ private:
     
 private:
     FCGeometryViewObject *mViewObject{};
-    QHash<FCGeometrySet *, FCGeometrySetViewData *> mViewObjs{};
+    QHash<IdType, FCGeometrySetViewData *> mViewObjs{};
 };
 } // namespace FC
 

@@ -45,11 +45,11 @@ void FCSettingParametersWidget::createCube()
 
 void FCSettingParametersWidget::createCylinder()
 {
-    FCCylinderSettingsWidget* cylinderSettingsWidget = new FCCylinderSettingsWidget(this);
-    connect(cylinderSettingsWidget, &FCCylinderSettingsWidget::modelCreated,
-            this, &FCSettingParametersWidget::geometryModelCreated);
+    // FCCylinderSettingsWidget* cylinderSettingsWidget = new FCCylinderSettingsWidget(this);
+    // connect(cylinderSettingsWidget, &FCCylinderSettingsWidget::modelCreated,
+    //         this, &FCSettingParametersWidget::geometryModelCreated);
     
-    setCurrentWidget(cylinderSettingsWidget);
+    // setCurrentWidget(cylinderSettingsWidget);
 }
 
 /**

@@ -3,13 +3,14 @@
  * @brief 几何对象可视化管理类
  * @date 2025-11-26
  * @version V0.0.1
- * @details 
+ * @details 管理所有的可视化对象
  * @copyright Copyright (c) 2025 Kinvy. All rights reserved.
  */
 #include "FCGeometryViewData.h"
 #include "FCGeometrySetViewData.h"
 #include "FCGeometryViewObject.h"
 #include "FCGeometrySet.h"
+#include "FCGeometryData.h"
 #include <QDebug>
 // vtk
 #include <vtkPolyData.h>
@@ -55,31 +56,31 @@ FCGeometryViewData::~FCGeometryViewData()
  * @param gset occt topo_ds以及对应的参数
  * @return 
  */
-QList<vtkPolyData *> FCGeometryViewData::transferToPoly(FCGeometrySet *gset)
+QList<vtkPolyData *> FCGeometryViewData::transferToPoly(const IdType id)
 {
-    removeViewObjs(gset);  // 删除旧的 View 数据
+    removeViewObjs(id);  // 删除旧的 View 数据
     QList<vtkPolyData *> polys;
-    auto p = this->transferFace(gset);
+    auto p = this->transferFace(id);
     polys.append(p);
-    p = this->transferEdge(gset);
+    p = this->transferEdge(id);
     polys.append(p);
-    p = this->transferPoint(gset);
+    p = this->transferPoint(id);
     polys.append(p);
-    if (mViewObjs.contains(gset))
-        mViewObjs.value(gset)->genSolidViewObj();
+    if (mViewObjs.contains(id))
+        mViewObjs.value(id)->genSolidViewObj();
     return polys;
 }
 
 /**
  * @brief 移除可视化对象
- * @param gset
+ * @param id
  */
-void FCGeometryViewData::removeViewObjs(FCGeometrySet *gset)
+void FCGeometryViewData::removeViewObjs(const IdType id)
 {
-    if (!mViewObjs.contains(gset))
+    if (!mViewObjs.contains(id))
         return;
-    auto obj = mViewObjs.value(gset);
-    mViewObjs.remove(gset);
+    auto obj = mViewObjs.value(id);
+    mViewObjs.remove(id);
     delete obj;
 }
 
@@ -99,9 +100,9 @@ void FCGeometryViewData::updateGraphOption()
  * @param set
  * @param on
  */
-void FCGeometryViewData::highLight(FCGeometrySet *set, bool on)
+void FCGeometryViewData::highLight(const IdType id, bool on)
 {
-    auto setView = mViewObjs.value(set);
+    auto setView = mViewObjs.value(id);
     if (setView != nullptr)
         setView->highLight(on);
 }
@@ -112,9 +113,9 @@ void FCGeometryViewData::highLight(FCGeometrySet *set, bool on)
  * @param index
  * @param on
  */
-void FCGeometryViewData::highLightFace(FCGeometrySet *set, int index, bool on)
+void FCGeometryViewData::highLightFace(const IdType id, int index, bool on)
 {
-    auto setView = mViewObjs.value(set);
+    auto setView = mViewObjs.value(id);
     if (setView != nullptr)
         setView->highLightFace(index, on);
 }
@@ -125,9 +126,9 @@ void FCGeometryViewData::highLightFace(FCGeometrySet *set, int index, bool on)
  * @param index
  * @param on
  */
-void FCGeometryViewData::highLightEdge(FCGeometrySet *set, int index, bool on)
+void FCGeometryViewData::highLightEdge(const IdType id, int index, bool on)
 {
-    auto setView = mViewObjs.value(set);
+    auto setView = mViewObjs.value(id);
     if (setView != nullptr)
         setView->highLightEdge(index, on);
 }
@@ -138,9 +139,9 @@ void FCGeometryViewData::highLightEdge(FCGeometrySet *set, int index, bool on)
  * @param index
  * @param on
  */
-void FCGeometryViewData::highLightPoint(FCGeometrySet *set, int index, bool on)
+void FCGeometryViewData::highLightPoint(const IdType id, int index, bool on)
 {
-    auto setView = mViewObjs.value(set);
+    auto setView = mViewObjs.value(id);
     if (setView != nullptr)
         setView->highLightPoint(index, on);
 }
@@ -151,9 +152,9 @@ void FCGeometryViewData::highLightPoint(FCGeometrySet *set, int index, bool on)
  * @param index
  * @param on
  */
-void FCGeometryViewData::highLightSolid(FCGeometrySet *set, int index, bool on)
+void FCGeometryViewData::highLightSolid(const IdType id, int index, bool on)
 {
-    auto setView = mViewObjs.value(set);
+    auto setView = mViewObjs.value(id);
     if (setView != nullptr)
         setView->highLightSolid(index, on);
 }
@@ -304,8 +305,9 @@ FCGeometryViewObject *FCGeometryViewData::getPreHighLightObj()
  * @param gset
  * @return 
  */
-vtkPolyData *FCGeometryViewData::transferFace(FCGeometrySet *gset)
+vtkPolyData *FCGeometryViewData::transferFace(const IdType id)
 {
+    FCGeometrySet* gset  = FCGeometryData::getInstance()->getGeometrySetByID(id);
     TopoDS_Shape *shape = gset->getShape();
     TopExp_Explorer faceExp(*shape, TopAbs_FACE);
     QList<Handle(TopoDS_TShape)> tshapelist;
@@ -371,13 +373,13 @@ vtkPolyData *FCGeometryViewData::transferFace(FCGeometrySet *gset)
                                                              beg, beg + ncell - 1, ts);
         beg += ncell;
         appendFilter->AddInputData(facePoly);
-        auto setViewObj = this->getGeosetObj(gset);
+        auto setViewObj = this->getGeosetObj(id);
         setViewObj->appendFaceViewObj(index, ts, obj);
     }
     
     appendFilter->Update();
     polyData->DeepCopy(appendFilter->GetOutput());
-    auto setViewObj = this->getGeosetObj(gset);
+    auto setViewObj = this->getGeosetObj(id);
     setViewObj->setFacePoly(polyData);
     const int npc = polyData->GetNumberOfCells();
     if (npc < 1)
@@ -390,10 +392,10 @@ vtkPolyData *FCGeometryViewData::transferFace(FCGeometrySet *gset)
  * @param gset
  * @return 
  */
-vtkPolyData *FCGeometryViewData::transferEdge(FCGeometrySet *gset)
+vtkPolyData *FCGeometryViewData::transferEdge(const IdType id)
 {
+    FCGeometrySet* gset  = FCGeometryData::getInstance()->getGeometrySetByID(id);    
     TopoDS_Shape *shape = gset->getShape();
-    
     TopExp_Explorer edgeExp(*shape, TopAbs_EDGE);
     QHash<int, Handle(TopoDS_TShape)> tshapelist;
     QHash<int, vtkPolyData *> indexPoly;
@@ -444,11 +446,11 @@ vtkPolyData *FCGeometryViewData::transferEdge(FCGeometrySet *gset)
             continue;
         lineCell.removeOne(index);
         FCGeometryViewObject *obj = new FCGeometryViewObject(FCGeometryViewObject::Edge, index, index, ts);
-        auto setViewObj = this->getGeosetObj(gset);
+        auto setViewObj = this->getGeosetObj(id);
         setViewObj->appendEdgeViewObj(eindex, obj);
     }
     
-    auto setViewObj = this->getGeosetObj(gset);
+    auto setViewObj = this->getGeosetObj(id);
     setViewObj->setEdgePoly(newPoly);
     return newPoly;
     
@@ -459,8 +461,9 @@ vtkPolyData *FCGeometryViewData::transferEdge(FCGeometrySet *gset)
  * @param gset
  * @return 
  */
-vtkPolyData *FCGeometryViewData::transferPoint(FCGeometrySet *gset)
+vtkPolyData *FCGeometryViewData::transferPoint(const IdType id)
 {
+    FCGeometrySet* gset  = FCGeometryData::getInstance()->getGeometrySetByID(id);    
     TopoDS_Shape *shape = gset->getShape();
     TopExp_Explorer ptExp(*shape, TopAbs_VERTEX);
     QList<Handle(TopoDS_TShape)> tshapelist;
@@ -485,12 +488,12 @@ vtkPolyData *FCGeometryViewData::transferPoint(FCGeometrySet *gset)
         FCGeometryViewObject *obj = new FCGeometryViewObject(FCGeometryViewObject::Point, beg, beg + np - 1, ts);
         beg += np;
         appendFilter->AddInputData(tpolyData);
-        auto setViewObj = this->getGeosetObj(gset);
+        auto setViewObj = this->getGeosetObj(id);
         setViewObj->appendPointViewObj(index, obj);
     }
     appendFilter->Update();
     polyData->DeepCopy(appendFilter->GetOutput());
-    auto setViewObj = this->getGeosetObj(gset);
+    auto setViewObj = this->getGeosetObj(id);
     setViewObj->setPointPoly(polyData);
     const int npc = polyData->GetNumberOfCells();
     if (npc < 1)
@@ -505,12 +508,12 @@ vtkPolyData *FCGeometryViewData::transferPoint(FCGeometrySet *gset)
  * @return set几何模型对应的可视化对象
  * @note 如果第一次创建的模型会插入mViewObjs中统一管理
  */
-FCGeometrySetViewData *FCGeometryViewData::getGeosetObj(FCGeometrySet *set)
+FCGeometrySetViewData *FCGeometryViewData::getGeosetObj(const IdType id)
 {
-    if (mViewObjs.contains(set))
-        return mViewObjs.value(set);
-    auto viewObj = new FCGeometrySetViewData(set);
-    mViewObjs.insert(set, viewObj);
+    if (mViewObjs.contains(id))
+        return mViewObjs.value(id);
+    auto viewObj = new FCGeometrySetViewData(id);
+    mViewObjs.insert(id, viewObj);
     return viewObj;
 }
 

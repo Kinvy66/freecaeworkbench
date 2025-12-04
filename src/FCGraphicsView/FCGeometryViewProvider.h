@@ -40,26 +40,26 @@ public:
     
     void updateGeoActors();
     void updateGraphOption();
-    void updateDiaplayStates(FCGeometrySet *s, bool visibility);
-    QMultiHash<FCGeometrySet *, int> getGeoSelectItems();
+    void updateDiaplayStates(const IdType id, bool visibility);
+    QMultiHash<IdType, int> getGeoSelectItems();
     
 public slots:
-    void showGeoSet(FCGeometrySet *set, bool render = true);
-    void showDatum(FCGeometrySet *datm);
+    void showGeoSet(const IdType id, bool render = true);
+    // void showDatum(const IdType id);
     void removeActors(const IdType id);
     void setGeometryDisplay(bool v, bool c, bool f);
     void setGeoSelectMode(int);
     
 signals:
-    void geoShapeSelected(FCGeometrySet *shape, int index);
+    void geoShapeSelected(const IdType shapeID, int index);
     
 private slots:
     //高亮显示函数
-    void highLightGeometrySet(FCGeometrySet *s, bool on);
-    void highLightGeometryFace(FCGeometrySet *s, int id, bool on);	//高亮显示面
-    void highLightGeometryEdge(FCGeometrySet *s, int id, bool on);	//高亮显示边
-    void highLightGeometryPoint(FCGeometrySet *s, int id, bool on); //高亮显示点
-    void highLightGeometrySolid(FCGeometrySet *s, int id, bool on);
+    void highLightGeometrySet(const IdType setID, bool on);
+    void highLightGeometryFace(const IdType setID, int id, bool on);	//高亮显示面
+    void highLightGeometryEdge(const IdType setID, int id, bool on);	//高亮显示边
+    void highLightGeometryPoint(const IdType setID, int id, bool on); //高亮显示点
+    void highLightGeometrySolid(const IdType setID, int id, bool on);
     void selectGeometry(bool ctrlpress);
     void selectGeometry(bool pre, vtkActor *ac, int index);
     void clearAllHighLight();
@@ -80,7 +80,7 @@ private:
     FCGeometryViewData *mViewData{};
     FCGraphViewWindow* mGraphViewWindow;
     
-    QHash<FCGeometrySet *, GeoViewObj> mGeoViewHash{};
+    QHash<IdType, GeoViewObj> mGeoViewHash{};
 };
 } // namespace FC
 

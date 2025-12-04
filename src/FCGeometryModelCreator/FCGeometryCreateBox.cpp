@@ -43,6 +43,11 @@ void FCGeometryCreateBox::setGeoPara(double *para)
     mGeoPara[2] = para[2];
 }
 
+/**
+ * @brief FCGeometryCreateBox::execute
+ * @return 
+ * @todo 编辑模式不要重新生成set，在原有的set上编辑参数
+ */
 bool FCGeometryCreateBox::execute()
 {
     gp_Pnt pt(mLoaction[0], mLoaction[1], mLoaction[2]);
@@ -70,8 +75,6 @@ bool FCGeometryCreateBox::execute()
         mGeoData->appendGeometrySet(id, set);
     }
     
-    
-    
     FCGeometryParaBox  *para = new FCGeometryParaBox;
     para->setName(mName);
     para->setLocation(mLoaction);
@@ -80,7 +83,7 @@ bool FCGeometryCreateBox::execute()
     set->setName(mName);
     
     emit updateGeoTree(id, mName);    
-    emit showSet(mResult, true);
+    emit showSet(id, true);
         
     qDebug() << "Create Cube,name:" << mName
              << ", para:" <<  mGeoPara[0] << mGeoPara[1] << mGeoPara[2]
@@ -106,8 +109,8 @@ void FCGeometryCreateBox::releaseResult()
 
 void FCGeometryCreateBox::setVisible(bool r)
 {
-    if (mResult == nullptr) return;
-    emit showSet(mResult, r);   
+    // if (mResult == nullptr) return;
+    // emit showSet(mResult, r);   
 }
 
 } // namespace FC

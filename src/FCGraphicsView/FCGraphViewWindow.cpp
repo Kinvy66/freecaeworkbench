@@ -38,10 +38,10 @@ void FCGraphViewWindow::updateGeometryActor()
 }
 void FCGraphViewWindow::updateGeoDispaly(int index, bool display)
 {
-    FCGeometrySet *s = mGeometryData->getGeometrySetAt(index);
-    if (s == nullptr)
-        return;
-    mGeoProvider->updateDiaplayStates(s, display);
+    // FCGeometrySet *s = mGeometryData->getGeometrySetAt(index);
+    // if (s == nullptr)
+    //     return;
+    // mGeoProvider->updateDiaplayStates(s, display);
 }
 
 void FCGraphViewWindow::removeGemoActor(const IdType id)

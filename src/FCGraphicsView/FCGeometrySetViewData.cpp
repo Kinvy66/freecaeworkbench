@@ -9,6 +9,7 @@
 #include "FCGeometrySetViewData.h"
 #include "FCGeometrySet.h"
 #include "FCGeometryViewObject.h"
+#include "FCGeometryData.h"
 #include <QDebug>
 //vtk
 #include <vtkPolyData.h>
@@ -31,10 +32,9 @@
 namespace FC 
 {
 
-FCGeometrySetViewData::FCGeometrySetViewData(FCGeometrySet *set)
-    : mGeoSet(set)
+FCGeometrySetViewData::FCGeometrySetViewData(const IdType id)
 {
-    
+    mGeoSet = FCGeometryData::getInstance()->getGeometrySetByID(id);
 }
 
 /**

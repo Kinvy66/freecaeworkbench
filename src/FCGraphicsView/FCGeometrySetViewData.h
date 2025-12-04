@@ -28,7 +28,9 @@ class FCGeometryData;
 class FCGRAPHICSVIEW_API FCGeometrySetViewData
 {
 public:
-    FCGeometrySetViewData(FCGeometrySet* set);
+    using IdType  = uint64_t;  ///< id类型 
+public:
+    FCGeometrySetViewData(const IdType id);
     ~FCGeometrySetViewData();
     FCGeometrySet* getGeometrySet();
     

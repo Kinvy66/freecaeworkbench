@@ -86,16 +86,16 @@ void FCGeometryViewProvider::updateGraphOption()
 {
 }
 
-void FCGeometryViewProvider::updateDiaplayStates(FCGeometrySet *s, bool visibility)
+void FCGeometryViewProvider::updateDiaplayStates(const IdType id, bool visibility)
 {
     
 }
 
-QMultiHash<FCGeometrySet *, int> FCGeometryViewProvider::getGeoSelectItems()
+QMultiHash<FCGeometryViewProvider::IdType, int> FCGeometryViewProvider::getGeoSelectItems()
 {
     // SelectModel mod = _preWindow->getSelectModel();
     // QList<FCGeometryViewObject *> views = _viewData->getViewObjectByStates((int)mod, (int)GeometryViewObject::HighLigh);
-    QMultiHash<FCGeometrySet *, int> setHash{};
+    QMultiHash<IdType, int> setHash{};
     // for (auto vs : views)
     // {
     //     auto set = vs->getGeometySet();
@@ -110,11 +110,12 @@ QMultiHash<FCGeometrySet *, int> FCGeometryViewProvider::getGeoSelectItems()
  * @param set
  * @param render
  */
-void FCGeometryViewProvider::showGeoSet(FCGeometrySet *set, bool render)
+void FCGeometryViewProvider::showGeoSet(const IdType id, bool render)
 {
     // todo 
     // removeAllActors();
-    QList<vtkPolyData *> viewPolys = mViewData->transferToPoly(set);
+    FCGeometrySet* set = mGeoData->getGeometrySetByID(id);
+    QList<vtkPolyData *> viewPolys = mViewData->transferToPoly(id);
     vtkPolyData *facePoly = viewPolys.at(0);
     vtkPolyData *edgePoly = viewPolys.at(1);
     vtkPolyData *pointPoly = viewPolys.at(2);
@@ -166,18 +167,18 @@ void FCGeometryViewProvider::showGeoSet(FCGeometrySet *set, bool render)
         mGraphViewWindow->AppendActor(actor, D3, false);
         viewObj.mPointObj = QPair<vtkActor *, vtkPolyData *>(actor, pointPoly);
     }
-    mGeoViewHash.insert(set, viewObj);
+    mGeoViewHash.insert(id, viewObj);
     if (render)
         mGraphViewWindow->resetCamera();
     
     qDebug() << "FCGeometryViewProvider::showGeoSet--OK";
 }
 
-void FCGeometryViewProvider::showDatum(FCGeometrySet *datm)
-{
-    Q_UNUSED(datm)
-    
-}
+// void FCGeometryViewProvider::showDatum(const IdType id)
+// {
+//     Q_UNUSED(datm)
+
+// }
 
 /**
  * @brief 从vtk渲染窗口中移除指定的几何actor
@@ -185,11 +186,11 @@ void FCGeometryViewProvider::showDatum(FCGeometrySet *datm)
  */
 void FCGeometryViewProvider::removeActors(const IdType id)
 {
-    FCGeometrySet* set = mGeoData->getGeometrySetByID(id);
-    if (!mGeoViewHash.contains(set))
+    // FCGeometrySet* set = mGeoData->getGeometrySetByID(id);
+    if (!mGeoViewHash.contains(id))
         return;
-    GeoViewObj views = mGeoViewHash.value(set);
-    mGeoViewHash.remove(set);
+    GeoViewObj views = mGeoViewHash.value(id);
+    mGeoViewHash.remove(id);
     vtkActor *ac = views.mFaceObj.first;
     mGraphViewWindow->RemoveActor(ac);
     ac = views.mEdgeObj.first;
@@ -197,7 +198,7 @@ void FCGeometryViewProvider::removeActors(const IdType id)
     ac = views.mPointObj.first;
     mGraphViewWindow->RemoveActor(ac);
     mGraphViewWindow->reRender();
-    mViewData->removeViewObjs(set);
+    mViewData->removeViewObjs(id);
     
     mGraphViewWindow->reRender();    
 }
@@ -212,27 +213,27 @@ void FCGeometryViewProvider::setGeoSelectMode(int)
     
 }
 
-void FCGeometryViewProvider::highLightGeometrySet(FCGeometrySet *s, bool on)
+void FCGeometryViewProvider::highLightGeometrySet(const IdType setID, bool on)
 {
     
 }
 
-void FCGeometryViewProvider::highLightGeometryFace(FCGeometrySet *s, int id, bool on)
+void FCGeometryViewProvider::highLightGeometryFace(const IdType setID, int id, bool on)
 {
     
 }
 
-void FCGeometryViewProvider::highLightGeometryEdge(FCGeometrySet *s, int id, bool on)
+void FCGeometryViewProvider::highLightGeometryEdge(const IdType setID, int id, bool on)
 {
     
 }
 
-void FCGeometryViewProvider::highLightGeometryPoint(FCGeometrySet *s, int id, bool on)
+void FCGeometryViewProvider::highLightGeometryPoint(const IdType setID, int id, bool on)
 {
     
 }
 
-void FCGeometryViewProvider::highLightGeometrySolid(FCGeometrySet *s, int id, bool on)
+void FCGeometryViewProvider::highLightGeometrySolid(const IdType setID, int id, bool on)
 {
     
 }
@@ -255,25 +256,30 @@ void FCGeometryViewProvider::clearAllHighLight()
 void FCGeometryViewProvider::init()
 {
     const int n = mGeoData->getGeometrySetCount();
+    QList<IdType> ids = mGeoData->getAllGeometrySetID();
     for (int i = 0; i < n; ++i)
     {
-        FCGeometrySet *set = mGeoData->getGeometrySetAt(i);
+        FCGeometrySet *set = mGeoData->getGeometrySetAt(ids[i]);
         TopoDS_Shape *shape = set->getShape();
         if (shape == nullptr)
             continue;
-        showGeoSet(set, false);
+        showGeoSet(ids[i], false);
     }
     mGraphViewWindow->resetCamera();
-    QList<FCGeometryDatum *> dl = mGeoData->getGeometryDatum();
-    for (auto da : dl)
-    {
-        TopoDS_Shape *shape = da->getShape();
-        if (shape == nullptr)
-            continue;
-        showDatum(da);
-    }
+    // QList<FCGeometryDatum *> dl = mGeoData->getGeometryDatum();
+    // for (auto da : dl)
+    // {
+    //     TopoDS_Shape *shape = da->getShape();
+    //     if (shape == nullptr)
+    //         continue;
+    //     showDatum(da);
+    // }
 }
 
+/**
+ * @brief 移除所有的actor 
+ * @note 调试使用
+ */
 void FCGeometryViewProvider::removeAllActors()
 {
     // 遍历 mGeoViewHash 中的所有 GeoViewObj

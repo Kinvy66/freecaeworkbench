@@ -38,7 +38,7 @@ private:
     void init();
     
 signals:
-    void modelCreated(FCGeometrySet* set, bool r);
+    void modelCreated(const IdType id, bool r);
     void updateGeoTree(const IdType id, const QString& name);
     void removeActor(const IdType id);
     

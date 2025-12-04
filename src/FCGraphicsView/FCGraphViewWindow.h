@@ -39,7 +39,7 @@ signals:
     //关闭
     void closed();
     //显示几何形状
-    void showGeoSet(FCGeometrySet *set, bool render = true);
+    void showGeoSet(const IdType id, bool render = true);
     //移除几何形状的显示
     void removeGemoActors(const IdType id);
     //显示基准
@@ -49,14 +49,14 @@ signals:
     //设置选择模式
     void setGeoSelectMode(int);
     //选择的几何元素
-    void selectGeoActorShape(vtkActor *ac, int shape, FCGeometrySet *set);
+    void selectGeoActorShape(vtkActor *ac, int shape, const IdType id);
     //新增接口
     void geoShapeSelected(FCGeometrySet *shape, int index);			//被选中接口
-    void highLightGeometrySet(FCGeometrySet *s, bool on);			//高亮显示主体
-    void highLightGeometryPoint(FCGeometrySet *s, int id, bool on); //高亮显示点
-    void highLightGeometryEdge(FCGeometrySet *s, int id, bool on);	//高亮显示边
-    void highLightGeometryFace(FCGeometrySet *s, int id, bool on);	//高亮显示面
-    void highLightGeometrySolid(FCGeometrySet *s, int id, bool on); //高亮显示实体
+    void highLightGeometrySet(const IdType setID, bool on);			//高亮显示主体
+    void highLightGeometryPoint(const IdType setID, int id, bool on); //高亮显示点
+    void highLightGeometryEdge(const IdType setID, int id, bool on);	//高亮显示边
+    void highLightGeometryFace(const IdType setID, int id, bool on);	//高亮显示面
+    void highLightGeometrySolid(const IdType setID, int id, bool on); //高亮显示实体
     void clearGeometryHighLight();											//清空所有高亮对象
     void removeSetDataSig(const int index);
     //更新网格渲染元素

@@ -51,8 +51,8 @@ void FCCylinderSettingsWidget::on_pushButton_build_clicked()
     QString name = ui->lineEdit_name->text();
     
     FCGeometryCreateBoxCylinder* c = new FCGeometryCreateBoxCylinder(this);
-    connect(c, &FCGeometryCreateBoxCylinder::showSet,
-            this, &FCCylinderSettingsWidget::modelCreated);
+    // connect(c, &FCGeometryCreateBoxCylinder::showSet,
+    //         this, &FCCylinderSettingsWidget::modelCreated);
     
     c->setName(name);
     c->setLocation(corner);

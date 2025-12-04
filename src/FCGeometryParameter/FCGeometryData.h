@@ -44,10 +44,16 @@ public:
     void appendGeometrySet(FCGeometrySet *set);
     
     void appendGeometrySet(IdType id, FCGeometrySet *set);
+    
+    QList<FCGeometrySet*> getAllGeometrySet();
+    QList<IdType> getAllGeometrySetID();
+    
+    
     /**
      * @brief 添加基准
      */
     void appendGeometryDatum(FCGeometryDatum *plane);
+    
     
     /**
      * @brief 获取全部基准

@@ -51,7 +51,7 @@ bool FCGeometryCreateBoxCylinder::execute()
     para->setDirection(mAxis);
     mResult->setParameter(para);
     
-    emit showSet(set);
+    // emit showSet(set);
     
     return true;
 }

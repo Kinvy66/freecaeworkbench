@@ -43,7 +43,7 @@ public:
     FCGraphViewWindow*	getGraphViewWindow();
     
 signals:
-    void showGeoSet(FCGeometrySet *set, bool render = true);
+    void showGeoSet(const IdType id, bool render = true);
     void removeGeometryAcotr(const IdType id);
 public slots:
     void showModel(FCGeometrySet* set, bool r);

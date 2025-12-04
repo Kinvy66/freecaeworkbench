@@ -63,6 +63,16 @@ void FCGeometryData::appendGeometrySet(IdType id, FCGeometrySet *set)
     mGeometrySets.insert(id, set);
 }
 
+QList<FCGeometrySet *> FCGeometryData::getAllGeometrySet()
+{
+    return mGeometrySets.values();
+}
+
+QList<FCGeometryData::IdType> FCGeometryData::getAllGeometrySetID()
+{
+    return mGeometrySets.keys();
+}
+
 void FCGeometryData::appendGeometryDatum(FCGeometryDatum *plane)
 {
     mGeomtretryDatumList.append(plane);

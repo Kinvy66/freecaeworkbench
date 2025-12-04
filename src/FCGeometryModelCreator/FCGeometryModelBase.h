@@ -93,7 +93,7 @@ public:
     
 signals:
     void updateGeoTree(const IdType id, const QString& name);
-    void showSet(FCGeometrySet *s, bool r = true);
+    void showSet(const IdType id, bool r = true);
     // void showDatum(Geometry::GeometryDatum *);
     void removeDisplayGeometryActor(const IdType id);
     // void removeDisplayDatumActor(Geometry::GeometryDatum *);
