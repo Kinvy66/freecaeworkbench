@@ -1,3 +1,5 @@
+# FreeCAE Workbench
+
 <div align="center">
 <p>
 <img src="https://img.shields.io/badge/C++-17-blue"/>
@@ -7,9 +9,4 @@
 </p>
 </div>
 
-
-
-
-# FreeCAE Workbench 简介
-
-项目文档见：[https://kinvy66.github.io/freecae-workbench](https://kinvy66.github.io/freecae-workbench)
+## 简介
