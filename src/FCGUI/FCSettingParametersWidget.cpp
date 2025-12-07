@@ -9,11 +9,16 @@
 #include "FCSettingParametersWidget.h"
 #include <QLabel>
 #include <QVBoxLayout>
-#include "FCBoxSettingsWidget.h"
-#include "FCCylinderSettingsWidget.h"
+
 #include "FCGeometryData.h"
 #include "FCGeometrySet.h"
 #include "FCGeometryParaCylinder.h"
+// parameters widget
+#include "FCBoxSettingsWidget.h"
+#include "FCCylinderSettingsWidget.h"
+#include "FCConeSettingsWidget.h"
+#include "FCSphereSettingsWidget.h"
+#include "FCTorusSettingsWidget.h"
 
 namespace FC 
 {
@@ -32,7 +37,10 @@ FCSettingParametersWidget::~FCSettingParametersWidget()
     
 }
 
-void FCSettingParametersWidget::createCube()
+/**
+ * @brief 创建立方体
+ */
+void FCSettingParametersWidget::createBox()
 {
     FCBoxSettingsWidget* cubeSettingsWidget = new FCBoxSettingsWidget(this);
     connect(cubeSettingsWidget, &FCBoxSettingsWidget::modelCreated,
@@ -45,6 +53,9 @@ void FCSettingParametersWidget::createCube()
     // setCurrentWidget(cubeSettingsWidget);
 }
 
+/**
+ * @brief 创建圆柱
+ */
 void FCSettingParametersWidget::createCylinder()
 {
     FCCylinderSettingsWidget* cylinderSettingsWidget = new FCCylinderSettingsWidget(this);
@@ -56,6 +67,51 @@ void FCSettingParametersWidget::createCylinder()
     
     cylinderSettingsWidget->create();
     // setCurrentWidget(cylinderSettingsWidget);
+}
+
+/**
+ * @brief 创建圆锥
+ */
+void FCSettingParametersWidget::createCone()
+{
+    FCConeSettingsWidget* settingsWidget = new FCConeSettingsWidget(this);
+    connect(settingsWidget, &FCConeSettingsWidget::modelCreated,
+            this, &FCSettingParametersWidget::geometryModelCreated);
+    
+    connect(settingsWidget, &FCConeSettingsWidget::updateGeoTree,
+            this, &FCSettingParametersWidget::updateGeoTree);
+    
+    settingsWidget->create();
+}
+
+/**
+ * @brief 创建球体
+ */
+void FCSettingParametersWidget::createSphere()
+{
+    FCSphereSettingsWidget* settingsWidget = new FCSphereSettingsWidget(this);
+    connect(settingsWidget, &FCSphereSettingsWidget::modelCreated,
+            this, &FCSettingParametersWidget::geometryModelCreated);
+    
+    connect(settingsWidget, &FCSphereSettingsWidget::updateGeoTree,
+            this, &FCSettingParametersWidget::updateGeoTree);
+    
+    settingsWidget->create();
+}
+
+/**
+ * @brief 创建圆环
+ */
+void FCSettingParametersWidget::createTorus()
+{
+    FCTorusSettingsWidget* settingsWidget = new FCTorusSettingsWidget(this);
+    connect(settingsWidget, &FCTorusSettingsWidget::modelCreated,
+            this, &FCSettingParametersWidget::geometryModelCreated);
+    
+    connect(settingsWidget, &FCTorusSettingsWidget::updateGeoTree,
+            this, &FCSettingParametersWidget::updateGeoTree);
+    
+    settingsWidget->create();
 }
 
 /**
@@ -100,6 +156,43 @@ void FCSettingParametersWidget::updateCurrentSettingWidget(const IdType id,
                 &FCSettingParametersWidget::updateGeometryAcotr);
         w = settingsWidget;
     }
+    break;
+    case GeometryParaCreateCone:
+    {
+        FCConeSettingsWidget* settingsWidget = new FCConeSettingsWidget(id, this);
+        connect(settingsWidget, &FCConeSettingsWidget::modelCreated,
+                this, &FCSettingParametersWidget::geometryModelCreated);
+        connect(settingsWidget, &FCConeSettingsWidget::updateGeoTree,
+                this, &FCSettingParametersWidget::updateGeoTree);
+        connect(settingsWidget, &FCConeSettingsWidget::updateGeometryActor, this,
+                &FCSettingParametersWidget::updateGeometryAcotr);
+        w = settingsWidget;
+    }
+    break;
+    case GeometryParaCreateSphere:
+    {
+        FCSphereSettingsWidget* settingsWidget = new FCSphereSettingsWidget(id, this);
+        connect(settingsWidget, &FCSphereSettingsWidget::modelCreated,
+                this, &FCSettingParametersWidget::geometryModelCreated);
+        connect(settingsWidget, &FCSphereSettingsWidget::updateGeoTree,
+                this, &FCSettingParametersWidget::updateGeoTree);
+        connect(settingsWidget, &FCSphereSettingsWidget::updateGeometryActor, this,
+                &FCSettingParametersWidget::updateGeometryAcotr);
+        w = settingsWidget;
+    }
+    break;
+    case GeometryParaCreateTorus:
+    {
+        FCTorusSettingsWidget* settingsWidget = new FCTorusSettingsWidget(id, this);
+        connect(settingsWidget, &FCTorusSettingsWidget::modelCreated,
+                this, &FCSettingParametersWidget::geometryModelCreated);
+        connect(settingsWidget, &FCTorusSettingsWidget::updateGeoTree,
+                this, &FCSettingParametersWidget::updateGeoTree);
+        connect(settingsWidget, &FCTorusSettingsWidget::updateGeometryActor, this,
+                &FCSettingParametersWidget::updateGeometryAcotr);
+        w = settingsWidget;
+    }
+    break;
     default:
         break;
     }

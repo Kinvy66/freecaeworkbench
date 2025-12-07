@@ -36,14 +36,14 @@ void FCGeometryParaHelix::getLocation(double *loc)
         loc[i] = mLocation[i];
 }
 
-int FCGeometryParaHelix::numberOfturns() const
+int FCGeometryParaHelix::numberOfTurns() const
 {
-    return mNumberOfturns;
+    return mNumberOfTurns;
 }
 
-void FCGeometryParaHelix::setNumberOfturns(int newNumberOfturns)
+void FCGeometryParaHelix::setNumberOfTurns(int newNumberOfturns)
 {
-    mNumberOfturns = newNumberOfturns;
+    mNumberOfTurns = newNumberOfturns;
 }
 
 double FCGeometryParaHelix::majorRadius() const

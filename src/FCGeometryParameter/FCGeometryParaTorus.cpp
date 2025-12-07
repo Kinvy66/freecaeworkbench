@@ -38,9 +38,10 @@ void FCGeometryParaTorus::getLocation(double *loc)
         loc[i] = mLocation[i];
 }
 
-double FCGeometryParaTorus::majorRadius() const
+bool FCGeometryParaTorus::getMajorRadius(double* r)
 {
-    return mMajorRadius;
+    *r = mMajorRadius;
+    return true;
 }
 
 void FCGeometryParaTorus::setMajorRadius(double newMajorRadius)
@@ -48,14 +49,26 @@ void FCGeometryParaTorus::setMajorRadius(double newMajorRadius)
     mMajorRadius = newMajorRadius;
 }
 
-double FCGeometryParaTorus::minorRadius() const
+bool FCGeometryParaTorus::getMinorRadius(double* r)
 {
-    return mMinorRadius;
+    *r = mMinorRadius;
+    return true;
 }
 
 void FCGeometryParaTorus::setMinorRadius(double newMinorRadius)
 {
     mMinorRadius = newMinorRadius;
+}
+
+bool FCGeometryParaTorus::getAngle(double* angle)
+{
+    *angle = mAngle;
+    return true;
+}
+
+void FCGeometryParaTorus::setAngle(double newAngle)
+{
+    mAngle = newAngle;
 }
 
 } // namespace FC

@@ -8,23 +8,55 @@
  */
 #ifndef FCCONESETTINGSWIDGET_H
 #define FCCONESETTINGSWIDGET_H
-
 #include <QWidget>
+#include "FCGuiAPI.h"
 
 namespace Ui {
 class FCConeSettingsWidget;
 }
 
-class FCConeSettingsWidget : public QWidget
+namespace FC 
+{
+
+class FCGeometrySet;
+class FCGeometryCreateCone;
+
+class FCGUI_API FCConeSettingsWidget : public QWidget
 {
     Q_OBJECT
-
 public:
-    explicit FCConeSettingsWidget(QWidget *parent = nullptr);
+    using IdType  = uint64_t;  ///< id类型
+public:
+    FCConeSettingsWidget(QWidget *parent = nullptr);
+    FCConeSettingsWidget(const IdType editSetID, QWidget *parent = nullptr);
     ~FCConeSettingsWidget();
-
+    
+    bool create();
+    
+private:
+    bool getBottomRadius(double* r);
+    bool getTopRadius(double* r);
+    bool getHeight(double* h);
+    bool getCoordinate(double *coor);
+    void init();
+    
+signals:
+    void modelCreated(const IdType id, bool r);
+    void updateGeoTree(const IdType id, const QString& name);
+    void updateGeometryActor(const IdType id);
+    
+    
+private slots:
+    void on_pushButton_build_clicked();
+    
 private:
     Ui::FCConeSettingsWidget *ui;
+    
+    bool mIsEdit;
+    IdType mEidtSetID;
 };
+} // namespace FC
+
+
 
 #endif // FCCONESETTINGSWIDGET_H

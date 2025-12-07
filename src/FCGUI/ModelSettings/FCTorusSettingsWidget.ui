@@ -140,7 +140,7 @@
            <item>
             <widget class="QLineEdit" name="lineEdit_minorRadius">
              <property name="text">
-              <string>10</string>
+              <string>2</string>
              </property>
             </widget>
            </item>
@@ -156,9 +156,9 @@
             </widget>
            </item>
            <item>
-            <widget class="QLineEdit" name="lineEdit_minorRadius_2">
+            <widget class="QLineEdit" name="lineEdit_angle">
              <property name="text">
-              <string>10</string>
+              <string>360</string>
              </property>
             </widget>
            </item>

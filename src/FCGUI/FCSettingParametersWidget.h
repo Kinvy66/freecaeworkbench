@@ -27,8 +27,12 @@ public:
     FCSettingParametersWidget(QWidget* parent = nullptr);
     ~FCSettingParametersWidget();
     
-    void createCube();
+    void createBox();
     void createCylinder();
+    void createCone();
+    void createSphere();
+    void createTorus();
+    
     
 public slots:
     void updateCurrentSettingWidget(const IdType id, const QString& name);

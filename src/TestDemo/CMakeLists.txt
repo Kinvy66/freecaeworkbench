@@ -12,6 +12,12 @@ fcmacro_app_setting(
 # Qt
 ########################################################
 set(FC_MIN_QT_VERSION 5.14)
+
+set(GMSH_ROOT "E:/Rep/Qt_Project/FreeCAEWorkbench/bin_Debug_qt6.5.3_MSVC_x64/gmsh")
+
+include_directories(${GMSH_ROOT}/include)
+set(gmsh_dir "E:/Rep/Qt_Project/FreeCAEWorkbench/bin_Debug_qt6.5.3_MSVC_x64/gmsh/share/gmsh")
+
 find_package(QT NAMES Qt6 Qt5 COMPONENTS Core REQUIRED)
 find_package(Qt${QT_VERSION_MAJOR} ${FC_MIN_QT_VERSION} COMPONENTS
     Core
@@ -20,6 +26,7 @@ find_package(Qt${QT_VERSION_MAJOR} ${FC_MIN_QT_VERSION} COMPONENTS
     Xml
     REQUIRED
 )
+find_package(gmsh REQUIRED)
 
 if(WIN32)
     find_package(Qt${QT_VERSION_MAJOR} ${FC_MIN_QT_VERSION} COMPONENTS
@@ -98,16 +105,18 @@ if(WIN32)
 endif()
 
 
-# -------------link 3rdparty SARibbon--------------------------
-fcmacro_import_SARibbonBar(${FC_APP_NAME})
-# -------------link 3rdparty QtAdvancedDocking--------------------------
-fcmacro_import_QtAdvancedDocking(${FC_APP_NAME})
-# -------------link 3rdparty qwt--------------------------
-fcmacro_import_qwt(${FC_APP_NAME})
-# -------------link 3rdparty vtk--------------------------
-fcmacro_import_vtk(${FC_APP_NAME})
-# -------------link 3rdparty occ--------------------------
-fcmacro_import_occ(${FC_APP_NAME})
+# # -------------link 3rdparty SARibbon--------------------------
+# fcmacro_import_SARibbonBar(${FC_APP_NAME})
+# # -------------link 3rdparty QtAdvancedDocking--------------------------
+# fcmacro_import_QtAdvancedDocking(${FC_APP_NAME})
+# # -------------link 3rdparty qwt--------------------------
+# fcmacro_import_qwt(${FC_APP_NAME})
+# # -------------link 3rdparty vtk--------------------------
+# fcmacro_import_vtk(${FC_APP_NAME})
+# # -------------link 3rdparty occ--------------------------
+# fcmacro_import_occ(${FC_APP_NAME})
+
+target_link_libraries(${FC_APP_NAME} PRIVATE  gmsh)
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.
 # If you are developing for iOS or macOS you should consider setting an

@@ -72,6 +72,22 @@ bool FCGeometryParaCone::getTopRadius(double *para)
     return true;    
 }
 
+void FCGeometryParaCone::setAxis(double *dir)
+{
+    for (int i = 0; i < 3;++i)
+    {
+        mAxis[i] = dir[i];
+    }
+}
+
+void FCGeometryParaCone::getAxis(double *dir)
+{
+    for (int i = 0; i < 3;++i)
+    {
+        dir[i] = mAxis[i];
+    }
+}
+
 QDomElement &FCGeometryParaCone::writeToProjectFile(QDomDocument *doc, QDomElement *parent)
 {
     QDomElement element = doc->createElement("Parameter"); //创建子节点
@@ -83,7 +99,5 @@ void FCGeometryParaCone::readDataFromProjectFile(QDomElement *e)
 {
 
 }
-
-
 
 } // namespace FC

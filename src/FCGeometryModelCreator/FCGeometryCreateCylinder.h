@@ -6,8 +6,8 @@
  * @details 
  * @copyright Copyright (c) 2025 Kinvy. All rights reserved.
  */
-#ifndef FCGEOMETRYCREATEBOXCYLINDER_H
-#define FCGEOMETRYCREATEBOXCYLINDER_H
+#ifndef FCGEOMETRYCREATECYLINDER_H
+#define FCGEOMETRYCREATECYLINDER_H
 
 #include "FCGeometryModelCreatorAPI.h"
 #include "FCGeometryModelBase.h"
@@ -48,4 +48,4 @@ private:
 } // namespace FC
 
 
-#endif // FCGEOMETRYCREATEBOXCYLINDER_H
+#endif // FCGEOMETRYCREATECYLINDER_H

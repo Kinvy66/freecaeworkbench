@@ -9,7 +9,7 @@
 #include "FCCylinderSettingsWidget.h"
 #include "ui_FCCylinderSettingsWidget.h"
 #include "FCGeometrySet.h"
-#include "FCGeometryCreateBoxCylinder.h"
+#include "FCGeometryCreateCylinder.h"
 #include "FCGeometryParaCylinder.h"
 
 namespace FC 

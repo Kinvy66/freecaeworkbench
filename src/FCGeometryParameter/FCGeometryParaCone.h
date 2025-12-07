@@ -30,6 +30,8 @@ public:
     bool getBottomRadius(double *para);
     void setTopRadius(double para);
     bool getTopRadius(double *para);
+    void setAxis(double* dir);
+    void getAxis(double* dir);
     
     QDomElement &writeToProjectFile(QDomDocument *doc, QDomElement *parent) override;
     virtual void readDataFromProjectFile(QDomElement *e) override;
@@ -37,6 +39,7 @@ public:
 private:
     
     double mLocation[3];
+    double mAxis[3];
     double mHeigth;
     double mBottomRadius;
     double mTopRadius;    

@@ -19,8 +19,8 @@ class FCGEOMETRYPARA_API FCGeometryParaHelix : public FCGeometryModelParaBase
 public:
     enum Chirality
     {
-        RightHanded = 0,
-        LeftHanded
+        RightHanded = 1,
+        LeftHanded = -1
     };
 public:
     FCGeometryParaHelix();
@@ -32,8 +32,8 @@ public:
     void setLocation(double* loc);
     void getLocation(double* loc);
     
-    int numberOfturns() const;
-    void setNumberOfturns(int newNumberOfturns);
+    int numberOfTurns() const;
+    void setNumberOfTurns(int newNumberOfturns);
     
     double majorRadius() const;
     void setMajorRadius(double newMajorRadius);
@@ -53,7 +53,7 @@ public:
 private:
     // QString mName{};
     double mLocation[3];
-    int mNumberOfturns;     ///< 匝数
+    int mNumberOfTurns;     ///< 匝数
     double mMajorRadius;    ///< 大半径
     double mMinorRadius;    ///< 小半径
     double mRadialPitch;    ///< 径向距

@@ -8,11 +8,36 @@
  */
 #ifndef FCGEOMETRYCREATESPHERE_H
 #define FCGEOMETRYCREATESPHERE_H
+#include "FCGeometryModelCreatorAPI.h"
+#include "FCGeometryModelBase.h"
 
-class FCGeometryCreateSphere
+namespace FC 
 {
+class FCGeometrySet;
+class FCGEOMETRYMODELCREATOR_API FCGeometryCreateSphere : public FCGeometryModelBase
+{
+    Q_OBJECT
 public:
-    FCGeometryCreateSphere();
+    FCGeometryCreateSphere(QObject* parent=nullptr);
+    ~FCGeometryCreateSphere() = default;
+    
+    bool execute() override;
+    void undo() override;
+    void redo() override;
+    void releaseResult() override;
+    
+    void setName(QString name);
+    void setLocation(double* loc);
+    void setRadius(double r);
+    
+private:
+    QString mName{};    
+    double mLocation[3];
+    double mRadius;
+    FCGeometrySet* mResult{};
 };
+
+} // namespace FC
+
 
 #endif // FCGEOMETRYCREATESPHERE_H

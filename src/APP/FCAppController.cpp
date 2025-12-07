@@ -177,6 +177,11 @@ void FCAppController::initConnection()
     FCAPPCONTROLLER_ACTION_BIND(mActions->actionResetLayout, resetLayout);
     FCAPPCONTROLLER_ACTION_BIND(mActions->actionCreateCube, createCube);
     FCAPPCONTROLLER_ACTION_BIND(mActions->actionCreateCylinder, createCylinder);
+    FCAPPCONTROLLER_ACTION_BIND(mActions->actionCreateCone, createCone);
+    FCAPPCONTROLLER_ACTION_BIND(mActions->actionCreateSphere, createSphere);
+    FCAPPCONTROLLER_ACTION_BIND(mActions->actionCreateTorus, createTorus);
+    
+    
     
     // FCAPPCONTROLLER_ACTION_BIND(mActions->actionAppendProject, onActionAppendProjectTriggered);
     
@@ -314,13 +319,43 @@ void FCAppController::resetLayout()
  */
 void FCAppController::createCube()
 {
-    mDock->getSettingParametersWidget()->createCube();
+    mDock->getSettingParametersWidget()->createBox();
     // mDock->getModelBuilderWidge()->addGeometryCube();
 }
 
+/**
+ * @brief 创建圆柱
+ */
 void FCAppController::createCylinder()
 {
     mDock->getSettingParametersWidget()->createCylinder();
+    
+}
+
+/**
+ * @brief 创建圆锥
+ */
+void FCAppController::createCone()
+{
+    mDock->getSettingParametersWidget()->createCone();
+    
+}
+
+/**
+ * @brief 创建球体
+ */
+void FCAppController::createSphere()
+{
+    mDock->getSettingParametersWidget()->createSphere();
+    
+}
+
+/**
+ * @brief 创建圆环
+ */
+void FCAppController::createTorus()
+{
+    mDock->getSettingParametersWidget()->createTorus();
     
 }
 

@@ -24,16 +24,20 @@ public:
     void setLocation(double *loc);
     void getLocation(double *loc);
     
-    double majorRadius() const;
+    bool getMajorRadius(double* r);
     void setMajorRadius(double newMajorRadius);
     
-    double minorRadius() const;
+    bool getMinorRadius(double* r);
     void setMinorRadius(double newMinorRadius);
+    
+    bool getAngle(double* angle) ;
+    void setAngle(double newAngle);
     
 private:
     double mLocation[3];
     double mMajorRadius;    ///< 大半径
     double mMinorRadius;    ///< 小半径
+    double mAngle;          ///< 旋转角度
     
 };
 } // namespace FC

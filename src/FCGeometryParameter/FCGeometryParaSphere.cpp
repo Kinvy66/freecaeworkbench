@@ -36,9 +36,10 @@ void FCGeometryParaSphere::getLocation(double *loc)
         loc[i] = mLocation[i];
 }
 
-double FCGeometryParaSphere::radius() const
+bool FCGeometryParaSphere::getRadius(double *r)
 {
-    return mRadius;
+    *r = mRadius;
+    return true;
 }
 
 void FCGeometryParaSphere::setRadius(double newRadius)

@@ -26,7 +26,7 @@ public:
     void setLocation(double *loc);
     void getLocation(double *loc);
     
-    double radius() const;
+    bool getRadius(double *r);
     void setRadius(double newRadius);
     
 private:

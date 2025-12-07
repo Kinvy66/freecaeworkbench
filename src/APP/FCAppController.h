@@ -155,6 +155,10 @@ public Q_SLOTS:
     
     void createCube();
     void createCylinder();
+    void createCone();
+    void createSphere();
+    void createTorus();
+    
     
     void onUpdateGeoTree(const IdType id, const QString& name);
     
