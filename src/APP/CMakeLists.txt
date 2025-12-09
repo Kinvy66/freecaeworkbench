@@ -183,17 +183,17 @@ fcmacro_set_app_properties(${FC_APP_NAME} ${FC_APP_VERSION})
 ########################################################
 # 写入rc信息
 ########################################################
-# if(WIN32)
-#     create_win32_resource_version(
-#         TARGET ${FC_APP_NAME}
-#         VERSION ${FC_APP_VERSION}
-#         COMPANY_NAME "FC"
-#         COPYRIGHT "Copyright @ 2025 FC All rights reserved."
-#         DESCRIPTION ${FC_APP_FULL_DESCRIPTION}
-#         ICONS "${CMAKE_CURRENT_SOURCE_DIR}/icon.ico"
-#         FILE_EXTENSION exe
-#     )
-# endif()
+if(WIN32)
+    create_win32_resource_version(
+        TARGET ${FC_APP_NAME}
+        VERSION ${FC_APP_VERSION}
+        COMPANY_NAME "FC"
+        COPYRIGHT "Copyright @ 2025 Kinvy. All rights reserved."
+        DESCRIPTION ${FC_APP_FULL_DESCRIPTION}
+        ICONS "${CMAKE_CURRENT_SOURCE_DIR}/icon.ico"
+        FILE_EXTENSION exe
+    )
+endif()
 ########################################################
 # 安装
 ########################################################

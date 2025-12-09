@@ -62,35 +62,24 @@ if(${QT_VERSION_MAJOR} EQUAL 6)
     target_link_libraries(${FC_LIB_NAME} PRIVATE Qt6::Core5Compat)
 endif()
 
-# -------------link quazip--------------------------
-
-# -------------link vtk--------------------------
+# -------------link 3rdparty lib--------------------------
 fcmacro_import_vtk(${FC_LIB_NAME})
-
-# -------------link occ--------------------------
 fcmacro_import_occ(${FC_LIB_NAME})
+fcmacro_import_gmsh(${FC_LIB_NAME})
 
 
-# find_package(${FC_PROJECT_NAME} COMPONENTS
-#     FCActionManager
-#     FCProjectTree
-#     FCGeometryParameter
-#     FCGeometryModelCreator
-#     FCGraphicsView
-# )
+find_package(${FC_PROJECT_NAME} COMPONENTS
+    FCData
+    FCGeometryParameter
+)
 
-# if(${FC_PROJECT_NAME}_FOUND)
-#     message(STATUS "  |-linked ${FC_PROJECT_NAME}::FCProjectTree")
-# endif()
-# target_link_libraries(${FC_LIB_NAME} PUBLIC
-#     ${FC_PROJECT_NAME}::FCActionManager
-#     ${FC_PROJECT_NAME}::FCProjectTree
-#     ${FC_PROJECT_NAME}::FCGeometryParameter
-#     ${FC_PROJECT_NAME}::FCGeometryModelCreator
-#     ${FC_PROJECT_NAME}::FCGraphicsView
-    
-# )
-
+if(${FC_PROJECT_NAME}_FOUND)
+    message(STATUS "  |-linked ${FC_PROJECT_NAME}::FCData")
+endif()
+target_link_libraries(${FC_LIB_NAME} PUBLIC
+    ${FC_PROJECT_NAME}::FCData
+    ${FC_PROJECT_NAME}::FCGeometryParameter
+)
 
 ########################################################
 # 设置通用库属性

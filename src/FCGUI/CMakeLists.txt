@@ -33,6 +33,11 @@ file(GLOB FC_LIB_MODELSETTINGS_HEADER_FILES ${CMAKE_CURRENT_SOURCE_DIR}/ModelSet
 file(GLOB FC_LIB_MODELSETTINGS_SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/ModelSettings/*.cpp)
 file(GLOB FC_LIB_MODELSETTINGS_QT_UI_FILES  ${CMAKE_CURRENT_SOURCE_DIR}/ModelSettings/*.ui)
 
+
+file(GLOB FC_LIB_MESHSETTINGS_HEADER_FILES ${CMAKE_CURRENT_SOURCE_DIR}/MeshSettings/*.h)
+file(GLOB FC_LIB_MESHSETTINGS_SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/MeshSettings/*.cpp)
+file(GLOB FC_LIB_MESHSETTINGS_QT_UI_FILES  ${CMAKE_CURRENT_SOURCE_DIR}/MeshSettings/*.ui)
+
 set(FC_LIB_SUBDIR_ModelSettings ${CMAKE_CURRENT_SOURCE_DIR}/ModelSettings)
 set(FC_LIB_SUBDIR_Models ${CMAKE_CURRENT_SOURCE_DIR}/Models)
 
@@ -54,6 +59,10 @@ add_library(${FC_LIB_NAME} SHARED
             ${FC_LIB_MODELSETTINGS_HEADER_FILES}
             ${FC_LIB_MODELSETTINGS_SOURCE_FILES}
             ${FC_LIB_MODELSETTINGS_QT_UI_FILES}
+            # meshSettingsWidgets
+            ${FC_LIB_MESHSETTINGS_HEADER_FILES}
+            ${FC_LIB_MESHSETTINGS_SOURCE_FILES}
+            ${FC_LIB_MESHSETTINGS_QT_UI_FILES}
             
             #Models
             ${FC_LIB_HEADER_FILES_Models}
@@ -106,6 +115,7 @@ find_package(${FC_PROJECT_NAME} COMPONENTS
     FCGeometryModelCreator
     FCGraphicsView
     FCMessageHandler
+    FCMeshModule
 )
 
 if(${FC_PROJECT_NAME}_FOUND)
@@ -118,6 +128,8 @@ target_link_libraries(${FC_LIB_NAME} PUBLIC
     ${FC_PROJECT_NAME}::FCGeometryModelCreator
     ${FC_PROJECT_NAME}::FCGraphicsView
     ${FC_PROJECT_NAME}::FCMessageHandler
+    ${FC_PROJECT_NAME}::FCMeshModule
+    
 )
 
 
@@ -131,10 +143,11 @@ target_include_directories(${FC_LIB_NAME} PUBLIC
     $<INSTALL_INTERFACE:include/${FC_PROJECT_NAME}/${FC_LIB_NAME}/ModelSettings>
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/ModelSettings>
 )
-# target_include_directories(${FC_LIB_NAME} PUBLIC
-#     $<INSTALL_INTERFACE:include/${FC_PROJECT_NAME}/${FC_LIB_NAME}/ChartSetting>
-#     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/ChartSetting>
-# )
+
+target_include_directories(${FC_LIB_NAME} PUBLIC
+    $<INSTALL_INTERFACE:include/${FC_PROJECT_NAME}/${FC_LIB_NAME}/MeshSettings>
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/MeshSettings>
+)
 
 ########################################################
 # 附加编译选项
@@ -170,4 +183,12 @@ install(FILES
     DESTINATION include/${FC_PROJECT_NAME}/${FC_LIB_NAME}/ModelSettings
     COMPONENT headers
 )
+
+# MeshSettings
+install(FILES
+    ${FC_LIB_MODELSETTINGS_HEADER_FILES}
+    DESTINATION include/${FC_PROJECT_NAME}/${FC_LIB_NAME}/MeshSettings
+    COMPONENT headers
+)
+
 
