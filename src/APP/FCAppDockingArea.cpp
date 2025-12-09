@@ -167,6 +167,7 @@ void FCAppDockingArea::buildDockingArea()
     mProgressDock = createDockWidgetAsTab(mProgressWidget,
                                           tr("进度"),
                                           mMessageLogDock->dockAreaWidget());
+    mMessageLogDock->raise();
     
     resetDefaultSplitterSizes(mSettingParametersDock->dockAreaWidget());
     

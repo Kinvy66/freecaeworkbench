@@ -85,7 +85,7 @@ bool FCGeometryCreateBox::execute()
     emit updateGeoTree(id, mName);    
     emit showSet(id, true);
         
-    qDebug() << "Create Cube,name:" << mName
+    qInfo() << "Create Cube,name:" << mName
              << ", para:" <<  mGeoPara[0] << mGeoPara[1] << mGeoPara[2]
              << ", location:" << mLocation[0] << mLocation[1] << mLocation[2];     
 

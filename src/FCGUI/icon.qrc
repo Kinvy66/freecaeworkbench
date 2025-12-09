@@ -1,0 +1,12 @@
+<RCC>
+    <qresource prefix="/FCGui/MessageType">
+        <file>icon/messageType/messageTypeDebug.svg</file>
+        <file>icon/messageType/messageTypeError.svg</file>
+        <file>icon/messageType/messageTypeInfo.svg</file>
+        <file>icon/messageType/messageTypeWarning.svg</file>
+        <file>icon/messageType/clear-message.svg</file>
+    </qresource>
+    <qresource prefix="/FCGui">
+        <file>icon/copy.svg</file>
+    </qresource>
+</RCC>

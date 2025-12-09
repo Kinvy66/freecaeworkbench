@@ -222,9 +222,9 @@ void _initializeConsolSpdlog(int flush_every_sec, bool async_logger)
         // 初始化异步线程的参数
         spdlog::init_thread_pool(10240, 1);
         logger = std::make_shared< spdlog::async_logger >(
-            "da_global", sinks.begin(), sinks.end(), spdlog::thread_pool(), spdlog::async_overflow_policy::block);
+            "fc_global", sinks.begin(), sinks.end(), spdlog::thread_pool(), spdlog::async_overflow_policy::block);
     } else {
-        logger = std::make_shared< spdlog::logger >("da_global", sinks.begin(), sinks.end());
+        logger = std::make_shared< spdlog::logger >("fc_global", sinks.begin(), sinks.end());
     }
     
     // 由于都通过DAMessageLogItem控制，因此，字需要输出内容即可
@@ -267,9 +267,9 @@ void _initializeRotatingSpdlog(const spdlog::filename_t& filename,
         // 初始化异步线程的参数
         spdlog::init_thread_pool(10240, 1);
         logger = std::make_shared< spdlog::async_logger >(
-            "da_global", sinks.begin(), sinks.end(), spdlog::thread_pool(), spdlog::async_overflow_policy::block);
+            "fc_global", sinks.begin(), sinks.end(), spdlog::thread_pool(), spdlog::async_overflow_policy::block);
     } else {
-        logger = std::make_shared< spdlog::logger >("da_global", sinks.begin(), sinks.end());
+        logger = std::make_shared< spdlog::logger >("fc_global", sinks.begin(), sinks.end());
     }
     
     // 由于都通过DAMessageLogItem控制，因此，字需要输出内容即可

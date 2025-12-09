@@ -16,7 +16,8 @@ set(FC_MIN_QT_VERSION 5.14)
 set(GMSH_ROOT "E:/Rep/Qt_Project/FreeCAEWorkbench/bin_Debug_qt6.5.3_MSVC_x64/gmsh")
 
 include_directories(${GMSH_ROOT}/include)
-set(gmsh_dir "E:/Rep/Qt_Project/FreeCAEWorkbench/bin_Debug_qt6.5.3_MSVC_x64/gmsh/share/gmsh")
+set(GMSH_DIR "E:/Rep/Qt_Project/FreeCAEWorkbench/bin_Debug_qt6.5.3_MSVC_x64/gmsh/share/gmsh")
+message(STATUS "GMSH_DIR = ${GMSH_DIR}")
 
 find_package(QT NAMES Qt6 Qt5 COMPONENTS Core REQUIRED)
 find_package(Qt${QT_VERSION_MAJOR} ${FC_MIN_QT_VERSION} COMPONENTS
@@ -26,6 +27,7 @@ find_package(Qt${QT_VERSION_MAJOR} ${FC_MIN_QT_VERSION} COMPONENTS
     Xml
     REQUIRED
 )
+
 find_package(gmsh REQUIRED)
 
 if(WIN32)
@@ -116,7 +118,13 @@ endif()
 # # -------------link 3rdparty occ--------------------------
 # fcmacro_import_occ(${FC_APP_NAME})
 
-target_link_libraries(${FC_APP_NAME} PRIVATE  gmsh)
+target_link_libraries(${FC_APP_NAME} PRIVATE gmsh)
+
+if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+    target_link_libraries(${FC_APP_NAME} PRIVATE gmsh::shared) # 或 gmsh::lib
+else()
+    target_link_libraries(${FC_APP_NAME} PRIVATE gmsh::shared) # Release 对应 gmsh::shared
+endif()
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.
 # If you are developing for iOS or macOS you should consider setting an
@@ -150,9 +158,6 @@ if(WIN32)
         Dbghelp
     )
 endif()
-
-
-# target_link_libraries(${PROJECT_NAME} PRIVATE  ${OpenCASCADE_LIBRARIES})
 
 
 ########################################################

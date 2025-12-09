@@ -63,6 +63,13 @@
              </property>
             </widget>
            </item>
+           <item>
+            <widget class="QLabel" name="label_6">
+             <property name="text">
+              <string>mm</string>
+             </property>
+            </widget>
+           </item>
           </layout>
          </item>
          <item>
@@ -81,6 +88,13 @@
              </property>
             </widget>
            </item>
+           <item>
+            <widget class="QLabel" name="label_7">
+             <property name="text">
+              <string>mm</string>
+             </property>
+            </widget>
+           </item>
           </layout>
          </item>
          <item>
@@ -96,6 +110,13 @@
             <widget class="QLineEdit" name="lineEdit_locationZ">
              <property name="text">
               <string>0</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="label_8">
+             <property name="text">
+              <string>mm</string>
              </property>
             </widget>
            </item>
@@ -123,6 +144,13 @@
             <widget class="QLineEdit" name="lineEdit_radius">
              <property name="text">
               <string>10</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="label_9">
+             <property name="text">
+              <string>mm</string>
              </property>
             </widget>
            </item>

@@ -63,6 +63,13 @@
              </property>
             </widget>
            </item>
+           <item>
+            <widget class="QLabel" name="label_11">
+             <property name="text">
+              <string>mm</string>
+             </property>
+            </widget>
+           </item>
           </layout>
          </item>
          <item>
@@ -78,6 +85,13 @@
             <widget class="QLineEdit" name="lineEdit_locationY">
              <property name="text">
               <string>0</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="label_12">
+             <property name="text">
+              <string>mm</string>
              </property>
             </widget>
            </item>
@@ -144,6 +158,13 @@
              </property>
             </widget>
            </item>
+           <item>
+            <widget class="QLabel" name="label_13">
+             <property name="text">
+              <string>mm</string>
+             </property>
+            </widget>
+           </item>
           </layout>
          </item>
          <item>
@@ -159,6 +180,13 @@
             <widget class="QLineEdit" name="lineEdit_minorRadius">
              <property name="text">
               <string>8</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="label_14">
+             <property name="text">
+              <string>mm</string>
              </property>
             </widget>
            </item>
@@ -180,6 +208,13 @@
              </property>
             </widget>
            </item>
+           <item>
+            <widget class="QLabel" name="label_15">
+             <property name="text">
+              <string>mm</string>
+             </property>
+            </widget>
+           </item>
           </layout>
          </item>
          <item>
@@ -195,6 +230,13 @@
             <widget class="QLineEdit" name="lineEdit_radialPitch">
              <property name="text">
               <string>0</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="label_16">
+             <property name="text">
+              <string>mm</string>
              </property>
             </widget>
            </item>

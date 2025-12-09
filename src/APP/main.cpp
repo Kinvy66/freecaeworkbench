@@ -70,11 +70,12 @@ int main(int argc, char* argv[])
     w.show();
     
     // std::cout << "FreeCAE Workbench Application Started." << std::endl;
-    qDebug() << "FreeCAE Workbench Application Started.";
+    qInfo() << "FreeCAE Workbench Application Started";
     
-   int r = app.exec();
-
-   return r;
+    int r = app.exec();
+    FC::fcUnregisterMessageHandler();
+    
+    return r;
 }
 
 
