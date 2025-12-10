@@ -15,6 +15,24 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_3">
    <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_11">
+     <item>
+      <widget class="QLabel" name="label_8">
+       <property name="text">
+        <string>名称</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="lineEditName">
+       <property name="text">
+        <string>Mesh_1</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
     <widget class="QGroupBox" name="groupBox">
      <property name="title">
       <string>曲面</string>
@@ -52,6 +70,9 @@
           <property name="text">
            <string>全选</string>
           </property>
+          <property name="checked">
+           <bool>false</bool>
+          </property>
          </widget>
         </item>
         <item>
@@ -78,6 +99,9 @@
          <widget class="QRadioButton" name="radioButtonTriangle">
           <property name="text">
            <string>三角形</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
           </property>
          </widget>
         </item>
@@ -159,7 +183,14 @@
          </widget>
         </item>
         <item>
-         <widget class="QDoubleSpinBox" name="doubleSpinBoxSizeFac"/>
+         <widget class="QDoubleSpinBox" name="doubleSpinBoxSizeFac">
+          <property name="decimals">
+           <number>3</number>
+          </property>
+          <property name="value">
+           <double>1.000000000000000</double>
+          </property>
+         </widget>
         </item>
        </layout>
       </item>
@@ -187,7 +218,11 @@
          </widget>
         </item>
         <item>
-         <widget class="QDoubleSpinBox" name="doubleSpinBoxMaxSize"/>
+         <widget class="QDoubleSpinBox" name="doubleSpinBoxMaxSize">
+          <property name="value">
+           <double>99.989999999999995</double>
+          </property>
+         </widget>
         </item>
        </layout>
       </item>
@@ -201,7 +236,11 @@
          </widget>
         </item>
         <item>
-         <widget class="QSpinBox" name="spinBoxSmoothing"/>
+         <widget class="QSpinBox" name="spinBoxSmoothing">
+          <property name="value">
+           <number>20</number>
+          </property>
+         </widget>
         </item>
        </layout>
       </item>
@@ -224,14 +263,14 @@
       </spacer>
      </item>
      <item>
-      <widget class="QPushButton" name="pushButton_2">
+      <widget class="QPushButton" name="pushButtonReset">
        <property name="text">
         <string>重置</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="pushButton_3">
+      <widget class="QPushButton" name="pushButtonGenerateMesh">
        <property name="text">
         <string>生成</string>
        </property>

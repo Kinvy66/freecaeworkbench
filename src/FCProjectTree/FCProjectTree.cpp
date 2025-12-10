@@ -168,6 +168,7 @@ void FCProjectTree::createComponent()
     mesh->setText(0, tr("网格"));
     mesh->setIcon(0,QIcon(":/icon/icon/mesh.png"));
     mesh->setData(0, RoleType::ContextActions, FCTreeWidget::MenuComponentMesh);
+    mMeshRoot = mesh;
     
 }
 
@@ -624,16 +625,48 @@ void FCProjectTree::updateGeometryTree(const IdType id, const QString& name)
     item->setIcon(0, QIcon(":/icon/icon/geometry/cube.png"));
     item->setData(0, RoleType::ContextActions, FCTreeWidget::MenuComponentGeometryEntity);
     item->setData(0, RoleType::EntityItmeID, QVariant::fromValue(id));
+    item->setData(0, RoleType::EntityItmeType, QVariant::fromValue(EntityType::GeometryEntity));
     
     mGeoRoot->addChild(item);
     mTreeWidget->expandItem(mGeoRoot);
     mTreeWidget->setCurrentItem(item);
 }
 
+void FCProjectTree::updateMeshTree(const IdType id, const QString &name)
+{
+    // 遍历 GeoRoot 的所有子节点
+    for (int i = 0; i < mMeshRoot->childCount(); ++i) {
+        QTreeWidgetItem* child = mMeshRoot->child(i);
+        
+        QVariant var = child->data(0, RoleType::EntityItmeID);
+        if (var.canConvert<IdType>()) {
+            IdType itemId = var.value<IdType>();
+            
+            if (itemId == id) {
+                // 找到，更新名字
+                child->setText(0, name);
+                return;
+            }
+        }
+    }
+    
+    // 添加新 item
+    QTreeWidgetItem* item = new QTreeWidgetItem();
+    item->setText(0, name);
+    item->setIcon(0, QIcon(":/icon/icon/mesh.png"));
+    item->setData(0, RoleType::ContextActions, FCTreeWidget::MenuComponentMeshEntity);
+    item->setData(0, RoleType::EntityItmeID, QVariant::fromValue(id));
+    item->setData(0, RoleType::EntityItmeType, QVariant::fromValue(EntityType::MeshEmtity));
+    
+    mMeshRoot->addChild(item);
+    mTreeWidget->expandItem(mMeshRoot);
+    mTreeWidget->setCurrentItem(item);
+}
+
 /**
  * @brief 删除当前选中的几何体
  */
-void FCProjectTree::deleteGeometryItem()
+void FCProjectTree::deleteEntityItem()
 {
     QTreeWidgetItem* item = mTreeWidget->currentItem();
     if (!item) return;
@@ -643,12 +676,19 @@ void FCProjectTree::deleteGeometryItem()
     
     // 删除几何实体（你的工程逻辑）
     QVariant var = item->data(0, RoleType::EntityItmeID);
+    QVariant typeVar = item->data(0, RoleType::EntityItmeType);
+    EntityType type = EntityType::EntityTypeNone;
     
     if (var.canConvert<IdType>()) {
         IdType itemId = var.value<IdType>();
         if (itemId != 0) {
             QString name = item->text(0);
-            emit deleteGeometryEntity(itemId, name);
+            type = typeVar.value<EntityType>();
+            if(type == GeometryEntity ) {
+                emit deleteGeometryEntity(itemId, name);
+            } else if (type == MeshEmtity) {
+                emit deleteMeshEntity(itemId, name);
+            }
         }
     }
     

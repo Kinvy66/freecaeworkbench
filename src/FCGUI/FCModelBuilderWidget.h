@@ -29,15 +29,22 @@ public:
     FCModelBuilderWidget(QWidget* parent = nullptr);
     ~FCModelBuilderWidget();
     void updateGeometryTree(const IdType id, const QString& name);
-    void deleteGeometryItem();
+    void updateMeshTree(const IdType id, const QString& name);
+    void deleteEntityItem();
+    void deleteMeshItem();
+    
     
 private slots:
     void onCurrentItemChanged(QTreeWidgetItem *current, QTreeWidgetItem *previous);
     
 signals:
 //     void addGeometry(int type);
-    void currentItemChanged(const IdType, const QString& name);
+    void currentGeoItemChanged(const IdType, const QString& name);
+    void currentMeshItemChanged(const IdType, const QString& name);
+    
     void deleteGeometryEntity(const IdType, const QString& name);
+    void deleteMeshEntity(const IdType, const QString& name);
+    
     
 private:
     // 构建空白工程的树形结构

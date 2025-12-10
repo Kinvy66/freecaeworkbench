@@ -137,6 +137,8 @@ public:
     static QString makeWindowTitle(FCProjectInterface* proj);
     
     void deletGeometryEntity(const IdType id, QString name);
+    void deletMeshEntity(const IdType id, QString name);
+    
     
 public Q_SLOTS:
     // 保存
@@ -159,9 +161,11 @@ public Q_SLOTS:
     void createSphere();
     void createTorus();
     
+    void addMesh();
     
     void onUpdateGeoTree(const IdType id, const QString& name);
     
+    void onUpdateMeshTree(const IdType id, const QString& name);
     
 private Q_SLOTS:
     // 工程的胀状态改变槽

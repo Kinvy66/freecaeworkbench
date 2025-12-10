@@ -181,7 +181,7 @@ void FCAppController::initConnection()
     FCAPPCONTROLLER_ACTION_BIND(mActions->actionCreateSphere, createSphere);
     FCAPPCONTROLLER_ACTION_BIND(mActions->actionCreateTorus, createTorus);
     
-    
+    FCAPPCONTROLLER_ACTION_BIND(mActions->actionAddMesh, addMesh);
     
     // FCAPPCONTROLLER_ACTION_BIND(mActions->actionAppendProject, onActionAppendProjectTriggered);
     
@@ -189,17 +189,29 @@ void FCAppController::initConnection()
     FCSettingParametersWidget* settingsWidget = mDock->getSettingParametersWidget();
     connect(settingsWidget, &FCSettingParametersWidget::geometryModelCreated,
             grapicWidget, &FCGraphicOperateWidget::showGeoSet);
+    
     connect(settingsWidget, &FCSettingParametersWidget::updateGeoTree,
             this, &FCAppController::onUpdateGeoTree);
     connect(settingsWidget, &FCSettingParametersWidget::updateGeometryAcotr,
             grapicWidget,&FCGraphicOperateWidget::updateGeometryAcotr);
     
+    connect(settingsWidget, &FCSettingParametersWidget::updateMeshTree,
+            this, &FCAppController::onUpdateMeshTree);
+    connect(settingsWidget, &FCSettingParametersWidget::updateGeometryAcotr,
+            grapicWidget,&FCGraphicOperateWidget::updateGeometryAcotr);
+    
     FCModelBuilderWidget* modelBuilderWidget = mDock->getModelBuilderWidget();
-    connect(modelBuilderWidget, &FCModelBuilderWidget::currentItemChanged,
-            settingsWidget, &FCSettingParametersWidget::updateCurrentSettingWidget);
+    connect(modelBuilderWidget, &FCModelBuilderWidget::currentGeoItemChanged,
+            settingsWidget, &FCSettingParametersWidget::updateCurrentGeoSettingWidget);
+    
+    connect(modelBuilderWidget, &FCModelBuilderWidget::currentMeshItemChanged,
+            settingsWidget, &FCSettingParametersWidget::updateCurrentMeshSettingWidget);
     
     connect(modelBuilderWidget, &FCModelBuilderWidget::deleteGeometryEntity,
             this, &FCAppController::deletGeometryEntity);
+    
+    connect(modelBuilderWidget, &FCModelBuilderWidget::deleteMeshEntity,
+            this, &FCAppController::deletMeshEntity);
 }
 
 
@@ -272,6 +284,11 @@ void FCAppController::deletGeometryEntity(const IdType id, QString name)
     // qDebug() << "Remove"
 }
 
+void FCAppController::deletMeshEntity(const IdType id, QString name)
+{
+    
+}
+
 void FCAppController::save()
 {
     // FCAPPCONTROLLER_PASS();
@@ -300,7 +317,7 @@ bool FCAppController::openProjectFile(const QString &projectFilePath)
  */
 void FCAppController::deleteProjectItem()
 {
-    mDock->getModelBuilderWidget()->deleteGeometryItem();
+    mDock->getModelBuilderWidget()->deleteEntityItem();
 }
 
 /**
@@ -359,10 +376,23 @@ void FCAppController::createTorus()
     
 }
 
+/**
+ * @brief 添加网格
+ */
+void FCAppController::addMesh()
+{
+    mDock->getSettingParametersWidget()->addMesh();
+}
+
 void FCAppController::onUpdateGeoTree(const IdType id, const QString &name)
 {
-    qDebug() << "onUpdateGeoTree";
+    // qDebug() << "onUpdateGeoTree";
     mDock->getModelBuilderWidget()->updateGeometryTree(id, name);
+}
+
+void FCAppController::onUpdateMeshTree(const IdType id, const QString &name)
+{
+    mDock->getModelBuilderWidget()->updateMeshTree(id, name);
 }
 
 void FCAppController::onActionAddDataTriggered()

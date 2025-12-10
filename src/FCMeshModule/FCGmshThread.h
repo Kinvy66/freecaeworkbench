@@ -26,7 +26,7 @@ class vtkDataSet;
 
 namespace FC 
 {
-class FCMeshBody;
+class FCMeshKernal;
 class FCMeshModule;
 class FCGmshScriptWriter;
 
@@ -145,7 +145,7 @@ private:
     void mergeSelectGeo();
     
     //设置meshkernal网格剖分参数
-    void setGmshSettingData(FCMeshBody *k);
+    void setGmshSettingData(FCMeshKernal *k);
     //设置脚本读写数据
     void setGmshScriptData();
     //删除指定单元

@@ -21,7 +21,7 @@ class vtkDataSet;
 namespace FC 
 {
 
-class FCMeshBody;
+class FCMeshKernal;
 class FcMeshGroup;
 
 class FCMESHMODULE_API FCMeshData : public FCDataBase
@@ -30,13 +30,13 @@ public:
     //获取单例指针
     static FCMeshData* getInstance();
     //添加Kernal
-    void appendMeshBody(FCMeshBody* keneral);
+    void appendMeshBody(FCMeshKernal* keneral);
     //获取Kernal数量
     int getKernalCount();
     //获取第index个Kernal
-    FCMeshBody* getKernalAt(const int index);
+    FCMeshKernal* getKernalAt(const int index);
     //通过ID获取Kernal
-    FCMeshBody* getKernalByID(const int id);
+    FCMeshKernal* getKernalByID(const int id);
     //通过网格的数据表示获取Kernal ID
     int getIDByDataSet(vtkDataSet* datset);
     //移除第index个Kernal
@@ -63,7 +63,7 @@ public:
 		 * @return true  存在
 		 * @return false 不存在
 		 */
-    bool isContainsKernal(FCMeshBody* ker);
+    bool isContainsKernal(FCMeshKernal* ker);
     /**
 		 * @brief 清空全部数据 
 		 */
@@ -86,7 +86,7 @@ private:
     
 private:
     static FCMeshData* _instance;
-    QList<FCMeshBody*> _meshList{};
+    QList<FCMeshKernal*> _meshList{};
     // QList<MeshSet*> _setList{};
 };
 } // namespace FC

@@ -7,7 +7,7 @@
  * @copyright Copyright (c) 2025 Kinvy. All rights reserved.
  */
 #include "FCMeshData.h"
-#include "FCMeshBody.h"
+#include "FCMeshKernal.h"
 #include <assert.h>
 #include <QDataStream>
 #include <QCryptographicHash>
@@ -34,12 +34,12 @@ FCMeshData::~FCMeshData()
 {
     for (int i = 0; i < _meshList.size(); ++i)
     {
-        FCMeshBody* k = _meshList.at(i);
+        FCMeshKernal* k = _meshList.at(i);
         delete k;
     }
     _meshList.clear();
 }
-void FCMeshData::appendMeshBody(FCMeshBody* keneral)
+void FCMeshData::appendMeshBody(FCMeshKernal* keneral)
 {
     _meshList.append(keneral);
 }
@@ -47,18 +47,18 @@ int FCMeshData::getKernalCount()
 {
     return _meshList.size();
 }
-FCMeshBody* FCMeshData::getKernalAt(const int index)
+FCMeshKernal* FCMeshData::getKernalAt(const int index)
 {
     if(index >= 0 && index < _meshList.size())
         return _meshList.at(index);
     return nullptr;
 }
-FCMeshBody* FCMeshData::getKernalByID(const int id)
+FCMeshKernal* FCMeshData::getKernalByID(const int id)
 {
     const int n = _meshList.size();
     for (int i = 0; i < n; ++i)
     {
-        FCMeshBody* k = _meshList.at(i);
+        FCMeshKernal* k = _meshList.at(i);
         if (k->getID() == id)
             return k;
     }
@@ -66,7 +66,7 @@ FCMeshBody* FCMeshData::getKernalByID(const int id)
 }
 void FCMeshData::removeKernalAt(const int index)
 {
-    FCMeshBody* k = getKernalAt(index);
+    FCMeshKernal* k = getKernalAt(index);
     
     // QList<MeshSet*> setlist{};
     // for (int i = 0; i < _setList.size(); ++i)
@@ -101,7 +101,7 @@ void FCMeshData::clear()
     int n = this->getKernalCount();
     for (int i = 0; i < n; ++i)
     {
-        FCMeshBody* k = this->getKernalAt(i);
+        FCMeshKernal* k = this->getKernalAt(i);
         delete k;
     }
     _meshList.clear();
@@ -114,7 +114,7 @@ void FCMeshData::clear()
     // }
     // _setList.clear();
     
-    FCMeshBody::resetOffset();
+    FCMeshKernal::resetOffset();
     // DataProperty::ComponentBase::resetMaxID();
 }
 QString FCMeshData::getMD5()
@@ -141,13 +141,13 @@ QDomElement& FCMeshData::writeToProjectFile(QDomDocument* doc, QDomElement* pare
 {
     QDomElement meshNode = doc->createElement("Mesh");
     const int n = _meshList.size();
-    QDomElement FCMeshBodyList = doc->createElement("Kernel");
+    QDomElement FCMeshKernalList = doc->createElement("Kernel");
     for (int i = 0; i < n; ++i)
     {
-        FCMeshBody* k = _meshList.at(i);
-        k->writeToProjectFile(doc, &FCMeshBodyList);
+        FCMeshKernal* k = _meshList.at(i);
+        k->writeToProjectFile(doc, &FCMeshKernalList);
     }
-    meshNode.appendChild(FCMeshBodyList);
+    meshNode.appendChild(FCMeshKernalList);
     
     // const int nset = _setList.size();
     // QDomElement setList = doc->createElement("Set");
@@ -186,7 +186,7 @@ void FCMeshData::readFromProjectFile(QDomNodeList* nodelist)
         // 				NEUdataExchange reader(fpath);
         // 				if (!reader.read()) continue;
         // 			}
-        FCMeshBody* k = new FCMeshBody;
+        FCMeshKernal* k = new FCMeshKernal;
         _meshList.append(k);
         k->readDataFromProjectFile(&meshKernelEle);
     }
@@ -220,7 +220,7 @@ int FCMeshData::getIDByDataSet(vtkDataSet* datset)
     const int n = _meshList.size();
     for (int i = 0; i < n; ++i)
     {
-        FCMeshBody* k = _meshList.at(i);
+        FCMeshKernal* k = _meshList.at(i);
         vtkDataSet* s = k->getMeshData();
         if (s == datset)
             return k->getID();
@@ -285,7 +285,7 @@ QList<int> FCMeshData::getSetIDFromKernal(int kid)
     return ids;
 }
 
-bool FCMeshData::isContainsKernal(FCMeshBody* ker)
+bool FCMeshData::isContainsKernal(FCMeshKernal* ker)
 {
     return _meshList.contains(ker);
 }
@@ -307,7 +307,7 @@ void FCMeshData::writeBinaryFile(QDataStream* dataStream)
     *dataStream << nk;
     for (int i = 0; i < nk; ++i)
     {
-        FCMeshBody* k = _meshList.at(i);
+        FCMeshKernal* k = _meshList.at(i);
         k->writeBinaryFile(dataStream);
     }
     
@@ -328,7 +328,7 @@ void FCMeshData::readBinaryFile(QDataStream* dataStream)
     *dataStream >> nk;
     for (int i = 0; i < nk; ++i)
     {
-        FCMeshBody* k = new FCMeshBody;
+        FCMeshKernal* k = new FCMeshKernal;
         _meshList.append(k);
         k->readBinaryFile(dataStream);
     }

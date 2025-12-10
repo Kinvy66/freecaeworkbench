@@ -1,6 +1,6 @@
 /**
  * @file FCGmshSettingData.h
- * @brief 
+ * @brief 网格参数
  * @date 2025-12-09
  * @version V0.0.1
  * @details 

@@ -1,13 +1,13 @@
 /**
- * @file FCMeshBody.h
+ * @file FCMeshKernal.h
  * @brief 单个模型的网格，包含数据和属性
  * @date 2025-12-09
  * @version V0.0.1
  * @details 
  * @copyright Copyright (c) 2025 Kinvy. All rights reserved.
  */
-#ifndef FCMESHBODY_H
-#define FCMESHBODY_H
+#ifndef FCMESHKERNAL_H
+#define FCMESHKERNAL_H
 #include "FCMeshModuleAPI.h"
 #include "FCDataBase.h"
 #include <vtkSmartPointer.h>
@@ -22,11 +22,11 @@ class QDataStream;
 
 namespace FC 
 {
-class FCMESHMODULE_API  FCMeshBody : public FCDataBase
+class FCMESHMODULE_API  FCMeshKernal : public FCDataBase
 {
 public:
-    FCMeshBody();
-    ~FCMeshBody() = default;
+    FCMeshKernal();
+    ~FCMeshKernal() = default;
     
     //重置节点和单元的偏移量
     static void resetOffset();
@@ -104,4 +104,4 @@ private:
 
 
 
-#endif // FCMESHBODY_H
+#endif // FCMESHKERNAL_H

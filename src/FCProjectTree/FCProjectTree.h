@@ -36,7 +36,10 @@ public:
     // 添加几何模型
     void updateGeometryTree(const IdType id, const QString& name);
     
-    void deleteGeometryItem();
+    void updateMeshTree(const IdType id, const QString& name);
+    
+    
+    void deleteEntityItem();
     
 private slots:
     void onTreeActionTriggered(int menuType, const QString &actionText, QTreeWidgetItem *item);
@@ -74,12 +77,14 @@ signals:
 //     void addGeometry();
     void currentItemChanged(QTreeWidgetItem*, QTreeWidgetItem*);
     void deleteGeometryEntity(const IdType id, const QString& name);
+    void deleteMeshEntity(const IdType id, const QString& name);
     
     
 private:
     FCTreeWidget* mTreeWidget;
     // 几何根节点
     QTreeWidgetItem* mGeoRoot;
+    QTreeWidgetItem* mMeshRoot;
     
     
 };

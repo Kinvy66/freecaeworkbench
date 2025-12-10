@@ -18,9 +18,19 @@ class FCMESHMODULE_API FCMeshModule : public QObject
 {
     Q_OBJECT
 public:
-    FCMeshModule(QObject *parent = nullptr);
+    static FCMeshModule *getInstance();
+    //执行
+    void exec();
+    //结束
+    void finalize();
     
-signals:
+private:
+    FCMeshModule(QObject *parent = nullptr);
+    ~FCMeshModule() = default;
+    
+private:
+    static FCMeshModule *_instance;
+    
 };
 } // namespace FC
 

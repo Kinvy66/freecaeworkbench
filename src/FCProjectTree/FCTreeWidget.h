@@ -28,6 +28,14 @@ enum RoleType
     EntityMetaData,                     // 实体元数据
 };
 
+// 实体条目类型
+enum EntityType
+{
+    EntityTypeNone,
+    GeometryEntity,         // 几何
+    MeshEmtity,             // 网格
+};
+
 class FCPROJECTTREE_API FCTreeWidget : public QTreeWidget
 {
     Q_OBJECT

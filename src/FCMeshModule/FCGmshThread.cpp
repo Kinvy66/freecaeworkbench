@@ -41,7 +41,7 @@
 #include <BRepAlgoAPI_Fuse.hxx>
 // sub module
 #include "FCGmshScriptWriter.h"
-#include "FCMeshBody.h"
+#include "FCMeshKernal.h"
 #include "FCMeshData.h"
 #include "FCMeshModule.h"
 #include "FCParameterString.h"
@@ -235,7 +235,7 @@ void FCGmshThread::readMesh()
         // 			if (_cellTypeList.size() > 0)
         // 				vtkset = deleteSpecifiedCells(dataset);
         
-        auto k = new FCMeshBody();
+        auto k = new FCMeshKernal();
         k->setName(QString("Mesh_%1").arg(k->getID()));
         
         // 			if (vtkset != nullptr)
@@ -565,7 +565,7 @@ void FCGmshThread::isSaveDataToKernal(bool save)
     _isSaveToKernal = save;
 }
 
-void FCGmshThread::setGmshSettingData(FCMeshBody *k)
+void FCGmshThread::setGmshSettingData(FCMeshKernal *k)
 {
     FCGmshSettingData *setting = new FCGmshSettingData;
     setting->setID(_dim);

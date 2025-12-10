@@ -1,12 +1,12 @@
 /**
- * @file FCMeshBody.cpp
+ * @file FCMeshKernal.cpp
  * @brief 单个模型的网格，包含数据和属性
  * @date 2025-12-09
  * @version V0.0.1
  * @details 
  * @copyright Copyright (c) 2025 Kinvy. All rights reserved.
  */
-#include "FCMeshBody.h"
+#include "FCMeshKernal.h"
 #include <vtkPoints.h>
 #include <vtkCell.h>
 #include <QDataStream>
@@ -22,11 +22,11 @@
 
 namespace FC 
 {
-int FCMeshBody::idOffset = 0;
-int FCMeshBody::pointIDOffset = 1;
-int FCMeshBody::cellIDOffset = 1;
+int FCMeshKernal::idOffset = 0;
+int FCMeshKernal::pointIDOffset = 1;
+int FCMeshKernal::cellIDOffset = 1;
 
-FCMeshBody::FCMeshBody()
+FCMeshKernal::FCMeshKernal()
 {
     idOffset++;
     setID(idOffset);
@@ -37,7 +37,7 @@ FCMeshBody::FCMeshBody()
     // appendProperty(QObject::tr("Visible"), _visible);
 }
 
-void FCMeshBody::setMeshData(vtkDataSet* dataset)
+void FCMeshKernal::setMeshData(vtkDataSet* dataset)
 {
     _mesh = dataset;
     _pointIDOffset = pointIDOffset;
@@ -48,69 +48,69 @@ void FCMeshBody::setMeshData(vtkDataSet* dataset)
     // appendProperty(QObject::tr("Cells"), (int)dataset->GetNumberOfCells());
 }
 
-vtkDataSet* FCMeshBody::getMeshData()
+vtkDataSet* FCMeshKernal::getMeshData()
 {
     return _mesh;
 }
 
-double* FCMeshBody::getPointAt(const int index)
+double* FCMeshKernal::getPointAt(const int index)
 {
     return _mesh->GetPoint(index);
 }
 
-vtkCell* FCMeshBody::getCellAt(const int index)
+vtkCell* FCMeshKernal::getCellAt(const int index)
 {
     return _mesh->GetCell(index);
 }
 
-bool FCMeshBody::isVisible()
+bool FCMeshKernal::isVisible()
 {
     return _visible;
 }
 
-void FCMeshBody::setVisible(bool v)
+void FCMeshKernal::setVisible(bool v)
 {
     _visible = v;
     // appendProperty(QObject::tr("Visible"), _visible);
 }
 
-void FCMeshBody::dataToStream(QDataStream* s)
+void FCMeshKernal::dataToStream(QDataStream* s)
 {
     *s << mId << mName << _mesh->GetNumberOfPoints() << _mesh->GetNumberOfCells();
 }
 
-void FCMeshBody::setID(IdType id)
+void FCMeshKernal::setID(IdType id)
 {
     FCDataBase::setID(id);
     if (id > idOffset)
         idOffset = id;
 }
 
-void FCMeshBody::setPath(const QString& path)
+void FCMeshKernal::setPath(const QString& path)
 {
     _path = path;
 }
 
-QString FCMeshBody::getPath()
+QString FCMeshKernal::getPath()
 {
     return _path;
 }
 
-void FCMeshBody::setPointIDOFfset(int offset)
+void FCMeshKernal::setPointIDOFfset(int offset)
 {
     _pointIDOffset = offset;
     if (pointIDOffset < offset)
         pointIDOffset = offset;
 }
 
-void FCMeshBody::setCellIDOFfset(int offset)
+void FCMeshKernal::setCellIDOFfset(int offset)
 {
     _cellIDOffset = offset;
     if (_cellIDOffset < offset)
         cellIDOffset = offset;
 }
 
-QDomElement& FCMeshBody::writeToProjectFile(QDomDocument* doc, QDomElement* parent)
+QDomElement& FCMeshKernal::writeToProjectFile(QDomDocument* doc, QDomElement* parent)
 {
     QDomElement kernelele = doc->createElement("MeshKernel");
     QDomAttr idAttr = doc->createAttribute("ID");
@@ -182,7 +182,7 @@ QDomElement& FCMeshBody::writeToProjectFile(QDomDocument* doc, QDomElement* pare
     return kernelele;
 }
 
-void FCMeshBody::readDataFromProjectFile(QDomElement* kernelele)
+void FCMeshKernal::readDataFromProjectFile(QDomElement* kernelele)
 {
     QString sid = kernelele->attribute("ID");
     this->setID(sid.toInt());
@@ -245,7 +245,7 @@ void FCMeshBody::readDataFromProjectFile(QDomElement* kernelele)
     this->setMeshData(ung);
 }
 
-int FCMeshBody::getPointCount()
+int FCMeshKernal::getPointCount()
 {
     if (_mesh != nullptr)
         
@@ -253,31 +253,31 @@ int FCMeshBody::getPointCount()
     return -1;
 }
 
-int FCMeshBody::getCellCount()
+int FCMeshKernal::getCellCount()
 {
     if (_mesh != nullptr)
         return _mesh->GetNumberOfCells();
     return -1;
 }
 
-void FCMeshBody::resetOffset()
+void FCMeshKernal::resetOffset()
 {
     idOffset = 0;
     pointIDOffset = 1;
     cellIDOffset = 1;
 }
 
-void FCMeshBody::setDimension(int d)
+void FCMeshKernal::setDimension(int d)
 {
     _dimension = d;
 }
 
-int FCMeshBody::getDimension()
+int FCMeshKernal::getDimension()
 {
     return _dimension;
 }
 
-void FCMeshBody::writeBinaryFile(QDataStream* dataStream)
+void FCMeshKernal::writeBinaryFile(QDataStream* dataStream)
 {
     *dataStream << mId << _visible << mName << _path;
     *dataStream << _pointIDOffset << _cellIDOffset;
@@ -308,7 +308,7 @@ void FCMeshBody::writeBinaryFile(QDataStream* dataStream)
     }
 }
 
-void FCMeshBody::readBinaryFile(QDataStream* dataStream)
+void FCMeshKernal::readBinaryFile(QDataStream* dataStream)
 {
     int KernalID = 0;                        //KernalID
     bool visible = false;                    //KernalVisible
@@ -359,23 +359,23 @@ void FCMeshBody::readBinaryFile(QDataStream* dataStream)
     this->setMeshData(ung);
 }
 
-void FCMeshBody::setGmshSetting(FCDataBase* data)
+void FCMeshKernal::setGmshSetting(FCDataBase* data)
 {
     _gmshSetting = data;
 }
 
-FCDataBase* FCMeshBody::getGmshSetting()
+FCDataBase* FCMeshKernal::getGmshSetting()
 {
     return _gmshSetting;
 }
 
-void FCMeshBody::setSpecificColor(bool enable, QColor c)
+void FCMeshKernal::setSpecificColor(bool enable, QColor c)
 {
     _specificColor.first = enable;
     _specificColor.second = c;
 }
 
-void FCMeshBody::setSpecificColor(bool enable, double r, double g, double b, double alpha)
+void FCMeshKernal::setSpecificColor(bool enable, double r, double g, double b, double alpha)
 {
     _specificColor.first = enable;
     _specificColor.second.setRedF(r);
@@ -384,7 +384,7 @@ void FCMeshBody::setSpecificColor(bool enable, double r, double g, double b, dou
     _specificColor.second.setAlpha(alpha);
 }
 
-QColor FCMeshBody::getSpecificColor(bool &isEnable)
+QColor FCMeshKernal::getSpecificColor(bool &isEnable)
 {
     isEnable = _specificColor.first;
     return _specificColor.second;

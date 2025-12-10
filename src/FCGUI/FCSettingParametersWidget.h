@@ -33,9 +33,12 @@ public:
     void createSphere();
     void createTorus();
     
+    void addMesh();
+    
     
 public slots:
-    void updateCurrentSettingWidget(const IdType id, const QString& name);
+    void updateCurrentGeoSettingWidget(const IdType id, const QString& name);
+    void updateCurrentMeshSettingWidget(const IdType id, const QString& name);
     
 private:
     void setCurrentWidget(QWidget* w);
@@ -45,6 +48,9 @@ signals:
     void geometryModelCreated(const IdType id, bool r);
     void updateGeoTree(const IdType id, const QString& name);
     void updateGeometryAcotr(const IdType id);
+    
+    void updateMeshTree(const IdType id, const QString& name);
+    
     
 private:
     

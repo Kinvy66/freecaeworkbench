@@ -20,6 +20,8 @@
 #include "FCSphereSettingsWidget.h"
 #include "FCTorusSettingsWidget.h"
 
+#include "FCMeshSettingsWidget.h"
+
 namespace FC 
 {
 
@@ -115,11 +117,26 @@ void FCSettingParametersWidget::createTorus()
 }
 
 /**
+ * @brief 添加网格
+ */
+void FCSettingParametersWidget::addMesh()
+{
+    FCMeshSettingsWidget* settingsWidget = new FCMeshSettingsWidget(this);
+    
+    connect(settingsWidget, &FCMeshSettingsWidget::updateMeshTree,
+            this, &FCSettingParametersWidget::updateMeshTree);
+    
+    settingsWidget->addMesh();
+    
+    // setCurrentWidget(settingsWidget);
+}
+
+/**
  * @brief 显示当前选中的item的参数页面
  * @param id
  * @param name
  */
-void FCSettingParametersWidget::updateCurrentSettingWidget(const IdType id,
+void FCSettingParametersWidget::updateCurrentGeoSettingWidget(const IdType id,
                                                            const QString& name)
 {
     Q_UNUSED(name)
@@ -200,6 +217,17 @@ void FCSettingParametersWidget::updateCurrentSettingWidget(const IdType id,
 
     
     // qDebug() << "updateCurrentWidget id" << id;
+}
+
+void FCSettingParametersWidget::updateCurrentMeshSettingWidget(const IdType id, const QString &name)
+{
+    FCMeshSettingsWidget* settingsWidget = new FCMeshSettingsWidget(this);
+    
+    connect(settingsWidget, &FCMeshSettingsWidget::updateMeshTree,
+            this, &FCSettingParametersWidget::updateMeshTree);
+    
+    // settingsWidget->addMesh();
+    setCurrentWidget(settingsWidget);
 }
 
 void FCSettingParametersWidget::setCurrentWidget(QWidget *w)

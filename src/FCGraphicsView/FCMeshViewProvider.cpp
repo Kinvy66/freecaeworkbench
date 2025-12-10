@@ -12,4 +12,9 @@
 namespace FC 
 {
 
+FCMeshViewProvider::FCMeshViewProvider(QObject *parent)
+{
+    
+}
+
 } // namespace FC

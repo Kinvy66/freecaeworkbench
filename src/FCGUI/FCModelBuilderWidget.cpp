@@ -42,12 +42,18 @@ void FCModelBuilderWidget::updateGeometryTree(const IdType id, const QString &na
     mProjectTree->updateGeometryTree(id, name);
 }
 
+void FCModelBuilderWidget::updateMeshTree(const IdType id, const QString &name)
+{
+    mProjectTree->updateMeshTree(id, name);
+    
+}
+
 /**
  * @brief 删除当前选中的几何实体
  */
-void FCModelBuilderWidget::deleteGeometryItem()
+void FCModelBuilderWidget::deleteEntityItem()
 {
-    mProjectTree->deleteGeometryItem();
+    mProjectTree->deleteEntityItem();
 }
 
 
@@ -56,6 +62,7 @@ void FCModelBuilderWidget::onCurrentItemChanged(QTreeWidgetItem *current, QTreeW
     QString currentName = "None";
     QString previousName = "None";
     IdType id = 0;
+    EntityType type = EntityTypeNone;
     
     if (current) {
         
@@ -65,6 +72,7 @@ void FCModelBuilderWidget::onCurrentItemChanged(QTreeWidgetItem *current, QTreeW
             // return;
         } else {
             id = current->data(0, RoleType::EntityItmeID).value<IdType>();
+            type = current->data(0, RoleType::EntityItmeType).value<EntityType>();
             // qDebug() << "Current item id:" << id;
         }
         currentName = current->text(0);
@@ -73,7 +81,11 @@ void FCModelBuilderWidget::onCurrentItemChanged(QTreeWidgetItem *current, QTreeW
         previousName = previous->text(0);
     }
     // qDebug().noquote()<< "Select item changeed, previous:"<< previousName << ", current:" << currentName;
-    emit currentItemChanged(id, currentName);
+    if (type == GeometryEntity) {
+         emit currentGeoItemChanged(id, currentName);
+    } else if (type == MeshEmtity){
+        emit currentMeshItemChanged(id, currentName);
+    }
 }
 
 
