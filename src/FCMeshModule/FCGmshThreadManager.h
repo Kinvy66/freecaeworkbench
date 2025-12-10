@@ -20,8 +20,7 @@ class FCMESHMODULE_API FCGmshThreadManager : public QObject
 {
     Q_OBJECT
 public:
-    FCGmshThreadManager();
-    ~FCGmshThreadManager() = default;
+    static FCGmshThreadManager* getInstance();
     /**
 		 * @brief 增加新的线程
 		 * @param w 窗口部件
@@ -62,12 +61,16 @@ private slots:
 		 */
     void threadFinished(FCGmshThread *t);
     
+public:
+    FCGmshThreadManager();
+    ~FCGmshThreadManager() = default;
 private:
     /**
 		 * @brief 线程哈希表
 		 * @since 2.5.0
 		 */
     QHash<QWidget *, FCGmshThread *> _threadHash{};
+    static FCGmshThreadManager* mInstance;
     
 };
 

@@ -3,7 +3,9 @@
 #include "FCUniqueIDGenerater.h"
 #include "FCMeshModule.h"
 #include <QDebug>
-
+#include "FCMeshData.h"
+#include "FCMeshKernal.h"
+#include "FCGmshSettingData.h"
 
 namespace FC 
 {
@@ -34,20 +36,42 @@ FCMeshSettingsWidget::~FCMeshSettingsWidget()
 
 void FCMeshSettingsWidget::addMesh()
 {
-    IdType id = FCUniqueIDGenerater::id_uint64();
+    FCMeshModule* meshModule = new FCMeshModule();
+    // int meshIndex = FCMeshKernal::getMaxID();
+    QString name = ui->lineEditName->text();
+    FCGmshSettingData* para = new FCGmshSettingData();
+    para->setElementOrder(1);
+    para->setMethod(1);
+    para->setMinSize(0.0);
+    para->setMaxSize(100.0);
+    para->setSizeFactor(1.0);
+    para->setMethod(1);
+    para->setElementType(QString("tri"));
     
-    emit updateMeshTree(id, QString("Mesh"));
+    IdType id = meshModule->createMesh(name, para);
+    qDebug() << "Add Mesh:  " << name << ", Id: " << id; 
+    
+    emit updateMeshTree(id, name);
 }
 
 void FCMeshSettingsWidget::init()
 {
-    
+    if(!mIsEdit) {
+        int id = FCMeshKernal::getMaxID() + 1;
+        ui->lineEditName->setText(QString("Mesh_%1").arg(id));
+    } else {
+        FCMeshKernal* mesh = FCMeshData::getInstance()->getMeshKernalByID(mEidtSetID);
+        ui->lineEditName->setText(mesh->getName());
+        qDebug() << "name: " << mesh->getName();
+        // todo 其他参数填充
+    }
 }
 
 void FCMeshSettingsWidget::on_pushButtonGenerateMesh_clicked()
 {
     qDebug() << "current mesh id: " << mEidtSetID;
-    FCMeshModule::getInstance()->exec();
+    FCMeshModule* meshModule = new FCMeshModule();
+    // FCMeshModule::getInstance()->exec();
 }
 
 

@@ -221,7 +221,7 @@ void FCSettingParametersWidget::updateCurrentGeoSettingWidget(const IdType id,
 
 void FCSettingParametersWidget::updateCurrentMeshSettingWidget(const IdType id, const QString &name)
 {
-    FCMeshSettingsWidget* settingsWidget = new FCMeshSettingsWidget(this);
+    FCMeshSettingsWidget* settingsWidget = new FCMeshSettingsWidget(id, this);
     
     connect(settingsWidget, &FCMeshSettingsWidget::updateMeshTree,
             this, &FCSettingParametersWidget::updateMeshTree);

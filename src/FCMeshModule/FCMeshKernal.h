@@ -32,6 +32,9 @@ public:
     static void resetOffset();
     
     void setID(IdType id) override;
+    static void resetMaxID();
+    static int getMaxID();
+    
     // 		int getID();
     // 		QString getName();
     // 		void setName(const QString &name);
@@ -67,6 +70,7 @@ public:
     void writeBinaryFile(QDataStream* dataStream);
     //读入二进制文件
     void readBinaryFile(QDataStream* dataStream);
+    
     //设置gmsh网格划分属性
     void setGmshSetting(FCDataBase* data);
     //获取gmsh网格划分属性
@@ -92,13 +96,14 @@ private:
     vtkSmartPointer<vtkDataSet> _mesh{};
     int _dimension{ 3 };
     QPair<bool, QColor> _specificColor;
-    FCDataBase* _gmshSetting{};//gmsh网格划分的属性
+    FCDataBase* _gmshSetting{nullptr};//gmsh网格划分的属性
     
     
 private:
     static int idOffset;
     static int pointIDOffset;
     static int cellIDOffset;
+    
 };
 } // namespace FC
 

@@ -243,7 +243,7 @@ void FCGmshThread::readMesh()
         // 			else
         k->setMeshData(dataset);
         
-        data->appendMeshBody(k);
+        data->appendMeshKernal(k);
         
         if (!_fluidMesh)
             setGmshSettingData(k);

@@ -86,6 +86,17 @@ void FCMeshKernal::setID(IdType id)
         idOffset = id;
 }
 
+void FCMeshKernal::resetMaxID()
+{
+    idOffset = 0;
+}
+
+int FCMeshKernal::getMaxID()
+{
+    return idOffset;
+    
+}
+
 void FCMeshKernal::setPath(const QString& path)
 {
     _path = path;

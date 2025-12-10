@@ -11,6 +11,7 @@
 
 namespace FC 
 {
+FCGmshThreadManager* FCGmshThreadManager::mInstance = nullptr;
 FCGmshThreadManager::FCGmshThreadManager()
 {
     // connect(mw, SIGNAL(stopSolve(QWidget *)), this, SLOT(stopThread(QWidget *)));
@@ -24,6 +25,15 @@ void FCGmshThreadManager::stopThread(QWidget *w)
     _threadHash.remove(w);
     t->stop();
     //		delete t;
+}
+
+FCGmshThreadManager *FCGmshThreadManager::getInstance()
+{
+    if (mInstance == nullptr){
+        mInstance = new FCGmshThreadManager();
+        
+    }
+    return mInstance;
 }
 
 void FCGmshThreadManager::insertThread(QWidget *w, FCGmshThread *t)

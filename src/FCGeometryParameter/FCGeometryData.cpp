@@ -17,7 +17,6 @@
 #include <QDomDocument>
 #include <QDomElement>
 #include <QDataStream>
-
 #include "FCGeometrySet.h"
 
 namespace FC 

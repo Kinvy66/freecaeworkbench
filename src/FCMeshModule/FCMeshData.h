@@ -27,68 +27,72 @@ class FcMeshGroup;
 class FCMESHMODULE_API FCMeshData : public FCDataBase
 {
 public:
-    //获取单例指针
+    // 获取单例指针
     static FCMeshData* getInstance();
-    //添加Kernal
-    void appendMeshBody(FCMeshKernal* keneral);
-    //获取Kernal数量
+    
+    // 添加Kernal
+    void appendMeshKernal(FCMeshKernal* keneral);
+    
+    void appendMeshKernal(IdType id, FCMeshKernal* keneral);
+    
+    
+    // 获取Kernal数量
     int getKernalCount();
-    //获取第index个Kernal
+    
+    // 获取第index个Kernal
     FCMeshKernal* getKernalAt(const int index);
-    //通过ID获取Kernal
-    FCMeshKernal* getKernalByID(const int id);
-    //通过网格的数据表示获取Kernal ID
+    
+    // 通过ID获取Kernal
+    FCMeshKernal* getMeshKernalByID(const IdType  id);
+    
+    // 通过网格的数据表示获取Kernal ID
     int getIDByDataSet(vtkDataSet* datset);
-    //移除第index个Kernal
+    
+    // 移除第index个Kernal
     void removeKernalAt(const int index);
-    //移除ID为i的Kernal
+    
+    // 移除ID为i的Kernal
     void removeKernalByID(const int id);
-    //添加组件
-    // void appendMeshSet(MeshSet* s);
-    //获取组件数目
-    // int getMeshSetCount();
-    //获取第index个组件
-    // MeshSet* getMeshSetAt(const int index);
-    //通过ID获取网格组件
-    // MeshSet* getMeshSetByID(const int id);
-    //通过名字获取组件，大小写敏感
-    // MeshSet* getMeshSetByName(const QString name);
-    //移除第index个组件
-    // void removeMeshSetAt(const int index);
-    //获取与ID为kid的Kernal相关的全部组件ID
+    
+    // 获取与ID为kid的Kernal相关的全部组件ID
     QList<int> getSetIDFromKernal(int kid);
-    /**
-		 * @brief  判断MeshKernal是否存在
-		 * @param  ker   需要判断的Kernal
-		 * @return true  存在
-		 * @return false 不存在
-		 */
+    
+    // 判断MeshKernal是否存在
     bool isContainsKernal(FCMeshKernal* ker);
-    /**
-		 * @brief 清空全部数据 
-		 */
+    
+    // 清空全部数据
     void clear();
+    
     QString getMD5();
-    ///写出到工程文件
+    
+    /// 写出到工程文件
     QDomElement& writeToProjectFile(QDomDocument* doc, QDomElement* parent) override;
-    //写出二进制文件
+    
+    // 写出二进制文件
     void writeBinaryFile(QDataStream* dataStream);
-    ///从工程文件读入数据
+    
+    /// 从工程文件读入数据
     void readFromProjectFile(QDomNodeList* nodelist);
-    //读入二进制文件
+    
+    // 读入二进制文件
     void readBinaryFile(QDataStream* dataFile);
-    ///产生全部组件的显示模型
+    
+    /// 产生全部组件的显示模型
     void generateDisplayDataSet();
+    
+
     
 private:
     FCMeshData() = default;
     ~FCMeshData();
     
 private:
-    static FCMeshData* _instance;
-    QList<FCMeshKernal*> _meshList{};
-    // QList<MeshSet*> _setList{};
+    static FCMeshData* mInstance;
+    QList<FCMeshKernal*> mMeshList{};
+    QHash<IdType, FCMeshKernal *> mMeshKernals{};
+
 };
+
 } // namespace FC
 
 
