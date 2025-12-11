@@ -11,67 +11,51 @@
 #include "FCMeshModuleAPI.h"
 #include <QObject>
 #include <QHash>
+#include <QMutex>
+
+class vtkDataSet;
 
 namespace FC 
 {
+
 class FCGmshThread;
+class FCGmshSettingData;
 
 class FCMESHMODULE_API FCGmshThreadManager : public QObject
 {
     Q_OBJECT
 public:
+    using IdType  = uint64_t;  ///< id类型
+public:
     static FCGmshThreadManager* getInstance();
-    /**
-		 * @brief 增加新的线程
-		 * @param w 窗口部件
-		 * @param t 线程
-		 * @since 2.5.0
-		 */
-    void insertThread(QWidget *w, FCGmshThread *t);
-    /**
-		 * @brief 停止所有线程
-		 * @since 2.5.0
-		 */
+    ~FCGmshThreadManager() override;
+    
+    // 添加任务；返回 true 表示任务已成功加入队列
+    bool addTask(IdType meshID, FCGmshSettingData* setting);
+    
+    // 停止所有进行中的网格生成（会请求线程退出并等待）
     void stopAll();
-    /**
-		 * @brief 是否有线程在运行
-		 * @return bool
-		 * @since 2.5.0
-		 */
-    bool isRuning();
+    
+    // 查询是否正在生成
+    bool isGenerating(int meshID) const;
     
 signals:
-    /**
-		 * @brief 增加新的线程并启动时会触发该信号
-		 * @since 2.5.0
-		 */
-    void threadStarted(QWidget *);
+    // 当某个线程完成并经过 manager 处理后，向外广播 meshReady
+    void meshReady(IdType meshID, vtkDataSet* dataset);
+    void meshProgress(IdType meshID, int percent);
+    void meshError(IdType meshID, const QString& err);
     
 private slots:
-    /**
-		 * @brief 停止线程槽函数
-		 * @param w
-		 * @since 2.5.0
-		 */
-    void stopThread(QWidget *w);
-    /**
-		 * @brief 线程结束槽函数
-		 * @param t
-		 * @since 2.5.0
-		 */
-    void threadFinished(FCGmshThread *t);
+    void onThreadFinished(IdType meshID, vtkDataSet* dataset);
+    void onThreadProgress(IdType meshID, int percent);
+    void onThreadError(IdType meshID, const QString& err);
     
-public:
-    FCGmshThreadManager();
-    ~FCGmshThreadManager() = default;
 private:
-    /**
-		 * @brief 线程哈希表
-		 * @since 2.5.0
-		 */
-    QHash<QWidget *, FCGmshThread *> _threadHash{};
-    static FCGmshThreadManager* mInstance;
+    explicit FCGmshThreadManager(QObject* parent = nullptr);
+    static FCGmshThreadManager* s_instance;
     
+    mutable QMutex mMutex;
+    QHash<IdType, FCGmshThread*> mThreads;
 };
 
 } // namespace FC

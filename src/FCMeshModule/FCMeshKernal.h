@@ -82,6 +82,9 @@ public:
     //获取特有颜色
     QColor getSpecificColor(bool& enable);
     
+    int bindGeometry(QList<IdType> meos);
+    QList<IdType> getBindedGeometry();
+    
 private:
     ///设置节点ID偏移量，为读入工程文件调用，谨慎修改
     void setPointIDOFfset(int offset);
@@ -89,20 +92,22 @@ private:
     void setCellIDOFfset(int offset);
     
 private:
-    bool _visible{ true };
-    QString _path{};
-    int _pointIDOffset{ -1 };  //起始ID，终止ID=起始ID+mesh.pointnum-1
-    int _cellIDOffset{ -1 };
-    vtkSmartPointer<vtkDataSet> _mesh{};
-    int _dimension{ 3 };
-    QPair<bool, QColor> _specificColor;
-    FCDataBase* _gmshSetting{nullptr};//gmsh网格划分的属性
+    bool mVisible{ true };
+    QString mPath{};
+    int mPointIDOffset{ -1 };  //起始ID，终止ID=起始ID+mesh.pointnum-1
+    int mCellIDOffset{ -1 };
+    vtkSmartPointer<vtkDataSet> mMesh{};
+    int mDimension{ 3 };
+    QPair<bool, QColor> mSpecificColor;
+    FCDataBase* mGmshSetting{nullptr};//gmsh网格划分的属性
+    
+    QList<IdType> mGeometryIDs;    // 存到关联的几何体
     
     
 private:
-    static int idOffset;
-    static int pointIDOffset;
-    static int cellIDOffset;
+    static int s_idOffset;
+    static int s_pointIDOffset;
+    static int s_cellIDOffset;
     
 };
 } // namespace FC

@@ -40,6 +40,9 @@ public slots:
     void updateCurrentGeoSettingWidget(const IdType id, const QString& name);
     void updateCurrentMeshSettingWidget(const IdType id, const QString& name);
     
+    void onMeshGenerated(IdType meshID, bool r=true);
+    
+    
 private:
     void setCurrentWidget(QWidget* w);
     
@@ -48,9 +51,11 @@ signals:
     void geometryModelCreated(const IdType id, bool r);
     void updateGeoTree(const IdType id, const QString& name);
     void updateGeometryAcotr(const IdType id);
+   
     
     void updateMeshTree(const IdType id, const QString& name);
-    
+    void updateMeshAcotr(const IdType meshID);
+    void meshGenerated(IdType meshID, bool r=true);
     
 private:
     

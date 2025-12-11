@@ -54,6 +54,11 @@ void FCMeshSettingsWidget::addMesh()
     emit updateMeshTree(id, name);
 }
 
+void FCMeshSettingsWidget::onMeshGenerated(IdType meshID, bool r)
+{
+    qDebug() << "onMeshGenerated id: " << meshID;
+}
+
 void FCMeshSettingsWidget::init()
 {
     if(!mIsEdit) {
@@ -63,17 +68,42 @@ void FCMeshSettingsWidget::init()
         FCMeshKernal* mesh = FCMeshData::getInstance()->getMeshKernalByID(mEidtSetID);
         ui->lineEditName->setText(mesh->getName());
         qDebug() << "name: " << mesh->getName();
+        FCGmshSettingData* para =  dynamic_cast<FCGmshSettingData *>(mesh->getGmshSetting());
+        if (para == nullptr) {
+            return;
+        }
+        ui->doubleSpinBoxMinSize->setValue(para->getMinSize());
         // todo 其他参数填充
+
     }
+}
+
+/**
+ * @brief 保存参数
+ */
+void FCMeshSettingsWidget::saveParameter()
+{
+    FCMeshKernal* mesh = FCMeshData::getInstance()->getMeshKernalByID(mEidtSetID);
+    FCGmshSettingData* para =  dynamic_cast<FCGmshSettingData *>(mesh->getGmshSetting());
+    para->setMinSize(ui->doubleSpinBoxMinSize->text().toDouble());    
 }
 
 void FCMeshSettingsWidget::on_pushButtonGenerateMesh_clicked()
 {
-    qDebug() << "current mesh id: " << mEidtSetID;
+    qDebug() << " mesh id: " << mEidtSetID;
     FCMeshModule* meshModule = new FCMeshModule();
-    // FCMeshModule::getInstance()->exec();
+    connect(meshModule, &FCMeshModule::meshGenerated,
+            this, &FCMeshSettingsWidget::meshGenerated);
+    connect(meshModule, &FCMeshModule::meshGenerated,
+            this, &FCMeshSettingsWidget::onMeshGenerated);
+    
+    meshModule->generateMesh(mEidtSetID);
 }
 
+void FCMeshSettingsWidget::on_pushButtonSavePara_clicked()
+{
+    saveParameter();
+}
 
 } // namespace FC
 

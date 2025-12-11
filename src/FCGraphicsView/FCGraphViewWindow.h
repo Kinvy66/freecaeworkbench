@@ -17,6 +17,8 @@ namespace FC
 class FCGeometryData;
 class FCGeometrySet;
 class FCGeometryViewProvider;
+class FCMeshViewProvider;
+
 
 class FCGRAPHICSVIEW_API FCGraphViewWindow : public FCGraph3DWindow
 {
@@ -40,8 +42,12 @@ signals:
     void closed();
     //显示几何形状
     void showGeoSet(const IdType id, bool render = true);
+    void showMesh(const IdType id, bool render = true);
+    
     //移除几何形状的显示
     void updateGeometryActors(const IdType id);
+    void updateMeshActors(const IdType id);
+    
     //显示基准
     // void showDatum(GeometryDatum *);
     //移除几何基准显示
@@ -112,7 +118,7 @@ private:
     int mSelectedGeoIndex{-1};
     
     FCGeometryViewProvider *mGeoProvider{};
-    // MeshViewProvider *_meshProvider{};
+    FCMeshViewProvider *mMeshProvider{};
     // SketchViewProvider *_sketchProvider{};
 };
 } // namespace FC

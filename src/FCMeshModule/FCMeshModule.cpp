@@ -5,7 +5,6 @@
  * @version V0.0.1
  * @details FCMeshModule 对外接口实现框架
  */
-
 #include "FCMeshModule.h"
 #include "FCMeshData.h"
 #include "FCMeshKernal.h"
@@ -17,6 +16,9 @@
 #include <QDomElement>
 #include <QDataStream>
 #include "FCUniqueIDGenerater.h"
+#include "FCGeometryData.h"
+
+#include "vtkDataSet.h"
 
 namespace FC
 {
@@ -24,7 +26,12 @@ namespace FC
 FCMeshModule::FCMeshModule(QObject* parent)
     : QObject(parent)
 {
-    _threadManager = FCGmshThreadManager::getInstance();
+    mThreadManager = FCGmshThreadManager::getInstance();
+    connect(mThreadManager, &FCGmshThreadManager::meshProgress,
+            this, &FCMeshModule::meshGenerationProgress);
+    connect(mThreadManager, &FCGmshThreadManager::meshReady,
+            this, &FCMeshModule::onMeshReady);
+    
 }
 
 FCMeshModule::~FCMeshModule()
@@ -41,12 +48,17 @@ FCMeshModule::IdType FCMeshModule::createMesh(const QString& name, FCGmshSetting
     // settingData->setMaxSize();
     kernal->setGmshSetting(para);
     kernal->setName(name);
+    
+    int n = kernal->bindGeometry(FCGeometryData::getInstance()->getAllGeometrySetID());
+    
+    qDebug().noquote() << name << " bind " << n << " geometrys";
+    
     IdType id = FCUniqueIDGenerater::id_uint64();
     FCMeshData::getInstance()->appendMeshKernal(id, kernal);
     return id;
 }
 
-bool FCMeshModule::deleteMeshByID(int id)
+bool FCMeshModule::deleteMeshByID(IdType id)
 {
     FCMeshData* data = FCMeshData::getInstance();
     FCMeshKernal* kernal = data->getMeshKernalByID(id);
@@ -76,7 +88,7 @@ int FCMeshModule::getMeshCount() const
     return FCMeshData::getInstance()->getKernalCount();
 }
 
-FCMeshKernal* FCMeshModule::getMeshByID(int id) const
+FCMeshKernal* FCMeshModule::getMeshByID(IdType id) const
 {
     return FCMeshData::getInstance()->getMeshKernalByID(id);
 }
@@ -86,7 +98,7 @@ FCMeshKernal* FCMeshModule::getMeshAt(int index) const
     return FCMeshData::getInstance()->getKernalAt(index);
 }
 
-bool FCMeshModule::isMeshExist(int id) const
+bool FCMeshModule::isMeshExist(IdType id) const
 {
     return getMeshByID(id) != nullptr;
 }
@@ -100,7 +112,7 @@ void FCMeshModule::clearAllMeshes()
 /****************************
  * 网格生成接口
  ****************************/
-void FCMeshModule::generateMesh(int meshID, FCGmshSettingData* setting)
+void FCMeshModule::generateMesh(IdType meshID, FCGmshSettingData* setting)
 {
     FCMeshKernal* kernal = getMeshByID(meshID);
     if (!kernal || !setting) return;
@@ -111,7 +123,28 @@ void FCMeshModule::generateMesh(int meshID, FCGmshSettingData* setting)
     emit meshGenerated(meshID);
 }
 
-void FCMeshModule::generateMeshesAsync(const QList<int>& meshIDs,
+void FCMeshModule::generateMesh(IdType meshID)
+{
+    FCMeshKernal* kernal = getMeshByID(meshID);
+    if (!kernal)
+    {
+        qWarning() << "generateMesh: invalid meshID" << meshID;
+        return;
+    }
+    
+    FCDataBase* settingData = kernal->getGmshSetting();
+    FCGmshSettingData* setting = nullptr;
+    if (settingData)
+        setting = static_cast<FCGmshSettingData*>(settingData);
+    
+    // dispatch to thread manager
+    if (!mThreadManager->addTask(meshID, setting))
+    {
+        qWarning() << "Failed to add mesh generation task for id" << meshID;
+    }
+}
+
+void FCMeshModule::generateMeshesAsync(const QList<IdType>& meshIDs,
                                        const QList<FCGmshSettingData*>& settings)
 {
     if (meshIDs.size() != settings.size()) return;
@@ -128,11 +161,11 @@ void FCMeshModule::generateMeshesAsync(const QList<int>& meshIDs,
 
 void FCMeshModule::stopAllMeshGeneration()
 {
-    if (_threadManager)
-        _threadManager->stopAll();
+    if (mThreadManager)
+        mThreadManager->stopAll();
 }
 
-bool FCMeshModule::isGenerating(int meshID) const
+bool FCMeshModule::isGenerating(IdType meshID) const
 {
     // TODO: 调用 _threadManager 查询线程状态
     return false;
@@ -141,7 +174,7 @@ bool FCMeshModule::isGenerating(int meshID) const
 /****************************
  * 网格显示接口（VTK）
  ****************************/
-void FCMeshModule::generateDisplayData(int meshID)
+void FCMeshModule::generateDisplayData(IdType meshID)
 {
     FCMeshKernal* kernal = getMeshByID(meshID);
     if (!kernal) return;
@@ -158,25 +191,25 @@ void FCMeshModule::generateDisplayAll()
     }
 }
 
-void FCMeshModule::setMeshVisible(int meshID, bool visible)
+void FCMeshModule::setMeshVisible(IdType meshID, bool visible)
 {
     FCMeshKernal* kernal = getMeshByID(meshID);
     if (kernal) kernal->setVisible(visible);
 }
 
-bool FCMeshModule::isMeshVisible(int meshID) const
+bool FCMeshModule::isMeshVisible(IdType meshID) const
 {
     FCMeshKernal* kernal = getMeshByID(meshID);
     return kernal ? kernal->isVisible() : false;
 }
 
-void FCMeshModule::setMeshColor(int meshID, const QColor& color)
+void FCMeshModule::setMeshColor(IdType meshID, const QColor& color)
 {
     FCMeshKernal* kernal = getMeshByID(meshID);
     if (kernal) kernal->setSpecificColor(true, color);
 }
 
-QColor FCMeshModule::getMeshColor(int meshID) const
+QColor FCMeshModule::getMeshColor(IdType meshID) const
 {
     FCMeshKernal* kernal = getMeshByID(meshID);
     bool enable = false;
@@ -210,7 +243,7 @@ void FCMeshModule::readBinary(QDataStream* stream)
 /****************************
  * GMSH参数接口
  ****************************/
-void FCMeshModule::setGmshSetting(int meshID, FCGmshSettingData* setting)
+void FCMeshModule::setGmshSetting(IdType meshID, FCGmshSettingData* setting)
 {
     FCMeshKernal* kernal = getMeshByID(meshID);
     if (kernal) kernal->setGmshSetting(setting);
@@ -220,6 +253,28 @@ FCGmshSettingData* FCMeshModule::getGmshSetting(int meshID) const
 {
     FCMeshKernal* kernal = getMeshByID(meshID);
     return kernal ? static_cast<FCGmshSettingData*>(kernal->getGmshSetting()) : nullptr;
+}
+
+/**
+ * @brief 网格生成完成
+ * @param meshID
+ * @param dataset
+ */
+void FCMeshModule::onMeshReady(IdType meshID, vtkDataSet *dataset)
+{
+    // Called when a thread manager notifies a finished mesh
+    FCMeshKernal* kernal = getMeshByID(meshID);
+    if (!kernal)
+    {
+        qWarning() << "onMeshReady: kernal not found for id" << meshID;
+        if (dataset) dataset->Delete(); // avoid leak if created raw
+        return;
+    }
+    
+    kernal->setMeshData(dataset);
+    qInfo() << "mesh " << meshID << " generate OK!";
+    
+    emit meshGenerated(meshID);
 }
 
 } // namespace FC

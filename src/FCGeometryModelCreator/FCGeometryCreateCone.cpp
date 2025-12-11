@@ -19,7 +19,12 @@ namespace FC
 {
 
 FCGeometryCreateCone::FCGeometryCreateCone(QObject *parent)
-    : FCGeometryModelBase(parent)
+    : FCGeometryModelBase(parent),
+    mLocation{0,0,0},
+    mAxis{0,0,1},        // 默认方向必须有效！
+    mHeigth(1),
+    mBottomRadius(1),
+    mTopRadius(0)
 {
     
 }
@@ -76,7 +81,7 @@ bool FCGeometryCreateCone::execute()
     emit updateGeoTree(id, mName);
     
     
-    qDebug() << "Create Cone,name:" << mName
+    qInfo() << "Create Cone,name:" << mName
              << ", top r:" <<  mTopRadius << ", bottom r" <<mBottomRadius << ", h:" << mHeigth
              << ", location:" << mLocation[0] << mLocation[1] << mLocation[2];    
     

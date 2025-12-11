@@ -64,7 +64,7 @@ bool FCGeometryCreateCylinder::execute()
     emit showSet(id);
     emit updateGeoTree(id, mName);
     
-    qDebug() << "Create Cylinder,name:" << mName
+    qInfo() << "Create Cylinder,name:" << mName
              << ", r:" <<  mRadius << ", l" <<mLength
              << ", location:" << mLocation[0] << mLocation[1] << mLocation[2];    
     

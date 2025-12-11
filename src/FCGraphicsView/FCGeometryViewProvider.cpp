@@ -188,6 +188,7 @@ void FCGeometryViewProvider::showGeoSet(const IdType id, bool render)
 /**
  * @brief 从vtk渲染窗口中移除指定的几何actor
  * @param id
+ * @note 这个函数只是移除旧模型的actor， 显示还是在 @sa showGeoSet 函数中完成
  */
 void FCGeometryViewProvider::updateGeomtryDisplayActor(const IdType id)
 {

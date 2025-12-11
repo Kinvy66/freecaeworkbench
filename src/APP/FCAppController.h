@@ -177,6 +177,7 @@ private Q_SLOTS:
     
     void onActionAddDataTriggered();
     
+    void onTestSlot(const IdType id, bool r);
     
    
 private slots:

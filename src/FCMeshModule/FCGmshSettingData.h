@@ -89,6 +89,8 @@ public:
     void setCells(QList<int> cells);
     //获取指定单元类型
     QList<int> getCells();
+    void setDimension(int dim);
+    int getDimension();
     
 private:
     void appendBoxField(QStringList list);
@@ -98,23 +100,24 @@ private:
     void appendFrustumField(QStringList list);
     
 private:
-    int _meshID{ -1 };
-    QMultiHash<int, int> _solidHash{};
-    QMultiHash<int, int> _surfaceHash{};
-    QString _elementType{};
-    int _elementOrder{ -1 };
-    int _method{ -1 };
-    double _sizeFactor{ 0.0 };
-    double _minSize{ 0.0 };
-    double _maxSize{ 0.0 };
-    bool _geoclean{ false };
-    int _smoothIteration{ 0 };
-    bool _gridCoplanar{ false };
-    bool _selectall{ false };
-    bool _selectvisible{ false };
+    int mMeshID{ -1 };
+    QMultiHash<int, int> mSolidHash{};
+    QMultiHash<int, int> mSurfaceHash{};
+    int mDimension{2};
+    QString mElementType{};
+    int mElementOrder{ -1 };
+    int mMethod{ -1 };
+    double mSizeFactor{ 0.0 };
+    double mMinSize{ 0.0 };
+    double mMaxSize{ 0.0 };
+    bool mGeoclean{ false };
+    int mSmoothIteration{ 0 };
+    bool mGridCoplanar{ false };
+    bool mSelectall{ true };
+    bool mSelectvisible{ false };
     
     // QList<LocalDensity*> _locals{};
-    QList<int> _cells{};
+    QList<int> mCells{};
     
 };
 } // namespace FC

@@ -71,7 +71,7 @@
            <string>全选</string>
           </property>
           <property name="checked">
-           <bool>false</bool>
+           <bool>true</bool>
           </property>
          </widget>
         </item>
@@ -266,6 +266,13 @@
       <widget class="QPushButton" name="pushButtonReset">
        <property name="text">
         <string>重置</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="pushButtonSavePara">
+       <property name="text">
+        <string>确认</string>
        </property>
       </widget>
      </item>

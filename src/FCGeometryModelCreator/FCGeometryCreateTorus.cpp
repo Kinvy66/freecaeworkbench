@@ -76,7 +76,7 @@ bool FCGeometryCreateTorus::execute()
     emit showSet(id);
     emit updateGeoTree(id, mName);
     
-    qDebug() << "Create Torus: name:" << mName
+    qInfo() << "Create Torus: name:" << mName
              << ", R_major:" << mMajorRadius
              << ", R_minor:" << mMinorRadius
              << ", angle:" << mAngle

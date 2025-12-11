@@ -24,15 +24,24 @@ public:
     
     void addMesh();
     
+public slots:
+    
+    void onMeshGenerated(IdType meshID, bool r=true);
+    
 private:
     void init();
+    void saveParameter();
     
 signals:
     void updateMeshTree(const IdType id, const QString& name);
+    void updateMeshActor(IdType meshID);
+    void meshGenerated(IdType meshID, bool r=true);
     
     
 private slots:
     void on_pushButtonGenerateMesh_clicked();
+    
+    void on_pushButtonSavePara_clicked();
     
 private:
     Ui::FCMeshettingsWidget *ui;

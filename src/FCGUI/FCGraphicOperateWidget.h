@@ -46,7 +46,11 @@ public:
     
 signals:
     void showGeoSet(const IdType id, bool render = true);
+    void showMesh(const IdType id, bool render = true);
+    
     void updateGeometryAcotr(const IdType id);
+    void updateMeshAcotr(const IdType id);
+    
 public slots:
     void showModel(FCGeometrySet* set, bool r);
 

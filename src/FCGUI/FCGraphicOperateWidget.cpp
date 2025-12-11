@@ -62,6 +62,12 @@ FCGraphicOperateWidget::FCGraphicOperateWidget(QWidget *parent)
             mGraphViewWindow, &FCGraphViewWindow::showGeoSet);
     connect(this, &FCGraphicOperateWidget::updateGeometryAcotr,
             mGraphViewWindow, &FCGraphViewWindow::updateGeometryActors);
+    
+    connect(this, &FCGraphicOperateWidget::showMesh,
+            mGraphViewWindow, &FCGraphViewWindow::showMesh);
+    
+    connect(this, &FCGraphicOperateWidget::updateMeshAcotr,
+            mGraphViewWindow, &FCGraphViewWindow::updateMeshActors);
 }
 
 FCGraphicOperateWidget::~FCGraphicOperateWidget()

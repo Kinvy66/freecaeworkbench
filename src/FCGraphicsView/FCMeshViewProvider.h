@@ -11,20 +11,44 @@
 #include "FCGraphicsViewGlobal.h"
 #include <QObject>
 #include <QHash>
-#include <QMultiHash>
+#include <QPair>
 
+class vtkPolyData;
 class vtkActor;
-class vtkDataSet;
 
 namespace FC 
 {
+
+class FCGraphViewWindow;
+class FCMeshViewData;
+
 class FCGRAPHICSVIEW_API FCMeshViewProvider : public QObject
 {
     Q_OBJECT
 public:
-    explicit FCMeshViewProvider(QObject *parent = nullptr);
+    using IdType  = uint64_t;  ///< id类型
+public:
+    FCMeshViewProvider(FCGraphViewWindow* viewWindow, QObject* parent = nullptr);
+    ~FCMeshViewProvider();
     
-signals:
+    // void showMesh(IdType id, vtkPolyData* mesh, bool render = true);
+    void removeMesh(IdType id);
+    void updateMeshColor(IdType id);
+    
+    void highlightMesh(IdType id, bool on);
+    void selectMesh(IdType id, bool on);
+    
+    void removeAllMeshes();
+    
+public slots:
+    void showMesh(IdType id, bool render = true);
+    void updateMeshDisplayActor(const IdType id);
+    
+    
+private:
+    FCMeshViewData* mViewData = nullptr;
+    FCGraphViewWindow* mGraphViewWindow = nullptr;
+    QHash<IdType, vtkActor*> mActors;
 };
 } // namespace FC
 

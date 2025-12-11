@@ -3,192 +3,67 @@
  * @brief gmsh网格划分线程
  * @date 2025-12-09
  * @version V0.0.1
- * @details 
+ * @details Gmsh 网格划分线程类
+ *
+ * 工作流：
+ * 1. 从 FCMeshKernal 获取绑定的 FCGeometrySet 列表
+ * 2. 将每个 TopoDS_Shape 写为临时 BREP 文件（临时目录）
+ * 3. 用 gmsh::model::occ::importShapes(临时文件路径, ...)
+ * 4. gmsh::model::occ::synchronize(); gmsh::model::mesh::generate(...)
+ * 5. 将 Gmsh 网格转成 vtkUnstructuredGrid 并通过 meshFinished() 发送
+ *
+ * 注意：由于当前 gmsh C++ SDK（4.15）不支持内存直接导入 BREP，
+ *       需要写临时文件然后调用 importShapes(file).
  * @copyright Copyright (c) 2025 Kinvy. All rights reserved.
  */
 #ifndef FCGMSHTHREAD_H
 #define FCGMSHTHREAD_H
 #include "FCMeshModuleAPI.h"
 #include <QThread>
-#include <QList>
-#include <QMultiHash>
-#include <QString>
-#include <QProcess>
-#include "FCDataBase.h"
-#include <QTextStream>
-#include <QTime>
-#include <vtkCellType.h>
+#include <QPointer>
 
-class TopoDS_Compound;
-class TopoDS_Shape;
-class gp_Pnt;
 class vtkDataSet;
+class vtkUnstructuredGrid;
+class TopoDS_Compound;
+class BRep_Builder;
+
+
 
 namespace FC 
 {
-class FCMeshKernal;
-class FCMeshModule;
-class FCGmshScriptWriter;
-
-typedef struct
-{
-    int geoSetID;
-    int itemIndex;
-    QList<int> cellIndexs;
-} itemInfo;
-
-class GMshPara
-{
-public:
-    int _dim{-1};
-    QMultiHash<int, int> _solidHash{};
-    QMultiHash<int, int> _surfaceHash{};
-    QString _elementType{};
-    int _elementOrder{-1};
-    int _method{-1};
-    double _sizeFactor{0.0};
-    double _minSize{0.0};
-    double _maxSize{0.0};
-    bool _geoclean{false};
-    int _smoothIteration{0};
-    bool _isGridCoplanar{false};
-    QString _sizeAtPoints{};
-    QString _sizeFields{};
-    //	QString _physicals{};
-    bool _selectall{false};
-    bool _selectvisible{false};
-    int _meshID{-1};
-    QList<double *> _fluidField{};
-    bool _fluidMesh{false};
-    QString _cells{};
-};
-
-class FCMESHMODULE_API FCGmshThread : public FCDataBase
+class FCGmshSettingData;
+class FCMESHMODULE_API FCGmshThread : public QThread
 {
     Q_OBJECT
 public:
-    FCGmshThread(int dim);
-    ~FCGmshThread();
-    //设置参数
-    void setPara(GMshPara *para);
+    using IdType  = uint64_t;  ///< id类型
+public:
+    FCGmshThread(IdType meshID, FCGmshSettingData* setting, QObject* parent = nullptr);
+    ~FCGmshThread() override;
     
-    //追加实体
-    void appendSolid(int id, int index);
-    void setSolid(QMultiHash<int, int> s);
-    //追加曲面
-    void appendSurface(int geo, int face);
-    void setSurface(QMultiHash<int, int> s);
-    //设置单元类型
-    void setElementType(QString t);
-    //设置单元阶次
-    void setElementOrder(int order);
-    //设置网格剖分方法
-    void setMethod(int m);
-    //设置尺寸因子
-    void setSizeFactor(double f);
-    //设置最小尺寸
-    void setMinSize(double min);
-    //设置最大尺寸
-    void setMaxSize(double max);
-    //设置是否进行几何清理
-    void isCleanGeo(bool c);
-    //设置光滑迭代次数
-    void setSmoothIteration(int it);
-    //设计是否网格功面
-    void setGridCoplanar(bool gc);
-    //设置点网格密度
-    void setSizeAtPoint(QString ps);
-    //设置区域网格密度
-    void setSizeFields(QString fs);
-    //设置物理分组
-    // void setPhysicals(QString ps);
-    //设置mesh名称
-    void setMeshID(int id);
-    //设置网格全选
-    void setSelectedAll(bool al);
-    //设置选择网格可见项
-    void setSelectedVisible(bool sv);
-    //设置为流体域网格剖分模式
-    void setFluidMesh(bool fm);
-    //设置流体网格剖分的区域
-    //		void setFluidField(QList<double*> coors);
-    //设置指定网格类型（保存）
-    void setCellTypeList(QString cells);
+protected:
+    void run() override;
     
-    void run();
-    void stop();
+private:
+    bool initGmsh();
+    bool importAllOccShapesToGmsh();
+    void applyMeshSettings();
+    bool generateMesh();
+    vtkUnstructuredGrid* convertGmshToVtk();
+    void finalizeGmsh();
     
-    //是否保存vtkData
-    void isSaveDataToKernal(bool save);
-    /*返回节点/单元在几何上的id*/
-    QList<itemInfo> generateGeoIds(vtkDataSet *dataset);
+    bool saveMeshToFile(IdType meshID);
     
 signals:
-    void threadFinished(FCGmshThread *t);
-    void sendMessage(QString);
-    void writeToSolveFileSig(vtkDataSet *);
-    void updateMeshActor();
-    
-private slots:
-    void processFinished(int, QProcess::ExitStatus);
-    void readProcessOutput();
-    
+    void meshFinished(IdType meshID, vtkDataSet* dataset);
+    void meshError(IdType meshID, const QString& err);
+    void progress(IdType meshID, int percent);
 private:
-    void mergeGeometry();
-    void initGmshEnvoirment();
-    void submitParaToGmsh();
-    void generate();
-    void readMesh();
-    
-    void mergeAllGeo();
-    void mergeVisibleGeo();
-    void mergeSelectGeo();
-    
-    //设置meshkernal网格剖分参数
-    void setGmshSettingData(FCMeshKernal *k);
-    //设置脚本读写数据
-    void setGmshScriptData();
-    //删除指定单元
-    vtkDataSet *deleteSpecifiedCells(vtkDataSet *dataset);
-    //判断是否为指定单元
-    bool isSpecifiedCell(VTKCellType type);
-    
-private:
-    // GUI::MainWindow *_mainwindow{};
-    // MainWidget::PreWindow *_preWindow{};
-    FCMeshModule *_gmshModule{};
-    // FluidMeshPreProcess *_fluidMeshProcess{};
-    
-    QProcess _process{};
-    // ModuleBase::ProcessBar *_processBar{};
-    
-    int _dim{-1};
-    TopoDS_Compound *_compounnd{};
-    // TopoDS_Shape* _faushape{};
-    
-    QMultiHash<int, int> _solidHash{};
-    QMultiHash<int, int> _surfaceHash{};
-    QString _elementType{};
-    int _elementOrder{-1};
-    int _method{-1};
-    double _sizeFactor{0.0};
-    double _minSize{0.0};
-    double _maxSize{0.0};
-    bool _geoclean{false};
-    int _smoothIteration{0};
-    bool _isGridCoplanar{false};
-    QString _sizeAtPoints{};
-    QString _sizeFields{};
-    bool _selectall{false};
-    bool _selectvisible{false};
-    bool _isSaveToKernal{true};
-    int _meshID{-1};
-    
-    bool _fluidMesh{false};
-    
-    QList<int> _cellTypeList{};
-    
-    FCGmshScriptWriter *_scriptWriter{};
+    IdType mMeshID;
+    FCGmshSettingData* mSetting; // not owned (caller should ensure lifetime)
+    bool mAbort{false};
+public:
+    void requestAbort() { mAbort = true; }
     
 };
 } // namespace FC

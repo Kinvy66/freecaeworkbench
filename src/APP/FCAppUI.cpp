@@ -124,6 +124,15 @@ FCAppRibbonArea* FCAppUI::getAppRibbonArea()
 }
 
 /**
+ * @brief 获取状态栏
+ * @return 
+ */
+FCStatusBar *FCAppUI::getStautsBar()
+{
+    return mStatusBar;
+}
+
+/**
  * @brief 创建action
  */
 void FCAppUI::createActions()
@@ -165,7 +174,7 @@ void FCAppUI::createRibbonArea()
  */
 void FCAppUI::createStatusBar()
 {
-    // QMainWindow* m = getMainWindow();
-    // mStatusBar     = new FCStatusBar(m);
-    // m->setStatusBar(mStatusBar);
+    QMainWindow* m = getMainWindow();
+    mStatusBar     = new FCStatusBar(m);
+    m->setStatusBar(mStatusBar);
 }

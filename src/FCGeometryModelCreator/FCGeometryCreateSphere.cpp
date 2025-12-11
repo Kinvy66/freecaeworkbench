@@ -64,7 +64,7 @@ bool FCGeometryCreateSphere::execute()
     emit updateGeoTree(id, mName);
     
     
-    qDebug() << "Create Sphere ,name:" << mName
+    qInfo() << "Create Sphere ,name:" << mName
              << ", radius:" <<  mRadius
              << ", location:" << mLocation[0] << mLocation[1] << mLocation[2];    
     

@@ -52,6 +52,8 @@ public:
     //获取ribbon
     FCAppRibbonArea* getAppRibbonArea();
     
+    FCStatusBar* getStautsBar();
+    
 protected:
     void createActions();
     void createCmd();

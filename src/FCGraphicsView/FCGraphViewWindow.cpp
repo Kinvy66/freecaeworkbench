@@ -10,6 +10,7 @@
 #include "FCGeometrySet.h"
 #include "FCGeometryData.h"
 #include "FCGeometryViewProvider.h"
+#include "FCMeshViewProvider.h"
 
 namespace FC 
 {
@@ -19,10 +20,15 @@ FCGraphViewWindow::FCGraphViewWindow(int id, QWidget* parent)
 {
     mGeometryData = FCGeometryData::getInstance();
     mGeoProvider = new FCGeometryViewProvider(this);
+    mMeshProvider = new FCMeshViewProvider(this);
     connect(this, &FCGraphViewWindow::showGeoSet,
             mGeoProvider, &FCGeometryViewProvider::showGeoSet);
+
     connect(this, &FCGraphViewWindow::updateGeometryActors, mGeoProvider
             , &FCGeometryViewProvider::updateGeomtryDisplayActor);
+    
+    connect(this, &FCGraphViewWindow::showMesh,
+            mMeshProvider, &FCMeshViewProvider::showMesh);
 }
 
 FCGraphViewWindow::~FCGraphViewWindow()

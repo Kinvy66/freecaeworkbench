@@ -8,69 +8,125 @@
  */
 #include "FCGmshThreadManager.h"
 #include "FCGmshThread.h"
+#include "FCGmshSettingData.h"
+
+#include <QDebug>
+#include <QMetaType>
+
+#include <vtkDataSet.h>
 
 namespace FC 
 {
-FCGmshThreadManager* FCGmshThreadManager::mInstance = nullptr;
-FCGmshThreadManager::FCGmshThreadManager()
-{
-    // connect(mw, SIGNAL(stopSolve(QWidget *)), this, SLOT(stopThread(QWidget *)));
-    // connect(this, SIGNAL(threadStarted(QWidget *)), mw, SIGNAL(addProcessBarSig(QWidget *)));
-}
-void FCGmshThreadManager::stopThread(QWidget *w)
-{
-    FCGmshThread *t = _threadHash.value(w);
-    if (t == nullptr)
-        return;
-    _threadHash.remove(w);
-    t->stop();
-    //		delete t;
-}
+FCGmshThreadManager* FCGmshThreadManager::s_instance = nullptr;
 
-FCGmshThreadManager *FCGmshThreadManager::getInstance()
+FCGmshThreadManager* FCGmshThreadManager::getInstance()
 {
-    if (mInstance == nullptr){
-        mInstance = new FCGmshThreadManager();
-        
+    static QMutex createMutex;
+    if (!s_instance)
+    {
+        QMutexLocker locker(&createMutex);
+        if (!s_instance)
+            s_instance = new FCGmshThreadManager();
     }
-    return mInstance;
+    return s_instance;
 }
 
-void FCGmshThreadManager::insertThread(QWidget *w, FCGmshThread *t)
+FCGmshThreadManager::FCGmshThreadManager(QObject* parent)
+    : QObject(parent)
 {
+    // register vtkDataSet* as metatype for signal/slot passing
+    qRegisterMetaType<vtkDataSet*>("vtkDataSet*");
+}
+
+FCGmshThreadManager::~FCGmshThreadManager()
+{
+    stopAll();
+}
+
+bool FCGmshThreadManager::addTask(IdType meshID, FCGmshSettingData* setting)
+{
+    QMutexLocker locker(&mMutex);
+    if (mThreads.contains(meshID))
+    {
+        qWarning() << "Task already running for meshID" << meshID;
+        return false;
+    }
     
-    _threadHash.insert(w, t);
-    emit threadStarted(w);
-    connect(t, SIGNAL(threadFinished(FCGmshThread *)), this, SLOT(threadFinished(FCGmshThread *)));
-    t->run();
-}
-
-void FCGmshThreadManager::threadFinished(FCGmshThread *t)
-{
-    QWidget *w = _threadHash.key(t);
-    delete t;
-    _threadHash.remove(w);
-    // ModuleBase::ProcessBar *bar = dynamic_cast<ModuleBase::ProcessBar *>(w);
-    // if (bar == nullptr)
-    //     return;
-    // bar->setProcessRange(0, 100);
-    // bar->setProcess(100);
+    FCGmshThread* t = new FCGmshThread(meshID, setting, this);
+    connect(t, &FCGmshThread::meshFinished, this, &FCGmshThreadManager::onThreadFinished);
+    connect(t, &FCGmshThread::meshFinished, t, &FCGmshThread::deleteLater); // auto delete when finished (slot triggered)
+    connect(t, &FCGmshThread::progress, this, &FCGmshThreadManager::onThreadProgress);
+    connect(t, &FCGmshThread::meshError, this, &FCGmshThreadManager::onThreadError);
+    
+    mThreads.insert(meshID, t);
+    t->start();
+    return true;
 }
 
 void FCGmshThreadManager::stopAll()
 {
-    QList<FCGmshThread *> ts = _threadHash.values();
-    for (auto t : ts)
+    QMutexLocker locker(&mMutex);
+    auto keys = mThreads.keys();
+    for (int k : keys)
     {
-        t->stop();
-        delete t;
+        FCGmshThread* t = mThreads.value(k);
+        if (t)
+        {
+            t->requestAbort();
+            t->wait(2000); // wait a bit
+            // if still running, force deleteLater
+            if (t->isRunning())
+            {
+                t->terminate(); // best-effort; use with caution
+                t->wait();
+            }
+            // delete will be handled by deleteLater connection (or we can delete now)
+            t->deleteLater();
+        }
     }
-    _threadHash.clear();
+    mThreads.clear();
 }
 
-bool FCGmshThreadManager::isRuning()
+bool FCGmshThreadManager::isGenerating(int meshID) const
 {
-    return !_threadHash.isEmpty();
+    QMutexLocker locker(&mMutex);
+    return mThreads.contains(meshID);
+}
+
+void FCGmshThreadManager::onThreadFinished(IdType meshID, vtkDataSet* dataset)
+{
+    // remove thread from tracking
+    {
+        QMutexLocker locker(&mMutex);
+        if (mThreads.contains(meshID))
+        {
+            FCGmshThread* t = mThreads.take(meshID);
+            Q_UNUSED(t);
+            // thread has a deleteLater connected; leave cleanup to Qt
+        }
+    }
+    
+    // emit outward for FCMeshModule to handle storing dataset
+    emit meshReady(meshID, dataset);
+}
+
+void FCGmshThreadManager::onThreadProgress(IdType meshID, int percent)
+{
+    emit meshProgress(meshID, percent);
+}
+
+void FCGmshThreadManager::onThreadError(IdType meshID, const QString& err)
+{
+    // remove thread from tracking similar to finished
+    {
+        QMutexLocker locker(&mMutex);
+        if (mThreads.contains(meshID))
+        {
+            FCGmshThread* t = mThreads.take(meshID);
+            Q_UNUSED(t);
+        }
+    }
+    emit meshError(meshID, err);
 }
 
 } // namespace FC

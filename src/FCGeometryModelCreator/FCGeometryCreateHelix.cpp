@@ -118,7 +118,7 @@ bool FCGeometryCreateHelix::execute()
     emit showSet(id);
     emit updateGeoTree(id, mName);
 
-    qDebug() << "Create Helix:"
+    qInfo() << "Create Helix:"
              << " name:" << mName
              << " turns:" << mNumberOfTurns
              << " R_major:" << mMajorRadius

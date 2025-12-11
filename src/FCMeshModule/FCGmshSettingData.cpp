@@ -47,112 +47,112 @@ void FCGmshSettingData::copy(FCDataBase* data)
 
 void FCGmshSettingData::setSolidHash(QMultiHash<int, int> sh)
 {
-    _solidHash = sh;
+    mSolidHash = sh;
 }
 
 QMultiHash<int, int> FCGmshSettingData::getSolidHash()
 {
-    return _solidHash;
+    return mSolidHash;
 }
 
 void FCGmshSettingData::setSurfaceHash(QMultiHash<int, int> sh)
 {
-    _surfaceHash = sh;
+    mSurfaceHash = sh;
 }
 
 QMultiHash<int, int> FCGmshSettingData::getSurfaceHash()
 {
-    return _surfaceHash;
+    return mSurfaceHash;
 }
 
 void FCGmshSettingData::setElementType(QString type)
 {
-    _elementType = type;
+    mElementType = type;
 }
 
 QString FCGmshSettingData::getElementType()
 {
-    return _elementType;
+    return mElementType;
 }
 
 void FCGmshSettingData::setElementOrder(int order)
 {
-    _elementOrder = order;
+    mElementOrder = order;
 }
 
 int FCGmshSettingData::getElementOrder()
 {
-    return _elementOrder;
+    return mElementOrder;
 }
 
 void FCGmshSettingData::setMethod(int m)
 {
-    _method = m;
+    mMethod = m;
 }
 
 int FCGmshSettingData::getMethod()
 {
-    return _method;
+    return mMethod;
 }
 
 void FCGmshSettingData::setSizeFactor(double sf)
 {
-    _sizeFactor = sf;
+    mSizeFactor = sf;
 }
 
 double FCGmshSettingData::getSizeFactor()
 {
-    return _sizeFactor;
+    return mSizeFactor;
 }
 
 void FCGmshSettingData::setMinSize(double min)
 {
-    _minSize = min;
+    mMinSize = min;
 }
 
 double FCGmshSettingData::getMinSize()
 {
-    return _minSize;
+    return mMinSize;
 }
 
 void FCGmshSettingData::setMaxSize(double max)
 {
-    _maxSize = max;
+    mMaxSize = max;
 }
 
 double FCGmshSettingData::getMaxSize()
 {
-    return _maxSize;
+    return mMaxSize;
 }
 
 void FCGmshSettingData::setGeoClean(bool c)
 {
-    _geoclean = c;
+    mGeoclean = c;
 }
 
 bool FCGmshSettingData::getGeoClean()
 {
-    return _geoclean;
+    return mGeoclean;
 }
 
 void FCGmshSettingData::setSmoothIteration(int smooth)
 {
-    _smoothIteration = smooth;
+    mSmoothIteration = smooth;
 }
 
 int FCGmshSettingData::getSmoothIteration()
 {
-    return _smoothIteration;
+    return mSmoothIteration;
 }
 
 void FCGmshSettingData::setGridCoplanar(bool gc)
 {
-    _gridCoplanar = gc;
+    mGridCoplanar = gc;
 }
 
 bool FCGmshSettingData::getGridCoplanar()
 {
-    return _gridCoplanar;
+    return mGridCoplanar;
 }
 
 void FCGmshSettingData::setSizeAtPoints(QString ps)
@@ -235,42 +235,52 @@ void FCGmshSettingData::setSizeFields(QString fs)
 
 void FCGmshSettingData::setSelectAll(bool b)
 {
-    _selectall = b;
+    mSelectall = b;
 }
 
 bool FCGmshSettingData::getSelectAll()
 {
-    return _selectall;
+    return mSelectall;
 }
 
 void FCGmshSettingData::setSelectVisiable(bool b)
 {
-    _selectvisible = b;
+    mSelectvisible = b;
 }
 
 bool FCGmshSettingData::getSelectVisiable()
 {
-    return _selectvisible;
+    return mSelectvisible;
 }
 
 void FCGmshSettingData::setMeshID(int id)
 {
-    _meshID = id;
+    mMeshID = id;
 }
 
 int FCGmshSettingData::getMeshID()
 {
-    return _meshID;
+    return mMeshID;
 }
 
 void FCGmshSettingData::setCells(QList<int> cells)
 {
-    _cells = cells;
+    mCells = cells;
 }
 
 QList<int> FCGmshSettingData::getCells()
 {
-    return _cells;
+    return mCells;
+}
+
+void FCGmshSettingData::setDimension(int dim)
+{
+    mDimension = dim;
+}
+
+int FCGmshSettingData::getDimension()
+{
+    return mDimension;
 }
 
 void FCGmshSettingData::appendBoxField(QStringList list)

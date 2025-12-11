@@ -125,6 +125,8 @@ void FCSettingParametersWidget::addMesh()
     
     connect(settingsWidget, &FCMeshSettingsWidget::updateMeshTree,
             this, &FCSettingParametersWidget::updateMeshTree);
+    connect(settingsWidget, &FCMeshSettingsWidget::meshGenerated,
+            this, &FCSettingParametersWidget::meshGenerated);
     
     settingsWidget->addMesh();
     
@@ -226,8 +228,17 @@ void FCSettingParametersWidget::updateCurrentMeshSettingWidget(const IdType id, 
     connect(settingsWidget, &FCMeshSettingsWidget::updateMeshTree,
             this, &FCSettingParametersWidget::updateMeshTree);
     
-    // settingsWidget->addMesh();
+    connect(settingsWidget, &FCMeshSettingsWidget::meshGenerated,
+            this, &FCSettingParametersWidget::meshGenerated);
+    // connect(settingsWidget, &FCMeshSettingsWidget::updateMeshActor,
+    //         this, &FCSettingParametersWidget::updateMeshAcotr);
+    
     setCurrentWidget(settingsWidget);
+}
+
+void FCSettingParametersWidget::onMeshGenerated(IdType meshID, bool r)
+{
+    qDebug() << "mesh id: " << meshID;
 }
 
 void FCSettingParametersWidget::setCurrentWidget(QWidget *w)

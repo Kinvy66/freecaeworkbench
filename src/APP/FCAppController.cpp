@@ -187,23 +187,29 @@ void FCAppController::initConnection()
     
     FCGraphicOperateWidget* grapicWidget = mDock->getGraphicOperateWidget();
     FCSettingParametersWidget* settingsWidget = mDock->getSettingParametersWidget();
+    // 几何模型创建完成通知渲染窗口显示
     connect(settingsWidget, &FCSettingParametersWidget::geometryModelCreated,
             grapicWidget, &FCGraphicOperateWidget::showGeoSet);
-    
+    // 几何模型修改通知更新工程树结构
     connect(settingsWidget, &FCSettingParametersWidget::updateGeoTree,
             this, &FCAppController::onUpdateGeoTree);
+    // 几何模型修改通知更新渲染窗口   
     connect(settingsWidget, &FCSettingParametersWidget::updateGeometryAcotr,
             grapicWidget,&FCGraphicOperateWidget::updateGeometryAcotr);
-    
+    // 网格修改通知更新工程树结构
     connect(settingsWidget, &FCSettingParametersWidget::updateMeshTree,
             this, &FCAppController::onUpdateMeshTree);
-    connect(settingsWidget, &FCSettingParametersWidget::updateGeometryAcotr,
-            grapicWidget,&FCGraphicOperateWidget::updateGeometryAcotr);
+    // 网格生成成功，通知渲染窗口显示
+    connect(settingsWidget, &FCSettingParametersWidget::meshGenerated,
+            grapicWidget,&FCGraphicOperateWidget::showMesh);
+    connect(settingsWidget, &FCSettingParametersWidget::meshGenerated,
+            this,&FCAppController::onTestSlot);
     
     FCModelBuilderWidget* modelBuilderWidget = mDock->getModelBuilderWidget();
+    // 工程树几何节点当前选择改变，通知参数设置窗口改变
     connect(modelBuilderWidget, &FCModelBuilderWidget::currentGeoItemChanged,
             settingsWidget, &FCSettingParametersWidget::updateCurrentGeoSettingWidget);
-    
+    // 工程树网格节点当前选择改变，通知参数设置窗口改变
     connect(modelBuilderWidget, &FCModelBuilderWidget::currentMeshItemChanged,
             settingsWidget, &FCSettingParametersWidget::updateCurrentMeshSettingWidget);
     
@@ -398,6 +404,11 @@ void FCAppController::onUpdateMeshTree(const IdType id, const QString &name)
 void FCAppController::onActionAddDataTriggered()
 {
     FCAPPCONTROLLER_PASS();
+}
+
+void FCAppController::onTestSlot(const IdType id, bool r)
+{
+    qDebug() << "test mesh id: " << id;
 }
 
 void FCAppController::onFocusedDockWidgetChanged(ads::CDockWidget *old, ads::CDockWidget *now)
