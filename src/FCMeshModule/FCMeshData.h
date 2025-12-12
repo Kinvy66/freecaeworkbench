@@ -45,6 +45,8 @@ public:
     // 通过ID获取Kernal
     FCMeshKernal* getMeshKernalByID(const IdType  id);
     
+    QList<IdType> getAllMeshID();
+    
     // 通过网格的数据表示获取Kernal ID
     int getIDByDataSet(vtkDataSet* datset);
     
@@ -58,7 +60,7 @@ public:
     QList<int> getSetIDFromKernal(int kid);
     
     // 判断MeshKernal是否存在
-    bool isContainsKernal(FCMeshKernal* ker);
+    bool isContainsKernal(const IdType  id);
     
     // 清空全部数据
     void clear();

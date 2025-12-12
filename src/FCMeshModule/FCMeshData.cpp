@@ -85,15 +85,20 @@ FCMeshKernal* FCMeshData::getMeshKernalByID(const IdType  id)
     // return nullptr;
     
     
-    if (id==0) {
-        return nullptr;
-    }
-    FCMeshKernal* k = mMeshKernals.value(id);
-    if (k->getGmshSetting()) {
-        return k;
-    }
+    // if (id==0) {
+    //     return nullptr;
+    // }
+    FCMeshKernal* k = mMeshKernals.value(id, nullptr);
+    // if (k->getGmshSetting()) {
+    //     return k;
+    // }
     
-    return nullptr;
+    return k;
+}
+
+QList<FCDataBase::IdType> FCMeshData::getAllMeshID()
+{
+    return mMeshKernals.keys();
 }
 void FCMeshData::removeKernalAt(const int index)
 {
@@ -249,9 +254,9 @@ QList<int> FCMeshData::getSetIDFromKernal(int kid)
     return ids;
 }
 
-bool FCMeshData::isContainsKernal(FCMeshKernal* ker)
+bool FCMeshData::isContainsKernal(const IdType  id)
 {
-    return mMeshList.contains(ker);
+    return mMeshKernals.contains(id);
 }
 
 void FCMeshData::generateDisplayDataSet()

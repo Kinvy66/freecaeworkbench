@@ -40,6 +40,7 @@ add_library(${FC_LIB_NAME} SHARED
 # 构建库定义的宏
 
 target_link_libraries(FCGraphicsView PRIVATE Qt6::Core)
+target_link_libraries(FCGraphicsView PRIVATE Qt6::Core)
 target_compile_definitions(${FC_LIB_NAME} PRIVATE FCGRAPHICSVIEW_BUILDLIB)#!!!!** 注意变更 **!!!!
 add_library(${FC_PROJECT_NAME}::${FC_LIB_NAME} ALIAS ${FC_LIB_NAME})
 ########################################################
@@ -55,6 +56,7 @@ target_link_libraries(${FC_LIB_NAME} PRIVATE
 )
 if(${QT_VERSION_MAJOR} EQUAL 6)
     find_package(Qt6 REQUIRED COMPONENTS Core5Compat)
+    find_package(Qt6 REQUIRED COMPONENTS Core)
     find_package(Qt6 REQUIRED COMPONENTS Core)
     target_link_libraries(${FC_LIB_NAME} PRIVATE Qt6::Core5Compat)
 endif()

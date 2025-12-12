@@ -24,8 +24,8 @@ FCGraphViewWindow::FCGraphViewWindow(int id, QWidget* parent)
     connect(this, &FCGraphViewWindow::showGeoSet,
             mGeoProvider, &FCGeometryViewProvider::showGeoSet);
 
-    connect(this, &FCGraphViewWindow::updateGeometryActors, mGeoProvider
-            , &FCGeometryViewProvider::updateGeomtryDisplayActor);
+    connect(this, &FCGraphViewWindow::updateGeometryActors,
+            mGeoProvider, &FCGeometryViewProvider::updateGeomtryDisplayActor);
     
     connect(this, &FCGraphViewWindow::showMesh,
             mMeshProvider, &FCMeshViewProvider::showMesh);
