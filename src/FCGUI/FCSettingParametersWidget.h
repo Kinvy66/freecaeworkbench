@@ -39,8 +39,9 @@ public:
 public slots:
     void updateCurrentGeoSettingWidget(const IdType id, const QString& name);
     void updateCurrentMeshSettingWidget(const IdType id, const QString& name);
+    void updateCurrentSettingWidget(const IdType id, const QString& name);
     
-    void onMeshGenerated(IdType meshID, bool r=true);
+    // void onMeshGenerated(IdType meshID, bool r=true);
     
     
 private:

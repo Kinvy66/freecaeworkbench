@@ -1,3 +1,11 @@
+/**
+ * @file FCMeshSettingsWidget.h
+ * @brief 网格参数设置页面
+ * @date 2025-12-12
+ * @version V0.0.1
+ * @details 
+ * @copyright Copyright (c) 2025 Kinvy. All rights reserved.
+ */
 #ifndef FCMESHSETTINGSWIDGET_H
 #define FCMESHSETTINGSWIDGET_H
 #include "FCGuiAPI.h"
@@ -9,6 +17,7 @@ class FCMeshettingsWidget;
 
 namespace FC 
 {
+class FCGmshSettingData;
 class FCGUI_API FCMeshSettingsWidget : public QWidget
 {
     Q_OBJECT
@@ -31,6 +40,7 @@ public slots:
 private:
     void init();
     void saveParameter();
+    void updateParameter(FCGmshSettingData* para);
     
 signals:
     void updateMeshTree(const IdType id, const QString& name);
@@ -42,6 +52,12 @@ private slots:
     void on_pushButtonGenerateMesh_clicked();
     
     void on_pushButtonSavePara_clicked();
+    
+    void on_checkBoxSelectAll_clicked();
+    
+    void on_checkBoxSelectVisible_clicked();
+    
+    void on_pushButtonSelcet_clicked();
     
 private:
     Ui::FCMeshettingsWidget *ui;

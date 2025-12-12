@@ -80,6 +80,8 @@ public:
      */
     QMultiHash<int, int> *getSelectItem();
     
+    void removeMeshActor(IdType meshID);
+    
 public slots:
     /**
      * @brief 新建或者删除网格，更新显示

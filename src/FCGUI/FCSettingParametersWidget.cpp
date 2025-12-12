@@ -223,6 +223,7 @@ void FCSettingParametersWidget::updateCurrentGeoSettingWidget(const IdType id,
 
 void FCSettingParametersWidget::updateCurrentMeshSettingWidget(const IdType id, const QString &name)
 {
+    Q_UNUSED(name)
     FCMeshSettingsWidget* settingsWidget = new FCMeshSettingsWidget(id, this);
     
     connect(settingsWidget, &FCMeshSettingsWidget::updateMeshTree,
@@ -233,13 +234,23 @@ void FCSettingParametersWidget::updateCurrentMeshSettingWidget(const IdType id, 
     // connect(settingsWidget, &FCMeshSettingsWidget::updateMeshActor,
     //         this, &FCSettingParametersWidget::updateMeshAcotr);
     
+    
     setCurrentWidget(settingsWidget);
 }
 
-void FCSettingParametersWidget::onMeshGenerated(IdType meshID, bool r)
+void FCSettingParametersWidget::updateCurrentSettingWidget(const IdType id, const QString &name)
 {
-    qDebug() << "mesh id: " << meshID;
+    Q_UNUSED(name)
+    
+    if (id == 0) {
+        setCurrentWidget(nullptr);   
+    }
 }
+
+// void FCSettingParametersWidget::onMeshGenerated(IdType meshID, bool r)
+// {
+//     qDebug() << "mesh id: " << meshID;
+// }
 
 void FCSettingParametersWidget::setCurrentWidget(QWidget *w)
 {

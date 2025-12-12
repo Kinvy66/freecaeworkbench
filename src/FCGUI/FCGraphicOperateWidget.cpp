@@ -98,7 +98,13 @@ void FCGraphicOperateWidget::updateGeometryActor()
 
 void FCGraphicOperateWidget::deleteGeometryActor(const IdType id)
 {
-    mGraphViewWindow->removeGemoActor(id);
+    mGraphViewWindow->removeGeoActor(id);
+}
+
+void FCGraphicOperateWidget::deleteMeshActor(const IdType id)
+{
+    mGraphViewWindow->removeMeshActor(id);
+    
 }
 
 void FCGraphicOperateWidget::showModel(FCGeometrySet *set, bool r)

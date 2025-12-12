@@ -73,6 +73,7 @@ void FCMeshViewProvider::updateMeshActorSlot()
 
 void FCMeshViewProvider::showMesh(IdType meshID, bool r)
 {
+    removeDisplay(meshID);
     if (!mMeshViewObjects.contains(meshID))
     {
         auto vobj = new FCMeshViewObject(meshID);
@@ -406,6 +407,20 @@ void FCMeshViewProvider::showKernal(IdType meshID, bool show)
 QMultiHash<int, int> *FCMeshViewProvider::getSelectItem()
 {
     return &mHighLightSelectItems;
+}
+
+void FCMeshViewProvider::removeMeshActor(IdType meshID)
+{
+    auto viewObj = mMeshViewObjects.value(meshID);
+    if (viewObj == nullptr)
+        return;
+    vtkActor **ac = viewObj->getActor();
+    mGraphViewWindow->RemoveActor(ac[POINTACTOR]);
+    mGraphViewWindow->RemoveActor(ac[EDGEACTOR]);
+    mGraphViewWindow->RemoveActor(ac[FACEACTOR]);
+    mMeshViewObjects.remove(meshID);
+    delete viewObj;
+    mGraphViewWindow->reRender();
 }
 
 

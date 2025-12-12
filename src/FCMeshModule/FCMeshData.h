@@ -54,7 +54,7 @@ public:
     void removeKernalAt(const int index);
     
     // 移除ID为i的Kernal
-    void removeKernalByID(const int id);
+    void removeKernalByID(const IdType  id);
     
     // 获取与ID为kid的Kernal相关的全部组件ID
     QList<int> getSetIDFromKernal(int kid);

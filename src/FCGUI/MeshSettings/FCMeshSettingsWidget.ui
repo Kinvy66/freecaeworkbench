@@ -161,12 +161,47 @@
          <widget class="QComboBox" name="comboBoxMethod">
           <item>
            <property name="text">
-            <string>Auto</string>
+            <string>MeshAdapt</string>
            </property>
           </item>
           <item>
            <property name="text">
-            <string>Mesh Adapt</string>
+            <string>Automatic</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Initial mesh only</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Delaunay</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Frontal-Delaunay</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>BAMG</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Frontal-Delaunay for Quads</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Packing of Parallelograms</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Quasi-structured Quad)</string>
            </property>
           </item>
          </widget>
@@ -186,6 +221,12 @@
          <widget class="QDoubleSpinBox" name="doubleSpinBoxSizeFac">
           <property name="decimals">
            <number>3</number>
+          </property>
+          <property name="maximum">
+           <double>1000000.000000000000000</double>
+          </property>
+          <property name="singleStep">
+           <double>0.100000000000000</double>
           </property>
           <property name="value">
            <double>1.000000000000000</double>
@@ -219,8 +260,11 @@
         </item>
         <item>
          <widget class="QDoubleSpinBox" name="doubleSpinBoxMaxSize">
+          <property name="maximum">
+           <double>10000000000.000000000000000</double>
+          </property>
           <property name="value">
-           <double>99.989999999999995</double>
+           <double>100.000000000000000</double>
           </property>
          </widget>
         </item>

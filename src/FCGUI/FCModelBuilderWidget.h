@@ -42,6 +42,9 @@ signals:
     void currentGeoItemChanged(const IdType, const QString& name);
     void currentMeshItemChanged(const IdType, const QString& name);
     
+    void currentItemChanged(const IdType, const QString& name);
+    
+    
     void deleteGeometryEntity(const IdType, const QString& name);
     void deleteMeshEntity(const IdType, const QString& name);
     

@@ -29,6 +29,8 @@ FCModelBuilderWidget::FCModelBuilderWidget(QWidget *parent)
             this, &FCModelBuilderWidget::onCurrentItemChanged);
     connect(mProjectTree, &FCProjectTree::deleteGeometryEntity,
             this,&FCModelBuilderWidget::deleteGeometryEntity);
+    connect(mProjectTree, &FCProjectTree::deleteMeshEntity,
+            this,&FCModelBuilderWidget::deleteMeshEntity);
 }
 
 FCModelBuilderWidget::~FCModelBuilderWidget()
@@ -45,7 +47,6 @@ void FCModelBuilderWidget::updateGeometryTree(const IdType id, const QString &na
 void FCModelBuilderWidget::updateMeshTree(const IdType id, const QString &name)
 {
     mProjectTree->updateMeshTree(id, name);
-    
 }
 
 /**
@@ -85,6 +86,8 @@ void FCModelBuilderWidget::onCurrentItemChanged(QTreeWidgetItem *current, QTreeW
          emit currentGeoItemChanged(id, currentName);
     } else if (type == MeshEmtity){
         emit currentMeshItemChanged(id, currentName);
+    } else {
+        emit currentItemChanged(0, currentName);
     }
 }
 

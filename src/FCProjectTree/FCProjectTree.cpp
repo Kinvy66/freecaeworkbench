@@ -688,7 +688,7 @@ void FCProjectTree::deleteEntityItem()
                 emit deleteGeometryEntity(itemId, name);
             } else if (type == MeshEmtity) {
                 emit deleteMeshEntity(itemId, name);
-            }
+            } 
         }
     }
     

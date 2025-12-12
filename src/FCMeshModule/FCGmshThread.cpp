@@ -81,10 +81,10 @@ void FCGmshThread::run()
         }
         emit progress(mMeshID, 75);
         
-        if (!saveMeshToFile(mMeshID)) {
-            finalizeGmsh();
-            return;
-        }
+        // if (!saveMeshToFile(mMeshID)) {
+        //     finalizeGmsh();
+        //     return;
+        // }
         
         vtkUnstructuredGrid* grid = convertGmshToVtk();
         if (!grid) {
@@ -117,7 +117,7 @@ bool FCGmshThread::initGmsh()
 {
     try {
         gmsh::initialize();
-        gmsh::option::setNumber("General.Terminal", 1);
+        gmsh::option::setNumber("General.Terminal", 0);
         // model name will be created in import step or here
         return true;
     } catch (...) {
@@ -139,6 +139,10 @@ bool FCGmshThread::importAllOccShapesToGmsh()
     }
     
     QList<IdType> geoIds = mk->getBindedGeometry();
+    if (geoIds.isEmpty()) {
+        qWarning() << "Not select geometry!";
+        return false;
+    }
     
     // We'll collect created temporary filenames so we can cleanup reliably
     QStringList tmpFiles;
@@ -212,13 +216,18 @@ bool FCGmshThread::importAllOccShapesToGmsh()
 void FCGmshThread::applyMeshSettings()
 {
     if (!mSetting) return;
-    gmsh::option::setNumber("Mesh.CharacteristicLengthMin", mSetting->getMinSize());
-    gmsh::option::setNumber("Mesh.CharacteristicLengthMax", mSetting->getMaxSize());
+    gmsh::option::setNumber("Mesh.MeshSizeMin", mSetting->getMinSize());
+    gmsh::option::setNumber("Mesh.MeshSizeMax", mSetting->getMaxSize());
+    gmsh::option::setNumber("Mesh.MeshSizeFactor", mSetting->getSizeFactor());
     gmsh::option::setNumber("Mesh.ElementOrder", mSetting->getElementOrder());
+    gmsh::option::setNumber("Mesh.Smoothing", mSetting->getSmoothIteration());
+    gmsh::option::setNumber("Mesh.Algorithm", mSetting->getMethod());
     
     if (mSetting->getElementType() == "quad" ||
         mSetting->getElementType() == "hex") {
         gmsh::option::setNumber("Mesh.RecombineAll", 1);
+    } else {
+        gmsh::option::setNumber("Mesh.RecombineAll", 0);
     }
 }
 

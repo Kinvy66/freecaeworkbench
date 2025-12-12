@@ -16,6 +16,8 @@ namespace FC
 
 class FCGeometryData;
 class FCGeometrySet;
+class FCMeshData;
+class FCMeshKernal;
 class FCGeometryViewProvider;
 class FCMeshViewProvider;
 
@@ -90,7 +92,10 @@ public slots:
     void highLighSet(QMultiHash<int, int> *items);
     //更新几何渲染
     void updateGeometryActor();
-    void removeGemoActor(const IdType id);
+    void removeGeoActor(const IdType id);
+    
+    void removeMeshActor(const IdType id);
+    
     //高亮一个几何组件;
     // void highLightGeoComponentSlot(GeoComponent *);
     
@@ -101,7 +106,7 @@ private slots:
     
     //网格
     void updateMeshDispaly(int index, bool display);
-    void removeMeshActor(const int index);
+    // void removeMeshActor(const int index);
     //草图
     void startSketch(bool start, double *loc, double *dir);
     
@@ -111,7 +116,7 @@ private:
     SelectModel mSelectModel;
     QMultiHash<vtkDataSet *, int> *mSelectItems{};
     //
-    // MeshData::MeshData *_meshData{};
+    FCMeshData *mMeshData{};
     FCGeometryData *mGeometryData{};
     
     // ModelData::ModelDataSingleton *_modelData{};

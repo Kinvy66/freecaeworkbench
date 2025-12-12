@@ -72,7 +72,7 @@ void FCGmshSettingData::setElementType(QString type)
 
 QString FCGmshSettingData::getElementType()
 {
-    return mElementType;
+    return mElementType.toLower();
 }
 
 void FCGmshSettingData::setElementOrder(int order)

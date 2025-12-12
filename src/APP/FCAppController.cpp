@@ -202,8 +202,8 @@ void FCAppController::initConnection()
     // 网格生成成功，通知渲染窗口显示
     connect(settingsWidget, &FCSettingParametersWidget::meshGenerated,
             grapicWidget,&FCGraphicOperateWidget::showMesh);
-    connect(settingsWidget, &FCSettingParametersWidget::meshGenerated,
-            this,&FCAppController::onTestSlot);
+    // connect(settingsWidget, &FCSettingParametersWidget::meshGenerated,
+    //         this,&FCAppController::onTestSlot);
     
     FCModelBuilderWidget* modelBuilderWidget = mDock->getModelBuilderWidget();
     // 工程树几何节点当前选择改变，通知参数设置窗口改变
@@ -212,6 +212,10 @@ void FCAppController::initConnection()
     // 工程树网格节点当前选择改变，通知参数设置窗口改变
     connect(modelBuilderWidget, &FCModelBuilderWidget::currentMeshItemChanged,
             settingsWidget, &FCSettingParametersWidget::updateCurrentMeshSettingWidget);
+    
+    
+    connect(modelBuilderWidget, &FCModelBuilderWidget::currentItemChanged,
+            settingsWidget, &FCSettingParametersWidget::updateCurrentSettingWidget);
     
     connect(modelBuilderWidget, &FCModelBuilderWidget::deleteGeometryEntity,
             this, &FCAppController::deletGeometryEntity);
@@ -292,7 +296,8 @@ void FCAppController::deletGeometryEntity(const IdType id, QString name)
 
 void FCAppController::deletMeshEntity(const IdType id, QString name)
 {
-    
+    FCGraphicOperateWidget* grapicWidget = mDock->getGraphicOperateWidget();
+    grapicWidget->deleteMeshActor(id);
 }
 
 void FCAppController::save()

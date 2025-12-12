@@ -108,12 +108,14 @@ void FCMeshData::removeKernalAt(const int index)
     mMeshList.removeAt(index);
 }
 
-void FCMeshData::removeKernalByID(const int id)
+void FCMeshData::removeKernalByID(const IdType  id)
 {
-    auto k = this->getMeshKernalByID(id);
-    int index = mMeshList.indexOf(k);
-    if (index < 0) return;
-    this->removeKernalAt(index);
+    // auto k = this->getMeshKernalByID(id);
+    // int index = mMeshList.indexOf(k);
+    // if (index < 0) return;
+    // this->removeKernalAt(index);
+    
+    mMeshKernals.remove(id);
 }
 
 void FCMeshData::clear()

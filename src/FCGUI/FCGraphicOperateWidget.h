@@ -43,6 +43,8 @@ public:
     FCGraphViewWindow*	getGraphViewWindow();
     
     void deleteGeometryActor(const IdType id);
+    void deleteMeshActor(const IdType id);
+    
     
 signals:
     void showGeoSet(const IdType id, bool render = true);

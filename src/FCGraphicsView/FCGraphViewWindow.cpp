@@ -9,6 +9,8 @@
 #include "FCGraphViewWindow.h"
 #include "FCGeometrySet.h"
 #include "FCGeometryData.h"
+#include "FCMeshData.h"
+#include "FCMeshKernal.h"
 #include "FCGeometryViewProvider.h"
 #include "FCMeshViewProvider.h"
 
@@ -19,6 +21,7 @@ FCGraphViewWindow::FCGraphViewWindow(int id, QWidget* parent)
     : FCGraph3DWindow(id, parent)
 {
     mGeometryData = FCGeometryData::getInstance();
+    mMeshData = FCMeshData::getInstance();
     mGeoProvider = new FCGeometryViewProvider(this);
     mMeshProvider = new FCMeshViewProvider(this);
     connect(this, &FCGraphViewWindow::showGeoSet,
@@ -50,7 +53,7 @@ void FCGraphViewWindow::updateGeoDispaly(int index, bool display)
     // mGeoProvider->updateDiaplayStates(s, display);
 }
 
-void FCGraphViewWindow::removeGemoActor(const IdType id)
+void FCGraphViewWindow::removeGeoActor(const IdType id)
 {
     FCGeometrySet *set = mGeometryData->getGeometrySetByID(id);
     if (set == nullptr)
@@ -59,6 +62,16 @@ void FCGraphViewWindow::removeGemoActor(const IdType id)
     mGeometryData->removeGeometrySet(id);
     delete set;
 }
+
+void FCGraphViewWindow::removeMeshActor(const IdType id)
+{
+    FCMeshKernal* k = mMeshData->getMeshKernalByID(id);
+    if (k == nullptr) return;
+    mMeshProvider->removeMeshActor(id);
+    mMeshData->removeKernalByID(id);
+    delete k;
+}
+
 
 // FCGeometrySet *FCGraphViewWindow::getSelectedGeoSet()
 // {
@@ -98,11 +111,6 @@ void FCGraphViewWindow::updateMeshDispaly(int index, bool display)
     // _meshProvider->showKernal(k, display);
 }
 
-void FCGraphViewWindow::removeMeshActor(const int index)
-{
-    // Q_UNUSED(index)
-    // _meshProvider->updateMeshActorSlot();
-}
 
 void FCGraphViewWindow::setSelectModel(int mode)
 {
