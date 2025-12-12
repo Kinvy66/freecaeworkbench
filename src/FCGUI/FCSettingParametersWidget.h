@@ -35,6 +35,9 @@ public:
     
     void addMesh();
     
+protected:
+    void paintEvent(QPaintEvent *event) override;
+    
     
 public slots:
     void updateCurrentGeoSettingWidget(const IdType id, const QString& name);

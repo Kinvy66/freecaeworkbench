@@ -9,6 +9,7 @@
 #include "FCSettingParametersWidget.h"
 #include <QLabel>
 #include <QVBoxLayout>
+#include <QPainter>
 
 #include "FCGeometryData.h"
 #include "FCGeometrySet.h"
@@ -31,7 +32,14 @@ FCSettingParametersWidget::FCSettingParametersWidget(QWidget *parent)
     // QLabel* lab = new QLabel(this);
     // lab->setText("Setting Docking");
     mLayout = new QVBoxLayout(this);
+    // --- 添加背景色和边框 ---
     
+    // 背景颜色不使用 QSS，避免子控件继承
+    this->setAutoFillBackground(true);
+    
+    QPalette pal = this->palette();
+    pal.setColor(QPalette::Window, QColor(250, 251, 254));
+    this->setPalette(pal);
 }
 
 FCSettingParametersWidget::~FCSettingParametersWidget()
@@ -131,6 +139,24 @@ void FCSettingParametersWidget::addMesh()
     settingsWidget->addMesh();
     
     // setCurrentWidget(settingsWidget);
+}
+
+void FCSettingParametersWidget::paintEvent(QPaintEvent *event)
+{
+    QWidget::paintEvent(event);
+    
+    QPainter p(this);
+    p.setRenderHint(QPainter::Antialiasing);
+    
+    QPen pen(QColor(130, 135, 144));
+   
+    pen.setWidth(1);              // 设置边框粗细 = 2 像素
+    p.setPen(pen);
+    // 边框整体缩小 5px
+    int margin = 2;
+    QRect r = rect().adjusted(margin, margin, -margin-1, -margin-1);
+    
+    p.drawRect(r);
 }
 
 /**
