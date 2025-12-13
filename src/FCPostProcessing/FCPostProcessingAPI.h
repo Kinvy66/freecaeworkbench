@@ -1,0 +1,14 @@
+#ifndef FCPOSTPROCESSINGAPI_H
+#define FCPOSTPROCESSINGAPI_H
+
+#include <QtCore/QtGlobal>
+#include "FCGlobals.h"
+
+#if defined(FCPOSTPROCESSING_BUILDLIB)
+#define FCPOSTPROCESSING_API Q_DECL_EXPORT
+#else
+#define FCPOSTPROCESSING_API Q_DECL_IMPORT
+#endif
+
+
+#endif // FCPOSTPROCESSINGAPI_H

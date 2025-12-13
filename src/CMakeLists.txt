@@ -25,3 +25,4 @@ add_subdirectory(FCMeshModule)
 add_subdirectory(APP)
 
 
+add_subdirectory(FCPostProcessing)

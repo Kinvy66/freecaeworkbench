@@ -163,9 +163,13 @@ public Q_SLOTS:
     
     void addMesh();
     
+    void compute();
+    
     void onUpdateGeoTree(const IdType id, const QString& name);
     
     void onUpdateMeshTree(const IdType id, const QString& name);
+    
+    void onCurrentPostProcessingItemChanged(const IdType id, const QString& name);
     
 private Q_SLOTS:
     // 工程的胀状态改变槽

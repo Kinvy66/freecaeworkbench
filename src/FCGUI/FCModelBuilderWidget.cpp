@@ -49,6 +49,11 @@ void FCModelBuilderWidget::updateMeshTree(const IdType id, const QString &name)
     mProjectTree->updateMeshTree(id, name);
 }
 
+void FCModelBuilderWidget::updatePostProcessingTree(const IdType id, const QString &name)
+{
+    mProjectTree->updatePostProcessingTree(id, name);
+}
+
 /**
  * @brief 删除当前选中的几何实体
  */
@@ -86,6 +91,8 @@ void FCModelBuilderWidget::onCurrentItemChanged(QTreeWidgetItem *current, QTreeW
          emit currentGeoItemChanged(id, currentName);
     } else if (type == MeshEmtity){
         emit currentMeshItemChanged(id, currentName);
+    } else if (type == PostProcessingEntity) {
+        emit currentPostProcessingItemChanged(id, currentName);
     } else {
         emit currentItemChanged(0, currentName);
     }

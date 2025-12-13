@@ -59,6 +59,11 @@ public:
      */
     void updateGraphOption(IdType meshID/* FCMeshKernal *k = nullptr*/);
     /**
+     * @brief 隐藏/显示所有网格
+     * @param visible 是否可见
+     */
+    void setAllMeshVisible(bool visible);
+    /**
      * @brief   是否显示Kernal
      * @param  k     网格Kernal
      * @param  show  是否显示

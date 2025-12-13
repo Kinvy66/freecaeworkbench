@@ -34,6 +34,7 @@ enum EntityType
     EntityTypeNone,
     GeometryEntity,         // 几何
     MeshEmtity,             // 网格
+    PostProcessingEntity,   // 后处理
 };
 
 class FCPROJECTTREE_API FCTreeWidget : public QTreeWidget

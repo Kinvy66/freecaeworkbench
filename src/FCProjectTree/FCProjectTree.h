@@ -38,6 +38,8 @@ public:
     
     void updateMeshTree(const IdType id, const QString& name);
     
+    void updatePostProcessingTree(const IdType id, const QString& name);
+    
     
     void deleteEntityItem();
     
@@ -85,6 +87,7 @@ private:
     // 几何根节点
     QTreeWidgetItem* mGeoRoot;
     QTreeWidgetItem* mMeshRoot;
+    QTreeWidgetItem* mPostProcessingRoot;  // 3维绘图根节点
     
     
 };

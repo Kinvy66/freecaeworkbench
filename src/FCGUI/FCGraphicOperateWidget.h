@@ -45,13 +45,18 @@ public:
     void deleteGeometryActor(const IdType id);
     void deleteMeshActor(const IdType id);
     
+    // 后处理相关方法（通过信号传递给FCGraphViewWindow）
+    void setGeometryVisible(bool visible);
+    void setMeshVisible(bool visible);
     
 signals:
     void showGeoSet(const IdType id, bool render = true);
     void showMesh(const IdType id, bool render = true);
+    void showPostProcessing(const IdType id, bool render = true);
     
     void updateGeometryAcotr(const IdType id);
     void updateMeshAcotr(const IdType id);
+    void updatePostProcessingAcotr(const IdType id);
     
 public slots:
     void showModel(FCGeometrySet* set, bool r);

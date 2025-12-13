@@ -43,6 +43,9 @@ public:
     void updateDiaplayStates(const IdType id, bool visibility);
     QMultiHash<IdType, int> getGeoSelectItems();
     
+    // 隐藏/显示所有几何体
+    void setAllGeometryVisible(bool visible);
+    
 public slots:
     void showGeoSet(const IdType id, bool render = true);
     // void showDatum(const IdType id);

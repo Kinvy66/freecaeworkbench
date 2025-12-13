@@ -295,6 +295,22 @@ void FCMeshViewProvider::updateDisplayModel(IdType meshID /* FCMeshKernal *k = n
     }
 }
 
+void FCMeshViewProvider::setAllMeshVisible(bool visible)
+{
+    // 遍历所有网格，设置可见性
+    for (auto it = mMeshViewObjects.begin(); it != mMeshViewObjects.end(); ++it) {
+        FCMeshViewObject* vobj = it.value();
+        if (vobj) {
+            vtkActor** actors = vobj->getActor();
+            if (actors) {
+                actors[0]->SetVisibility(visible ? 1 : 0); // POINTACTOR
+                actors[1]->SetVisibility(visible ? 1 : 0); // EDGEACTOR
+                actors[2]->SetVisibility(visible ? 1 : 0); // FACEACTOR
+            }
+        }
+    }
+}
+
 void FCMeshViewProvider::updateGraphOption(IdType meshID)
 {
     QList<FCMeshViewObject *> vobjs;

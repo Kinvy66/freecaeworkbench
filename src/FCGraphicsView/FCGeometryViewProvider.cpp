@@ -91,6 +91,24 @@ void FCGeometryViewProvider::updateGraphOption()
 {
 }
 
+void FCGeometryViewProvider::setAllGeometryVisible(bool visible)
+{
+    // 遍历所有几何体，设置可见性
+    for (auto it = mGeoViewHash.begin(); it != mGeoViewHash.end(); ++it) {
+        GeoViewObj& viewObj = it.value();
+        
+        if (viewObj.mFaceObj.first) {
+            viewObj.mFaceObj.first->SetVisibility(visible ? 1 : 0);
+        }
+        if (viewObj.mEdgeObj.first) {
+            viewObj.mEdgeObj.first->SetVisibility(visible ? 1 : 0);
+        }
+        if (viewObj.mPointObj.first) {
+            viewObj.mPointObj.first->SetVisibility(visible ? 1 : 0);
+        }
+    }
+}
+
 void FCGeometryViewProvider::updateDiaplayStates(const IdType id, bool visibility)
 {
     

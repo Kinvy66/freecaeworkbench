@@ -12,6 +12,7 @@
 #include <QColor>
 #include <QDir>
 #include <QVBoxLayout>
+#include <QHBoxLayout>
 #include <assert.h>
 #include <QPushButton>
 // vtk
@@ -57,12 +58,59 @@ FCGraph3DWindow::FCGraph3DWindow(int id,QWidget* parent)
     QVBoxLayout *layout = new QVBoxLayout(this);
     layout->setContentsMargins(2, 2, 2, 2);  // 去掉边距
     
-    // ===== 新增：按钮行 =====
+    // ===== 新增：交互器测试按钮行 =====
     QHBoxLayout *topBar = new QHBoxLayout();
-    QPushButton *btnProjection = new QPushButton("切换投影模式", this);
+    topBar->setContentsMargins(5, 5, 5, 5);
+    topBar->setSpacing(5);
+    
+    QPushButton *btnProjection = new QPushButton(tr("切换投影"), this);
+    btnProjection->setToolTip(tr("在透视投影和正交投影之间切换"));
     topBar->addWidget(btnProjection);
-    topBar->addStretch();    // 靠左
+    
+    QPushButton *btnResetCamera = new QPushButton(tr("重置视角"), this);
+    btnResetCamera->setToolTip(tr("重置相机到默认视角"));
+    topBar->addWidget(btnResetCamera);
+    
+    QPushButton *btnFitView = new QPushButton(tr("适应窗口"), this);
+    btnFitView->setToolTip(tr("调整视角以适应所有对象"));
+    topBar->addWidget(btnFitView);
+    
+    QPushButton *btnToggleAxes = new QPushButton(tr("显示/隐藏坐标轴"), this);
+    btnToggleAxes->setToolTip(tr("切换坐标轴显示"));
+    topBar->addWidget(btnToggleAxes);
+    
+    QPushButton *btnToggleScalarBar = new QPushButton(tr("显示/隐藏标量条"), this);
+    btnToggleScalarBar->setToolTip(tr("切换标量条显示"));
+    topBar->addWidget(btnToggleScalarBar);
+    
+    topBar->addStretch();    // 靠左对齐
+    
     layout->addLayout(topBar);
+    
+    // 连接信号槽
+    connect(btnProjection, &QPushButton::clicked, this, &FCGraph3DWindow::toggleProjection);
+    connect(btnResetCamera, &QPushButton::clicked, this, [this]() {
+        this->resetCamera();
+        this->reRender();
+    });
+    connect(btnFitView, &QPushButton::clicked, this, [this]() {
+        this->fitView();
+        this->reRender();
+    });
+    connect(btnToggleAxes, &QPushButton::clicked, this, [this]() {
+        if (mAxesWidget) {
+            bool visible = mAxesWidget->GetEnabled();
+            mAxesWidget->SetEnabled(!visible);
+            this->reRender();
+        }
+    });
+    connect(btnToggleScalarBar, &QPushButton::clicked, this, [this]() {
+        if (mScalarBarWidget) {
+            bool visible = mScalarBarWidget->GetEnabled();
+            mScalarBarWidget->SetEnabled(!visible);
+            this->reRender();
+        }
+    });
     
     
     // ===== VTK Widget =====
@@ -75,10 +123,30 @@ FCGraph3DWindow::FCGraph3DWindow(int id,QWidget* parent)
     vtkCamera *camera = mRender->GetActiveCamera();
     camera->SetParallelProjection(false);
     
-    // ===== 信号槽：切换投影 =====
-    // connect(btnProjection, &QPushButton::clicked, this, [this]() {
-    //     this->toggleProjection();
-    // });
+    // ===== 信号槽：交互器测试按钮 =====
+    connect(btnProjection, &QPushButton::clicked, this, &FCGraph3DWindow::toggleProjection);
+    connect(btnResetCamera, &QPushButton::clicked, this, [this]() {
+        this->resetCamera();
+        this->reRender();
+    });
+    connect(btnFitView, &QPushButton::clicked, this, [this]() {
+        this->fitView();
+        this->reRender();
+    });
+    connect(btnToggleAxes, &QPushButton::clicked, this, [this]() {
+        if (mAxesWidget) {
+            bool visible = mAxesWidget->GetEnabled();
+            mAxesWidget->SetEnabled(!visible);
+            this->reRender();
+        }
+    });
+    connect(btnToggleScalarBar, &QPushButton::clicked, this, [this]() {
+        if (mScalarBarWidget) {
+            bool visible = mScalarBarWidget->GetEnabled();
+            mScalarBarWidget->SetEnabled(!visible);
+            this->reRender();
+        }
+    });
 }
 
 

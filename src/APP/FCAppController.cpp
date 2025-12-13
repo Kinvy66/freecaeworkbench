@@ -21,6 +21,9 @@
 #include <QApplication>
 #include <QActionGroup>
 #include <QDebug>
+
+#include <vtkDataSet.h>
+
 // API
 #include "AppMainWindow.h"
 #include "FCAppCore.h"
@@ -39,6 +42,11 @@
 #include "FCModelBuilderWidget.h"
 // sub module
 #include "FCGeometryData.h"
+#include "FCMeshModule.h"
+#include "FCMeshData.h"
+#include "FCMeshKernal.h"
+#include "FCPostProcessingModule.h"
+#include "FCPostProcessingData.h"
 
 #ifndef FCAPPRIBBONAREA_WINDOW_NAME
 #define FCAPPRIBBONAREA_WINDOW_NAME QCoreApplication::translate("FCAppController", "FC", nullptr)
@@ -56,372 +64,463 @@ QMessageBox::                                                                   
 // 快速链接信号槽
 #define FCAPPCONTROLLER_ACTION_BIND(actionname, functionname)                                                          \
     connect(actionname, &QAction::triggered, this, &FCAppController::functionname)
-
-namespace FC 
+    
+    namespace FC 
 {
-FCAppController::FCAppController(QObject* par) : QObject(par)
-{
-}
-
-FCAppController::~FCAppController()
-{
-}
-
-/**
+    FCAppController::FCAppController(QObject* par) : QObject(par)
+    {
+    }
+    
+    FCAppController::~FCAppController()
+    {
+    }
+    
+    /**
  * @brief 设置AppMainWindow
  * @param mainWindow
  * @return 返回自身引用,方便链式调用
  */
-FCAppController &FCAppController::setAppMainWindow(AppMainWindow *mainWindow)
-{
-    mMainWindow = mainWindow;
-    return (*this);
-}
-
-/**
+    FCAppController &FCAppController::setAppMainWindow(AppMainWindow *mainWindow)
+    {
+        mMainWindow = mainWindow;
+        return (*this);
+    }
+    
+    /**
  * @brief 设置core
  * @param core
  * @return
  */
-FCAppController &FCAppController::setAppCore(FCAppCore *core)
-{
-    mCore    = core;
-    mProject = mCore->getProjectInterface();
-    return (*this);
-}
-
-/**
+    FCAppController &FCAppController::setAppCore(FCAppCore *core)
+    {
+        mCore    = core;
+        mProject = mCore->getProjectInterface();
+        return (*this);
+    }
+    
+    /**
  * @brief 设置ribbon
  * @param ribbon
  * @return 返回自身引用,方便链式调用
  */
-FCAppController &FCAppController::setAppRibbonArea(FCAppRibbonArea *ribbon)
-{
-    mRibbon = ribbon;
-    return (*this);
-}
-
-/**
+    FCAppController &FCAppController::setAppRibbonArea(FCAppRibbonArea *ribbon)
+    {
+        mRibbon = ribbon;
+        return (*this);
+    }
+    
+    /**
  * @brief 设置dock
  * @param dock
  * @return 返回自身引用,方便链式调用
  */
-FCAppController &FCAppController::setAppDockingArea(FCAppDockingArea *dock)
-{
-    mDock = dock;
+    FCAppController &FCAppController::setAppDockingArea(FCAppDockingArea *dock)
+    {
+        mDock = dock;
+        
+        return (*this);
+    }
     
-    return (*this);
-}
-
-/**
+    /**
  * @brief 设置AppCommand
  * @param cmd
  * @return 返回自身引用,方便链式调用
  */
-FCAppController &FCAppController::setAppCommand(FCAppCommand *cmd)
-{
-    mCommand = cmd;
-    return (*this);
-}
-
-/**
+    FCAppController &FCAppController::setAppCommand(FCAppCommand *cmd)
+    {
+        mCommand = cmd;
+        return (*this);
+    }
+    
+    /**
  * @brief 设置AppActions
  * @param act
  * @return 返回自身引用,方便链式调用
  */
-FCAppController &FCAppController::setAppActions(FCAppActions *act)
-{
-    mActions = act;
-    return (*this);
-}
-
-/**
+    FCAppController &FCAppController::setAppActions(FCAppActions *act)
+    {
+        mActions = act;
+        return (*this);
+    }
+    
+    /**
  * @brief 设置app数据管理
  * @param d
  * @return 
  */
-FCAppController &FCAppController::setAppDataManager(FCAppDataManager *d)
-{
-    mDatas = d;
-    return (*this);
-}
-
-/**
+    FCAppController &FCAppController::setAppDataManager(FCAppDataManager *d)
+    {
+        mDatas = d;
+        return (*this);
+    }
+    
+    /**
  * @brief 获取app
  * @return
  */
-AppMainWindow *FCAppController::app() const
-{
-     return mMainWindow;
-}
-
-/**
+    AppMainWindow *FCAppController::app() const
+    {
+        return mMainWindow;
+    }
+    
+    /**
  * @brief 控制层初始化
  */
-void FCAppController::initialize()
-{
-    initConnection();
-}
-
-/**
+    void FCAppController::initialize()
+    {
+        initConnection();
+    }
+    
+    /**
  * @brief action和slot connect
  */
-void FCAppController::initConnection()
-{
-    // Main Category
-    FCAPPCONTROLLER_ACTION_BIND(mActions->actionOpen, open);
-    FCAPPCONTROLLER_ACTION_BIND(mActions->actionSave, save);
-    FCAPPCONTROLLER_ACTION_BIND(mActions->actionSaveAs, saveAs);
-    FCAPPCONTROLLER_ACTION_BIND(mActions->actionGlobalDelete, deleteProjectItem);
+    void FCAppController::initConnection()
+    {
+        // Main Category
+        FCAPPCONTROLLER_ACTION_BIND(mActions->actionOpen, open);
+        FCAPPCONTROLLER_ACTION_BIND(mActions->actionSave, save);
+        FCAPPCONTROLLER_ACTION_BIND(mActions->actionSaveAs, saveAs);
+        FCAPPCONTROLLER_ACTION_BIND(mActions->actionGlobalDelete, deleteProjectItem);
+        
+        // 几何
+        FCAPPCONTROLLER_ACTION_BIND(mActions->actionResetLayout, resetLayout);
+        FCAPPCONTROLLER_ACTION_BIND(mActions->actionCreateCube, createCube);
+        FCAPPCONTROLLER_ACTION_BIND(mActions->actionCreateCylinder, createCylinder);
+        FCAPPCONTROLLER_ACTION_BIND(mActions->actionCreateCone, createCone);
+        FCAPPCONTROLLER_ACTION_BIND(mActions->actionCreateSphere, createSphere);
+        FCAPPCONTROLLER_ACTION_BIND(mActions->actionCreateTorus, createTorus);
+        
+        // 网格
+        FCAPPCONTROLLER_ACTION_BIND(mActions->actionAddMesh, addMesh);
+        
+        // 研究
+        FCAPPCONTROLLER_ACTION_BIND(mActions->actionCompute, compute);
+        
+        
+        // FCAPPCONTROLLER_ACTION_BIND(mActions->actionAppendProject, onActionAppendProjectTriggered);
+        
+        FCGraphicOperateWidget* grapicWidget = mDock->getGraphicOperateWidget();
+        FCSettingParametersWidget* settingsWidget = mDock->getSettingParametersWidget();
+        // 几何模型创建完成通知渲染窗口显示
+        connect(settingsWidget, &FCSettingParametersWidget::geometryModelCreated,
+                grapicWidget, &FCGraphicOperateWidget::showGeoSet);
+        // 几何模型修改通知更新工程树结构
+        connect(settingsWidget, &FCSettingParametersWidget::updateGeoTree,
+                this, &FCAppController::onUpdateGeoTree);
+        // 几何模型修改通知更新渲染窗口   
+        connect(settingsWidget, &FCSettingParametersWidget::updateGeometryAcotr,
+                grapicWidget,&FCGraphicOperateWidget::updateGeometryAcotr);
+        // 网格修改通知更新工程树结构
+        connect(settingsWidget, &FCSettingParametersWidget::updateMeshTree,
+                this, &FCAppController::onUpdateMeshTree);
+        // 网格生成成功，通知渲染窗口显示
+        connect(settingsWidget, &FCSettingParametersWidget::meshGenerated,
+                grapicWidget,&FCGraphicOperateWidget::showMesh);
+        // connect(settingsWidget, &FCSettingParametersWidget::meshGenerated,
+        //         this,&FCAppController::onTestSlot);
+        
+        FCModelBuilderWidget* modelBuilderWidget = mDock->getModelBuilderWidget();
+        // 工程树几何节点当前选择改变，通知参数设置窗口改变
+        connect(modelBuilderWidget, &FCModelBuilderWidget::currentGeoItemChanged,
+                settingsWidget, &FCSettingParametersWidget::updateCurrentGeoSettingWidget);
+        // 工程树网格节点当前选择改变，通知参数设置窗口改变
+        connect(modelBuilderWidget, &FCModelBuilderWidget::currentMeshItemChanged,
+                settingsWidget, &FCSettingParametersWidget::updateCurrentMeshSettingWidget);
+        // 工程树后处理节点当前选择改变，通知显示后处理结果
+        connect(modelBuilderWidget, &FCModelBuilderWidget::currentPostProcessingItemChanged,
+                this, &FCAppController::onCurrentPostProcessingItemChanged);
+        
+        
+        connect(modelBuilderWidget, &FCModelBuilderWidget::currentItemChanged,
+                settingsWidget, &FCSettingParametersWidget::updateCurrentSettingWidget);
+        
+        connect(modelBuilderWidget, &FCModelBuilderWidget::deleteGeometryEntity,
+                this, &FCAppController::deletGeometryEntity);
+        
+        connect(modelBuilderWidget, &FCModelBuilderWidget::deleteMeshEntity,
+                this, &FCAppController::deletMeshEntity);
+    }
     
-    FCAPPCONTROLLER_ACTION_BIND(mActions->actionResetLayout, resetLayout);
-    FCAPPCONTROLLER_ACTION_BIND(mActions->actionCreateCube, createCube);
-    FCAPPCONTROLLER_ACTION_BIND(mActions->actionCreateCylinder, createCylinder);
-    FCAPPCONTROLLER_ACTION_BIND(mActions->actionCreateCone, createCone);
-    FCAPPCONTROLLER_ACTION_BIND(mActions->actionCreateSphere, createSphere);
-    FCAPPCONTROLLER_ACTION_BIND(mActions->actionCreateTorus, createTorus);
     
-    FCAPPCONTROLLER_ACTION_BIND(mActions->actionAddMesh, addMesh);
-    
-    // FCAPPCONTROLLER_ACTION_BIND(mActions->actionAppendProject, onActionAppendProjectTriggered);
-    
-    FCGraphicOperateWidget* grapicWidget = mDock->getGraphicOperateWidget();
-    FCSettingParametersWidget* settingsWidget = mDock->getSettingParametersWidget();
-    // 几何模型创建完成通知渲染窗口显示
-    connect(settingsWidget, &FCSettingParametersWidget::geometryModelCreated,
-            grapicWidget, &FCGraphicOperateWidget::showGeoSet);
-    // 几何模型修改通知更新工程树结构
-    connect(settingsWidget, &FCSettingParametersWidget::updateGeoTree,
-            this, &FCAppController::onUpdateGeoTree);
-    // 几何模型修改通知更新渲染窗口   
-    connect(settingsWidget, &FCSettingParametersWidget::updateGeometryAcotr,
-            grapicWidget,&FCGraphicOperateWidget::updateGeometryAcotr);
-    // 网格修改通知更新工程树结构
-    connect(settingsWidget, &FCSettingParametersWidget::updateMeshTree,
-            this, &FCAppController::onUpdateMeshTree);
-    // 网格生成成功，通知渲染窗口显示
-    connect(settingsWidget, &FCSettingParametersWidget::meshGenerated,
-            grapicWidget,&FCGraphicOperateWidget::showMesh);
-    // connect(settingsWidget, &FCSettingParametersWidget::meshGenerated,
-    //         this,&FCAppController::onTestSlot);
-    
-    FCModelBuilderWidget* modelBuilderWidget = mDock->getModelBuilderWidget();
-    // 工程树几何节点当前选择改变，通知参数设置窗口改变
-    connect(modelBuilderWidget, &FCModelBuilderWidget::currentGeoItemChanged,
-            settingsWidget, &FCSettingParametersWidget::updateCurrentGeoSettingWidget);
-    // 工程树网格节点当前选择改变，通知参数设置窗口改变
-    connect(modelBuilderWidget, &FCModelBuilderWidget::currentMeshItemChanged,
-            settingsWidget, &FCSettingParametersWidget::updateCurrentMeshSettingWidget);
-    
-    
-    connect(modelBuilderWidget, &FCModelBuilderWidget::currentItemChanged,
-            settingsWidget, &FCSettingParametersWidget::updateCurrentSettingWidget);
-    
-    connect(modelBuilderWidget, &FCModelBuilderWidget::deleteGeometryEntity,
-            this, &FCAppController::deletGeometryEntity);
-    
-    connect(modelBuilderWidget, &FCModelBuilderWidget::deleteMeshEntity,
-            this, &FCAppController::deletMeshEntity);
-}
-
-
-/**
+    /**
  * @brief 设置工程为脏
  *
  * @note 如果工程状态已经是脏，此函数不会做任何动作也不会触发任何信号
  * @param on
  */
-void FCAppController::setDirty(bool on)
-{
-    // if (mProject) {
-    //     mProject->setModified(on);
-    // }
-}
-
-/**
+    void FCAppController::setDirty(bool on)
+    {
+        // if (mProject) {
+        //     mProject->setModified(on);
+        // }
+    }
+    
+    /**
  * @brief 工程是否为脏
  * @return
  */
-bool FCAppController::isDirty() const
-{
-    // if (mProject) {
-    //     return mProject->isDirty();
-    // }
-    return false;
-}
-
-/**
+    bool FCAppController::isDirty() const
+    {
+        // if (mProject) {
+        //     return mProject->isDirty();
+        // }
+        return false;
+    }
+    
+    /**
  * @brief 更新窗口标题
  */
-void FCAppController::updateWindowTitle()
-{
-    // FCAppProject* project = FC_APP_CORE.getAppProject();
-    // if (!project || project->isEmpty()) {
-    //     app()->setWindowTitle(makeWindowTitle());
-    //     return;
-    // }
-    // app()->setWindowTitle(makeWindowTitle(project));
-}
-
-/**
+    void FCAppController::updateWindowTitle()
+    {
+        // FCAppProject* project = FC_APP_CORE.getAppProject();
+        // if (!project || project->isEmpty()) {
+        //     app()->setWindowTitle(makeWindowTitle());
+        //     return;
+        // }
+        // app()->setWindowTitle(makeWindowTitle(project));
+    }
+    
+    /**
  * @brief 生成窗口标题
  * @return
  */
-QString FCAppController::makeWindowTitle()
-{
-    return QString("%1 [*]").arg(FCAPPRIBBONAREA_WINDOW_NAME);
-}
-
-/**
+    QString FCAppController::makeWindowTitle()
+    {
+        return QString("%1 [*]").arg(FCAPPRIBBONAREA_WINDOW_NAME);
+    }
+    
+    /**
  * @brief 生成当前项目下的窗口标题
  * @return
  */
-QString FCAppController::makeWindowTitle(FCProjectInterface *proj)
-{
-    return QString("%1 [*]").arg(FCAPPRIBBONAREA_WINDOW_NAME);    
-}
-
-/**
+    QString FCAppController::makeWindowTitle(FCProjectInterface *proj)
+    {
+        return QString("%1 [*]").arg(FCAPPRIBBONAREA_WINDOW_NAME);    
+    }
+    
+    /**
  * @brief 删除几何实体
  * @param id
  * @param name
  */
-void FCAppController::deletGeometryEntity(const IdType id, QString name)
-{
-    // FCGeometrySet* set = FCGeometryData::getInstance()->getGeometrySetByID(id);
-    FCGraphicOperateWidget* grapicWidget = mDock->getGraphicOperateWidget();
-    grapicWidget->deleteGeometryActor(id);
-    // qDebug() << "Remove"
-}
-
-void FCAppController::deletMeshEntity(const IdType id, QString name)
-{
-    FCGraphicOperateWidget* grapicWidget = mDock->getGraphicOperateWidget();
-    grapicWidget->deleteMeshActor(id);
-}
-
-void FCAppController::save()
-{
-    // FCAPPCONTROLLER_PASS();
-    FCGeometryData* geoData = mDatas->getGeometryData();
-    qDebug() << "geometry count : " << geoData->getGeometrySetCount();
-}
-
-void FCAppController::saveAs()
-{
-    FCAPPCONTROLLER_PASS();
-}
-
-void FCAppController::open()
-{
-    FCAPPCONTROLLER_PASS();
-}
-
-bool FCAppController::openProjectFile(const QString &projectFilePath)
-{
-    FCAPPCONTROLLER_PASS();
-    return true;
-}
-
-/**
+    void FCAppController::deletGeometryEntity(const IdType id, QString name)
+    {
+        // FCGeometrySet* set = FCGeometryData::getInstance()->getGeometrySetByID(id);
+        FCGraphicOperateWidget* grapicWidget = mDock->getGraphicOperateWidget();
+        grapicWidget->deleteGeometryActor(id);
+        // qDebug() << "Remove"
+    }
+    
+    void FCAppController::deletMeshEntity(const IdType id, QString name)
+    {
+        FCGraphicOperateWidget* grapicWidget = mDock->getGraphicOperateWidget();
+        grapicWidget->deleteMeshActor(id);
+    }
+    
+    void FCAppController::save()
+    {
+        // FCAPPCONTROLLER_PASS();
+        FCGeometryData* geoData = mDatas->getGeometryData();
+        qDebug() << "geometry count : " << geoData->getGeometrySetCount();
+    }
+    
+    void FCAppController::saveAs()
+    {
+        FCAPPCONTROLLER_PASS();
+    }
+    
+    void FCAppController::open()
+    {
+        FCAPPCONTROLLER_PASS();
+    }
+    
+    bool FCAppController::openProjectFile(const QString &projectFilePath)
+    {
+        FCAPPCONTROLLER_PASS();
+        return true;
+    }
+    
+    /**
  * @brief 删除item实体
  */
-void FCAppController::deleteProjectItem()
-{
-    mDock->getModelBuilderWidget()->deleteEntityItem();
-}
-
-/**
+    void FCAppController::deleteProjectItem()
+    {
+        mDock->getModelBuilderWidget()->deleteEntityItem();
+    }
+    
+    /**
  * @brief 重置布局
  */
-void FCAppController::resetLayout()
-{
-    qDebug() << "Reset layout";
-    mDock->restoreState();
-    FCAPPCONTROLLER_PASS();
+    void FCAppController::resetLayout()
+    {
+        qDebug() << "Reset layout";
+        mDock->restoreState();
+        FCAPPCONTROLLER_PASS();
+        
+    }
     
-}
-
-/**
+    /**
  * @brief 创建立方体
  */
-void FCAppController::createCube()
-{
-    mDock->getSettingParametersWidget()->createBox();
-    // mDock->getModelBuilderWidge()->addGeometryCube();
-}
-
-/**
+    void FCAppController::createCube()
+    {
+        mDock->getSettingParametersWidget()->createBox();
+        // mDock->getModelBuilderWidge()->addGeometryCube();
+    }
+    
+    /**
  * @brief 创建圆柱
  */
-void FCAppController::createCylinder()
-{
-    mDock->getSettingParametersWidget()->createCylinder();
+    void FCAppController::createCylinder()
+    {
+        mDock->getSettingParametersWidget()->createCylinder();
+        
+    }
     
-}
-
-/**
+    /**
  * @brief 创建圆锥
  */
-void FCAppController::createCone()
-{
-    mDock->getSettingParametersWidget()->createCone();
+    void FCAppController::createCone()
+    {
+        mDock->getSettingParametersWidget()->createCone();
+        
+    }
     
-}
-
-/**
+    /**
  * @brief 创建球体
  */
-void FCAppController::createSphere()
-{
-    mDock->getSettingParametersWidget()->createSphere();
+    void FCAppController::createSphere()
+    {
+        mDock->getSettingParametersWidget()->createSphere();
+        
+    }
     
-}
-
-/**
+    /**
  * @brief 创建圆环
  */
-void FCAppController::createTorus()
-{
-    mDock->getSettingParametersWidget()->createTorus();
+    void FCAppController::createTorus()
+    {
+        mDock->getSettingParametersWidget()->createTorus();
+        
+    }
     
-}
-
-/**
+    /**
  * @brief 添加网格
  */
-void FCAppController::addMesh()
-{
-    mDock->getSettingParametersWidget()->addMesh();
-}
-
-void FCAppController::onUpdateGeoTree(const IdType id, const QString &name)
-{
-    // qDebug() << "onUpdateGeoTree";
-    mDock->getModelBuilderWidget()->updateGeometryTree(id, name);
-}
-
-void FCAppController::onUpdateMeshTree(const IdType id, const QString &name)
-{
-    mDock->getModelBuilderWidget()->updateMeshTree(id, name);
-}
-
-void FCAppController::onActionAddDataTriggered()
-{
-    FCAPPCONTROLLER_PASS();
-}
-
-void FCAppController::onTestSlot(const IdType id, bool r)
-{
-    qDebug() << "test mesh id: " << id;
-}
-
-void FCAppController::onFocusedDockWidgetChanged(ads::CDockWidget *old, ads::CDockWidget *now)
-{
-    FCAPPCONTROLLER_PASS();
-}
-
-
+    void FCAppController::addMesh()
+    {
+        mDock->getSettingParametersWidget()->addMesh();
+    }
+    
+    /**
+ * @brief 计算
+ */
+    void FCAppController::compute()
+    {
+        qDebug() << "FCAppController::compute: starting computation";
+        
+        // 获取网格模块
+        // 注意：这里需要从某个地方获取FCMeshModule实例
+        // 由于FCMeshModule不是单例，需要从数据管理或UI中获取
+        // 这里先创建一个临时实例用于演示
+        FCMeshModule* meshModule = new FCMeshModule(this);
+        
+        // 获取所有网格ID
+        FCMeshData* meshData = FCMeshData::getInstance();
+        QList<FCMeshModule::IdType> meshIDs = meshData->getAllMeshID();
+        
+        qDebug() << "FCAppController::compute: found" << meshIDs.size() << "mesh(es)";
+        
+        if (meshIDs.isEmpty()) {
+            QMessageBox::warning(app(), tr("警告"), tr("没有可用的网格数据，请先生成网格。"));
+            return;
+        }
+        
+        // 创建后处理模块
+        FCPostProcessingModule* postModule = new FCPostProcessingModule(this);
+        
+        // 为每个网格生成后处理数据
+        for (auto meshID : meshIDs) {
+            qDebug() << "FCAppController::compute: processing meshID" << meshID;
+            
+            FCMeshKernal* meshKernal = meshData->getMeshKernalByID(meshID);
+            if (!meshKernal) {
+                qWarning() << "FCAppController::compute: meshKernal is null for meshID" << meshID;
+                continue;
+            }
+            
+            if (!meshKernal->getMeshData()) {
+                qWarning() << "FCAppController::compute: mesh data is null for meshID" << meshID;
+                continue;
+            }
+            
+            qDebug() << "FCAppController::compute: meshKernal found, name:" << meshKernal->getName()
+                     << "points:" << meshKernal->getMeshData()->GetNumberOfPoints()
+                     << "cells:" << meshKernal->getMeshData()->GetNumberOfCells();
+            
+            // 创建后处理
+            QString postName = QString("后处理_%1").arg(meshKernal->getName());
+            FCPostProcessingModule::IdType postID = postModule->createPostProcessing(postName, meshID);
+            qDebug() << "FCAppController::compute: created post processing, postID:" << postID << "name:" << postName;
+            
+            // 生成后处理数据（在网格上生成随机数据）
+            qDebug() << "FCAppController::compute: calling generatePostProcessingData for postID" << postID;
+            postModule->generatePostProcessingData(postID, meshID, meshModule);
+            
+            // 更新工程树
+            mDock->getModelBuilderWidget()->updatePostProcessingTree(postID, postName);
+            qDebug() << "FCAppController::compute: updated project tree for postID" << postID;
+        }
+        
+        qDebug() << "FCAppController::compute: computation completed";
+    }
+    
+    void FCAppController::onUpdateGeoTree(const IdType id, const QString &name)
+    {
+        // qDebug() << "onUpdateGeoTree";
+        mDock->getModelBuilderWidget()->updateGeometryTree(id, name);
+    }
+    
+    void FCAppController::onUpdateMeshTree(const IdType id, const QString &name)
+    {
+        mDock->getModelBuilderWidget()->updateMeshTree(id, name);
+    }
+    
+    void FCAppController::onCurrentPostProcessingItemChanged(const IdType id, const QString& name)
+    {
+        qDebug() << "FCAppController::onCurrentPostProcessingItemChanged: id" << id << "name:" << name;
+        // 当选中后处理item时，隐藏几何和网格，显示后处理结果
+        // 通过信号传递，而不是直接调用FCGraphViewWindow
+        FCGraphicOperateWidget* graphicWidget = mDock->getGraphicOperateWidget();
+        if (graphicWidget) {
+            // 通过方法调用，方法内部会emit信号传递给FCGraphViewWindow
+            graphicWidget->setGeometryVisible(false);
+            graphicWidget->setMeshVisible(false);
+            
+            // 通过信号传递，显示后处理结果
+            emit graphicWidget->showPostProcessing(id, true);
+            qDebug() << "FCAppController::onCurrentPostProcessingItemChanged: emitted showPostProcessing signal";
+        } else {
+            qWarning() << "FCAppController::onCurrentPostProcessingItemChanged: graphicWidget is null";
+        }
+    }
+    
+    void FCAppController::onActionAddDataTriggered()
+    {
+        FCAPPCONTROLLER_PASS();
+    }
+    
+    void FCAppController::onTestSlot(const IdType id, bool r)
+    {
+        qDebug() << "test mesh id: " << id;
+    }
+    
+    void FCAppController::onFocusedDockWidgetChanged(ads::CDockWidget *old, ads::CDockWidget *now)
+    {
+        FCAPPCONTROLLER_PASS();
+    }
+    
+    
 } // namespace FC
 
 

@@ -13,6 +13,7 @@
 #include "FCMeshKernal.h"
 #include "FCGeometryViewProvider.h"
 #include "FCMeshViewProvider.h"
+#include "FCPostProcessingViewProvider.h"
 
 namespace FC 
 {
@@ -24,20 +25,27 @@ FCGraphViewWindow::FCGraphViewWindow(int id, QWidget* parent)
     mMeshData = FCMeshData::getInstance();
     mGeoProvider = new FCGeometryViewProvider(this);
     mMeshProvider = new FCMeshViewProvider(this);
+    mPostProcessingProvider = new FCPostProcessingViewProvider(this);
+    
     connect(this, &FCGraphViewWindow::showGeoSet,
             mGeoProvider, &FCGeometryViewProvider::showGeoSet);
-
+    
     connect(this, &FCGraphViewWindow::updateGeometryActors,
             mGeoProvider, &FCGeometryViewProvider::updateGeomtryDisplayActor);
     
     connect(this, &FCGraphViewWindow::showMesh,
             mMeshProvider, &FCMeshViewProvider::showMesh);
+    
+    // showPostProcessing 是一个槽函数，不是信号，所以不需要在这里连接
+    // FCGraphicOperateWidget 的信号已经连接到这个槽函数
 }
 
 FCGraphViewWindow::~FCGraphViewWindow()
 {
     if (mGeoProvider != nullptr)
         delete mGeoProvider;
+    if (mPostProcessingProvider != nullptr)
+        delete mPostProcessingProvider;
     emit closed();
 }
 
@@ -149,6 +157,46 @@ void FCGraphViewWindow::updateGraphOption()
     // 		}
     // ModuleBase::Graph3DWindow::updateGraphOption();
     //		_renderWindow->Render();
+}
+
+void FCGraphViewWindow::showPostProcessing(const IdType id, bool render)
+{
+    qDebug() << "FCGraphViewWindow::showPostProcessing: id" << id << "render:" << render;
+    if (mPostProcessingProvider) {
+        mPostProcessingProvider->showPostProcessingSlot(id, render);
+        if (render) {
+            this->reRender();
+        }
+    } else {
+        qWarning() << "FCGraphViewWindow::showPostProcessing: mPostProcessingProvider is null";
+    }
+}
+
+void FCGraphViewWindow::updatePostProcessingActors(const IdType id)
+{
+    if (mPostProcessingProvider) {
+        mPostProcessingProvider->updatePostProcessingActorSlot();
+    }
+}
+
+void FCGraphViewWindow::setGeometryVisible(bool visible)
+{
+    // 隐藏/显示所有几何actor
+    if (mGeoProvider) {
+        mGeoProvider->setAllGeometryVisible(visible);
+        qDebug() << "FCGraphViewWindow::setGeometryVisible:" << visible;
+    }
+    this->reRender();
+}
+
+void FCGraphViewWindow::setMeshVisible(bool visible)
+{
+    // 隐藏/显示所有网格actor
+    if (mMeshProvider) {
+        mMeshProvider->setAllMeshVisible(visible);
+        qDebug() << "FCGraphViewWindow::setMeshVisible:" << visible;
+    }
+    this->reRender();
 }
 
 void FCGraphViewWindow::startSketch(bool start, double *loc, double *dir)

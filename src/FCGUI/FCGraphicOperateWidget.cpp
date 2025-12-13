@@ -68,6 +68,12 @@ FCGraphicOperateWidget::FCGraphicOperateWidget(QWidget *parent)
     
     connect(this, &FCGraphicOperateWidget::updateMeshAcotr,
             mGraphViewWindow, &FCGraphViewWindow::updateMeshActors);
+    
+    connect(this, &FCGraphicOperateWidget::showPostProcessing,
+            mGraphViewWindow, &FCGraphViewWindow::showPostProcessing);
+    
+    connect(this, &FCGraphicOperateWidget::updatePostProcessingAcotr,
+            mGraphViewWindow, &FCGraphViewWindow::updatePostProcessingActors);
 }
 
 FCGraphicOperateWidget::~FCGraphicOperateWidget()
@@ -104,7 +110,24 @@ void FCGraphicOperateWidget::deleteGeometryActor(const IdType id)
 void FCGraphicOperateWidget::deleteMeshActor(const IdType id)
 {
     mGraphViewWindow->removeMeshActor(id);
-    
+}
+
+void FCGraphicOperateWidget::setGeometryVisible(bool visible)
+{
+    // 直接调用FCGraphViewWindow的方法
+    // 由于FCGraphicOperateWidget已经依赖FCGraphViewWindow，可以直接调用
+    if (mGraphViewWindow) {
+        mGraphViewWindow->setGeometryVisible(visible);
+    }
+}
+
+void FCGraphicOperateWidget::setMeshVisible(bool visible)
+{
+    // 直接调用FCGraphViewWindow的方法
+    // 由于FCGraphicOperateWidget已经依赖FCGraphViewWindow，可以直接调用
+    if (mGraphViewWindow) {
+        mGraphViewWindow->setMeshVisible(visible);
+    }
 }
 
 void FCGraphicOperateWidget::showModel(FCGeometrySet *set, bool r)

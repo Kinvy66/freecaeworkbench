@@ -20,6 +20,7 @@ class FCMeshData;
 class FCMeshKernal;
 class FCGeometryViewProvider;
 class FCMeshViewProvider;
+class FCPostProcessingViewProvider;
 
 
 class FCGRAPHICSVIEW_API FCGraphViewWindow : public FCGraph3DWindow
@@ -96,6 +97,14 @@ public slots:
     
     void removeMeshActor(const IdType id);
     
+    // 后处理相关
+    void showPostProcessing(const IdType id, bool render = true);
+    void updatePostProcessingActors(const IdType id);
+    
+    // 显示/隐藏几何和网格（用于后处理模式）
+    void setGeometryVisible(bool visible);
+    void setMeshVisible(bool visible);
+    
     //高亮一个几何组件;
     // void highLightGeoComponentSlot(GeoComponent *);
     
@@ -124,6 +133,7 @@ private:
     
     FCGeometryViewProvider *mGeoProvider{};
     FCMeshViewProvider *mMeshProvider{};
+    FCPostProcessingViewProvider *mPostProcessingProvider{};
     // SketchViewProvider *_sketchProvider{};
 };
 } // namespace FC

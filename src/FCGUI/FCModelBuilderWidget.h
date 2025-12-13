@@ -30,6 +30,7 @@ public:
     ~FCModelBuilderWidget();
     void updateGeometryTree(const IdType id, const QString& name);
     void updateMeshTree(const IdType id, const QString& name);
+    void updatePostProcessingTree(const IdType id, const QString& name);
     void deleteEntityItem();
     void deleteMeshItem();
     
@@ -41,6 +42,7 @@ signals:
 //     void addGeometry(int type);
     void currentGeoItemChanged(const IdType, const QString& name);
     void currentMeshItemChanged(const IdType, const QString& name);
+    void currentPostProcessingItemChanged(const IdType, const QString& name);
     
     void currentItemChanged(const IdType, const QString& name);
     

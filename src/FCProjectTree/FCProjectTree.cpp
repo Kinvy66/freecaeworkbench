@@ -220,6 +220,7 @@ void FCProjectTree::createResult()
     plot3d->setText(0, tr("3维绘图组"));
     plot3d->setIcon(0,QIcon(":/icon/icon/3d_plot.png"));
     plot3d->setData(0, RoleType::ContextActions, FCTreeWidget::MenuResult3DPlotGroup);
+    mPostProcessingRoot = plot3d;
     
     QTreeWidgetItem* plot2d = new QTreeWidgetItem(result);
     plot2d->setText(0, tr("2维绘图组"));
@@ -660,6 +661,42 @@ void FCProjectTree::updateMeshTree(const IdType id, const QString &name)
     
     mMeshRoot->addChild(item);
     mTreeWidget->expandItem(mMeshRoot);
+    mTreeWidget->setCurrentItem(item);
+}
+
+void FCProjectTree::updatePostProcessingTree(const IdType id, const QString &name)
+{
+    if (!mPostProcessingRoot) {
+        qWarning() << "PostProcessing root not initialized";
+        return;
+    }
+    
+    // 遍历 PostProcessingRoot 的所有子节点
+    for (int i = 0; i < mPostProcessingRoot->childCount(); ++i) {
+        QTreeWidgetItem* child = mPostProcessingRoot->child(i);
+        
+        QVariant var = child->data(0, RoleType::EntityItmeID);
+        if (var.canConvert<IdType>()) {
+            IdType itemId = var.value<IdType>();
+            
+            if (itemId == id) {
+                // 找到，更新名字
+                child->setText(0, name);
+                return;
+            }
+        }
+    }
+    
+    // 添加新 item
+    QTreeWidgetItem* item = new QTreeWidgetItem();
+    item->setText(0, name);
+    item->setIcon(0, QIcon(":/icon/icon/3d_plot.png"));
+    item->setData(0, RoleType::ContextActions, FCTreeWidget::MenuResult3DPlot);
+    item->setData(0, RoleType::EntityItmeID, QVariant::fromValue(id));
+    item->setData(0, RoleType::EntityItmeType, QVariant::fromValue(EntityType::PostProcessingEntity));
+    
+    mPostProcessingRoot->addChild(item);
+    mTreeWidget->expandItem(mPostProcessingRoot);
     mTreeWidget->setCurrentItem(item);
 }
 
