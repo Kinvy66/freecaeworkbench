@@ -74,5 +74,11 @@
         <file>icon/tools/about.png</file>
         <file>icon/tools/plugings.png</file>
         <file>icon/new.png</file>
+        <file>icon/others/autofit.png</file>
+        <file>icon/others/default_view.png</file>
+        <file>icon/others/xy_view.png</file>
+        <file>icon/others/xz_view.png</file>
+        <file>icon/others/yz_view.png</file>
+        <file>icon/others/projection.png</file>
     </qresource>
 </RCC>

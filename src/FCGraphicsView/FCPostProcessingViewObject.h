@@ -107,6 +107,11 @@ public:
     void setBoundaryColor(double r, double g, double b);
     
     /**
+     * @brief 设置边界是否显示
+     */
+    void setBoundaryVisibility(bool visible);
+    
+    /**
      * @brief 获取显示形式 0:面, 1:线框, 2:点
      */
     int getDisplayForm() const;
@@ -141,6 +146,11 @@ public:
      * @brief 获取边界颜色
      */
     void getBoundaryColor(double& r, double& g, double& b) const;
+    
+    /**
+     * @brief 获取边界是否显示
+     */
+    bool getBoundaryVisibility() const;
     
 private:
     /**

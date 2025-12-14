@@ -453,5 +453,26 @@ void FCPostProcessingViewObject::getBoundaryColor(double& r, double& g, double& 
     }
 }
 
+void FCPostProcessingViewObject::setBoundaryVisibility(bool visible)
+{
+    if (!mActor) return;
+    
+    vtkProperty* prop = mActor->GetProperty();
+    if (prop) {
+        prop->SetEdgeVisibility(visible ? 1 : 0);
+    }
+}
+
+bool FCPostProcessingViewObject::getBoundaryVisibility() const
+{
+    if (!mActor) return false;
+    
+    vtkProperty* prop = mActor->GetProperty();
+    if (prop) {
+        return prop->GetEdgeVisibility() != 0;
+    }
+    return false;
+}
+
 } // namespace FC
 

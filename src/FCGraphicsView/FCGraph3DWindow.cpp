@@ -15,6 +15,9 @@
 #include <QHBoxLayout>
 #include <assert.h>
 #include <QPushButton>
+#include <QToolBar>
+#include <QAction>
+#include <QStyle>
 // vtk
 #include <QVTKOpenGLNativeWidget.h>
 #include <vtkRenderWindow.h>
@@ -56,97 +59,85 @@ FCGraph3DWindow::FCGraph3DWindow(int id,QWidget* parent)
 : FCGraphWindowBase(id, parent)
 {
     QVBoxLayout *layout = new QVBoxLayout(this);
-    layout->setContentsMargins(2, 2, 2, 2);  // 去掉边距
+    layout->setContentsMargins(0, 0, 0, 0);  // 去掉边距，让工具栏融入窗口
+    layout->setSpacing(0);
     
-    // ===== 新增：交互器测试按钮行 =====
-    QHBoxLayout *topBar = new QHBoxLayout();
-    topBar->setContentsMargins(5, 5, 5, 5);
-    topBar->setSpacing(5);
+    // ===== 创建工具栏 =====
+    mToolBar = new QToolBar(this);
+    mToolBar->setMovable(false);
+    mToolBar->setFloatable(false);
+    mToolBar->setToolButtonStyle(Qt::ToolButtonIconOnly);
     
-    QPushButton *btnProjection = new QPushButton(tr("切换投影"), this);
-    btnProjection->setToolTip(tr("在透视投影和正交投影之间切换"));
-    topBar->addWidget(btnProjection);
+    // 设置工具栏样式：背景色250, 251, 254，无边框
+    mToolBar->setStyleSheet(
+        "QToolBar {"
+        "background-color: rgb(250, 251, 254);"
+        "border: none;"
+        "spacing: 3px;"
+        "}"
+        "QToolBar QToolButton {"
+        "border: none;"
+        "padding: 3px;"
+        "}"
+    );
     
-    QPushButton *btnResetCamera = new QPushButton(tr("重置视角"), this);
-    btnResetCamera->setToolTip(tr("重置相机到默认视角"));
-    topBar->addWidget(btnResetCamera);
-    
-    QPushButton *btnFitView = new QPushButton(tr("适应窗口"), this);
-    btnFitView->setToolTip(tr("调整视角以适应所有对象"));
-    topBar->addWidget(btnFitView);
-    
-    QPushButton *btnToggleAxes = new QPushButton(tr("显示/隐藏坐标轴"), this);
-    btnToggleAxes->setToolTip(tr("切换坐标轴显示"));
-    topBar->addWidget(btnToggleAxes);
-    
-    QPushButton *btnToggleScalarBar = new QPushButton(tr("显示/隐藏标量条"), this);
-    btnToggleScalarBar->setToolTip(tr("切换标量条显示"));
-    topBar->addWidget(btnToggleScalarBar);
-    
-    topBar->addStretch();    // 靠左对齐
-    
-    layout->addLayout(topBar);
-    
-    // 连接信号槽
-    connect(btnProjection, &QPushButton::clicked, this, &FCGraph3DWindow::toggleProjection);
-    connect(btnResetCamera, &QPushButton::clicked, this, [this]() {
-        this->resetCamera();
-        this->reRender();
-    });
-    connect(btnFitView, &QPushButton::clicked, this, [this]() {
+    // ===== 创建Actions =====
+    // 1. 适应窗口
+    QAction *actionFitView = new QAction(this);
+    actionFitView->setIcon(QIcon(":/icon/icon/others/autofit.png"));
+    actionFitView->setToolTip(tr("适应窗口"));
+    connect(actionFitView, &QAction::triggered, this, [this]() {
         this->fitView();
         this->reRender();
     });
-    connect(btnToggleAxes, &QPushButton::clicked, this, [this]() {
-        if (mAxesWidget) {
-            bool visible = mAxesWidget->GetEnabled();
-            mAxesWidget->SetEnabled(!visible);
-            this->reRender();
-        }
-    });
-    connect(btnToggleScalarBar, &QPushButton::clicked, this, [this]() {
-        if (mScalarBarWidget) {
-            bool visible = mScalarBarWidget->GetEnabled();
-            mScalarBarWidget->SetEnabled(!visible);
-            this->reRender();
-        }
-    });
+    mToolBar->addAction(actionFitView);
     
+    // 2. 切换到默认视图
+    QAction *actionDefaultView = new QAction(this);
+    actionDefaultView->setIcon(QIcon(":/icon/icon/others/default_view.png"));
+    actionDefaultView->setToolTip(tr("切换到默认视图"));
+    connect(actionDefaultView, &QAction::triggered, this, &FCGraph3DWindow::setDefaultView);
+    mToolBar->addAction(actionDefaultView);
+    
+    // 3. 切换到xy平面
+    QAction *actionViewXY = new QAction(this);
+    actionViewXY->setIcon(QIcon(":/icon/icon/others/xy_view.png"));
+    actionViewXY->setToolTip(tr("切换到xy平面"));
+    connect(actionViewXY, &QAction::triggered, this, &FCGraph3DWindow::setViewXY);
+    mToolBar->addAction(actionViewXY);
+    
+    // 4. 切换到yz平面
+    QAction *actionViewYZ = new QAction(this);
+    actionViewYZ->setIcon(QIcon(":/icon/icon/others/yz_view.png"));
+    actionViewYZ->setToolTip(tr("切换到yz平面"));
+    connect(actionViewYZ, &QAction::triggered, this, &FCGraph3DWindow::setViewYZ);
+    mToolBar->addAction(actionViewYZ);
+    
+    // 5. 切换到xz平面
+    QAction *actionViewXZ = new QAction(this);
+    actionViewXZ->setIcon(QIcon(":/icon/icon/others/xz_view.png"));
+    actionViewXZ->setToolTip(tr("切换到xz平面"));
+    connect(actionViewXZ, &QAction::triggered, this, &FCGraph3DWindow::setViewXZ);
+    mToolBar->addAction(actionViewXZ);
+    
+    // 6. 投影切换
+    QAction *actionProjection = new QAction(this);
+    actionProjection->setIcon(QIcon(":/icon/icon/others/projection.png"));
+    actionProjection->setToolTip(tr("投影切换"));
+    connect(actionProjection, &QAction::triggered, this, &FCGraph3DWindow::toggleProjection);
+    mToolBar->addAction(actionProjection);
+    
+    layout->addWidget(mToolBar);
     
     // ===== VTK Widget =====
     mVTKWidget = new QVTKOpenGLNativeWidget(this);
-    layout->addWidget(mVTKWidget);;
+    layout->addWidget(mVTKWidget);
     
     init();
     mRender->GlobalWarningDisplayOff();
     this->setFocusPolicy(Qt::ClickFocus);
     vtkCamera *camera = mRender->GetActiveCamera();
     camera->SetParallelProjection(false);
-    
-    // ===== 信号槽：交互器测试按钮 =====
-    connect(btnProjection, &QPushButton::clicked, this, &FCGraph3DWindow::toggleProjection);
-    connect(btnResetCamera, &QPushButton::clicked, this, [this]() {
-        this->resetCamera();
-        this->reRender();
-    });
-    connect(btnFitView, &QPushButton::clicked, this, [this]() {
-        this->fitView();
-        this->reRender();
-    });
-    connect(btnToggleAxes, &QPushButton::clicked, this, [this]() {
-        if (mAxesWidget) {
-            bool visible = mAxesWidget->GetEnabled();
-            mAxesWidget->SetEnabled(!visible);
-            this->reRender();
-        }
-    });
-    connect(btnToggleScalarBar, &QPushButton::clicked, this, [this]() {
-        if (mScalarBarWidget) {
-            bool visible = mScalarBarWidget->GetEnabled();
-            mScalarBarWidget->SetEnabled(!visible);
-            this->reRender();
-        }
-    });
 }
 
 
@@ -600,6 +591,72 @@ void FCGraph3DWindow::mouseWheelMove()
     double w = this->getWorldWidth();
     double h = this->getWorldHight();
     emit showGraphRange(w, h);
+}
+
+void FCGraph3DWindow::setViewXY()
+{
+    // XY平面视图：从Z+方向看，ViewUp为Y+方向
+    vtkCamera *camera = mRender->GetActiveCamera();
+    camera->SetViewUp(0, 1, 0);
+    camera->SetPosition(0, 0, 5000);
+    camera->SetFocalPoint(0, 0, 0);
+    resetCamera();
+    reRender();
+}
+
+void FCGraph3DWindow::setViewYZ()
+{
+    // YZ平面视图：从X+方向看，ViewUp为Z+方向
+    vtkCamera *camera = mRender->GetActiveCamera();
+    camera->SetViewUp(0, 0, 1);
+    camera->SetPosition(5000, 0, 0);
+    camera->SetFocalPoint(0, 0, 0);
+    resetCamera();
+    reRender();
+}
+
+void FCGraph3DWindow::setViewXZ()
+{
+    // XZ平面视图：从Y+方向看，ViewUp为Z+方向
+    vtkCamera *camera = mRender->GetActiveCamera();
+    camera->SetViewUp(0, 0, 1);
+    camera->SetPosition(0, 5000, 0);
+    camera->SetFocalPoint(0, 0, 0);
+    resetCamera();
+    reRender();
+}
+
+void FCGraph3DWindow::setDefaultView()
+{
+    // 默认视角：yz视图下绕z轴顺时针旋转45度
+    // 首先设置YZ视图
+    vtkCamera *camera = mRender->GetActiveCamera();
+    camera->SetViewUp(0, 0, 1);
+    camera->SetPosition(5000, 0, 0);
+    camera->SetFocalPoint(0, 0, 0);
+    
+    // 绕z轴顺时针旋转45度
+    // 在YZ视图基础上，绕z轴（0,0,1）顺时针旋转45度
+    // 顺时针旋转意味着从Z+方向看，是顺时针，即绕Z轴旋转-45度
+    // 旋转后的位置：x' = x*cos(-45°) - y*sin(-45°), y' = x*sin(-45°) + y*cos(-45°)
+    // cos(-45°) = cos(45°) = √2/2, sin(-45°) = -sin(45°) = -√2/2
+    const double cos45 = 0.7071067811865476;  // √2/2
+    const double sin45 = 0.7071067811865476;  // √2/2
+    
+    // 原始位置是(5000, 0, 0)，绕z轴顺时针旋转45度后
+    // x' = 5000*cos45 - 0*sin45 = 5000*cos45
+    // y' = 5000*sin45 + 0*cos45 = 5000*sin45
+    // z' = 0 (z坐标不变)
+    double newX = 5000 * cos45;
+    double newY = -5000 * sin45;  // 顺时针旋转，y取负值
+    double newZ = 0;
+    
+    camera->SetPosition(newX, newY, newZ);
+    camera->SetFocalPoint(0, 0, 0);
+    camera->SetViewUp(0, 0, 1);
+    
+    resetCamera();
+    reRender();
 }
 
 } // namespace FC

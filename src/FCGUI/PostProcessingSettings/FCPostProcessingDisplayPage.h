@@ -59,6 +59,7 @@ private slots:
     void onAmbientCoefficientChanged(int value);
     void onDiffuseCoefficientChanged(int value);
     void onBoundaryColorClicked();
+    void onBoundaryVisibilityChanged(bool checked);
         
 private:
     void init();
@@ -86,6 +87,7 @@ private:
     double mAmbientCoefficient{0.0};
     double mDiffuseCoefficient{1.0};
     QColor mBoundaryColor{Qt::blue};
+    bool mBoundaryVisibility{false};
 };
 
 } // namespace FC

@@ -41,6 +41,8 @@ class vtkPolyData;
 class vtkIdTypeArray;
 class vtkCaptionWidget;
 class QVTKOpenGLNativeWidget;
+class QToolBar;
+class QAction;
 
 
 namespace FC 
@@ -98,6 +100,11 @@ public slots:
     //重绘
     void reRender();
     void toggleProjection();
+    //视图切换
+    void setViewXY();
+    void setViewYZ();
+    void setViewXZ();
+    void setDefaultView();
     
 protected slots:
     void setSelectType(int model);
@@ -149,6 +156,7 @@ protected:
     // Ui::Graph3DWindow* _ui{};
     //		QStringList m_ltFilePath = QStringList();
     QVTKOpenGLNativeWidget* mVTKWidget;
+    QToolBar* mToolBar{};
     
     
     vtkSmartPointer<vtkRenderer> mRender{};

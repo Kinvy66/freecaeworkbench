@@ -7,304 +7,315 @@
     <x>0</x>
     <y>0</y>
     <width>400</width>
-    <height>600</height>
+    <height>658</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>显示</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_Display">
+   <item>
+    <widget class="QGroupBox" name="groupBoxDisplayForm">
+     <property name="title">
+      <string>显示形式</string>
+     </property>
+     <layout class="QHBoxLayout" name="horizontalLayout_DisplayForm">
       <item>
-       <widget class="QGroupBox" name="groupBoxDisplayForm">
-        <property name="title">
-         <string>显示形式</string>
-        </property>
-        <layout class="QHBoxLayout" name="horizontalLayout_DisplayForm">
-         <item>
-          <widget class="QComboBox" name="comboBoxDisplayForm"/>
-         </item>
-        </layout>
-       </widget>
-      </item>
-      <item>
-       <widget class="QGroupBox" name="groupBoxColorColumn">
-        <property name="title">
-         <string>颜色列</string>
-        </property>
-        <layout class="QVBoxLayout" name="verticalLayout_ColorColumn">
-         <item>
-          <widget class="QComboBox" name="comboBoxColorColumn"/>
-         </item>
-         <item>
-          <layout class="QHBoxLayout" name="horizontalLayout_ColorButtons">
-           <item>
-            <widget class="QPushButton" name="pushButtonShowLegend">
-             <property name="text">
-              <string>显示图例</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QPushButton" name="pushButtonEditColor">
-             <property name="text">
-              <string>编辑颜色</string>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </item>
-        </layout>
-       </widget>
-      </item>
-      <item>
-       <widget class="QGroupBox" name="groupBoxStyle">
-        <property name="title">
-         <string>样式</string>
-        </property>
-        <layout class="QVBoxLayout" name="verticalLayout_Style">
-         <item>
-          <layout class="QHBoxLayout" name="horizontalLayout_Transparency">
-           <item>
-            <widget class="QLabel" name="labelTransparency">
-             <property name="text">
-              <string>透明度：</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QSlider" name="sliderTransparency">
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QLabel" name="labelTransparencyValue">
-             <property name="text">
-              <string>1</string>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </item>
-         <item>
-          <layout class="QHBoxLayout" name="horizontalLayout_PointSize">
-           <item>
-            <widget class="QLabel" name="labelPointSize">
-             <property name="text">
-              <string>点大小：</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QSpinBox" name="spinBoxPointSize"/>
-           </item>
-          </layout>
-         </item>
-         <item>
-          <layout class="QHBoxLayout" name="horizontalLayout_LineWidth">
-           <item>
-            <widget class="QLabel" name="labelLineWidth">
-             <property name="text">
-              <string>线宽：</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QSpinBox" name="spinBoxLineWidth"/>
-           </item>
-          </layout>
-         </item>
-        </layout>
-       </widget>
-      </item>
-      <item>
-       <widget class="QGroupBox" name="groupBoxLighting">
-        <property name="title">
-         <string>光照</string>
-        </property>
-        <layout class="QVBoxLayout" name="verticalLayout_Lighting">
-         <item>
-          <layout class="QHBoxLayout" name="horizontalLayout_ShadingMethod">
-           <item>
-            <widget class="QLabel" name="labelShadingMethod">
-             <property name="text">
-              <string>着色方式：</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QComboBox" name="comboBoxShadingMethod"/>
-           </item>
-          </layout>
-         </item>
-         <item>
-          <layout class="QHBoxLayout" name="horizontalLayout_SpecularCoefficient">
-           <item>
-            <widget class="QLabel" name="labelSpecularCoefficient">
-             <property name="text">
-              <string>反射光系数：</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QSlider" name="sliderSpecularCoefficient">
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QLabel" name="labelSpecularCoefficientValue">
-             <property name="text">
-              <string>0</string>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </item>
-         <item>
-          <layout class="QHBoxLayout" name="horizontalLayout_SpecularColor">
-           <item>
-            <widget class="QLabel" name="labelSpecularColor">
-             <property name="text">
-              <string>反射光颜色：</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QPushButton" name="pushButtonSpecularColor">
-             <property name="text">
-              <string>反射光颜色</string>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </item>
-         <item>
-          <layout class="QHBoxLayout" name="horizontalLayout_SpecularIntensity">
-           <item>
-            <widget class="QLabel" name="labelSpecularIntensity">
-             <property name="text">
-              <string>反射光强度：</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QSlider" name="sliderSpecularIntensity">
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QLabel" name="labelSpecularIntensityValue">
-             <property name="text">
-              <string>100</string>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </item>
-         <item>
-          <layout class="QHBoxLayout" name="horizontalLayout_AmbientCoefficient">
-           <item>
-            <widget class="QLabel" name="labelAmbientCoefficient">
-             <property name="text">
-              <string>环境光系数：</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QSlider" name="sliderAmbientCoefficient">
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QLabel" name="labelAmbientCoefficientValue">
-             <property name="text">
-              <string>0</string>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </item>
-         <item>
-          <layout class="QHBoxLayout" name="horizontalLayout_DiffuseCoefficient">
-           <item>
-            <widget class="QLabel" name="labelDiffuseCoefficient">
-             <property name="text">
-              <string>漫反射光系数：</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QSlider" name="sliderDiffuseCoefficient">
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QLabel" name="labelDiffuseCoefficientValue">
-             <property name="text">
-              <string>1</string>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </item>
-        </layout>
-       </widget>
-      </item>
-      <item>
-       <widget class="QGroupBox" name="groupBoxBoundaryColor">
-        <property name="title">
-         <string>边界颜色</string>
-        </property>
-        <layout class="QVBoxLayout" name="verticalLayout_BoundaryColor">
-         <item>
-          <widget class="QLabel" name="labelBoundaryColor">
-           <property name="minimumSize">
-            <size>
-             <width>0</width>
-             <height>50</height>
-            </size>
-           </property>
-           <property name="styleSheet">
-            <string>background-color: rgb(0, 0, 255);</string>
-           </property>
-           <property name="text">
-            <string/>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QPushButton" name="pushButtonBoundaryColor">
-           <property name="text">
-            <string>选择颜色</string>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </widget>
-      </item>
-      <item>
-       <spacer name="verticalSpacer_Display">
-        <property name="orientation">
-         <enum>Qt::Vertical</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>20</width>
-          <height>40</height>
-         </size>
-        </property>
-       </spacer>
+       <widget class="QComboBox" name="comboBoxDisplayForm"/>
       </item>
      </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="groupBoxColorColumn">
+     <property name="title">
+      <string>颜色列</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_ColorColumn">
+      <item>
+       <widget class="QComboBox" name="comboBoxColorColumn"/>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_ColorButtons">
+        <item>
+         <widget class="QPushButton" name="pushButtonShowLegend">
+          <property name="text">
+           <string>显示图例</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="pushButtonEditColor">
+          <property name="text">
+           <string>编辑颜色</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="groupBoxStyle">
+     <property name="title">
+      <string>样式</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_Style">
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_Transparency">
+        <item>
+         <widget class="QLabel" name="labelTransparency">
+          <property name="text">
+           <string>透明度：</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QSlider" name="sliderTransparency">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="labelTransparencyValue">
+          <property name="text">
+           <string>1</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_PointSize">
+        <item>
+         <widget class="QLabel" name="labelPointSize">
+          <property name="text">
+           <string>点大小：</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QSpinBox" name="spinBoxPointSize"/>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_LineWidth">
+        <item>
+         <widget class="QLabel" name="labelLineWidth">
+          <property name="text">
+           <string>线宽：</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QSpinBox" name="spinBoxLineWidth"/>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="groupBoxLighting">
+     <property name="title">
+      <string>光照</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_Lighting">
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_ShadingMethod">
+        <item>
+         <widget class="QLabel" name="labelShadingMethod">
+          <property name="text">
+           <string>着色方式：</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QComboBox" name="comboBoxShadingMethod"/>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_SpecularCoefficient">
+        <item>
+         <widget class="QLabel" name="labelSpecularCoefficient">
+          <property name="text">
+           <string>反射光系数：</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QSlider" name="sliderSpecularCoefficient">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="labelSpecularCoefficientValue">
+          <property name="text">
+           <string>0</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_SpecularColor">
+        <item>
+         <widget class="QLabel" name="labelSpecularColor">
+          <property name="text">
+           <string>反射光颜色：</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="pushButtonSpecularColor">
+          <property name="text">
+           <string>反射光颜色</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_SpecularIntensity">
+        <item>
+         <widget class="QLabel" name="labelSpecularIntensity">
+          <property name="text">
+           <string>反射光强度：</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QSlider" name="sliderSpecularIntensity">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="labelSpecularIntensityValue">
+          <property name="text">
+           <string>100</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_AmbientCoefficient">
+        <item>
+         <widget class="QLabel" name="labelAmbientCoefficient">
+          <property name="text">
+           <string>环境光系数：</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QSlider" name="sliderAmbientCoefficient">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="labelAmbientCoefficientValue">
+          <property name="text">
+           <string>0</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_DiffuseCoefficient">
+        <item>
+         <widget class="QLabel" name="labelDiffuseCoefficient">
+          <property name="text">
+           <string>漫反射光系数：</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QSlider" name="sliderDiffuseCoefficient">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="labelDiffuseCoefficientValue">
+          <property name="text">
+           <string>1</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="groupBoxBoundaryColor">
+     <property name="title">
+      <string>边界颜色</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_BoundaryColor">
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_BoundaryVisibility">
+        <item>
+         <widget class="QCheckBox" name="checkBoxBoundaryVisibility">
+          <property name="text">
+           <string>显示边界</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="labelBoundaryColor">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>50</height>
+           </size>
+          </property>
+          <property name="styleSheet">
+           <string>background-color: rgb(0, 0, 255);</string>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="pushButtonBoundaryColor">
+          <property name="text">
+           <string>选择颜色</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <spacer name="verticalSpacer_Display">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>40</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+  </layout>
  </widget>
  <resources/>
  <connections/>

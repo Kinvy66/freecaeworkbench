@@ -102,6 +102,10 @@ void FCPostProcessingDisplayPage::updateUIFromPostProcessing(IdType postID)
     mBoundaryColor = QColor::fromRgbF(r, g, b);
     updateBoundaryColorDisplay();
     
+    // 边界显示
+    mBoundaryVisibility = viewObj->getBoundaryVisibility();
+    ui->checkBoxBoundaryVisibility->setChecked(mBoundaryVisibility);
+    
     // 检查图例显示状态，如果未显示则默认显示
     FCGraph3DWindow* graph3D = dynamic_cast<FCGraph3DWindow*>(mViewWindow);
     if (graph3D) {
@@ -224,6 +228,10 @@ void FCPostProcessingDisplayPage::initConnections()
     // 边界颜色
     connect(ui->pushButtonBoundaryColor, &QPushButton::clicked,
             this, &FCPostProcessingDisplayPage::onBoundaryColorClicked);
+    
+    // 边界显示
+    connect(ui->checkBoxBoundaryVisibility, &QCheckBox::toggled,
+            this, &FCPostProcessingDisplayPage::onBoundaryVisibilityChanged);
 }
 
 void FCPostProcessingDisplayPage::onDisplayFormChanged(int index)
@@ -330,6 +338,12 @@ void FCPostProcessingDisplayPage::onBoundaryColorClicked()
     }
 }
 
+void FCPostProcessingDisplayPage::onBoundaryVisibilityChanged(bool checked)
+{
+    mBoundaryVisibility = checked;
+    applySettings();
+}
+
 void FCPostProcessingDisplayPage::applySettings()
 {
     if (!mViewWindow || mCurrentPostID == 0) {
@@ -353,10 +367,7 @@ void FCPostProcessingDisplayPage::applySettings()
     viewObj->setLightingProperties(mSpecularCoefficient, mSpecularIntensity,
                                     mAmbientCoefficient, mDiffuseCoefficient);
     viewObj->setBoundaryColor(mBoundaryColor.redF(), mBoundaryColor.greenF(), mBoundaryColor.blueF());
-    // 确保边界线不显示（除非是线框模式）
-    if (mDisplayForm == 0) { // 面模式
-        viewObj->setDisplayForm(0); // 重新设置为面模式，确保边界线隐藏
-    }
+    viewObj->setBoundaryVisibility(mBoundaryVisibility);
     
     // 更新渲染窗口的图例显示
     updateRenderWindow();
