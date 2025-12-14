@@ -223,13 +223,24 @@ QMessageBox::                                                                   
         // 工程树几何节点当前选择改变，通知参数设置窗口改变
         connect(modelBuilderWidget, &FCModelBuilderWidget::currentGeoItemChanged,
                 settingsWidget, &FCSettingParametersWidget::updateCurrentGeoSettingWidget);
+        // 工程树几何节点当前选择改变，控制显示
+        connect(modelBuilderWidget, &FCModelBuilderWidget::currentGeoItemChanged,
+                this, &FCAppController::onCurrentGeoItemChanged);
         // 工程树网格节点当前选择改变，通知参数设置窗口改变
         connect(modelBuilderWidget, &FCModelBuilderWidget::currentMeshItemChanged,
                 settingsWidget, &FCSettingParametersWidget::updateCurrentMeshSettingWidget);
+        // 工程树网格节点当前选择改变，控制显示
+        connect(modelBuilderWidget, &FCModelBuilderWidget::currentMeshItemChanged,
+                this, &FCAppController::onCurrentMeshItemChanged);
         // 工程树后处理节点当前选择改变，通知显示后处理结果
         connect(modelBuilderWidget, &FCModelBuilderWidget::currentPostProcessingItemChanged,
                 this, &FCAppController::onCurrentPostProcessingItemChanged);
+        // 工程树后处理节点当前选择改变，通知参数设置窗口改变
+        connect(modelBuilderWidget, &FCModelBuilderWidget::currentPostProcessingItemChanged,
+                settingsWidget, &FCSettingParametersWidget::updateCurrentPostProcessingSettingWidget);
         
+        // 设置图形操作窗口到设置窗口，以便获取GraphViewWindow
+        settingsWidget->setGraphicOperateWidget(grapicWidget);
         
         connect(modelBuilderWidget, &FCModelBuilderWidget::currentItemChanged,
                 settingsWidget, &FCSettingParametersWidget::updateCurrentSettingWidget);
@@ -486,16 +497,50 @@ QMessageBox::                                                                   
         mDock->getModelBuilderWidget()->updateMeshTree(id, name);
     }
     
+    void FCAppController::onCurrentGeoItemChanged(const IdType id, const QString& name)
+    {
+        qDebug() << "FCAppController::onCurrentGeoItemChanged: id" << id << "name:" << name;
+        // 当选中几何item时，只显示几何，隐藏网格和后处理
+        FCGraphicOperateWidget* graphicWidget = mDock->getGraphicOperateWidget();
+        if (graphicWidget) {
+            // 通过信号传递，先隐藏，再显示，避免闪烁
+            graphicWidget->setMeshVisible(false);
+            graphicWidget->setPostProcessingVisible(false);
+            graphicWidget->setGeometryVisible(true);
+            // 统一渲染一次
+            graphicWidget->requestRender();
+        } else {
+            qWarning() << "FCAppController::onCurrentGeoItemChanged: graphicWidget is null";
+        }
+    }
+    
+    void FCAppController::onCurrentMeshItemChanged(const IdType id, const QString& name)
+    {
+        qDebug() << "FCAppController::onCurrentMeshItemChanged: id" << id << "name:" << name;
+        // 当选中网格item时，显示网格和几何，隐藏后处理
+        FCGraphicOperateWidget* graphicWidget = mDock->getGraphicOperateWidget();
+        if (graphicWidget) {
+            // 通过信号传递，先隐藏，再显示，避免闪烁
+            graphicWidget->setPostProcessingVisible(false);
+            graphicWidget->setGeometryVisible(true);
+            graphicWidget->setMeshVisible(true);
+            // 统一渲染一次
+            graphicWidget->requestRender();
+        } else {
+            qWarning() << "FCAppController::onCurrentMeshItemChanged: graphicWidget is null";
+        }
+    }
+    
     void FCAppController::onCurrentPostProcessingItemChanged(const IdType id, const QString& name)
     {
         qDebug() << "FCAppController::onCurrentPostProcessingItemChanged: id" << id << "name:" << name;
-        // 当选中后处理item时，隐藏几何和网格，显示后处理结果
-        // 通过信号传递，而不是直接调用FCGraphViewWindow
+        // 当选中后处理item时，只显示后处理结果，隐藏网格和几何体
+        // 避免几何体和后处理重合导致色块闪动
         FCGraphicOperateWidget* graphicWidget = mDock->getGraphicOperateWidget();
         if (graphicWidget) {
-            // 通过方法调用，方法内部会emit信号传递给FCGraphViewWindow
-            graphicWidget->setGeometryVisible(false);
+            // 通过信号传递，隐藏网格和几何体
             graphicWidget->setMeshVisible(false);
+            graphicWidget->setGeometryVisible(false);
             
             // 通过信号传递，显示后处理结果
             emit graphicWidget->showPostProcessing(id, true);

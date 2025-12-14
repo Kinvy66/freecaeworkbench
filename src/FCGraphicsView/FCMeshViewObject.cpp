@@ -337,6 +337,8 @@ namespace FC
 		edgeMapper->SetScalarModeToUseCellData();
 		mActor[EDGEACTOR]->SetMapper(edgeMapper);
 		mActor[EDGEACTOR]->GetProperty()->SetRepresentationToWireframe();
+		// 确保网格线框在几何面之上渲染，避免黑块
+		mActor[EDGEACTOR]->GetProperty()->SetRenderLinesAsTubes(false);
 
 		vtkSmartPointer<vtkDataSetMapper> faceMapper = vtkSmartPointer<vtkDataSetMapper>::New();
 		faceMapper->SetInputData(mDisplayData);

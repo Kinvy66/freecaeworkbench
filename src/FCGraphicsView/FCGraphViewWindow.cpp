@@ -163,6 +163,15 @@ void FCGraphViewWindow::showPostProcessing(const IdType id, bool render)
 {
     qDebug() << "FCGraphViewWindow::showPostProcessing: id" << id << "render:" << render;
     if (mPostProcessingProvider) {
+        // 先隐藏网格（后处理中不要显示网格）
+        if (mMeshProvider) {
+            mMeshProvider->setAllMeshVisible(false);
+        }
+        // 隐藏几何体，避免与后处理重合导致色块闪动
+        if (mGeoProvider) {
+            mGeoProvider->setAllGeometryVisible(false);
+        }
+        // 显示后处理
         mPostProcessingProvider->showPostProcessingSlot(id, render);
         if (render) {
             this->reRender();
@@ -179,14 +188,29 @@ void FCGraphViewWindow::updatePostProcessingActors(const IdType id)
     }
 }
 
+FCPostProcessingViewProvider* FCGraphViewWindow::getPostProcessingViewProvider()
+{
+    return mPostProcessingProvider;
+}
+
 void FCGraphViewWindow::setGeometryVisible(bool visible)
 {
     // 隐藏/显示所有几何actor
+    // 关闭显示几何时，隐藏所有几何（面、边、点），只显示网格线框
     if (mGeoProvider) {
         mGeoProvider->setAllGeometryVisible(visible);
         qDebug() << "FCGraphViewWindow::setGeometryVisible:" << visible;
     }
-    this->reRender();
+    // 在几何显示时（visible == true），隐藏图例（图例只在后处理中显示）
+    // 当隐藏几何时（visible == false），不改变图例状态，因为可能是为了显示后处理
+    if (visible) {
+        FCGraph3DWindow* graph3D = dynamic_cast<FCGraph3DWindow*>(this);
+        if (graph3D) {
+            graph3D->showScalarBar(false);
+        }
+    }
+    // 延迟渲染，避免频繁渲染导致闪烁
+    // this->reRender();
 }
 
 void FCGraphViewWindow::setMeshVisible(bool visible)
@@ -196,7 +220,27 @@ void FCGraphViewWindow::setMeshVisible(bool visible)
         mMeshProvider->setAllMeshVisible(visible);
         qDebug() << "FCGraphViewWindow::setMeshVisible:" << visible;
     }
-    this->reRender();
+    // 在网格显示时（visible == true），隐藏图例（图例只在后处理中显示）
+    // 当隐藏网格时（visible == false），不改变图例状态，因为可能是为了显示后处理
+    if (visible) {
+        FCGraph3DWindow* graph3D = dynamic_cast<FCGraph3DWindow*>(this);
+        if (graph3D) {
+            graph3D->showScalarBar(false);
+        }
+    }
+    // 延迟渲染，避免频繁渲染导致闪烁
+    // this->reRender();
+}
+
+void FCGraphViewWindow::setPostProcessingVisible(bool visible)
+{
+    // 隐藏/显示所有后处理actor
+    if (mPostProcessingProvider) {
+        mPostProcessingProvider->setAllPostProcessingVisible(visible);
+        qDebug() << "FCGraphViewWindow::setPostProcessingVisible:" << visible;
+    }
+    // 延迟渲染，避免频繁渲染导致闪烁
+    // this->reRender();
 }
 
 void FCGraphViewWindow::startSketch(bool start, double *loc, double *dir)

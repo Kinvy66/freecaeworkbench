@@ -40,6 +40,9 @@ public:
     
     // MeshViewProvider *getMeshViewProvider();
     
+    // 获取后处理ViewProvider
+    FCPostProcessingViewProvider* getPostProcessingViewProvider();
+    
 signals:
     //关闭
     void closed();
@@ -104,6 +107,7 @@ public slots:
     // 显示/隐藏几何和网格（用于后处理模式）
     void setGeometryVisible(bool visible);
     void setMeshVisible(bool visible);
+    void setPostProcessingVisible(bool visible);
     
     //高亮一个几何组件;
     // void highLightGeoComponentSlot(GeoComponent *);

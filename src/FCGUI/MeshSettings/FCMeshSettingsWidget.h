@@ -18,6 +18,7 @@ class FCMeshettingsWidget;
 namespace FC 
 {
 class FCGmshSettingData;
+class FCGraphViewWindow;
 class FCGUI_API FCMeshSettingsWidget : public QWidget
 {
     Q_OBJECT
@@ -26,6 +27,11 @@ public:
 public:
     FCMeshSettingsWidget(QWidget *parent = nullptr);
     FCMeshSettingsWidget(const IdType editSetID, QWidget *parent = nullptr);
+    
+    /**
+     * @brief 设置图形视图窗口（用于控制几何可见性）
+     */
+    void setGraphViewWindow(FCGraphViewWindow* viewWindow);
     
     ~FCMeshSettingsWidget();
     
@@ -59,10 +65,16 @@ private slots:
     
     void on_pushButtonSelcet_clicked();
     
+    void on_checkBoxGeometryVisible_toggled(bool checked);
+    
+private:
+    void initConnections();
+    
 private:
     Ui::FCMeshettingsWidget *ui;
     bool mIsEdit;
     IdType mEidtSetID;
+    FCGraphViewWindow* mGraphViewWindow{nullptr};
 };
 } // namespace FC
 

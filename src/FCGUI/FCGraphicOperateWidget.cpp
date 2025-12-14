@@ -74,6 +74,18 @@ FCGraphicOperateWidget::FCGraphicOperateWidget(QWidget *parent)
     
     connect(this, &FCGraphicOperateWidget::updatePostProcessingAcotr,
             mGraphViewWindow, &FCGraphViewWindow::updatePostProcessingActors);
+    
+    // 连接可见性控制信号
+    connect(this, &FCGraphicOperateWidget::geometryVisibleChanged,
+            mGraphViewWindow, &FCGraphViewWindow::setGeometryVisible);
+    connect(this, &FCGraphicOperateWidget::meshVisibleChanged,
+            mGraphViewWindow, &FCGraphViewWindow::setMeshVisible);
+    connect(this, &FCGraphicOperateWidget::postProcessingVisibleChanged,
+            mGraphViewWindow, &FCGraphViewWindow::setPostProcessingVisible);
+    
+    // 连接渲染请求信号
+    connect(this, &FCGraphicOperateWidget::renderRequested,
+            mGraphViewWindow, &FCGraphViewWindow::reRender);
 }
 
 FCGraphicOperateWidget::~FCGraphicOperateWidget()
@@ -114,20 +126,26 @@ void FCGraphicOperateWidget::deleteMeshActor(const IdType id)
 
 void FCGraphicOperateWidget::setGeometryVisible(bool visible)
 {
-    // 直接调用FCGraphViewWindow的方法
-    // 由于FCGraphicOperateWidget已经依赖FCGraphViewWindow，可以直接调用
-    if (mGraphViewWindow) {
-        mGraphViewWindow->setGeometryVisible(visible);
-    }
+    // 通过信号传递给FCGraphViewWindow
+    emit geometryVisibleChanged(visible);
 }
 
 void FCGraphicOperateWidget::setMeshVisible(bool visible)
 {
-    // 直接调用FCGraphViewWindow的方法
-    // 由于FCGraphicOperateWidget已经依赖FCGraphViewWindow，可以直接调用
-    if (mGraphViewWindow) {
-        mGraphViewWindow->setMeshVisible(visible);
-    }
+    // 通过信号传递给FCGraphViewWindow
+    emit meshVisibleChanged(visible);
+}
+
+void FCGraphicOperateWidget::setPostProcessingVisible(bool visible)
+{
+    // 通过信号传递给FCGraphViewWindow
+    emit postProcessingVisibleChanged(visible);
+}
+
+void FCGraphicOperateWidget::requestRender()
+{
+    // 通过信号请求渲染
+    emit renderRequested();
 }
 
 void FCGraphicOperateWidget::showModel(FCGeometrySet *set, bool r)
@@ -153,6 +171,9 @@ void FCGraphicOperateWidget::showModel(FCGeometrySet *set, bool r)
     mVTKWidget->renderWindow()->Render();
 }
 
- 
+FCGraphViewWindow* FCGraphicOperateWidget::getGraphViewWindow()
+{
+    return mGraphViewWindow;
+}
 
 } // namespace FC

@@ -94,6 +94,7 @@ void FCGeometryViewProvider::updateGraphOption()
 void FCGeometryViewProvider::setAllGeometryVisible(bool visible)
 {
     // 遍历所有几何体，设置可见性
+    // 关闭显示几何时，隐藏所有几何（面、边、点），只显示网格线框
     for (auto it = mGeoViewHash.begin(); it != mGeoViewHash.end(); ++it) {
         GeoViewObj& viewObj = it.value();
         
@@ -154,6 +155,13 @@ void FCGeometryViewProvider::showGeoSet(const IdType id, bool render)
         actor->SetVisibility(show && vis);
         actor->SetPickable(false);
         actor->GetProperty()->SetRepresentationToSurface();
+        // 关闭边缘显示，避免与网格线框冲突
+        actor->GetProperty()->SetEdgeVisibility(false);
+        // 设置渲染属性，避免与网格线框冲突时出现黑块
+        actor->GetProperty()->SetBackfaceCulling(false);
+        actor->GetProperty()->SetFrontfaceCulling(false);
+        // 设置深度偏移，避免与网格线框的深度冲突
+        actor->GetProperty()->SetRenderPointsAsSpheres(false);
         mGraphViewWindow->AppendActor(actor, D3, false);
         viewObj.mFaceObj = QPair<vtkActor *, vtkPolyData *>(actor, facePoly);
     }

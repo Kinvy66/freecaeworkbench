@@ -70,6 +70,78 @@ public:
      */
     void updateDisplayData();
     
+    /**
+     * @brief 设置显示形式 0:面, 1:线框, 2:点
+     */
+    void setDisplayForm(int form);
+    
+    /**
+     * @brief 设置透明度 (0.0-1.0)
+     */
+    void setTransparency(double opacity);
+    
+    /**
+     * @brief 设置点大小
+     */
+    void setPointSize(int size);
+    
+    /**
+     * @brief 设置线宽
+     */
+    void setLineWidth(int width);
+    
+    /**
+     * @brief 设置着色方式 0:平面着色, 1:Gouraud着色, 2:Phong着色
+     */
+    void setShadingMethod(int method);
+    
+    /**
+     * @brief 设置光照属性
+     */
+    void setLightingProperties(double specularCoeff, double specularIntensity, 
+                                double ambientCoeff, double diffuseCoeff);
+    
+    /**
+     * @brief 设置边界颜色
+     */
+    void setBoundaryColor(double r, double g, double b);
+    
+    /**
+     * @brief 获取显示形式 0:面, 1:线框, 2:点
+     */
+    int getDisplayForm() const;
+    
+    /**
+     * @brief 获取透明度 (0.0-1.0)
+     */
+    double getTransparency() const;
+    
+    /**
+     * @brief 获取点大小
+     */
+    int getPointSize() const;
+    
+    /**
+     * @brief 获取线宽
+     */
+    int getLineWidth() const;
+    
+    /**
+     * @brief 获取着色方式 0:平面着色, 1:Gouraud着色, 2:Phong着色
+     */
+    int getShadingMethod() const;
+    
+    /**
+     * @brief 获取光照属性
+     */
+    void getLightingProperties(double& specularCoeff, double& specularIntensity, 
+                                double& ambientCoeff, double& diffuseCoeff) const;
+    
+    /**
+     * @brief 获取边界颜色
+     */
+    void getBoundaryColor(double& r, double& g, double& b) const;
+    
 private:
     /**
      * @brief 初始化显示层数据

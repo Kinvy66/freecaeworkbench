@@ -170,6 +170,10 @@ private:
      * @brief 高亮的交互选取的对象
      */
     QMultiHash<int, int> mHighLightSelectItems{};
+    /**
+     * @brief 是否应该显示网格（用于控制网格的可见性）
+     */
+    bool mMeshShouldBeVisible{true};
 };
 } // namespace FC
 

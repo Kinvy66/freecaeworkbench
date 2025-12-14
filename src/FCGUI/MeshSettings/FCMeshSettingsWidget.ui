@@ -33,6 +33,16 @@
     </layout>
    </item>
    <item>
+    <widget class="QCheckBox" name="checkBoxGeometryVisible">
+     <property name="text">
+      <string>显示几何</string>
+     </property>
+     <property name="checked">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item>
     <widget class="QGroupBox" name="groupBox">
      <property name="title">
       <string>曲面</string>

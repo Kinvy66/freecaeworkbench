@@ -71,6 +71,12 @@ public:
     void updateScalarBar(vtkLookupTable* lookuptable, QString title = QString(""));
     void updateScalarBarLecel(const int n);
     int getScalarBarLevel();
+    //显示/隐藏标量条（图例）
+    void showScalarBar(bool show);
+    bool isScalarBarVisible() const;
+    //显示/隐藏坐标轴
+    void showAxes(bool show);
+    bool isAxesVisible() const;
     //重置视角
     void resetCamera();
     //根据设置重绘

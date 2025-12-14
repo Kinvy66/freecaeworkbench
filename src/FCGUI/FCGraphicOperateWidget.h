@@ -48,6 +48,9 @@ public:
     // 后处理相关方法（通过信号传递给FCGraphViewWindow）
     void setGeometryVisible(bool visible);
     void setMeshVisible(bool visible);
+    void setPostProcessingVisible(bool visible);
+    // 请求渲染（在所有可见性设置完成后调用）
+    void requestRender();
     
 signals:
     void showGeoSet(const IdType id, bool render = true);
@@ -57,6 +60,14 @@ signals:
     void updateGeometryAcotr(const IdType id);
     void updateMeshAcotr(const IdType id);
     void updatePostProcessingAcotr(const IdType id);
+    
+    // 可见性控制信号
+    void geometryVisibleChanged(bool visible);
+    void meshVisibleChanged(bool visible);
+    void postProcessingVisibleChanged(bool visible);
+    
+    // 渲染控制信号
+    void renderRequested();
     
 public slots:
     void showModel(FCGeometrySet* set, bool r);

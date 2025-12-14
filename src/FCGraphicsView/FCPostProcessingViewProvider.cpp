@@ -115,11 +115,20 @@ void FCPostProcessingViewProvider::showPostProcessingSlot(IdType postID, bool r)
             qDebug() << "showPostProcessingSlot: actor pickable:" << ac->GetPickable();
             
             mGraphViewWindow->AppendActor(ac);
-            mGraphViewWindow->reRender();
-            qDebug() << "showPostProcessingSlot: actor appended and render called";
+            qDebug() << "showPostProcessingSlot: actor appended";
+            
+            // 确保边界线不显示（默认设置）
+            vtkProperty* prop = ac->GetProperty();
+            if (prop) {
+                prop->SetEdgeVisibility(false);
+            }
         } else {
             qWarning() << "showPostProcessingSlot: actor is null for postID" << postID;
         }
+        
+        // 确保网格和几何体被隐藏（防止在其他更新操作中被重新显示）
+        mGraphViewWindow->setMeshVisible(false);
+        mGraphViewWindow->setGeometryVisible(false);
     } else {
         // 隐藏
         qDebug() << "showPostProcessingSlot: hiding postID" << postID;
@@ -152,9 +161,15 @@ void FCPostProcessingViewProvider::updateDisplayModel(IdType postID)
     
     vtkActor* actor = vobj->getActor();
     if (actor) {
-        // 设置为表面显示
-        actor->GetProperty()->SetRepresentationToSurface();
-        actor->GetProperty()->SetEdgeVisibility(false);
+        vtkProperty* prop = actor->GetProperty();
+        if (prop) {
+            // 设置为表面显示
+            prop->SetRepresentationToSurface();
+            // 不显示网格线
+            prop->SetEdgeVisibility(false);
+            // 使用Gouraud着色，避免转动时出现色块闪动
+            prop->SetInterpolationToGouraud();
+        }
     }
 }
 
@@ -194,6 +209,21 @@ void FCPostProcessingViewProvider::showPostProcessing(IdType postID, bool show)
     }
 }
 
+void FCPostProcessingViewProvider::setAllPostProcessingVisible(bool visible)
+{
+    // 遍历所有后处理ViewObject，设置可见性
+    for (auto it = mPostProcessingViewObjects.begin(); it != mPostProcessingViewObjects.end(); ++it) {
+        FCPostProcessingViewObject* vobj = it.value();
+        if (vobj) {
+            vtkActor* actor = vobj->getActor();
+            if (actor) {
+                actor->SetVisibility(visible ? 1 : 0);
+            }
+        }
+    }
+    mGraphViewWindow->reRender();
+}
+
 void FCPostProcessingViewProvider::highLighSelectItem(QMultiHash<int, int> *items)
 {
     // 实现高亮选中项
@@ -217,6 +247,14 @@ void FCPostProcessingViewProvider::removeDisplay(IdType postID)
     
     mPostProcessingViewObjects.remove(postID);
     delete vobj;
+}
+
+FCPostProcessingViewObject* FCPostProcessingViewProvider::getViewObject(IdType postID)
+{
+    if (mPostProcessingViewObjects.contains(postID)) {
+        return mPostProcessingViewObjects.value(postID);
+    }
+    return nullptr;
 }
 
 } // namespace FC

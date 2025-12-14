@@ -22,6 +22,9 @@
 #include "FCTorusSettingsWidget.h"
 
 #include "FCMeshSettingsWidget.h"
+#include "PostProcessingSettings/FCPostProcessingDisplaySettingsWidget.h"
+#include "FCGraphicOperateWidget.h"
+#include "FCGraphViewWindow.h"
 
 namespace FC 
 {
@@ -252,6 +255,14 @@ void FCSettingParametersWidget::updateCurrentMeshSettingWidget(const IdType id, 
     Q_UNUSED(name)
     FCMeshSettingsWidget* settingsWidget = new FCMeshSettingsWidget(id, this);
     
+    // 设置图形视图窗口（用于控制几何可见性）
+    if (mGraphicOperateWidget) {
+        FCGraphViewWindow* viewWindow = mGraphicOperateWidget->getGraphViewWindow();
+        if (viewWindow) {
+            settingsWidget->setGraphViewWindow(viewWindow);
+        }
+    }
+    
     connect(settingsWidget, &FCMeshSettingsWidget::updateMeshTree,
             this, &FCSettingParametersWidget::updateMeshTree);
     
@@ -260,6 +271,38 @@ void FCSettingParametersWidget::updateCurrentMeshSettingWidget(const IdType id, 
     // connect(settingsWidget, &FCMeshSettingsWidget::updateMeshActor,
     //         this, &FCSettingParametersWidget::updateMeshAcotr);
     
+    
+    setCurrentWidget(settingsWidget);
+}
+
+void FCSettingParametersWidget::setGraphicOperateWidget(FCGraphicOperateWidget* widget)
+{
+    mGraphicOperateWidget = widget;
+}
+
+void FCSettingParametersWidget::updateCurrentPostProcessingSettingWidget(const IdType id, const QString &name)
+{
+    Q_UNUSED(name)
+    
+    if (!mGraphicOperateWidget) {
+        qWarning() << "FCSettingParametersWidget: GraphicOperateWidget not set";
+        setCurrentWidget(nullptr);
+        return;
+    }
+    
+    FCGraphViewWindow* viewWindow = mGraphicOperateWidget->getGraphViewWindow();
+    if (!viewWindow) {
+        qWarning() << "FCSettingParametersWidget: GraphViewWindow not available";
+        setCurrentWidget(nullptr);
+        return;
+    }
+    
+    // 创建后处理显示设置窗口
+    FCPostProcessingDisplaySettingsWidget* settingsWidget = 
+        new FCPostProcessingDisplaySettingsWidget(viewWindow, this);
+    
+    // 设置当前后处理ID并更新UI
+    settingsWidget->setPostProcessingID(id);
     
     setCurrentWidget(settingsWidget);
 }

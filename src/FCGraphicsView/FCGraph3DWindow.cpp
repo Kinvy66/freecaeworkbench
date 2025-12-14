@@ -181,6 +181,7 @@ void FCGraph3DWindow::init()
     mInteractor = mRenderWindow->GetInteractor();
     mRenderWindow->AddRenderer(mRender);
     initAxes();
+    initScalarBar();
     updateGraphOption();
 }
 void FCGraph3DWindow::initAxes()
@@ -239,7 +240,20 @@ void FCGraph3DWindow::initScalarBar()
 }
 void FCGraph3DWindow::updateScalarBar(vtkLookupTable *lookuptable, QString title /* = QString("") */)
 {
+    if (!mScalarBarWidget) {
+        qWarning() << "FCGraph3DWindow::updateScalarBar: mScalarBarWidget is null";
+        return;
+    }
+    
+    if (!lookuptable) {
+        qWarning() << "FCGraph3DWindow::updateScalarBar: lookuptable is null";
+        return;
+    }
+    
     mScalarBarWidget->GetScalarBarActor()->SetLookupTable(lookuptable);
+    if (!title.isEmpty()) {
+        mScalarBarWidget->GetScalarBarActor()->SetTitle(title.toStdString().c_str());
+    }
     mLookupTable = lookuptable;
     mScalarBarWidget->On();
 }
@@ -309,6 +323,16 @@ void FCGraph3DWindow::saveImage(QString filePath, int w, int h, bool showdlg)
 }
 void FCGraph3DWindow::updateScalarBarLecel(const int n)
 {
+    if (!mLookupTable) {
+        qWarning() << "FCGraph3DWindow::updateScalarBarLecel: mLookupTable is null";
+        return;
+    }
+    
+    if (!mScalarBarWidget) {
+        qWarning() << "FCGraph3DWindow::updateScalarBarLecel: mScalarBarWidget is null";
+        return;
+    }
+    
     mLookupTable->SetNumberOfColors(n);
     mScalarBarWidget->GetScalarBarActor()->SetLookupTable(mLookupTable);
     //		int na = _render->GetActors()->GetNumberOfItems();
@@ -320,6 +344,42 @@ int FCGraph3DWindow::getScalarBarLevel()
         return 0;
     int n = mLookupTable->GetNumberOfColors();
     return n;
+}
+
+void FCGraph3DWindow::showScalarBar(bool show)
+{
+    if (mScalarBarWidget) {
+        if (show) {
+            mScalarBarWidget->On();
+        } else {
+            mScalarBarWidget->Off();
+        }
+        mRenderWindow->Render();
+    }
+}
+
+bool FCGraph3DWindow::isScalarBarVisible() const
+{
+    if (mScalarBarWidget) {
+        return mScalarBarWidget->GetEnabled() != 0;
+    }
+    return false;
+}
+
+void FCGraph3DWindow::showAxes(bool show)
+{
+    if (mAxesWidget) {
+        mAxesWidget->SetEnabled(show ? 1 : 0);
+        mRenderWindow->Render();
+    }
+}
+
+bool FCGraph3DWindow::isAxesVisible() const
+{
+    if (mAxesWidget) {
+        return mAxesWidget->GetEnabled() != 0;
+    }
+    return false;
 }
 void FCGraph3DWindow::resetCamera()
 {

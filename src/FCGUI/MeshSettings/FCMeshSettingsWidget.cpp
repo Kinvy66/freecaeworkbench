@@ -15,6 +15,7 @@
 #include "FCMeshKernal.h"
 #include "FCGmshSettingData.h"
 #include "FCGeometryData.h"
+#include "FCGraphViewWindow.h"
 
 namespace FC 
 {
@@ -26,6 +27,7 @@ FCMeshSettingsWidget::FCMeshSettingsWidget(QWidget *parent)
     mIsEdit = false;
     mEidtSetID = 0;
     init();
+    initConnections();
 }
 
 FCMeshSettingsWidget::FCMeshSettingsWidget(const IdType editSetID, QWidget *parent)
@@ -36,6 +38,7 @@ FCMeshSettingsWidget::FCMeshSettingsWidget(const IdType editSetID, QWidget *pare
     mIsEdit = true;
     mEidtSetID = editSetID;
     init();
+    initConnections();
 }
 
 FCMeshSettingsWidget::~FCMeshSettingsWidget()
@@ -216,8 +219,27 @@ void FCMeshSettingsWidget::on_pushButtonSelcet_clicked()
         QString::number(mesh->getBindedGeometry().size()));
 }
 
+void FCMeshSettingsWidget::initConnections()
+{
+    // 连接几何可见性复选框
+    connect(ui->checkBoxGeometryVisible, &QCheckBox::toggled,
+            this, &FCMeshSettingsWidget::on_checkBoxGeometryVisible_toggled);
+}
 
+void FCMeshSettingsWidget::setGraphViewWindow(FCGraphViewWindow* viewWindow)
+{
+    mGraphViewWindow = viewWindow;
+}
 
+void FCMeshSettingsWidget::on_checkBoxGeometryVisible_toggled(bool checked)
+{
+    // 通过mGraphViewWindow控制几何可见性
+    if (mGraphViewWindow) {
+        mGraphViewWindow->setGeometryVisible(checked);
+    } else {
+        qWarning() << "FCMeshSettingsWidget: GraphViewWindow not set, cannot control geometry visibility";
+    }
+}
 
 } // namespace FC
 

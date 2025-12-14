@@ -30,6 +30,14 @@ FCPostProcessingViewObject::FCPostProcessingViewObject(IdType kid)
 {
     mActor = vtkActor::New();
     mLookupTable = vtkLookupTable::New();
+    // 立即设置Actor属性，确保边界线默认隐藏
+    if (mActor) {
+        vtkProperty* prop = mActor->GetProperty();
+        if (prop) {
+            prop->SetEdgeVisibility(false); // 默认不显示边界线
+            prop->SetInterpolationToGouraud(); // 使用平滑着色
+        }
+    }
     this->init();
 }
 
@@ -158,6 +166,10 @@ void FCPostProcessingViewObject::updateDisplayData()
         vtkProperty* prop = mActor->GetProperty();
         if (prop) {
             prop->SetRepresentationToSurface();
+            // 不显示网格线
+            prop->SetEdgeVisibility(false);
+            // 使用Gouraud着色，避免转动时出现色块闪动
+            prop->SetInterpolationToGouraud();
             // 如果没有标量场，设置默认颜色
             if (!scalars) {
                 prop->SetColor(0.8, 0.8, 0.8); // 浅灰色
@@ -221,6 +233,223 @@ void FCPostProcessingViewObject::createLookupTable()
             scalars->GetRange(range);
             mLookupTable->SetTableRange(range);
         }
+    }
+}
+
+void FCPostProcessingViewObject::setDisplayForm(int form)
+{
+    if (!mActor) return;
+    
+    vtkProperty* prop = mActor->GetProperty();
+    if (!prop) return;
+    
+    switch (form) {
+    case 0: // 面
+        prop->SetRepresentationToSurface();
+        prop->SetEdgeVisibility(false);
+        // 使用Gouraud着色，避免转动时出现色块闪动
+        prop->SetInterpolationToGouraud();
+        break;
+    case 1: // 线框
+        prop->SetRepresentationToWireframe();
+        break;
+    case 2: // 点
+        prop->SetRepresentationToPoints();
+        break;
+    default:
+        break;
+    }
+}
+
+void FCPostProcessingViewObject::setTransparency(double opacity)
+{
+    if (!mActor) return;
+    
+    vtkProperty* prop = mActor->GetProperty();
+    if (prop) {
+        prop->SetOpacity(opacity);
+    }
+}
+
+void FCPostProcessingViewObject::setPointSize(int size)
+{
+    if (!mActor) return;
+    
+    vtkProperty* prop = mActor->GetProperty();
+    if (prop) {
+        prop->SetPointSize(size);
+    }
+}
+
+void FCPostProcessingViewObject::setLineWidth(int width)
+{
+    if (!mActor) return;
+    
+    vtkProperty* prop = mActor->GetProperty();
+    if (prop) {
+        prop->SetLineWidth(width);
+    }
+}
+
+void FCPostProcessingViewObject::setShadingMethod(int method)
+{
+    if (!mActor) return;
+    
+    vtkProperty* prop = mActor->GetProperty();
+    if (!prop) return;
+    
+    switch (method) {
+    case 0: // 平面着色
+        prop->SetInterpolationToFlat();
+        break;
+    case 1: // Gouraud着色
+        prop->SetInterpolationToGouraud();
+        break;
+    case 2: // Phong着色
+        prop->SetInterpolationToPhong();
+        break;
+    default:
+        break;
+    }
+}
+
+void FCPostProcessingViewObject::setLightingProperties(double specularCoeff, double specularIntensity, 
+                                                        double ambientCoeff, double diffuseCoeff)
+{
+    if (!mActor) return;
+    
+    vtkProperty* prop = mActor->GetProperty();
+    if (prop) {
+        prop->SetSpecular(specularCoeff);
+        prop->SetSpecularPower(specularIntensity);
+        prop->SetAmbient(ambientCoeff);
+        prop->SetDiffuse(diffuseCoeff);
+    }
+}
+
+void FCPostProcessingViewObject::setBoundaryColor(double r, double g, double b)
+{
+    if (!mActor) return;
+    
+    vtkProperty* prop = mActor->GetProperty();
+    if (prop) {
+        prop->SetEdgeColor(r, g, b);
+        // 不自动启用边界线显示，边界线显示由其他方法控制（如setDisplayForm）
+        // 默认情况下后处理不显示网格线
+        // prop->SetEdgeVisibility(true);
+    }
+}
+
+int FCPostProcessingViewObject::getDisplayForm() const
+{
+    if (!mActor) return 0;
+    
+    vtkProperty* prop = mActor->GetProperty();
+    if (!prop) return 0;
+    
+    int rep = prop->GetRepresentation();
+    if (rep == VTK_SURFACE) {
+        return 0; // 面
+    } else if (rep == VTK_WIREFRAME) {
+        return 1; // 线框
+    } else if (rep == VTK_POINTS) {
+        return 2; // 点
+    }
+    return 0;
+}
+
+double FCPostProcessingViewObject::getTransparency() const
+{
+    if (!mActor) return 1.0;
+    
+    vtkProperty* prop = mActor->GetProperty();
+    if (prop) {
+        return prop->GetOpacity();
+    }
+    return 1.0;
+}
+
+int FCPostProcessingViewObject::getPointSize() const
+{
+    if (!mActor) return 2;
+    
+    vtkProperty* prop = mActor->GetProperty();
+    if (prop) {
+        return static_cast<int>(prop->GetPointSize());
+    }
+    return 2;
+}
+
+int FCPostProcessingViewObject::getLineWidth() const
+{
+    if (!mActor) return 1;
+    
+    vtkProperty* prop = mActor->GetProperty();
+    if (prop) {
+        return static_cast<int>(prop->GetLineWidth());
+    }
+    return 1;
+}
+
+int FCPostProcessingViewObject::getShadingMethod() const
+{
+    if (!mActor) return 0;
+    
+    vtkProperty* prop = mActor->GetProperty();
+    if (!prop) return 0;
+    
+    int interp = prop->GetInterpolation();
+    if (interp == VTK_FLAT) {
+        return 0; // 平面着色
+    } else if (interp == VTK_GOURAUD) {
+        return 1; // Gouraud着色
+    } else if (interp == VTK_PHONG) {
+        return 2; // Phong着色
+    }
+    return 0;
+}
+
+void FCPostProcessingViewObject::getLightingProperties(double& specularCoeff, double& specularIntensity, 
+                                                        double& ambientCoeff, double& diffuseCoeff) const
+{
+    if (!mActor) {
+        specularCoeff = 0.0;
+        specularIntensity = 100.0;
+        ambientCoeff = 0.0;
+        diffuseCoeff = 1.0;
+        return;
+    }
+    
+    vtkProperty* prop = mActor->GetProperty();
+    if (prop) {
+        specularCoeff = prop->GetSpecular();
+        specularIntensity = prop->GetSpecularPower();
+        ambientCoeff = prop->GetAmbient();
+        diffuseCoeff = prop->GetDiffuse();
+    } else {
+        specularCoeff = 0.0;
+        specularIntensity = 100.0;
+        ambientCoeff = 0.0;
+        diffuseCoeff = 1.0;
+    }
+}
+
+void FCPostProcessingViewObject::getBoundaryColor(double& r, double& g, double& b) const
+{
+    if (!mActor) {
+        r = 0.0; g = 0.0; b = 1.0; // 默认蓝色
+        return;
+    }
+    
+    vtkProperty* prop = mActor->GetProperty();
+    if (prop) {
+        double color[3];
+        prop->GetEdgeColor(color);
+        r = color[0];
+        g = color[1];
+        b = color[2];
+    } else {
+        r = 0.0; g = 0.0; b = 1.0;
     }
 }
 

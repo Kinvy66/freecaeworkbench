@@ -54,12 +54,24 @@ public:
      */
     void showPostProcessing(IdType postID, bool show);
     /**
+     * @brief 隐藏/显示所有后处理
+     * @param visible 是否可见
+     */
+    void setAllPostProcessingVisible(bool visible);
+    /**
      * @brief 高亮交互拾取的对象
      * @param  items    交互拾取的对象
      */
     void highLighSelectItem(QMultiHash<int, int> *items);
     
     void removePostProcessingActor(IdType postID);
+    
+    /**
+     * @brief 获取后处理ViewObject
+     * @param postID 后处理ID
+     * @return FCPostProcessingViewObject* ViewObject指针，如果不存在返回nullptr
+     */
+    FCPostProcessingViewObject* getViewObject(IdType postID);
     
 public slots:
     /**

@@ -59,6 +59,12 @@ void FCMeshViewProvider::updateMeshActorSlot()
             mGraphViewWindow->AppendActor(ac[0]);
             mGraphViewWindow->AppendActor(ac[1]);
             mGraphViewWindow->AppendActor(ac[2]);
+            // 如果网格不应该显示，立即隐藏
+            if (!mMeshShouldBeVisible) {
+                ac[0]->SetVisibility(0);
+                ac[1]->SetVisibility(0);
+                ac[2]->SetVisibility(0);
+            }
         }
     }
     // 删除
@@ -84,6 +90,12 @@ void FCMeshViewProvider::showMesh(IdType meshID, bool r)
         mGraphViewWindow->AppendActor(ac[0]);
         mGraphViewWindow->AppendActor(ac[1]);
         mGraphViewWindow->AppendActor(ac[2]);
+        // 如果网格不应该显示，立即隐藏
+        if (!mMeshShouldBeVisible) {
+            ac[0]->SetVisibility(0);
+            ac[1]->SetVisibility(0);
+            ac[2]->SetVisibility(0);
+        }
     }
 }
 
@@ -264,17 +276,18 @@ void FCMeshViewProvider::updateDisplayModel(IdType meshID /* FCMeshKernal *k = n
         vobjs.append(mMeshViewObjects.value(meshID));
     
     // auto gp = Setting::BusAPI::instance()->getGraphOption();
-    bool showNode = true;// gp->isShowMeshNode();
-    bool showEdge = true;//gp->isShowMeshEdge();
-    bool showFace = true;//gp->isShowMeshFace();
+    // 根据 mMeshShouldBeVisible 标志决定是否显示网格
+    bool showNode = mMeshShouldBeVisible;// gp->isShowMeshNode();
+    bool showEdge = mMeshShouldBeVisible;//gp->isShowMeshEdge();
+    bool showFace = mMeshShouldBeVisible;//gp->isShowMeshFace();
     for (auto kobj : vobjs)
     {
         if (nullptr == kobj)
             continue;
         vtkActor **acs = kobj->getActor();
-        acs[POINTACTOR]->SetVisibility(showNode);
-        acs[EDGEACTOR]->SetVisibility(showEdge);
-        acs[FACEACTOR]->SetVisibility(showFace);
+        acs[POINTACTOR]->SetVisibility(showNode ? 1 : 0);
+        acs[EDGEACTOR]->SetVisibility(showEdge ? 1 : 0);
+        acs[FACEACTOR]->SetVisibility(showFace ? 1 : 0);
         if (showEdge && showFace)
         {
             acs[EDGEACTOR]->GetMapper()->SetScalarVisibility(false);
@@ -286,27 +299,50 @@ void FCMeshViewProvider::updateDisplayModel(IdType meshID /* FCMeshKernal *k = n
     }
     
     if (k != nullptr)
-        showKernal(meshID, k->isVisible());
+        showKernal(meshID, k->isVisible() && mMeshShouldBeVisible);
     else
     {
         auto ks = mMeshViewObjects.keys();
         for (auto ck : ks)
-            showKernal(ck, k->isVisible());
+            showKernal(ck, k->isVisible() && mMeshShouldBeVisible);
     }
 }
 
 void FCMeshViewProvider::setAllMeshVisible(bool visible)
 {
+    // 记录网格是否应该显示
+    mMeshShouldBeVisible = visible;
+    
     // 遍历所有网格，设置可见性
+    // 当visible为false时，隐藏所有网格（点、线、面）
+    // 当visible为true时，显示网格线框（EDGEACTOR），隐藏面和点
     for (auto it = mMeshViewObjects.begin(); it != mMeshViewObjects.end(); ++it) {
         FCMeshViewObject* vobj = it.value();
         if (vobj) {
             vtkActor** actors = vobj->getActor();
             if (actors) {
-                actors[0]->SetVisibility(visible ? 1 : 0); // POINTACTOR
-                actors[1]->SetVisibility(visible ? 1 : 0); // EDGEACTOR
-                actors[2]->SetVisibility(visible ? 1 : 0); // FACEACTOR
+                if (visible) {
+                    // 显示网格时，只显示线框，隐藏面和点
+                    actors[0]->SetVisibility(0); // POINTACTOR - 隐藏点
+                    actors[1]->SetVisibility(1); // EDGEACTOR - 显示线框
+                    actors[2]->SetVisibility(0); // FACEACTOR - 隐藏面
+                } else {
+                    // 隐藏所有网格 - 强制设置为不可见
+                    actors[0]->SetVisibility(0); // POINTACTOR
+                    actors[1]->SetVisibility(0); // EDGEACTOR
+                    actors[2]->SetVisibility(0); // FACEACTOR
+                }
             }
+        }
+    }
+    
+    // 如果隐藏网格，确保之后调用updateDisplayModel也不会显示
+    // 通过强制重新应用可见性设置来确保
+    if (!visible) {
+        // 遍历所有网格ID，强制更新显示模型以确保隐藏
+        QList<IdType> allIds = mMeshViewObjects.keys();
+        for (auto id : allIds) {
+            updateDisplayModel(id);
         }
     }
 }
@@ -346,6 +382,18 @@ void FCMeshViewProvider::updateGraphOption(IdType meshID)
         else
             acs[EDGEACTOR]->GetMapper()->SetScalarVisibility(true);
     }
+    
+    // 如果网格不应该显示，确保隐藏所有actor（防止updateGraphOption后网格被显示）
+    if (!mMeshShouldBeVisible) {
+        for (auto kobj : vobjs) {
+            if (nullptr == kobj)
+                continue;
+            vtkActor **acs = kobj->getActor();
+            acs[POINTACTOR]->SetVisibility(0);
+            acs[EDGEACTOR]->SetVisibility(0);
+            acs[FACEACTOR]->SetVisibility(0);
+        }
+    }
 }
 
 void FCMeshViewProvider::showKernal(IdType meshID, bool show)
@@ -358,22 +406,24 @@ void FCMeshViewProvider::showKernal(IdType meshID, bool show)
     if (vobj == nullptr)
         return;
     vtkActor **acs = vobj->getActor();
-    if (show)
+    // 检查网格是否应该显示（考虑 mMeshShouldBeVisible 标志）
+    bool shouldShow = show && mMeshShouldBeVisible;
+    if (shouldShow)
     {
         // auto gp = Setting::BusAPI::instance()->getGraphOption();
         const bool showNode = true;//gp->isShowMeshNode();
         const bool showEdge = true;//gp->isShowMeshEdge();
         const bool showFace = false;//gp->isShowMeshFace();
         
-        acs[POINTACTOR]->SetVisibility(showNode);
-        acs[EDGEACTOR]->SetVisibility(showEdge);
-        acs[FACEACTOR]->SetVisibility(showFace);
+        acs[POINTACTOR]->SetVisibility(showNode ? 1 : 0);
+        acs[EDGEACTOR]->SetVisibility(showEdge ? 1 : 0);
+        acs[FACEACTOR]->SetVisibility(showFace ? 1 : 0);
     }
     else
     {
-        acs[POINTACTOR]->SetVisibility(false);
-        acs[EDGEACTOR]->SetVisibility(false);
-        acs[FACEACTOR]->SetVisibility(false);
+        acs[POINTACTOR]->SetVisibility(0);
+        acs[EDGEACTOR]->SetVisibility(0);
+        acs[FACEACTOR]->SetVisibility(0);
     }
     mGraphViewWindow->reRender();
 }

@@ -169,6 +169,8 @@ public Q_SLOTS:
     
     void onUpdateMeshTree(const IdType id, const QString& name);
     
+    void onCurrentGeoItemChanged(const IdType id, const QString& name);
+    void onCurrentMeshItemChanged(const IdType id, const QString& name);
     void onCurrentPostProcessingItemChanged(const IdType id, const QString& name);
     
 private Q_SLOTS:

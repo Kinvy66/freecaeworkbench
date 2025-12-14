@@ -18,6 +18,8 @@ namespace FC
 {
 class FCGeometrySet;
 
+class FCGraphicOperateWidget;
+
 class FCGUI_API FCSettingParametersWidget : public QWidget
 {
     Q_OBJECT
@@ -26,6 +28,11 @@ public:
 public:
     FCSettingParametersWidget(QWidget* parent = nullptr);
     ~FCSettingParametersWidget();
+    
+    /**
+     * @brief 设置图形操作窗口（用于获取GraphViewWindow）
+     */
+    void setGraphicOperateWidget(FCGraphicOperateWidget* widget);
     
     void createBox();
     void createCylinder();
@@ -42,6 +49,7 @@ protected:
 public slots:
     void updateCurrentGeoSettingWidget(const IdType id, const QString& name);
     void updateCurrentMeshSettingWidget(const IdType id, const QString& name);
+    void updateCurrentPostProcessingSettingWidget(const IdType id, const QString& name);
     void updateCurrentSettingWidget(const IdType id, const QString& name);
     
     // void onMeshGenerated(IdType meshID, bool r=true);
@@ -65,6 +73,7 @@ private:
     
     QVBoxLayout* mLayout = nullptr;
     QWidget* mCurrentWidget = nullptr;
+    FCGraphicOperateWidget* mGraphicOperateWidget = nullptr;
 };
 } // namespace FC
 

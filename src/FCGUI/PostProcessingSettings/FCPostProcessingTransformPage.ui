@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>FCPostProcessingTransformPage</class>
+ <widget class="QWidget" name="FCPostProcessingTransformPage">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>400</width>
+    <height>400</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>坐标变换</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout_Transform">
+      <item>
+       <widget class="QGroupBox" name="groupBoxTranslation">
+        <property name="title">
+         <string>位移</string>
+        </property>
+        <layout class="QGridLayout" name="gridLayout_Translation">
+         <item row="0" column="0">
+          <widget class="QLabel" name="labelTranslationX">
+           <property name="text">
+            <string>X：</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1">
+          <widget class="QDoubleSpinBox" name="doubleSpinBoxTranslationX"/>
+         </item>
+         <item row="1" column="0">
+          <widget class="QLabel" name="labelTranslationY">
+           <property name="text">
+            <string>Y：</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="1">
+          <widget class="QDoubleSpinBox" name="doubleSpinBoxTranslationY"/>
+         </item>
+         <item row="2" column="0">
+          <widget class="QLabel" name="labelTranslationZ">
+           <property name="text">
+            <string>Z：</string>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="1">
+          <widget class="QDoubleSpinBox" name="doubleSpinBoxTranslationZ"/>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item>
+       <widget class="QGroupBox" name="groupBoxScale">
+        <property name="title">
+         <string>缩放</string>
+        </property>
+        <layout class="QGridLayout" name="gridLayout_Scale">
+         <item row="0" column="0">
+          <widget class="QLabel" name="labelScaleX">
+           <property name="text">
+            <string>X：</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1">
+          <widget class="QDoubleSpinBox" name="doubleSpinBoxScaleX"/>
+         </item>
+         <item row="1" column="0">
+          <widget class="QLabel" name="labelScaleY">
+           <property name="text">
+            <string>Y：</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="1">
+          <widget class="QDoubleSpinBox" name="doubleSpinBoxScaleY"/>
+         </item>
+         <item row="2" column="0">
+          <widget class="QLabel" name="labelScaleZ">
+           <property name="text">
+            <string>Z：</string>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="1">
+          <widget class="QDoubleSpinBox" name="doubleSpinBoxScaleZ"/>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item>
+       <widget class="QGroupBox" name="groupBoxOrientation">
+        <property name="title">
+         <string>方向</string>
+        </property>
+        <layout class="QGridLayout" name="gridLayout_Orientation">
+         <item row="0" column="0">
+          <widget class="QLabel" name="labelOrientationX">
+           <property name="text">
+            <string>X：</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1">
+          <widget class="QDoubleSpinBox" name="doubleSpinBoxOrientationX"/>
+         </item>
+         <item row="1" column="0">
+          <widget class="QLabel" name="labelOrientationY">
+           <property name="text">
+            <string>Y：</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="1">
+          <widget class="QDoubleSpinBox" name="doubleSpinBoxOrientationY"/>
+         </item>
+         <item row="2" column="0">
+          <widget class="QLabel" name="labelOrientationZ">
+           <property name="text">
+            <string>Z：</string>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="1">
+          <widget class="QDoubleSpinBox" name="doubleSpinBoxOrientationZ"/>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item>
+       <widget class="QGroupBox" name="groupBoxCenterPoint">
+        <property name="title">
+         <string>中心点</string>
+        </property>
+        <layout class="QGridLayout" name="gridLayout_CenterPoint">
+         <item row="0" column="0">
+          <widget class="QLabel" name="labelCenterPointX">
+           <property name="text">
+            <string>X：</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1">
+          <widget class="QDoubleSpinBox" name="doubleSpinBoxCenterPointX"/>
+         </item>
+         <item row="1" column="0">
+          <widget class="QLabel" name="labelCenterPointY">
+           <property name="text">
+            <string>Y：</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="1">
+          <widget class="QDoubleSpinBox" name="doubleSpinBoxCenterPointY"/>
+         </item>
+         <item row="2" column="0">
+          <widget class="QLabel" name="labelCenterPointZ">
+           <property name="text">
+            <string>Z：</string>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="1">
+          <widget class="QDoubleSpinBox" name="doubleSpinBoxCenterPointZ"/>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item>
+       <spacer name="verticalSpacer_Transform">
+        <property name="orientation">
+         <enum>Qt::Vertical</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>20</width>
+          <height>40</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+     </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
