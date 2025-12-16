@@ -177,3 +177,4 @@ FCGraphViewWindow* FCGraphicOperateWidget::getGraphViewWindow()
 }
 
 } // namespace FC
+

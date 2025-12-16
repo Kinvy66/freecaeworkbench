@@ -67,6 +67,8 @@ private slots:
     
     void on_checkBoxGeometryVisible_toggled(bool checked);
     
+    void on_pushButtonReset_clicked();
+    
 private:
     void initConnections();
     

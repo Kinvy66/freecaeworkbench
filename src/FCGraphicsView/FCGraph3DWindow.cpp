@@ -217,7 +217,7 @@ void FCGraph3DWindow::initScalarBar()
     propLable->SetFontSize(14);
     
     mScalarBarWidget = vtkSmartPointer<vtkScalarBarWidget>::New();
-    mScalarBarWidget->GetScalarBarActor()->SetVerticalTitleSeparation(1);
+    mScalarBarWidget->GetScalarBarActor()->SetVerticalTitleSeparation(0);  // 设置为0，让标题文字靠近图例
     mScalarBarWidget->GetScalarBarActor()->SetBarRatio(0.02);
     mScalarBarWidget->GetBorderRepresentation()->SetPosition(0.90, 0.05);
     mScalarBarWidget->GetBorderRepresentation()->SetPosition2(0.91, 0.45);
@@ -245,6 +245,8 @@ void FCGraph3DWindow::updateScalarBar(vtkLookupTable *lookuptable, QString title
     if (!title.isEmpty()) {
         mScalarBarWidget->GetScalarBarActor()->SetTitle(title.toStdString().c_str());
     }
+    // 确保标题文字靠近图例
+    mScalarBarWidget->GetScalarBarActor()->SetVerticalTitleSeparation(0);
     mLookupTable = lookuptable;
     mScalarBarWidget->On();
 }

@@ -241,5 +241,59 @@ void FCMeshSettingsWidget::on_checkBoxGeometryVisible_toggled(bool checked)
     }
 }
 
+void FCMeshSettingsWidget::on_pushButtonReset_clicked()
+{
+    // 重置网格类型：三角形
+    ui->radioButtonTriangle->setChecked(true);
+    ui->radioButtonQuad->setChecked(false);
+    
+    // 重置阶次：一阶（index=0）
+    ui->comboBoxOrder->setCurrentIndex(0);
+    
+    // 重置方法：MeshAdapt（index=0，对应method=1）
+    ui->comboBoxMethod->setCurrentIndex(0);
+    
+    // 重置尺寸因子：1.0
+    ui->doubleSpinBoxSizeFac->setValue(1.0);
+    
+    // 重置最小单元尺寸：0.0
+    ui->doubleSpinBoxMinSize->setValue(0.0);
+    
+    // 重置最大单元尺寸：100.0
+    ui->doubleSpinBoxMaxSize->setValue(100.0);
+    
+    // 重置光滑迭代次数：20
+    ui->spinBoxSmoothing->setValue(20);
+    
+    // 重置选择选项：全选
+    ui->checkBoxSelectAll->setChecked(true);
+    ui->checkBoxSelectVisible->setChecked(false);
+    
+    // 如果是编辑模式，同时更新mesh的参数
+    if (mIsEdit && mEidtSetID != 0) {
+        FCMeshKernal* mesh = FCMeshData::getInstance()->getMeshKernalByID(mEidtSetID);
+        if (mesh) {
+            FCGmshSettingData* para = dynamic_cast<FCGmshSettingData*>(mesh->getGmshSetting());
+            if (para) {
+                // 创建默认参数对象并更新
+                FCGmshSettingData defaultPara;
+                defaultPara.setElementType("Tri");
+                defaultPara.setElementOrder(1);
+                defaultPara.setMethod(1);  // MeshAdapt
+                defaultPara.setSizeFactor(1.0);
+                defaultPara.setMinSize(0.0);
+                defaultPara.setMaxSize(100.0);
+                defaultPara.setSmoothIteration(20);
+                defaultPara.setSelectAll(true);
+                defaultPara.setSelectVisiable(false);
+                
+                // 复制默认参数到当前参数
+                para->copy(&defaultPara);
+            }
+        }
+    }
+}
+
+
 } // namespace FC
 
