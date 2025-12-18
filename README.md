@@ -13,3 +13,4 @@
 # FreeCAE Workbench 简介
 
 项目文档见：[https://kinvy66.github.io/freecae-workbench](https://kinvy66.github.io/freecae-workbench)
+项目介绍： [https://www.bilibili.com/video/BV1kGq8BjEci](https://www.bilibili.com/video/BV1kGq8BjEci)
