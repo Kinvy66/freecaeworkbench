@@ -153,19 +153,19 @@ void FCPostProcessingModule::generatePostProcessingData(IdType postID, IdType me
         postKernal->setPostProcessingData(postData);
         
         // 保存为vtk文件用于调试
-        QString fileName = QString("post_%1.vtk").arg(postID);
-        QString filePath = QDir::current().filePath(fileName);
-        vtkDataSetWriter* writer = vtkDataSetWriter::New();
-        writer->SetFileName(filePath.toLocal8Bit().constData());
-        writer->SetInputData(postData);
-        writer->SetFileTypeToBinary();
-        int writeResult = writer->Write();
-        writer->Delete();
-        if (writeResult) {
-            qDebug() << "generatePostProcessingData: saved post processing data to" << filePath;
-        } else {
-            qWarning() << "generatePostProcessingData: failed to save post processing data to" << filePath;
-        }
+        // QString fileName = QString("post_%1.vtk").arg(postID);
+        // QString filePath = QDir::current().filePath(fileName);
+        // vtkDataSetWriter* writer = vtkDataSetWriter::New();
+        // writer->SetFileName(filePath.toLocal8Bit().constData());
+        // writer->SetInputData(postData);
+        // writer->SetFileTypeToBinary();
+        // int writeResult = writer->Write();
+        // writer->Delete();
+        // if (writeResult) {
+        //     qDebug() << "generatePostProcessingData: saved post processing data to" << filePath;
+        // } else {
+        //     qWarning() << "generatePostProcessingData: failed to save post processing data to" << filePath;
+        // }
         
         emit postProcessingGenerated(postID, true);
     } else {
