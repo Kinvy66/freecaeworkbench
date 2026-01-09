@@ -25,3 +25,6 @@
 [submodule "3rdparty/gmsh"]
 	path = 3rdparty/gmsh
 	url = https://gitlab.onelab.info/gmsh/gmsh.git
+[submodule "3rdparty/occ"]
+	path = 3rdparty/occ
+	url = https://github.com/Open-Cascade-SAS/OCCT.git
