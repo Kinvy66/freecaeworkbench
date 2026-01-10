@@ -44,7 +44,6 @@
         <file>icon/reset_layout.png</file>
         <file>icon/windows_view.png</file>
         <file>icon/geometry/bezier.png</file>
-        <file>icon/geometry/build_all.png</file>
         <file>icon/geometry/export_geometry.png</file>
         <file>icon/geometry/extrude.png</file>
         <file>icon/geometry/import_geometry.png</file>
@@ -57,7 +56,6 @@
         <file>icon/mesh/import_mesh.png</file>
         <file>icon/mesh/measure.png</file>
         <file>icon/mesh/statistics.png</file>
-        <file>icon/mesh/build_all_mesh.png</file>
         <file>icon/mesh/mesh.png</file>
         <file>icon/solver/solver.png</file>
         <file>icon/solver/compute.png</file>
@@ -80,5 +78,7 @@
         <file>icon/others/xz_view.png</file>
         <file>icon/others/yz_view.png</file>
         <file>icon/others/projection.png</file>
+        <file>icon/geometry/build_all.png</file>
+        <file>icon/mesh/build_all_mesh.png</file>
     </qresource>
 </RCC>

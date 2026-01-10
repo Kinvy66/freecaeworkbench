@@ -82,7 +82,7 @@ void FCAppActions::buildMainAction()
 void FCAppActions::buildGeometryAction()
 {
     // 1. import/export panel
-    actionGeometryModelBuildAll = createAction("actionGeometryModelBuildAll", ":/icon/icon/geometry/build_all.png"); ///< 导入几何模型
+    actionGeometryModelBuildAll = createAction("actionGeometryModelBuildAll", ":/icon/icon/geometry/build_all_geo.png"); ///< 导入几何模型
     actionGeometryModelBuildAll->setText(tr("构建所有"));
     actionImportGeometryModel = createAction("actionImportGeometryModel", ":/icon/icon/geometry/import_geometry.png"); ///< 导入几何模型
     actionImportGeometryModel->setText(tr("导入"));

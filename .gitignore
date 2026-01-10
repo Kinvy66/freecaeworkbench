@@ -3,6 +3,8 @@ build*
 # 但是，不要忽略 docs 目录下任何以 build 开头的内容
 !docs/**/build*/
 !docs/**/build*
+# 不要忽略图标文件中的 build_all.png
+!**/icon/**/*.png
 *.user
 *.autosave
 *.dll
