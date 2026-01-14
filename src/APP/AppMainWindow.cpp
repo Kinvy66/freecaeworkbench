@@ -20,6 +20,11 @@
 #include <QCloseEvent>
 #include <QFile>
 #include <QBuffer>
+#include <QTimer>
+#include <QEvent>
+#include <QWindowStateChangeEvent>
+#include <QShowEvent>
+#include <QRect>
 
 //
 #include "SARibbonBar.h"
@@ -93,7 +98,8 @@ AppMainWindow::AppMainWindow(QWidget *parent)
     // retranslateUi();  // 非必要可以验证调用是否正常
     // if (!hasUIStateFile) {
         ribbonBar()->setRibbonStyle(SARibbonBar::RibbonStyleLooseThreeRow);
-        showMaximized();
+        // 不在构造函数中直接最大化，而是在showEvent中处理，避免闪动
+        // 设置一个标志，表示首次显示时需要最大化
     // }
        
 
@@ -103,6 +109,38 @@ AppMainWindow::AppMainWindow(QWidget *parent)
 AppMainWindow::~AppMainWindow()
 {
     
+}
+
+void AppMainWindow::showEvent(QShowEvent* event)
+{
+    // 首次显示时，在窗口完全初始化后设置最大化状态
+    // 这样可以避免几何设置冲突，同时减少闪动
+    if (mFirstShow) {
+        mFirstShow = false;
+        // 先调用基类的showEvent，确保窗口完全初始化
+        SARibbonMainWindow::showEvent(event);
+        
+        // 使用QTimer::singleShot(0)确保在当前事件循环完成后立即执行
+        // 延迟时间极短，用户几乎感觉不到
+        QTimer::singleShot(0, this, [this]() {
+            if (!this->isMaximized()) {
+                // 使用setWindowState设置最大化状态，比showMaximized()更平滑
+                Qt::WindowStates state = this->windowState();
+                if (!(state & Qt::WindowMaximized)) {
+                    this->setWindowState(state | Qt::WindowMaximized);
+                }
+            }
+        });
+    } else {
+        SARibbonMainWindow::showEvent(event);
+    }
+}
+
+void AppMainWindow::changeEvent(QEvent* event)
+{
+    // 简化changeEvent处理，避免不必要的状态检查导致闪动
+    // 基类会正确处理窗口状态变化
+    SARibbonMainWindow::changeEvent(event);
 }
 
 void AppMainWindow::init()

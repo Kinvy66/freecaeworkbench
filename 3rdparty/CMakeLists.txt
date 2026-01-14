@@ -58,11 +58,11 @@ set(QUAZIP_USE_QT_ZLIB OFF CACHE BOOL "force set QUAZIP_USE_QT_ZLIB oFF" FORCE)
 set(QUAZIP_ENABLE_TESTS OFF CACHE BOOL "force set QUAZIP_ENABLE_TESTS oFF" FORCE)
 
 # 设置zlib的路径
-set(ZLIB_DIR "C:/opt/zlib/install/lib/cmake/zlib")
-set(ZLIB_INCLUDE_DIR "C:/opt/zlib/install/include")
+set(ZLIB_DIR "F:/opt/zlib/install/lib/cmake/zlib")
+set(ZLIB_INCLUDE_DIR "F:/opt/zlib/install/include")
 # ZLIB_LIBRARY 不应该设置为目录，应该让 find_package 自动查找库文件
 # 如果确实需要手动指定，应该指向具体的库文件，如：
-set(ZLIB_LIBRARY "C:/opt/zlib/install/lib/zd.lib")
+set(ZLIB_LIBRARY "F:/opt/zlib/install/lib/zd.lib")
 # quazip依赖zlib，先看看zlib是否安装
 find_package(ZLIB QUIET)
 if(NOT ZLIB_FOUND)
