@@ -69,11 +69,21 @@ option(FC_BUILD_PLUGINS
     OFF)
 if(FC_AUTO_INSTALL_PREFIX)
     message(STATUS "FC Auto Install")
-    set(FC_BIN_DIR_NAME)
-    fcfun_set_bin_name(FC_BIN_DIR_NAME)
-    set(FCWorkbench_INSTALL_DIR "${CMAKE_CURRENT_LIST_DIR}/${FC_BIN_DIR_NAME}")
+    # 根据构建类型设置安装目录为bin/debug或bin/release
+    # 对于Multi-Config生成器（如Visual Studio），默认使用debug
+    # 对于单配置生成器，使用CMAKE_BUILD_TYPE
+    if(CMAKE_CONFIGURATION_TYPES)
+        # Multi-Config生成器，默认设置为debug，实际安装时会根据配置类型区分
+        set(FC_BUILD_TYPE_DIR "debug")
+        message(STATUS "Multi-Config generator detected, default to debug")
+    elseif(CMAKE_BUILD_TYPE STREQUAL "Debug")
+        set(FC_BUILD_TYPE_DIR "debug")
+    else()
+        set(FC_BUILD_TYPE_DIR "release")
+    endif()
+    set(FCWorkbench_INSTALL_DIR "${CMAKE_CURRENT_LIST_DIR}/bin/${FC_BUILD_TYPE_DIR}")
     set(CMAKE_INSTALL_PREFIX ${FCWorkbench_INSTALL_DIR} CACHE PATH "Installation prefix" FORCE)
-    message(STATUS "FC_BIN_DIR_NAME=${FC_BIN_DIR_NAME}")
+    message(STATUS "FC_BUILD_TYPE_DIR=${FC_BUILD_TYPE_DIR}")
     message(STATUS "FCWorkbench_INSTALL_DIR=${FCWorkbench_INSTALL_DIR}")
 endif()
 
@@ -145,34 +155,36 @@ find_package(QT NAMES Qt6 Qt5 COMPONENTS Core REQUIRED)
 ########################################################
 set(FC_SRC_DIR ${CMAKE_CURRENT_LIST_DIR}/src)
 set(FC_CMAKE_DIR ${CMAKE_CURRENT_LIST_DIR}/cmake)
+# 第三方库路径设置为ThirdLib文件夹
+set(FC_THIRDLIB_DIR ${CMAKE_CURRENT_LIST_DIR}/ThirdLib)
 set(FC_INSTALL_LIB_CMAKE_PATH ${CMAKE_INSTALL_PREFIX}/lib/cmake)
-set(FC_OCC_INSTALL_LIB_CMAKE_PATH ${CMAKE_INSTALL_PREFIX}/occ/cmake)
-set(FC_GMSH_INSTALL_LIB_CMAKE_PATH ${CMAKE_INSTALL_PREFIX}/gmsh/share/gmsh)
+set(FC_OCC_INSTALL_LIB_CMAKE_PATH ${FC_THIRDLIB_DIR}/OCC/cmake)
+set(FC_GMSH_INSTALL_LIB_CMAKE_PATH ${FC_THIRDLIB_DIR}/Gmsh/share/gmsh)
 set(FC_INSTALL_LIB_SHARE_PATH ${CMAKE_INSTALL_PREFIX}/share/cmake)
 list(APPEND CMAKE_MODULE_PATH ${FC_CMAKE_DIR} ${FC_INSTALL_LIB_CMAKE_PATH})
 
 ########################################################
-# 定义第三方库路径
+# 定义第三方库路径（从ThirdLib文件夹查找）
 ########################################################
-set(SARibbonBar_DIR ${FC_INSTALL_LIB_CMAKE_PATH}/SARibbonBar)
+set(SARibbonBar_DIR ${FC_THIRDLIB_DIR}/SARibbon/lib/cmake/SARibbonBar)
 message(STATUS "SARibbonBar_DIR=${SARibbonBar_DIR}")
 
-set(VTK_DIR ${FC_INSTALL_LIB_CMAKE_PATH}/vtk-9.4)
+set(VTK_DIR ${FC_THIRDLIB_DIR}/VTK/lib/cmake/vtk-9.4)
 message(STATUS "VTK_DIR=${VTK_DIR}")
 
-set(qwt_DIR ${FC_INSTALL_LIB_CMAKE_PATH}/qwt)
+set(qwt_DIR ${FC_THIRDLIB_DIR}/qwt/lib/cmake/qwt)
 message(STATUS "qwt_DIR=${qwt_DIR}")
 
-set(spdlog_DIR ${FC_INSTALL_LIB_CMAKE_PATH}/spdlog)
+set(spdlog_DIR ${FC_THIRDLIB_DIR}/spdlog/lib/cmake/spdlog)
 message(STATUS "spdlog_DIR=${spdlog_DIR}")
 
-set(occ_DIR ${CMAKE_INSTALL_PREFIX}/occ/cmake)
+set(occ_DIR ${FC_THIRDLIB_DIR}/OCC/cmake)
 message(STATUS "occ_DIR=${occ_DIR}")
 
-set(gmsh_DIR ${CMAKE_INSTALL_PREFIX}/gmsh/share/gmsh)
+set(gmsh_DIR ${FC_THIRDLIB_DIR}/Gmsh/share/gmsh)
 message(STATUS "gmsh_DIR=${gmsh_DIR}")
 
-set(qt${QT_VERSION_MAJOR}advanceddocking_DIR  ${FC_INSTALL_LIB_CMAKE_PATH}/qtadvanceddocking-qt${QT_VERSION_MAJOR})
+set(qt${QT_VERSION_MAJOR}advanceddocking_DIR  ${FC_THIRDLIB_DIR}/QtADS/lib/cmake/qtadvanceddocking-qt${QT_VERSION_MAJOR})
 message(STATUS "qt${QT_VERSION_MAJOR}advanceddocking_DIR=${qt${QT_VERSION_MAJOR}advanceddocking_DIR}")
 
 
@@ -263,11 +275,6 @@ if(FC_ENABLE_PYTHON)
                 set(FC_PYTHON_DLL_PATH ${Python3_RUNTIME_LIBRARY_DIRS}/python${Python3_VERSION_MAJOR}${Python3_VERSION_MINOR}.dll)
                 # 把dll复制到bin中否则无法运行
                 file(COPY ${FC_PYTHON_DLL_PATH} DESTINATION ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_BINDIR})
-                install(FILES
-                        ${FC_PYTHON_DLL_PATH}
-                        DESTINATION
-                        ${CMAKE_INSTALL_BINDIR}
-                 )
             endif()
         endif()
     endif()

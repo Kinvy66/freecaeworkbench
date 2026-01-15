@@ -75,8 +75,18 @@ macro(fcmacro_lib_setting _lib_name _lib_description _lib_ver_major _lib_ver_min
     ########################################################
     # 包含自身目录
     set(CMAKE_INCLUDE_CURRENT_DIR ON)
-    # 默认的CMAKE_INSTALL_PREFIX
-    set(CMAKE_INSTALL_PREFIX "${CMAKE_CURRENT_SOURCE_DIR}/../../${FC_BIN_DIR_NAME}")
+    # 默认的CMAKE_INSTALL_PREFIX - 根据构建类型设置为bin/debug或bin/release
+    # 对于Multi-Config生成器（如Visual Studio），默认使用debug
+    # 对于单配置生成器，使用CMAKE_BUILD_TYPE
+    if(CMAKE_CONFIGURATION_TYPES)
+        # Multi-Config生成器，默认设置为debug
+        set(_build_type_dir "debug")
+    elseif(CMAKE_BUILD_TYPE STREQUAL "Debug")
+        set(_build_type_dir "debug")
+    else()
+        set(_build_type_dir "release")
+    endif()
+    set(CMAKE_INSTALL_PREFIX "${CMAKE_CURRENT_SOURCE_DIR}/../../bin/${_build_type_dir}")
     set(FC_GLOBAL_HEADER ${CMAKE_CURRENT_SOURCE_DIR}/../FCGlobals.h)
     # FCShared目录
     set(FC_SHARED_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../FCShared)
@@ -286,8 +296,18 @@ macro(fcmacro_app_setting _app_name _app_description _app_ver_major _app_ver_min
     ########################################################
     # 包含自身目录
     set(CMAKE_INCLUDE_CURRENT_DIR ON)
-    # 默认的CMAKE_INSTALL_PREFIX
-    set(CMAKE_INSTALL_PREFIX "${CMAKE_CURRENT_SOURCE_DIR}/../../${FC_BIN_DIR_NAME}")
+    # 默认的CMAKE_INSTALL_PREFIX - 根据构建类型设置为bin/debug或bin/release
+    # 对于Multi-Config生成器（如Visual Studio），默认使用debug
+    # 对于单配置生成器，使用CMAKE_BUILD_TYPE
+    if(CMAKE_CONFIGURATION_TYPES)
+        # Multi-Config生成器，默认设置为debug
+        set(_build_type_dir "debug")
+    elseif(CMAKE_BUILD_TYPE STREQUAL "Debug")
+        set(_build_type_dir "debug")
+    else()
+        set(_build_type_dir "release")
+    endif()
+    set(CMAKE_INSTALL_PREFIX "${CMAKE_CURRENT_SOURCE_DIR}/../../bin/${_build_type_dir}")
     set(FC_GLOBAL_HEADER ${CMAKE_CURRENT_SOURCE_DIR}/../FCGlobals.h)
     set(${FC_PROJECT_NAME}_DIR "${CMAKE_BINARY_DIR}")
     ########################################################

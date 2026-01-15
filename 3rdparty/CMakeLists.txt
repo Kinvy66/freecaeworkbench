@@ -25,8 +25,9 @@ else()
     set(FC_PLATFORM_NAME "x64")
 endif()
 
-set(FC_BIN_DIR_NAME bin_${CMAKE_BUILD_TYPE}_qt${QT_VERSION}_${CMAKE_CXX_COMPILER_ID}_${FC_PLATFORM_NAME})
-set(CMAKE_INSTALL_PREFIX "${CMAKE_CURRENT_LIST_DIR}/../${FC_BIN_DIR_NAME}" CACHE PATH "Install all third-party libraries into the default installation directory of the current build." FORCE)
+# 根据构建类型设置安装目录为ThirdLib文件夹
+# 第三方库安装到ThirdLib，不区分debug/release（因为库本身已经通过d后缀区分）
+set(CMAKE_INSTALL_PREFIX "${CMAKE_CURRENT_LIST_DIR}/../ThirdLib" CACHE PATH "Install all third-party libraries into ThirdLib directory." FORCE)
 ########################################################
 # 第三方库参数设置
 ########################################################

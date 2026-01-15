@@ -9,21 +9,51 @@ macro(fcmacro_import_xxx x_packagename x_namespace x_libname __target_name)
         message(STATUS "  |-finded ${x_packagename}")
     else()
         message(STATUS "  |-can not find ${x_packagename}")
-        if(DEFINED FC_INSTALL_LIB_CMAKE_PATH)
+        # 优先从ThirdLib文件夹查找
+        if(DEFINED FC_THIRDLIB_DIR)
+            # 尝试从ThirdLib查找，根据库名映射到ThirdLib中的目录
+            set(_thirdlib_search_paths)
+            # 根据常见的库名映射
+            if(${x_packagename} MATCHES "SARibbonBar")
+                list(APPEND _thirdlib_search_paths ${FC_THIRDLIB_DIR}/SARibbon/lib/cmake/SARibbonBar)
+            elseif(${x_packagename} MATCHES "QuaZip")
+                list(APPEND _thirdlib_search_paths ${FC_THIRDLIB_DIR}/quazip/lib/cmake/QuaZip-Qt${QT_VERSION_MAJOR})
+            elseif(${x_packagename} MATCHES "qtadvanceddocking")
+                list(APPEND _thirdlib_search_paths ${FC_THIRDLIB_DIR}/QtADS/lib/cmake/qtadvanceddocking-qt${QT_VERSION_MAJOR})
+            else()
+                # 通用查找：在ThirdLib下查找匹配的目录
+                file(GLOB _lib_candidate_dirs
+                    LIST_DIRECTORIES true
+                    ${FC_THIRDLIB_DIR}/*/lib/cmake/${x_packagename}*
+                )
+                list(APPEND _thirdlib_search_paths ${_lib_candidate_dirs})
+            endif()
+            # 尝试从ThirdLib查找
+            foreach(_search_path IN LISTS _thirdlib_search_paths)
+                if(EXISTS ${_search_path})
+                    message(STATUS "  |-try to find in ${_search_path}")
+                    find_package(${x_packagename} PATHS ${_search_path})
+                    if(${x_packagename}_FOUND)
+                        break()
+                    endif()
+                endif()
+            endforeach()
+        endif()
+        # 如果ThirdLib中没找到，再从原来的安装路径查找
+        if(NOT ${x_packagename}_FOUND AND DEFINED FC_INSTALL_LIB_CMAKE_PATH)
             file(GLOB _lib_candidate_dirs
                 LIST_DIRECTORIES true
                 ${FC_INSTALL_LIB_CMAKE_PATH}/${x_packagename}*
             )
             # 检查是否存在匹配项
-            if(NOT _lib_candidate_dirs)
-                message(FATAL_ERROR "No ${x_packagename} like directories found in: ${FC_INSTALL_LIB_CMAKE_PATH}")
+            if(_lib_candidate_dirs)
+                #若存在多个版本，可以通过排序选择最新路径：
+                list(SORT _lib_candidate_dirs)
+                list(REVERSE _lib_candidate_dirs)  # 按字母逆序排列（假设版本号递增）
+                list(GET _lib_candidate_dirs 0 _lib_candidate_dirs)  # 取第一个（最新）
+                message(STATUS "  |-try to find in ${_lib_candidate_dirs}")
+                find_package(${x_packagename} PATHS ${_lib_candidate_dirs})
             endif()
-            #若存在多个版本，可以通过排序选择最新路径：
-            list(SORT _lib_candidate_dirs)
-            list(REVERSE _lib_candidate_dirs)  # 按字母逆序排列（假设版本号递增）
-            list(GET _lib_candidate_dirs 0 _lib_candidate_dirs)  # 取第一个（最新）
-            message(STATUS "  |-try to find in ${_lib_candidate_dirs}")
-            find_package(${x_packagename} PATHS ${_lib_candidate_dirs})
         endif()
     endif()
     # 链接的第三方库
@@ -57,7 +87,24 @@ macro(fcmacro_import_xx_sharepath x_namespace x_libname __target_name)
         message(STATUS "  |-finded ${x_libname}")
     else()
         message(STATUS "  |-can not find ${x_libname}")
-        if(DEFINED FC_INSTALL_LIB_SHARE_PATH)
+        # 优先从ThirdLib文件夹查找
+        if(DEFINED FC_THIRDLIB_DIR)
+            file(GLOB _lib_candidate_dirs
+                LIST_DIRECTORIES true
+                ${FC_THIRDLIB_DIR}/*/share/cmake/${x_libname}
+            )
+            foreach(_search_path IN LISTS _lib_candidate_dirs)
+                if(EXISTS ${_search_path})
+                    message(STATUS "  |-try to find in ${_search_path}")
+                    find_package(${x_libname} PATHS ${_search_path})
+                    if(${x_libname}_FOUND)
+                        break()
+                    endif()
+                endif()
+            endforeach()
+        endif()
+        # 如果ThirdLib中没找到，再从原来的安装路径查找
+        if(NOT ${x_libname}_FOUND AND DEFINED FC_INSTALL_LIB_SHARE_PATH)
             set(_lib_dir ${FC_INSTALL_LIB_SHARE_PATH}/${x_libname})
             message(STATUS "  |-try to find in ${_lib_dir}")
             find_package(${x_libname} PATHS ${_lib_dir})
@@ -139,7 +186,16 @@ macro(fcmacro_import_vtk __target_name)
         message(STATUS "  |-Found VTK version: ${VTK_MAJOR_VERSION}.${VTK_MINOR_VERSION}.${VTK_BUILD_VERSION}")
     else()
         message(STATUS "  |-can not find VTK")
-        if(DEFINED FC_INSTALL_LIB_CMAKE_PATH)
+        # 优先从ThirdLib文件夹查找
+        if(DEFINED FC_THIRDLIB_DIR)
+            set(_lib_dir ${FC_THIRDLIB_DIR}/VTK/lib/cmake/vtk-9.4)
+            if(EXISTS ${_lib_dir})
+                message(STATUS "  |-try to find in ${_lib_dir}")
+                find_package(VTK PATHS ${_lib_dir})
+            endif()
+        endif()
+        # 如果ThirdLib中没找到，再从原来的安装路径查找
+        if(NOT VTK_FOUND AND DEFINED FC_INSTALL_LIB_CMAKE_PATH)
             set(_lib_dir ${FC_INSTALL_LIB_CMAKE_PATH}/vtk-9.4)
             message(STATUS "  |-try to find in ${_lib_dir}")
             find_package(VTK PATHS ${_lib_dir})
@@ -163,9 +219,17 @@ endmacro(fcmacro_import_vtk)
 # 参数：
 #   __target_name - 要链接 OpenCASCADE 的目标
 # 前提：
-#   需要提前定义 FC_OCC_INSTALL_LIB_CMAKE_PATH 指向 OpenCASCADE 安装目录
+#   优先从ThirdLib/OCC查找，如果没有则使用FC_OCC_INSTALL_LIB_CMAKE_PATH
 #-----------------------------------------
 macro(fcmacro_import_occ __target_name)
+    # 优先从ThirdLib查找
+    if(DEFINED FC_THIRDLIB_DIR)
+        set(_occ_cmake_path ${FC_THIRDLIB_DIR}/OCC/cmake)
+        if(EXISTS ${_occ_cmake_path})
+            set(FC_OCC_INSTALL_LIB_CMAKE_PATH ${_occ_cmake_path})
+        endif()
+    endif()
+    
     if(NOT DEFINED FC_OCC_INSTALL_LIB_CMAKE_PATH)
         message(FATAL_ERROR "FC_OCC_INSTALL_LIB_CMAKE_PATH is not defined. Set it to your OpenCASCADE install cmake path.")
     endif()
@@ -199,7 +263,16 @@ macro(fcmacro_import_gmsh __target_name)
         message(STATUS "  |-Found Gmsh version: ${PACKAGE_VERSION}")
     else()
         message(STATUS "  |-can not find Gmsh")
-        if(DEFINED FC_GMSH_INSTALL_LIB_CMAKE_PATH)
+        # 优先从ThirdLib文件夹查找
+        if(DEFINED FC_THIRDLIB_DIR)
+            set(_lib_dir ${FC_THIRDLIB_DIR}/Gmsh/share/gmsh)
+            if(EXISTS ${_lib_dir})
+                message(STATUS "  |-try to find in ${_lib_dir}")
+                find_package(gmsh PATHS ${_lib_dir})
+            endif()
+        endif()
+        # 如果ThirdLib中没找到，再从原来的安装路径查找
+        if(NOT gmsh_FOUND AND DEFINED FC_GMSH_INSTALL_LIB_CMAKE_PATH)
             set(_lib_dir ${FC_GMSH_INSTALL_LIB_CMAKE_PATH})
             message(STATUS "  |-try to find in ${_lib_dir}")
             find_package(gmsh PATHS ${_lib_dir})
