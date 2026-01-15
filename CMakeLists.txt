@@ -35,6 +35,7 @@ project(${FC_PROJECT_NAME}
 ########################################################
 include(${CMAKE_CURRENT_LIST_DIR}/cmake/fcworkbench_utils.cmake)
 include(${CMAKE_CURRENT_LIST_DIR}/cmake/fcworkbench_3rdparty.cmake)
+include(${CMAKE_CURRENT_LIST_DIR}/cmake/fcworkbench_deployqt.cmake)
 
 
 ########################################################
