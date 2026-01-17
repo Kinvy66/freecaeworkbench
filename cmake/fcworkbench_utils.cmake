@@ -56,7 +56,7 @@ macro(fcmacro_lib_setting _lib_name _lib_description _lib_ver_major _lib_ver_min
     set(CMAKE_CXX_STANDARD_REQUIRED ON)
     if(MSVC)
         set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /std:c++17")
-        endif(MSVC)
+    endif()
     # 编译选项
     set(CMAKE_DEBUG_POSTFIX "d" CACHE STRING "add a postfix, usually d on windows")
     set(CMAKE_RELEASE_POSTFIX "" CACHE STRING "add a postfix, usually empty on windows")
@@ -332,131 +332,85 @@ macro(fcmacro_app_install)
     message(STATUS "${FC_APP_NAME} install dir is : ${CMAKE_INSTALL_PREFIX}")
     
     ########################################################
-    # Windows平台下拷贝依赖DLL到构建目录
+    # Windows平台下自动拷贝DLL到构建目录
     ########################################################
     if(WIN32)
-        # 获取cmake目录路径
-        if(DEFINED FC_CMAKE_DIR)
-            set(_cmake_dir ${FC_CMAKE_DIR})
-        else()
-            set(_cmake_dir ${CMAKE_SOURCE_DIR}/cmake)
-        endif()
-        get_filename_component(_cmake_dir_abs ${_cmake_dir} ABSOLUTE)
+        # 包含DLL拷贝函数
+        include(${FC_CMAKE_DIR}/fcworkbench_deployqt.cmake)
         
-        # 创建拷贝DLL的脚本
-        set(_copy_dll_script "${CMAKE_CURRENT_BINARY_DIR}/copy_dlls_${FC_APP_NAME}.cmake")
+        # 查找windeployqt工具
+        find_program(WINDEPLOYQT_EXECUTABLE
+            NAMES windeployqt
+            PATHS
+                ${Qt${QT_VERSION_MAJOR}_DIR}/../../../bin
+                ${Qt${QT_VERSION_MAJOR}_DIR}/../../../../bin
+                ${Qt${QT_VERSION_MAJOR}_DIR}/../../../../../bin
+            NO_DEFAULT_PATH
+        )
         
-        # 获取Qt的windeployqt路径
-        find_package(QT NAMES Qt6 Qt5 COMPONENTS Core REQUIRED)
-        if(QT_VERSION_MAJOR EQUAL 6)
-            get_target_property(_qt_qmake_location Qt6::qmake IMPORTED_LOCATION)
-            if(NOT _qt_qmake_location)
-                get_target_property(_qt_qmake_location Qt6::qmake IMPORTED_LOCATION_RELEASE)
-            endif()
-            if(NOT _qt_qmake_location)
-                get_target_property(_qt_qmake_location Qt6::qmake IMPORTED_LOCATION_DEBUG)
-            endif()
-        else()
-            get_target_property(_qt_qmake_location Qt5::qmake IMPORTED_LOCATION)
-            if(NOT _qt_qmake_location)
-                get_target_property(_qt_qmake_location Qt5::qmake IMPORTED_LOCATION_RELEASE)
-            endif()
-            if(NOT _qt_qmake_location)
-                get_target_property(_qt_qmake_location Qt5::qmake IMPORTED_LOCATION_DEBUG)
+        if(NOT WINDEPLOYQT_EXECUTABLE)
+            # 如果上面的路径找不到，尝试从Qt6::windeployqt或Qt5::windeployqt获取
+            if(TARGET Qt${QT_VERSION_MAJOR}::windeployqt)
+                get_target_property(WINDEPLOYQT_EXECUTABLE Qt${QT_VERSION_MAJOR}::windeployqt LOCATION)
             endif()
         endif()
         
-        if(_qt_qmake_location)
-            get_filename_component(_qt_bin_dir ${_qt_qmake_location} DIRECTORY)
-            set(_windeployqt_exe "${_qt_bin_dir}/windeployqt.exe")
-        else()
-            set(_windeployqt_exe "")
+        # 如果还是找不到，尝试从PATH中查找
+        if(NOT WINDEPLOYQT_EXECUTABLE)
+            find_program(WINDEPLOYQT_EXECUTABLE windeployqt)
         endif()
         
-        # 确定构建类型
+        if(WINDEPLOYQT_EXECUTABLE)
+            message(STATUS "Found windeployqt: ${WINDEPLOYQT_EXECUTABLE}")
+        else()
+            message(WARNING "windeployqt not found, Qt DLL deployment will be skipped")
+        endif()
+        
+        # 为每个配置类型添加构建后命令
+        # 对于Multi-Config生成器（如Visual Studio），需要为每个配置分别处理
         if(CMAKE_CONFIGURATION_TYPES)
-            # Multi-Config生成器，使用生成器表达式
-            file(GENERATE OUTPUT ${_copy_dll_script}
-                CONTENT "
-set(CMAKE_CURRENT_LIST_DIR \"${_cmake_dir_abs}\")
-include(\"${_cmake_dir_abs}/fcworkbench_deployqt.cmake\")
-set(FC_THIRDLIB_DIR \"${FC_THIRDLIB_DIR}\")
-set(CMAKE_SOURCE_DIR \"${CMAKE_SOURCE_DIR}\")
-set(_target_dir \"${CMAKE_BINARY_DIR}/bin\")
-set(_build_type \"\$<CONFIG>\")
-set(_target_exe \"\$<TARGET_FILE:${FC_APP_NAME}>\")
-set(_windeployqt_exe \"${_windeployqt_exe}\")
-fcfun_copy_thirdlib_dlls(\${_target_dir} \${_build_type})
-if(EXISTS \${_target_exe} AND NOT \${_windeployqt_exe} STREQUAL \"\")
-    fcfun_copy_qt_dlls(\${_target_exe} \${_target_dir} \${_windeployqt_exe})
-endif()
-"
-                CONDITION $<CONFIG>
-            )
-            
-            add_custom_command(TARGET ${FC_APP_NAME} POST_BUILD
-                COMMAND ${CMAKE_COMMAND} -P ${_copy_dll_script}
-                COMMENT "Copying dependency DLLs to build directory for ${FC_APP_NAME}"
-            )
+            # Multi-Config生成器
+            foreach(_config ${CMAKE_CONFIGURATION_TYPES})
+                # 为每个配置创建独立的脚本文件来传递参数
+                # 使用 file(GENERATE) 以便在生成时展开生成器表达式
+                set(_deploy_script "${CMAKE_BINARY_DIR}/deploy_dlls_${_config}.cmake")
+                file(GENERATE OUTPUT ${_deploy_script}
+                    CONTENT
+                    "set(_TARGET_NAME ${FC_APP_NAME})\n"
+                    "set(_BUILD_TYPE ${_config})\n"
+                    "set(_CMAKE_BINARY_DIR ${CMAKE_BINARY_DIR})\n"
+                    "set(_FC_CMAKE_DIR ${FC_CMAKE_DIR})\n"
+                    "set(_FC_THIRDLIB_DIR ${FC_THIRDLIB_DIR})\n"
+                    "set(_WINDEPLOYQT_EXE \"${WINDEPLOYQT_EXECUTABLE}\")\n"
+                    "set(_TARGET_EXE \"$<TARGET_FILE:${FC_APP_NAME}>\")\n"
+                    "include(\${_FC_CMAKE_DIR}/fcworkbench_deployqt.cmake)\n"
+                    CONDITION $<CONFIG:${_config}>
+                )
+                add_custom_command(TARGET ${FC_APP_NAME} POST_BUILD
+                    COMMAND ${CMAKE_COMMAND} -P ${_deploy_script}
+                    CONFIG ${_config}
+                    COMMENT "Deploying DLLs for ${_config} configuration..."
+                    VERBATIM
+                )
+            endforeach()
         else()
             # 单配置生成器
-            set(_build_type ${CMAKE_BUILD_TYPE})
-            if(NOT _build_type)
-                set(_build_type "Release")
-            endif()
-            
-            # 获取Qt的windeployqt路径（如果之前没有获取）
-            if(NOT DEFINED _windeployqt_exe)
-                find_package(QT NAMES Qt6 Qt5 COMPONENTS Core REQUIRED)
-                if(QT_VERSION_MAJOR EQUAL 6)
-                    get_target_property(_qt_qmake_location Qt6::qmake IMPORTED_LOCATION)
-                    if(NOT _qt_qmake_location)
-                        get_target_property(_qt_qmake_location Qt6::qmake IMPORTED_LOCATION_RELEASE)
-                    endif()
-                    if(NOT _qt_qmake_location)
-                        get_target_property(_qt_qmake_location Qt6::qmake IMPORTED_LOCATION_DEBUG)
-                    endif()
-                else()
-                    get_target_property(_qt_qmake_location Qt5::qmake IMPORTED_LOCATION)
-                    if(NOT _qt_qmake_location)
-                        get_target_property(_qt_qmake_location Qt5::qmake IMPORTED_LOCATION_RELEASE)
-                    endif()
-                    if(NOT _qt_qmake_location)
-                        get_target_property(_qt_qmake_location Qt5::qmake IMPORTED_LOCATION_DEBUG)
-                    endif()
-                endif()
-                
-                if(_qt_qmake_location)
-                    get_filename_component(_qt_bin_dir ${_qt_qmake_location} DIRECTORY)
-                    set(_windeployqt_exe "${_qt_bin_dir}/windeployqt.exe")
-                else()
-                    set(_windeployqt_exe "")
-                endif()
-            endif()
-            
-            # 使用file(GENERATE)来支持生成器表达式
-            file(GENERATE OUTPUT ${_copy_dll_script}
-                CONTENT "
-set(CMAKE_CURRENT_LIST_DIR \"${_cmake_dir_abs}\")
-include(\"${_cmake_dir_abs}/fcworkbench_deployqt.cmake\")
-set(FC_THIRDLIB_DIR \"${FC_THIRDLIB_DIR}\")
-set(CMAKE_SOURCE_DIR \"${CMAKE_SOURCE_DIR}\")
-set(_target_dir \"${CMAKE_BINARY_DIR}/bin\")
-set(_build_type \"${_build_type}\")
-set(_target_exe \"\$<TARGET_FILE:${FC_APP_NAME}>\")
-set(_windeployqt_exe \"${_windeployqt_exe}\")
-fcfun_copy_thirdlib_dlls(\${_target_dir} \${_build_type})
-if(EXISTS \${_target_exe} AND NOT \${_windeployqt_exe} STREQUAL \"\")
-    fcfun_copy_qt_dlls(\${_target_exe} \${_target_dir} \${_windeployqt_exe})
-endif()
-"
-            )
-            
+            # 直接在 add_custom_command 中使用生成器表达式，CMake 会在运行时展开
             add_custom_command(TARGET ${FC_APP_NAME} POST_BUILD
-                COMMAND ${CMAKE_COMMAND} -P ${_copy_dll_script}
-                COMMENT "Copying dependency DLLs to build directory for ${FC_APP_NAME}"
+                COMMAND ${CMAKE_COMMAND}
+                    -D_TARGET_NAME=${FC_APP_NAME}
+                    -D_BUILD_TYPE=${CMAKE_BUILD_TYPE}
+                    -D_CMAKE_BINARY_DIR=${CMAKE_BINARY_DIR}
+                    -D_FC_CMAKE_DIR=${FC_CMAKE_DIR}
+                    -D_FC_THIRDLIB_DIR=${FC_THIRDLIB_DIR}
+                    -D_WINDEPLOYQT_EXE="${WINDEPLOYQT_EXECUTABLE}"
+                    -D_TARGET_EXE="$<TARGET_FILE:${FC_APP_NAME}>"
+                    -P ${FC_CMAKE_DIR}/fcworkbench_deployqt.cmake
+                COMMENT "Deploying DLLs..."
+                VERBATIM
             )
         endif()
     endif()
+    
 endmacro(fcmacro_app_install)
 
