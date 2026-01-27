@@ -68,6 +68,12 @@ option(FC_AUTO_GENERATE_CONFIG_INFO
 option(FC_BUILD_PLUGINS
     "This option will build plugin"
     OFF)
+# 此选项将控制是否拷贝第三方库DLL到构建目录
+# 如果设置为OFF，将跳过DLL拷贝以加快构建速度
+# 如果设置为ON，将只在源DLL比目标DLL新时才拷贝（增量拷贝）
+option(FC_COPY_THIRDPARTY_DLLS
+    "This option controls whether to copy third-party DLLs to build directory. If ON, only copy when source DLL is newer than target DLL"
+    OFF)
 if(FC_AUTO_INSTALL_PREFIX)
     message(STATUS "FC Auto Install")
     # 根据构建类型设置安装目录为bin/debug或bin/release

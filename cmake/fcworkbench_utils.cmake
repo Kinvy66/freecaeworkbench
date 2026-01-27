@@ -1,4 +1,4 @@
-﻿# 获取默认安装目录
+# 获取默认安装目录
 function(fcfun_set_bin_name _var)
     set(_MIN_QT_VERSION 5.14)
     find_package(QT NAMES Qt6 Qt5 COMPONENTS Core REQUIRED)
@@ -383,6 +383,7 @@ macro(fcmacro_app_install)
                     "set(_FC_THIRDLIB_DIR ${FC_THIRDLIB_DIR})\n"
                     "set(_WINDEPLOYQT_EXE \"${WINDEPLOYQT_EXECUTABLE}\")\n"
                     "set(_TARGET_EXE \"$<TARGET_FILE:${FC_APP_NAME}>\")\n"
+                    "set(FC_COPY_THIRDPARTY_DLLS ${FC_COPY_THIRDPARTY_DLLS})\n"
                     "include(\${_FC_CMAKE_DIR}/fcworkbench_deployqt.cmake)\n"
                     CONDITION $<CONFIG:${_config}>
                 )
@@ -405,6 +406,7 @@ macro(fcmacro_app_install)
                     -D_FC_THIRDLIB_DIR=${FC_THIRDLIB_DIR}
                     -D_WINDEPLOYQT_EXE="${WINDEPLOYQT_EXECUTABLE}"
                     -D_TARGET_EXE="$<TARGET_FILE:${FC_APP_NAME}>"
+                    -DFC_COPY_THIRDPARTY_DLLS=${FC_COPY_THIRDPARTY_DLLS}
                     -P ${FC_CMAKE_DIR}/fcworkbench_deployqt.cmake
                 COMMENT "Deploying DLLs..."
                 VERBATIM

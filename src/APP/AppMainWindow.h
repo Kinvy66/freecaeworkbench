@@ -44,11 +44,7 @@ public:
     AppMainWindow(QWidget* parent = nullptr);
     ~AppMainWindow();
     
-protected:
-    // 处理窗口显示事件，在窗口首次显示时设置最大化状态，避免闪动
-    void showEvent(QShowEvent* event) override;
-    // 处理窗口状态变化事件，避免在最大化状态下设置几何尺寸
-    void changeEvent(QEvent* event) override;
+
     
 private:
     // 初始化

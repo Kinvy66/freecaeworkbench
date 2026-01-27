@@ -46,6 +46,94 @@ function(fcfun_copy_qt_dlls _target_exe _target_dir _windeployqt_exe)
 endfunction()
 
 ########################################################
+# 辅助函数：检查是否需要拷贝文件（基于时间戳）
+# 参数：
+#   _source_file - 源文件路径
+#   _dest_file - 目标文件路径
+# 返回：
+#   _need_copy - 是否需要拷贝（TRUE/FALSE）
+########################################################
+function(fcfun_need_copy_dll _source_file _dest_file _need_copy)
+    set(${_need_copy} TRUE PARENT_SCOPE)
+    
+    # 如果目标文件不存在，需要拷贝
+    if(NOT EXISTS ${_dest_file})
+        return()
+    endif()
+    
+    # 如果源文件不存在，不需要拷贝（但这种情况不应该发生）
+    if(NOT EXISTS ${_source_file})
+        set(${_need_copy} FALSE PARENT_SCOPE)
+        return()
+    endif()
+    
+    # 在 Windows 上使用 PowerShell 比较文件时间戳
+    # 使用临时文件来避免路径转义问题
+    if(WIN32)
+        # 创建临时脚本文件
+        set(_temp_script "${CMAKE_BINARY_DIR}/.cmake_compare_timestamp.ps1")
+        file(WRITE ${_temp_script}
+            "param([string]$src, [string]$dst)\n"
+            "try {\n"
+            "    $srcItem = Get-Item -LiteralPath $src -ErrorAction Stop\n"
+            "    $dstItem = Get-Item -LiteralPath $dst -ErrorAction Stop\n"
+            "    if ($srcItem.LastWriteTime -gt $dstItem.LastWriteTime) {\n"
+            "        Write-Output 'True'\n"
+            "    } else {\n"
+            "        Write-Output 'False'\n"
+            "    }\n"
+            "} catch {\n"
+            "    # 如果出错（如文件不存在），默认需要拷贝\n"
+            "    Write-Output 'True'\n"
+            "}\n"
+        )
+        
+        # 将路径转换为Windows原生路径格式
+        file(TO_NATIVE_PATH "${_source_file}" _source_path_native)
+        file(TO_NATIVE_PATH "${_dest_file}" _dest_path_native)
+        
+        # 执行 PowerShell 脚本，使用原生路径
+        execute_process(
+            COMMAND powershell -NoProfile -ExecutionPolicy Bypass -File ${_temp_script} -src "${_source_path_native}" -dst "${_dest_path_native}"
+            OUTPUT_VARIABLE _is_newer
+            OUTPUT_STRIP_TRAILING_WHITESPACE
+            ERROR_QUIET
+            RESULT_VARIABLE _result
+        )
+        
+        # 清理临时脚本
+        file(REMOVE ${_temp_script})
+        
+        # PowerShell 返回 True/False，如果源文件更新则返回 True
+        if(_result EQUAL 0 AND _is_newer STREQUAL "True")
+            # 源文件比目标文件新，需要拷贝
+            return()
+        else()
+            # 源文件不比目标文件新，不需要拷贝
+            set(${_need_copy} FALSE PARENT_SCOPE)
+            return()
+        endif()
+    else()
+        # 非 Windows 系统，使用 file(TIMESTAMP) 比较
+        file(TIMESTAMP ${_source_file} _source_timestamp)
+        file(TIMESTAMP ${_dest_file} _dest_timestamp)
+        
+        # 如果时间戳获取失败，默认需要拷贝（安全起见）
+        if(_source_timestamp STREQUAL "" OR _dest_timestamp STREQUAL "")
+            return()
+        endif()
+        
+        # 比较时间戳字符串（ISO格式可以直接字符串比较）
+        if(_source_timestamp GREATER _dest_timestamp)
+            return()
+        else()
+            set(${_need_copy} FALSE PARENT_SCOPE)
+            return()
+        endif()
+    endif()
+endfunction()
+
+########################################################
 # 拷贝第三方库DLL到目标目录
 # 参数：
 #   _target_dir - 目标目录（通常是bin目录）
@@ -54,6 +142,16 @@ endfunction()
 function(fcfun_copy_thirdlib_dlls _target_dir _build_type)
     if(NOT WIN32)
         return()
+    endif()
+    
+    # 检查是否启用了拷贝选项（如果未定义，默认为ON以保持向后兼容）
+    # 注意：通过 -D 传递的值是字符串，需要字符串比较
+    if(DEFINED FC_COPY_THIRDPARTY_DLLS)
+        string(TOUPPER "${FC_COPY_THIRDPARTY_DLLS}" _copy_dlls_upper)
+        if(_copy_dlls_upper STREQUAL "OFF" OR _copy_dlls_upper STREQUAL "0" OR _copy_dlls_upper STREQUAL "FALSE" OR _copy_dlls_upper STREQUAL "NO")
+            # 选项为OFF，跳过第三方DLL拷贝
+            return()
+        endif()
     endif()
     
     # 确定是debug还是release版本
@@ -107,12 +205,20 @@ function(fcfun_copy_thirdlib_dlls _target_dir _build_type)
             set(_gmsh_lib_dir "${_lib_dir}/lib")
             if(EXISTS ${_gmsh_lib_dir})
                 file(GLOB _dll_files "${_gmsh_lib_dir}/*.dll")
+                set(_lib_copied 0)
                 foreach(_dll IN LISTS _dll_files)
-                    file(COPY ${_dll} DESTINATION ${_target_dir})
-                    math(EXPR _copied_count "${_copied_count} + 1")
+                    get_filename_component(_dll_name ${_dll} NAME)
+                    set(_dest_dll "${_target_dir}/${_dll_name}")
+                    fcfun_need_copy_dll(${_dll} ${_dest_dll} _need_copy)
+                    if(_need_copy)
+                        file(COPY ${_dll} DESTINATION ${_target_dir})
+                        math(EXPR _copied_count "${_copied_count} + 1")
+                        math(EXPR _lib_copied "${_lib_copied} + 1")
+                    endif()
                 endforeach()
-                if(_dll_files)
-                    message(STATUS "Copied Gmsh DLLs (all versions) from ${_gmsh_lib_dir}")
+                # 只在有文件被拷贝时才输出信息
+                if(_lib_copied GREATER 0)
+                    message(STATUS "Copied ${_lib_copied} Gmsh DLL(s) from ${_gmsh_lib_dir}")
                 endif()
             endif()
             continue()
@@ -123,12 +229,20 @@ function(fcfun_copy_thirdlib_dlls _target_dir _build_type)
             set(_lib_bin_dir "${_lib_dir}/bin")
             if(EXISTS ${_lib_bin_dir})
                 file(GLOB _dll_files "${_lib_bin_dir}/*.dll")
+                set(_lib_copied 0)
                 foreach(_dll IN LISTS _dll_files)
-                    file(COPY ${_dll} DESTINATION ${_target_dir})
-                    math(EXPR _copied_count "${_copied_count} + 1")
+                    get_filename_component(_dll_name ${_dll} NAME)
+                    set(_dest_dll "${_target_dir}/${_dll_name}")
+                    fcfun_need_copy_dll(${_dll} ${_dest_dll} _need_copy)
+                    if(_need_copy)
+                        file(COPY ${_dll} DESTINATION ${_target_dir})
+                        math(EXPR _copied_count "${_copied_count} + 1")
+                        math(EXPR _lib_copied "${_lib_copied} + 1")
+                    endif()
                 endforeach()
-                if(_dll_files)
-                    message(STATUS "Copied ${_lib_name} DLLs (all versions) from ${_lib_bin_dir}")
+                # 只在有文件被拷贝时才输出信息
+                if(_lib_copied GREATER 0)
+                    message(STATUS "Copied ${_lib_copied} ${_lib_name} DLL(s) from ${_lib_bin_dir}")
                 endif()
             endif()
             continue()
@@ -152,12 +266,20 @@ function(fcfun_copy_thirdlib_dlls _target_dir _build_type)
                 if(EXISTS ${_occ_bin_dir})
                     # 拷贝所有DLL，不做任何过滤
                     file(GLOB _occ_dll_files "${_occ_bin_dir}/*.dll")
+                    set(_occ_copied 0)
                     foreach(_dll IN LISTS _occ_dll_files)
-                        file(COPY ${_dll} DESTINATION ${_target_dir})
-                        math(EXPR _copied_count "${_copied_count} + 1")
+                        get_filename_component(_dll_name ${_dll} NAME)
+                        set(_dest_dll "${_target_dir}/${_dll_name}")
+                        fcfun_need_copy_dll(${_dll} ${_dest_dll} _need_copy)
+                        if(_need_copy)
+                            file(COPY ${_dll} DESTINATION ${_target_dir})
+                            math(EXPR _copied_count "${_copied_count} + 1")
+                            math(EXPR _occ_copied "${_occ_copied} + 1")
+                        endif()
                     endforeach()
-                    if(_occ_dll_files)
-                        message(STATUS "Copied OCC DLLs from ${_occ_bin_dir}")
+                    # 只在有文件被拷贝时才输出信息
+                    if(_occ_copied GREATER 0)
+                        message(STATUS "Copied ${_occ_copied} OCC DLL(s) from ${_occ_bin_dir}")
                     endif()
                     break()
                 endif()
@@ -186,13 +308,21 @@ function(fcfun_copy_thirdlib_dlls _target_dir _build_type)
                 endif()
                 
                 # 拷贝DLL文件
+                set(_vtk_copied 0)
                 foreach(_dll IN LISTS _dll_files)
-                    file(COPY ${_dll} DESTINATION ${_target_dir})
-                    math(EXPR _copied_count "${_copied_count} + 1")
+                    get_filename_component(_dll_name ${_dll} NAME)
+                    set(_dest_dll "${_target_dir}/${_dll_name}")
+                    fcfun_need_copy_dll(${_dll} ${_dest_dll} _need_copy)
+                    if(_need_copy)
+                        file(COPY ${_dll} DESTINATION ${_target_dir})
+                        math(EXPR _copied_count "${_copied_count} + 1")
+                        math(EXPR _vtk_copied "${_vtk_copied} + 1")
+                    endif()
                 endforeach()
                 
-                if(_dll_files)
-                    message(STATUS "Copied VTK DLLs from ${_vtk_bin_dir}")
+                # 只在有文件被拷贝时才输出信息
+                if(_vtk_copied GREATER 0)
+                    message(STATUS "Copied ${_vtk_copied} VTK DLL(s) from ${_vtk_bin_dir}")
                 endif()
             endif()
             continue()
@@ -218,22 +348,28 @@ function(fcfun_copy_thirdlib_dlls _target_dir _build_type)
             endif()
             
             # 拷贝DLL文件
+            set(_lib_copied 0)
             foreach(_dll IN LISTS _dll_files)
-                file(COPY ${_dll} DESTINATION ${_target_dir})
-                math(EXPR _copied_count "${_copied_count} + 1")
+                get_filename_component(_dll_name ${_dll} NAME)
+                set(_dest_dll "${_target_dir}/${_dll_name}")
+                fcfun_need_copy_dll(${_dll} ${_dest_dll} _need_copy)
+                if(_need_copy)
+                    file(COPY ${_dll} DESTINATION ${_target_dir})
+                    math(EXPR _copied_count "${_copied_count} + 1")
+                    math(EXPR _lib_copied "${_lib_copied} + 1")
+                endif()
             endforeach()
             
-            if(_dll_files)
-                message(STATUS "Copied ${_lib_name} DLLs from ${_lib_bin_dir}")
+            # 只在有文件被拷贝时才输出信息
+            if(_lib_copied GREATER 0)
+                message(STATUS "Copied ${_lib_copied} ${_lib_name} DLL(s) from ${_lib_bin_dir}")
             endif()
         endif()
     endforeach()
     
-    # 输出拷贝成功信息
+    # 只在有文件被拷贝时才输出信息
     if(_copied_count GREATER 0)
         message(STATUS "Copied ${_copied_count} third-party DLL(s) to ${_target_dir}")
-    else()
-        message(STATUS "No third-party DLLs copied to ${_target_dir}")
     endif()
 endfunction()
 
@@ -247,6 +383,17 @@ endfunction()
 function(fcfun_copy_all_dlls_to_build _target_name _build_type)
     if(NOT WIN32)
         return()
+    endif()
+    
+    # 检查是否启用了拷贝选项（如果未定义，默认为ON以保持向后兼容）
+    # 注意：通过 -D 传递的值是字符串，需要检查字符串值
+    if(DEFINED FC_COPY_THIRDPARTY_DLLS)
+        # 将值转换为字符串进行比较
+        string(TOUPPER "${FC_COPY_THIRDPARTY_DLLS}" _copy_dlls_upper)
+        if(_copy_dlls_upper STREQUAL "OFF" OR _copy_dlls_upper STREQUAL "0" OR _copy_dlls_upper STREQUAL "FALSE" OR _copy_dlls_upper STREQUAL "NO")
+            # 选项为OFF，完全跳过所有DLL相关操作（包括windeployqt和时间戳检查）
+            return()
+        endif()
     endif()
     
     # 确定bin目录（构建目录下的bin）
@@ -287,6 +434,20 @@ if(DEFINED _TARGET_NAME AND DEFINED _BUILD_TYPE)
     if(NOT WIN32)
         message(STATUS "DLL deployment is only supported on Windows")
         return()
+    endif()
+    
+    # 设置拷贝选项（如果通过参数传入，否则默认为ON）
+    if(DEFINED FC_COPY_THIRDPARTY_DLLS)
+        # 选项已通过参数传入，检查是否为OFF
+        # 注意：通过 -D 传递的值是字符串，需要字符串比较
+        string(TOUPPER "${FC_COPY_THIRDPARTY_DLLS}" _copy_dlls_upper)
+        if(_copy_dlls_upper STREQUAL "OFF" OR _copy_dlls_upper STREQUAL "0" OR _copy_dlls_upper STREQUAL "FALSE" OR _copy_dlls_upper STREQUAL "NO")
+            # 选项为OFF，完全跳过所有DLL相关操作（包括windeployqt和时间戳检查）
+            return()
+        endif()
+    else()
+        # 未定义，默认为ON以保持向后兼容
+        set(FC_COPY_THIRDPARTY_DLLS ON)
     endif()
     
     # 设置第三方库目录（如果通过参数传入）
