@@ -10,21 +10,21 @@
 
 namespace FC
 {
-FCOperatorRepoPrivate::FCOperatorRepoPrivate(QHash<QString, std::function<FCAbstractOperatorBase*()>>& funs)
+FCOperatorRepoPrivate::FCOperatorRepoPrivate(QHash<QString, std::function<FCAbstractOperator*()>>& funs)
     : _createFuns(funs)
 {
 }
 
 FCOperatorRepoPrivate::~FCOperatorRepoPrivate()
 {
-    QList<FCAbstractOperatorBase*> opers = _existOperators.values();
+    QList<FCAbstractOperator*> opers = _existOperators.values();
     for (auto oper : opers)
         if (oper != nullptr)
             delete oper;
     _existOperators.clear();
 }
 
-FCAbstractOperatorBase* FCOperatorRepoPrivate::getOperator(const QString& key)
+FCAbstractOperator* FCOperatorRepoPrivate::getOperator(const QString& key)
 {
     if (_existOperators.contains(key))
         return _existOperators.value(key);
@@ -35,7 +35,7 @@ void FCOperatorRepoPrivate::removeOperator(const QString& key, bool removeFun)
 {
     if (_existOperators.contains(key))
     {
-        FCAbstractOperatorBase* oper = _existOperators.value(key);
+        FCAbstractOperator* oper = _existOperators.value(key);
         _existOperators.remove(key);
         if (oper != nullptr)
             delete oper;
@@ -47,26 +47,26 @@ void FCOperatorRepoPrivate::removeOperator(const QString& key, bool removeFun)
 }
 
 void FCOperatorRepoPrivate::registerOperatorFunction(const QString& key,
-                                                     std::function<FCAbstractOperatorBase*()> fun)
+                                                     std::function<FCAbstractOperator*()> fun)
 {
     _createFuns.insert(key, fun);
 }
 
-FCAbstractOperatorBase* FCOperatorRepoPrivate::createOperator(const QString& key)
+FCAbstractOperator* FCOperatorRepoPrivate::createOperator(const QString& key)
 {
     auto fun = _createFuns.value(key);
     if (!fun)
         return nullptr;
-    FCAbstractOperatorBase* op = fun();
+    FCAbstractOperator* op = fun();
     if (op == nullptr)
         return nullptr;
     _existOperators.insert(key, op);
-    connect(op, &FCAbstractOperatorBase::operatorDestoryedSig,
+    connect(op, &FCAbstractOperator::operatorDestoryedSig,
             this, &FCOperatorRepoPrivate::operatorDestoryedSlot);
     return op;
 }
 
-void FCOperatorRepoPrivate::operatorDestoryedSlot(FCAbstractOperatorBase* oper)
+void FCOperatorRepoPrivate::operatorDestoryedSlot(FCAbstractOperator* oper)
 {
     const QString name = _existOperators.key(oper);
     if (!_existOperators.contains(name))

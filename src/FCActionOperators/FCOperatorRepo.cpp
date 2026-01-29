@@ -28,7 +28,7 @@ static FCOperatorDeletor __OPER_DELEATOR__;
 FCOperatorRepo* FCOperatorRepo::_instance = nullptr;
 QMutex FCOperatorRepo::m_mutex;
 
-FCAbstractOperatorBase* FCOperatorRepo::getOperator(const QString& key)
+FCAbstractOperator* FCOperatorRepo::getOperator(const QString& key)
 {
     QMutexLocker locker(&m_mutex);
     return _private->getOperator(key);
@@ -40,7 +40,7 @@ void FCOperatorRepo::removeOperator(const QString& key, bool removeFun)
     _private->removeOperator(key, removeFun);
 }
 
-void FCOperatorRepo::registerOperatorFunction(const QString& key, std::function<FCAbstractOperatorBase*()> fun)
+void FCOperatorRepo::registerOperatorFunction(const QString& key, std::function<FCAbstractOperator*()> fun)
 {
     QMutexLocker locker(&m_mutex);
     _private->registerOperatorFunction(key, fun);

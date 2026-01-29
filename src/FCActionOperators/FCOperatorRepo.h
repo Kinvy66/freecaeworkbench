@@ -11,7 +11,7 @@
 
 #include "FCActionOperatorsAPI.h"
 #include "FCOperatorRepoMacros.h"
-#include "FCAbstractOperatorBase.h"
+#include "FCAbstractOperator.h"
 #include <QObject>
 #include <QMutex>
 #include <QHash>
@@ -32,7 +32,7 @@ class FCACTIONOPERATORS_API FCOperatorRepo : public QObject
     DeclSingleton(FCOperatorRepo)
 
 public:
-    FCAbstractOperatorBase* getOperator(const QString& key);
+    FCAbstractOperator* getOperator(const QString& key);
 
     template <class T>
     T* getOperatorT(const QString& key)
@@ -42,14 +42,14 @@ public:
 
     void removeOperator(const QString& key, bool removeFun = true);
     void registerOperatorFunction(const QString& key,
-                                  std::function<FCAbstractOperatorBase*()> fun);
+                                  std::function<FCAbstractOperator*()> fun);
 
 private:
     void initialize();
     void finalize();
 
 private:
-    QHash<QString, std::function<FCAbstractOperatorBase*()>> _createFuns{};
+    QHash<QString, std::function<FCAbstractOperator*()>> _createFuns{};
     FCOperatorRepoPrivate* _private{};
 
 public:

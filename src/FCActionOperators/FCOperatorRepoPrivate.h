@@ -10,7 +10,7 @@
 #define _FC_OPERATOR_REPO_PRIVATE_H__
 
 #include "FCActionOperatorsAPI.h"
-#include "FCAbstractOperatorBase.h"
+#include "FCAbstractOperator.h"
 #include <QObject>
 #include <QHash>
 #include <QString>
@@ -25,22 +25,22 @@ class FCACTIONOPERATORS_API FCOperatorRepoPrivate : public QObject
 {
     Q_OBJECT
 public:
-    explicit FCOperatorRepoPrivate(QHash<QString, std::function<FCAbstractOperatorBase*()>>& funs);
+    explicit FCOperatorRepoPrivate(QHash<QString, std::function<FCAbstractOperator*()>>& funs);
     virtual ~FCOperatorRepoPrivate();
 
-    FCAbstractOperatorBase* getOperator(const QString& key);
+    FCAbstractOperator* getOperator(const QString& key);
     void removeOperator(const QString& key, bool removeFun = true);
-    void registerOperatorFunction(const QString& key, std::function<FCAbstractOperatorBase*()> fun);
+    void registerOperatorFunction(const QString& key, std::function<FCAbstractOperator*()> fun);
 
 private:
-    FCAbstractOperatorBase* createOperator(const QString& key);
+    FCAbstractOperator* createOperator(const QString& key);
 
 private slots:
-    void operatorDestoryedSlot(FCAbstractOperatorBase* oper);
+    void operatorDestoryedSlot(FCAbstractOperator* oper);
 
 private:
-    QHash<QString, std::function<FCAbstractOperatorBase*()>>& _createFuns;
-    QHash<QString, FCAbstractOperatorBase*> _existOperators{};
+    QHash<QString, std::function<FCAbstractOperator*()>>& _createFuns;
+    QHash<QString, FCAbstractOperator*> _existOperators{};
 };
 }
 

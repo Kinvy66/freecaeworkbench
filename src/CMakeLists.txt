@@ -14,17 +14,17 @@ add_subdirectory(FCGraphicsView)
 add_subdirectory(FCInterface)
 add_subdirectory(FCMessageHandler)
 add_subdirectory(FCProjectTree)
-# add_subdirectory(FCActionManager)
 add_subdirectory(FCGeometryModelCreator)
 add_subdirectory(FCGeometryParameter)
 add_subdirectory(FCData)
-#add_subdirectory(FCProjectArchive)
 add_subdirectory(FCMeshModule)
-# add_subdirectory(TestDemo)
+add_subdirectory(FCCore)
+add_subdirectory(FCPostProcessing)
+add_subdirectory(FCRenderWindowVTK)
+add_subdirectory(FCActionOperators)
+add_subdirectory(FCOperatorsInterface)
 
 add_subdirectory(APP)
 
 
-add_subdirectory(FCPostProcessing)
-add_subdirectory(FCRenderWindowVTK)
-add_subdirectory(FCActionOperators)
+
