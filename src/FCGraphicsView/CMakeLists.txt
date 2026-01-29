@@ -39,8 +39,7 @@ add_library(${FC_LIB_NAME} SHARED
 
 # 构建库定义的宏
 
-target_link_libraries(FCGraphicsView PRIVATE Qt6::Core)
-target_link_libraries(FCGraphicsView PRIVATE Qt6::Core)
+
 target_compile_definitions(${FC_LIB_NAME} PRIVATE FCGRAPHICSVIEW_BUILDLIB)#!!!!** 注意变更 **!!!!
 add_library(${FC_PROJECT_NAME}::${FC_LIB_NAME} ALIAS ${FC_LIB_NAME})
 ########################################################

@@ -314,4 +314,81 @@ uint qHash(const std::shared_ptr< T >& ptr, uint seed = 0)
 	}
 #endif
 
+/**
+* @brief 定义单例
+* @code
+* //MySingleton.h
+*class MySingletonDeleator;
+*
+*class MySingleton
+*{
+*    friend MySingletonDeleator;
+*    
+*    DeclSingleton(MySingleton);
+*    
+*public:
+*    QString getVar() const;
+*
+*private:
+*    void initialize();  // 必须声明
+*    void finalize();    // 必须声明
+*    
+*private:
+*    QString mVar;
+*};
+*
+*class MySingletonDeleator
+*{
+*public:
+*   MySingletonDeleator() = default;
+*   ~MySingletonDeleator();
+*};
+*
+*#endif
+*
+* //MySingleton.cpp
+* #include "MySingleton.h"
+*
+* // 静态成员初始化
+*MySingleton* MySingleton::_instance = nullptr;
+*QMutex MySingleton::m_mutex;
+*
+*static MySingletonDeleator __DELEATOR__;
+*
+*MySingletonDeleator::~MySingletonDeleator()
+*{
+*    if (SimpleSingleton::_instance)
+*    {
+*        delete MySingletonDeleator::_instance;
+*        MySingletonDeleator::_instance = nullptr;
+*    }
+*}
+*
+*QString MySingletonDeleator::getVar() const
+*{
+*    return mVar;
+*}
+* // 可以为空实现
+*void SimpleSingleton::initialize() { mVar = "Hello"; }
+* // 可以为空实现
+*void SimpleSingleton::finalize() {}
+* @endcode
+*/
+#define FCDeclSingleton( thisClass )        \
+private:                                  \
+    static thisClass* _instance;          \
+    static QMutex m_mutex;                \
+    thisClass( ) { this->initialize( ); } \
+    ~thisClass( ) {this->finalize(); }    \
+                                          \
+    public:                                   \
+    static thisClass* getInstance( )      \
+{                                     \
+        QMutexLocker l(&m_mutex);         \
+        if ( _instance == nullptr )       \
+        _instance = new thisClass;    \
+        return _instance;                 \
+}
+
+
 #endif  // GLOBALS_H

@@ -87,21 +87,13 @@ AppMainWindow::AppMainWindow(QWidget *parent)
         ;
     mController->initialize();
     ribbonBar()->setContentsMargins(3, 0, 3, 0);
-    // 界面状态的加载要在init之前，因为inti的插件会改变界面，如果在之后就永远改变不了界面了
-    // bool hasUIStateFile = isHaveStateSettingFile();
-    // if (hasUIStateFile) {
-    //     restoreUIState();
-    //     qInfo().noquote() << tr("Restore UI State");  // cn:加载界面状态信息
-    // }
-    // 首次调用此函数会加载插件，可放置在main函数中调用
+
     init();
-    // retranslateUi();  // 非必要可以验证调用是否正常
-    // if (!hasUIStateFile) {
-        ribbonBar()->setRibbonStyle(SARibbonBar::RibbonStyleLooseThreeRow);
-        // 不在构造函数中直接最大化，而是在showEvent中处理，避免闪动
-        // 设置一个标志，表示首次显示时需要最大化
-    // }
-    showMaximized();
+
+    ribbonBar()->setRibbonStyle(SARibbonBar::RibbonStyleLooseThreeRow);
+
+    setMinimumSize(800, 600);
+    // showMaximized();
 }
 
 AppMainWindow::~AppMainWindow()
