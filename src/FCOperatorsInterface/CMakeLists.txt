@@ -60,19 +60,17 @@ endif()
 
 
 # -------------link vtk--------------------------
-fcmacro_import_vtk(${FC_LIB_NAME})
-
-
+# fcmacro_import_vtk(${FC_LIB_NAME})
 
 find_package(${FC_PROJECT_NAME} COMPONENTS
-    # FCActionOperators
+    FCCore
 )
 
 if(${FC_PROJECT_NAME}_FOUND)
     message(STATUS "  |-linked ${FC_PROJECT_NAME}::FCUtils")
 endif()
 target_link_libraries(${FC_LIB_NAME} PUBLIC
-    # ${FC_PROJECT_NAME}::FCActionOperators
+    ${FC_PROJECT_NAME}::FCCore
 )
 
 
