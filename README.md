@@ -12,7 +12,7 @@
 
 # FreeCAE Workbench 简介
 
-本仓库已归档，不再更新。该项目已迁移至： [https://github.com/Kinvy66/FreeCAE](https://github.com/Kinvy66/FreeCAE)
+~~本仓库已归档，不再更新。该项目已迁移至： [https://github.com/Kinvy66/FreeCAE](https://github.com/Kinvy66/FreeCAE)~~ ，项目继续更新，最新代码在[dev](https://github.com/Kinvy66/freecaeworkbench/tree/dev)分支
 
 
 
