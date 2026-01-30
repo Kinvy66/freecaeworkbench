@@ -19,7 +19,7 @@ class  FCACTIONOPERATORS_API FCActionOperator : public FCAbstractOperator
     Q_OBJECT
 public:
     explicit FCActionOperator() = default;
-    virtual ~FCActionOperator() = 0;
+    virtual ~FCActionOperator();
     
     /**
      * @brief 点击事件处理方法

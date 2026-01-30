@@ -8,4 +8,32 @@
  */
 #include "FCActionOperator.h"
 
-FCActionOperator::FCActionOperator() {}
+namespace FC 
+{
+
+FCActionOperator::~FCActionOperator()
+{
+    
+}
+
+bool FCActionOperator::actionTriggered()
+{
+    return true;
+}
+
+bool FCActionOperator::execGUI()
+{
+    return true;
+}
+
+bool FCActionOperator::execProfession()
+{
+    return true;
+}
+
+void FCActionOperator::preArgs()
+{
+    
+}
+
+} // namespace FC
