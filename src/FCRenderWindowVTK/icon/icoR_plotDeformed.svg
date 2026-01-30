@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 22.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="图层_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 width="32px" height="32px" viewBox="0 0 32 32" style="enable-background:new 0 0 32 32;" xml:space="preserve">
+<style type="text/css">
+	.st0{fill:#DFE9F5;stroke:#657386;stroke-miterlimit:10;}
+	.st1{display:none;fill:#DFE9F5;stroke:#657386;stroke-miterlimit:10;}
+	.st2{fill:none;stroke:#657386;stroke-miterlimit:10;}
+</style>
+<rect x="3.5" y="10.5" class="st0" width="4" height="4"/>
+<rect x="7.5" y="10.5" class="st0" width="4" height="4"/>
+<rect x="3.5" y="14.5" class="st0" width="4" height="4"/>
+<rect x="7.5" y="14.5" class="st0" width="4" height="4"/>
+<rect x="3.5" y="18.5" class="st0" width="4" height="4"/>
+<rect x="7.5" y="18.5" class="st0" width="4" height="4"/>
+<rect x="3.5" y="22.5" class="st0" width="4" height="4"/>
+<rect x="7.5" y="22.5" class="st0" width="4" height="4"/>
+<rect x="23.5" y="18.5" transform="matrix(-1.836970e-16 1 -1 -1.836970e-16 46 -5)" class="st1" width="4" height="4"/>
+<rect x="23.5" y="22.5" transform="matrix(-1.836970e-16 1 -1 -1.836970e-16 50 -1)" class="st1" width="4" height="4"/>
+<rect x="19.5" y="18.5" transform="matrix(-1.836970e-16 1 -1 -1.836970e-16 42 -1)" class="st1" width="4" height="4"/>
+<rect x="19.5" y="22.5" transform="matrix(-1.836970e-16 1 -1 -1.836970e-16 46 3)" class="st1" width="4" height="4"/>
+<rect x="15.5" y="18.5" transform="matrix(-1.836970e-16 1 -1 -1.836970e-16 38 3)" class="st1" width="4" height="4"/>
+<rect x="15.5" y="22.5" transform="matrix(-1.836970e-16 1 -1 -1.836970e-16 42 7)" class="st1" width="4" height="4"/>
+<rect x="11.5" y="18.5" transform="matrix(-1.836970e-16 1 -1 -1.836970e-16 34 7)" class="st1" width="4" height="4"/>
+<rect x="11.5" y="22.5" transform="matrix(-1.836970e-16 1 -1 -1.836970e-16 38 11)" class="st1" width="4" height="4"/>
+<rect x="3.5" y="6.5" class="st0" width="4" height="4"/>
+<rect x="7.5" y="6.5" class="st0" width="4" height="4"/>
+<path class="st0" d="M11.5,18.5c0,0,14,0,16,2v8c0,0-7-2-16-2V18.5z"/>
+<path class="st2" d="M11.5,22.5c0,0,10,0,16,2"/>
+<path class="st2" d="M14.5,18.5c0,0,1,3,0.2,8.2"/>
+<path class="st2" d="M18.5,18.5c0,0,1,3,0.2,8.2"/>
+<path class="st2" d="M22.5,19c0,0,1,3,0.2,8.2"/>
+</svg>

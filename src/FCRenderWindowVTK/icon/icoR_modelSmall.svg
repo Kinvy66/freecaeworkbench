@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 22.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="图层_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 width="32px" height="32px" viewBox="0 0 32 32" style="enable-background:new 0 0 32 32;" xml:space="preserve">
+<style type="text/css">
+	.st0{fill:#DFE9F5;stroke:#657386;stroke-miterlimit:10;}
+	.st1{fill:#DFE9F5;}
+	.st2{fill:none;stroke:#56A844;stroke-miterlimit:10;}
+	.st3{fill:#56A844;}
+	.st4{fill:#FE9100;stroke:#657386;stroke-miterlimit:10;}
+	.st5{fill:#4D82B6;stroke:#657386;stroke-miterlimit:10;}
+</style>
+<rect x="3.5" y="12.5" class="st0" width="4" height="4"/>
+<rect x="7.5" y="12.5" class="st0" width="4" height="4"/>
+<rect x="3.5" y="16.5" class="st0" width="4" height="4"/>
+<rect x="7.5" y="16.5" class="st0" width="4" height="4"/>
+<rect x="3.5" y="20.5" class="st0" width="4" height="4"/>
+<rect x="7.5" y="20.5" class="st0" width="4" height="4"/>
+<rect x="3.5" y="24.5" class="st0" width="4" height="4"/>
+<rect x="7.5" y="24.5" class="st0" width="4" height="4"/>
+<rect x="23.5" y="20.5" transform="matrix(-1.836970e-16 1 -1 -1.836970e-16 48 -3)" class="st0" width="4" height="4"/>
+<rect x="23.5" y="24.5" transform="matrix(-1.836970e-16 1 -1 -1.836970e-16 52 1)" class="st0" width="4" height="4"/>
+<rect x="19.5" y="20.5" transform="matrix(-1.836970e-16 1 -1 -1.836970e-16 44 1)" class="st0" width="4" height="4"/>
+<rect x="19.5" y="24.5" transform="matrix(-1.836970e-16 1 -1 -1.836970e-16 48 5)" class="st0" width="4" height="4"/>
+<rect x="15.5" y="20.5" transform="matrix(-1.836970e-16 1 -1 -1.836970e-16 40 5)" class="st0" width="4" height="4"/>
+<rect x="15.5" y="24.5" transform="matrix(-1.836970e-16 1 -1 -1.836970e-16 44 9)" class="st0" width="4" height="4"/>
+<rect x="11.5" y="20.5" transform="matrix(-1.836970e-16 1 -1 -1.836970e-16 36 9)" class="st0" width="4" height="4"/>
+<rect x="11.5" y="24.5" transform="matrix(-1.836970e-16 1 -1 -1.836970e-16 40 13)" class="st0" width="4" height="4"/>
+<rect x="3.5" y="8.5" class="st0" width="4" height="4"/>
+<rect x="7.5" y="8.5" class="st0" width="4" height="4"/>
+<rect x="4" y="8" class="st1" width="6" height="4"/>
+<line class="st2" x1="7.5" y1="6.6" x2="7.5" y2="2.6"/>
+<polygon class="st3" points="9.9,6 5,6 7.4,10.2 "/>
+<line class="st2" x1="23.6" y1="12.6" x2="23.6" y2="8.6"/>
+<polygon class="st3" points="26.1,12 21.1,12 23.5,16.2 "/>
+<rect x="19" y="20" class="st1" width="9.2" height="5"/>
+<rect x="20.1" y="16" class="st4" width="7" height="7"/>
+<circle class="st5" cx="23.6" cy="5" r="3.5"/>
+</svg>

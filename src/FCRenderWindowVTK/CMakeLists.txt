@@ -65,20 +65,15 @@ fcmacro_import_vtk(${FC_LIB_NAME})
 
 
 find_package(${FC_PROJECT_NAME} COMPONENTS
-    FCUtils
-    FCGeometryParameter
-    FCMeshModule
-    FCPostProcessing
+    FCCore
 )
 
 if(${FC_PROJECT_NAME}_FOUND)
     message(STATUS "  |-linked ${FC_PROJECT_NAME}::FCUtils")
 endif()
 target_link_libraries(${FC_LIB_NAME} PUBLIC
-    ${FC_PROJECT_NAME}::FCUtils
-    ${FC_PROJECT_NAME}::FCGeometryParameter
-    ${FC_PROJECT_NAME}::FCMeshModule
-    ${FC_PROJECT_NAME}::FCPostProcessing
+    ${FC_PROJECT_NAME}::FCCore
+
 )
 
 
@@ -88,10 +83,10 @@ target_link_libraries(${FC_LIB_NAME} PUBLIC
 fcmacro_set_lib_properties(${FC_LIB_NAME} ${FC_LIB_VERSION})
 
 # 添加这两个位置主要是为了ui文件进行窗口提升时能找到头文件
-# target_include_directories(${FC_LIB_NAME} PUBLIC
-#     $<INSTALL_INTERFACE:include/${FC_PROJECT_NAME}/${FC_LIB_NAME}/Dialog>
-#     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/Dialog>
-# )
+target_include_directories(${FC_LIB_NAME} PUBLIC
+    $<INSTALL_INTERFACE:include/${FC_PROJECT_NAME}/${FC_LIB_NAME}>
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
+)
 # target_include_directories(${FC_LIB_NAME} PUBLIC
 #     $<INSTALL_INTERFACE:include/${FC_PROJECT_NAME}/${FC_LIB_NAME}/ChartSetting>
 #     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/ChartSetting>

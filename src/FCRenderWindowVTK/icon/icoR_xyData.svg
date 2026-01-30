@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 22.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="图层_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 width="32px" height="32px" viewBox="0 0 32 32" style="enable-background:new 0 0 32 32;" xml:space="preserve">
+<style type="text/css">
+	.st0{fill:#4D82B6;stroke:#657386;stroke-miterlimit:10;}
+	.st1{fill:#DFE9F5;stroke:#657386;stroke-miterlimit:10;}
+	.st2{fill:#FFFFFF;}
+	.st3{font-family:'MicrosoftYaHei';}
+	.st4{font-size:11px;}
+</style>
+<rect x="3.5" y="4.5" class="st0" width="12" height="10"/>
+<rect x="15.5" y="4.5" class="st0" width="12" height="10"/>
+<rect x="3.5" y="14.5" class="st1" width="12" height="5"/>
+<rect x="15.5" y="14.5" class="st1" width="12" height="5"/>
+<text transform="matrix(1 0 0 1 7.0625 11.9375)" class="st2 st3 st4">x</text>
+<text transform="matrix(1 0 0 1 19.0625 11.9375)" class="st2 st3 st4">y</text>
+<rect x="3.5" y="19.5" class="st1" width="12" height="5"/>
+<rect x="15.5" y="19.5" class="st1" width="12" height="5"/>
+<rect x="3.5" y="24.5" class="st1" width="12" height="5"/>
+<rect x="15.5" y="24.5" class="st1" width="12" height="5"/>
+</svg>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 22.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="图层_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 width="32px" height="32px" viewBox="0 0 32 32" style="enable-background:new 0 0 32 32;" xml:space="preserve">
+<style type="text/css">
+	.st0{fill:#DFE9F5;stroke:#657386;stroke-miterlimit:10;}
+	.st1{fill:none;stroke:#56A844;stroke-miterlimit:10;}
+	.st2{fill:#4D82B6;}
+	.st3{font-family:'MicrosoftYaHei';}
+	.st4{font-size:10px;}
+</style>
+<rect x="3.5" y="12.5" class="st0" width="4" height="4"/>
+<rect x="7.5" y="12.5" class="st0" width="4" height="4"/>
+<rect x="3.5" y="16.5" class="st0" width="4" height="4"/>
+<rect x="7.5" y="16.5" class="st0" width="4" height="4"/>
+<rect x="3.5" y="20.5" class="st0" width="4" height="4"/>
+<rect x="7.5" y="20.5" class="st0" width="4" height="4"/>
+<rect x="3.5" y="24.5" class="st0" width="4" height="4"/>
+<rect x="7.5" y="24.5" class="st0" width="4" height="4"/>
+<rect x="23.5" y="20.5" transform="matrix(-1.836970e-16 1 -1 -1.836970e-16 48 -3)" class="st0" width="4" height="4"/>
+<rect x="23.5" y="24.5" transform="matrix(-1.836970e-16 1 -1 -1.836970e-16 52 1)" class="st0" width="4" height="4"/>
+<rect x="19.5" y="20.5" transform="matrix(-1.836970e-16 1 -1 -1.836970e-16 44 1)" class="st0" width="4" height="4"/>
+<rect x="19.5" y="24.5" transform="matrix(-1.836970e-16 1 -1 -1.836970e-16 48 5)" class="st0" width="4" height="4"/>
+<rect x="15.5" y="20.5" transform="matrix(-1.836970e-16 1 -1 -1.836970e-16 40 5)" class="st0" width="4" height="4"/>
+<rect x="15.5" y="24.5" transform="matrix(-1.836970e-16 1 -1 -1.836970e-16 44 9)" class="st0" width="4" height="4"/>
+<rect x="11.5" y="20.5" transform="matrix(-1.836970e-16 1 -1 -1.836970e-16 36 9)" class="st0" width="4" height="4"/>
+<rect x="11.5" y="24.5" transform="matrix(-1.836970e-16 1 -1 -1.836970e-16 40 13)" class="st0" width="4" height="4"/>
+<rect x="3.5" y="8.5" class="st0" width="4" height="4"/>
+<rect x="7.5" y="8.5" class="st0" width="4" height="4"/>
+<path class="st1" d="M7.5,2.6"/>
+<path class="st1" d="M7.5,6.6"/>
+<path class="st1" d="M23.6,8.6"/>
+<path class="st1" d="M23.6,12.6"/>
+<text transform="matrix(1 0 0 1 12.6875 14.1875)" class="st2 st3 st4">123</text>
+</svg>
