@@ -9,8 +9,8 @@
 #ifndef __FC_OPERATOR_REPO_H__
 #define __FC_OPERATOR_REPO_H__
 
-#include "FCActionOperatorsAPI.h"
-#include "FCOperatorRepoMacros.h"
+#include "FCCoreAPI.h"
+#include "FCCoreMacros.h"
 #include "FCAbstractOperator.h"
 #include <QObject>
 #include <QMutex>
@@ -26,7 +26,7 @@ class FCOperatorDeletor;
 /**
  * @brief 操作器仓库（单例，按 key 创建/获取操作器）
  */
-class FCACTIONOPERATORS_API FCOperatorRepo : public QObject
+class FCCORE_API FCOperatorRepo : public QObject
 {
     friend class FCOperatorDeletor;
     DeclSingleton(FCOperatorRepo)

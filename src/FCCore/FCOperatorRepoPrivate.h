@@ -9,7 +9,7 @@
 #ifndef _FC_OPERATOR_REPO_PRIVATE_H__
 #define _FC_OPERATOR_REPO_PRIVATE_H__
 
-#include "FCActionOperatorsAPI.h"
+#include "FCCoreAPI.h"
 #include "FCAbstractOperator.h"
 #include <QObject>
 #include <QHash>
@@ -21,7 +21,7 @@ namespace FC
 /**
  * @brief 创建操作器与维护操作器
  */
-class FCACTIONOPERATORS_API FCOperatorRepoPrivate : public QObject
+class FCCORE_API FCOperatorRepoPrivate : public QObject
 {
     Q_OBJECT
 public:

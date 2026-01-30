@@ -122,7 +122,7 @@ endif()
 find_package(${FC_PROJECT_NAME} COMPONENTS
     FCInterface
     FCGui
-    FCActionOperators
+    FCCore
     FCMessageHandler
     #FCProjectArchive
 )
@@ -136,7 +136,7 @@ endif()
 target_link_libraries(${FC_APP_NAME} PUBLIC
     ${FC_PROJECT_NAME}::FCInterface
     ${FC_PROJECT_NAME}::FCGui
-    ${FC_PROJECT_NAME}::FCActionOperators
+    ${FC_PROJECT_NAME}::FCCore
     ${FC_PROJECT_NAME}::FCMessageHandler
    # ${FC_PROJECT_NAME}::FCProjectArchive  
 )

@@ -1,69 +1,115 @@
-cmake_minimum_required(VERSION 3.16)
 
-project(FCCore VERSION 0.1 LANGUAGES CXX)
+cmake_minimum_required(VERSION 3.12)
 
-set(CMAKE_AUTOUIC ON)
-set(CMAKE_AUTOMOC ON)
-set(CMAKE_AUTORCC ON)
-
-set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-
-find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets)
-find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets)
-
-set(PROJECT_SOURCES
-    
-        
-        
+fcmacro_lib_setting(
+    "FCCore"
+    "FActionOperators | https://github.com/kinvy66"
+    0
+    0
+    1
 )
 
-if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
-    qt_add_executable(FCCore
-        MANUAL_FINALIZATION
-        ${PROJECT_SOURCES}
-    )
-# Define target properties for Android with Qt 6 as:
-#    set_property(TARGET FCCore APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR
-#                 ${CMAKE_CURRENT_SOURCE_DIR}/android)
-# For more information, see https://doc.qt.io/qt-6/qt-add-executable.html#target-creation
+
+########################################################
+# Qt
+########################################################
+set(FC_MIN_QT_VERSION 5.14)
+find_package(QT NAMES Qt6 Qt5 COMPONENTS Core REQUIRED)
+find_package(Qt${QT_VERSION_MAJOR} ${FC_MIN_QT_VERSION} COMPONENTS
+    Core
+    Gui
+    Widgets
+    Xml
+    Svg
+    REQUIRED
+)
+
+file(GLOB FC_LIB_GUI_HEADER_FILES ${CMAKE_CURRENT_SOURCE_DIR}/*.h)
+file(GLOB FC_LIB_GUI_SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp)
+file(GLOB FC_LIB_GUI_QT_UI_FILES  ${CMAKE_CURRENT_SOURCE_DIR}/*.ui)
+file(GLOB FC_LIB_GUI_QT_RC_FILES  ${CMAKE_CURRENT_SOURCE_DIR}/*.qrc)
+
+
+add_library(${FC_LIB_NAME} SHARED   
+            ${FC_LIB_GUI_HEADER_FILES}
+            ${FC_LIB_GUI_SOURCE_FILES}
+            ${FC_LIB_GUI_QT_UI_FILES}
+            ${FC_LIB_GUI_QT_RC_FILES}
+)
+
+# 构建库定义的宏
+target_compile_definitions(${FC_LIB_NAME} PRIVATE FCCORE_BUILDLIB)#!!!!** 注意变更 **!!!!
+add_library(${FC_PROJECT_NAME}::${FC_LIB_NAME} ALIAS ${FC_LIB_NAME})
+########################################################
+# 依赖链接 #!!!!** 注意变更 **!!!!
+########################################################
+# -------------link Qt--------------------------
+target_link_libraries(${FC_LIB_NAME} PRIVATE
+    Qt${QT_VERSION_MAJOR}::Core
+    Qt${QT_VERSION_MAJOR}::Gui
+    Qt${QT_VERSION_MAJOR}::Widgets
+    Qt${QT_VERSION_MAJOR}::Xml
+    Qt${QT_VERSION_MAJOR}::Svg
+)
+if(${QT_VERSION_MAJOR} EQUAL 6)
+    find_package(Qt6 REQUIRED COMPONENTS Core5Compat)
+    find_package(Qt6 REQUIRED COMPONENTS Core)
+    find_package(Qt6 REQUIRED COMPONENTS Core)
+    target_link_libraries(${FC_LIB_NAME} PRIVATE Qt6::Core5Compat)
+endif()
+
+
+# -------------link vtk--------------------------
+# fcmacro_import_vtk(${FC_LIB_NAME})
+
+
+
+find_package(${FC_PROJECT_NAME} COMPONENTS
+    FCUtils
+    FCInterface
+)
+
+if(${FC_PROJECT_NAME}_FOUND)
+    message(STATUS "  |-linked ${FC_PROJECT_NAME}::FCUtils")
+endif()
+target_link_libraries(${FC_LIB_NAME} PUBLIC
+    ${FC_PROJECT_NAME}::FCUtils
+    ${FC_PROJECT_NAME}::FCInterface
+)
+
+
+########################################################
+# 设置通用库属性
+########################################################
+fcmacro_set_lib_properties(${FC_LIB_NAME} ${FC_LIB_VERSION})
+
+# 添加这两个位置主要是为了ui文件进行窗口提升时能找到头文件
+# target_include_directories(${FC_LIB_NAME} PUBLIC
+#     $<INSTALL_INTERFACE:include/${FC_PROJECT_NAME}/${FC_LIB_NAME}/Dialog>
+#     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/Dialog>
+# )
+# target_include_directories(${FC_LIB_NAME} PUBLIC
+#     $<INSTALL_INTERFACE:include/${FC_PROJECT_NAME}/${FC_LIB_NAME}/ChartSetting>
+#     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/ChartSetting>
+# )
+
+########################################################
+# 附加编译选项
+########################################################
+if(${CMAKE_CXX_COMPILER_ID} STREQUAL "MSVC")
+    # 这里是为 MSVC 编译器设置的选项
+    target_link_options(${FC_LIB_NAME} PRIVATE /VERBOSE)
+    # 或者设置其他 MSVC 特定的编译或链接选项
 else()
-    if(ANDROID)
-        add_library(FCCore SHARED
-            ${PROJECT_SOURCES}
-        )
-# Define properties for Android with Qt 5 after find_package() calls as:
-#    set(ANDROID_PACKAGE_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/android")
-    else()
-        add_executable(FCCore
-            ${PROJECT_SOURCES}
-        )
-    endif()
+    # 这里是为非 MSVC 编译器设置的选项（如果有的话）
 endif()
+########################################################
+# 安装
+########################################################
+fcmacro_lib_install()
 
-target_link_libraries(FCCore PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
-
-# Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.
-# If you are developing for iOS or macOS you should consider setting an
-# explicit, fixed bundle identifier manually though.
-if(${QT_VERSION} VERSION_LESS 6.1.0)
-  set(BUNDLE_ID_OPTION MACOSX_BUNDLE_GUI_IDENTIFIER com.example.FCCore)
-endif()
-set_target_properties(FCCore PROPERTIES
-    ${BUNDLE_ID_OPTION}
-    MACOSX_BUNDLE_BUNDLE_VERSION ${PROJECT_VERSION}
-    MACOSX_BUNDLE_SHORT_VERSION_STRING ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}
-    MACOSX_BUNDLE TRUE
-    WIN32_EXECUTABLE TRUE
+install(FILES
+    ${FC_LIB_GUI_HEADER_FILES}
+    DESTINATION include/${FC_PROJECT_NAME}/${FC_LIB_NAME}
+    COMPONENT headers
 )
-
-include(GNUInstallDirs)
-install(TARGETS FCCore
-    BUNDLE DESTINATION .
-    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
-)
-
-if(QT_VERSION_MAJOR EQUAL 6)
-    qt_finalize_executable(FCCore)
-endif()

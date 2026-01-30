@@ -9,7 +9,7 @@
 #ifndef _FC_ABSTRACT_OPERATOR_BASE_H__
 #define _FC_ABSTRACT_OPERATOR_BASE_H__
 
-#include "FCActionOperatorsAPI.h"
+#include "FCCoreAPI.h"
 #include <QObject>
 #include <QHash>
 #include <QVariant>
@@ -19,7 +19,7 @@ namespace FC
 /**
  * @brief 操作器抽象基类
  */
-class FCACTIONOPERATORS_API FCAbstractOperator : public QObject
+class FCCORE_API FCAbstractOperator : public QObject
 {
     Q_OBJECT
 public:

@@ -9,12 +9,12 @@
 #ifndef FCACTIONOPERATOR_H
 #define FCACTIONOPERATOR_H
 
-#include "FCActionOperatorsAPI.h"
+#include "FCCoreAPI.h"
 #include "FCAbstractOperator.h"
 
 namespace FC 
 {
-class  FCACTIONOPERATORS_API FCActionOperator : public FCAbstractOperator
+class  FCCORE_API FCActionOperator : public FCAbstractOperator
 {
     Q_OBJECT
 public:

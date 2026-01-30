@@ -314,6 +314,7 @@ uint qHash(const std::shared_ptr< T >& ptr, uint seed = 0)
 	}
 #endif
 
+
 /**
 * @brief 定义单例
 * @code
@@ -374,6 +375,7 @@ uint qHash(const std::shared_ptr< T >& ptr, uint seed = 0)
 *void SimpleSingleton::finalize() {}
 * @endcode
 */
+/*
 #define FCDeclSingleton( thisClass )        \
 private:                                  \
     static thisClass* _instance;          \
@@ -389,6 +391,6 @@ private:                                  \
         _instance = new thisClass;    \
         return _instance;                 \
 }
-
+*/
 
 #endif  // GLOBALS_H
