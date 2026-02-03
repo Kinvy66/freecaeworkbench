@@ -8,37 +8,37 @@
 
 /**
  *
- * @file FITKGraphWidget.h
+ * @file FCGraphWidget.h
  * @brief 渲染窗口抽象类
  * @author BaGuijun (baguijun@163.com)
  * @date 2024-04-08
  *
  */
-#ifndef FITKGraphWidget_H_
-#define FITKGraphWidget_H_
+#ifndef FCGraphWidget_H_
+#define FCGraphWidget_H_
 
-#include "FITKCoreAPI.h"
-#include "FITKAbstractGUI.h"
+#include "FCCoreAPI.h"
+#include <QWidget>
 
 namespace Core
 {
-    class FITKAbstractGraphObject;
+    class FCAbstractGraphObject;
 
     /**
      * @brief 渲染窗口抽象类
      * @author libaojun (libaojunqd@foxmail.com)
      * @date 2024-04-08
      */
-    class FITKCoreAPI FITKAbstractGraphWidget :public FITKWidget
+    class FCCORE_API FCAbstractGraphWidget :public QWidget
     {
     public:
-        explicit FITKAbstractGraphWidget(QWidget* parent = nullptr);
+        explicit FCAbstractGraphWidget(QWidget* parent = nullptr);
         /**
-         * @brief Destroy the FITKGraphWidget object
+         * @brief Destroy the FCGraphWidget object
          * @author libaojun (libaojunqd@foxmail.com)
          * @date 2024-04-08
          */
-        virtual ~FITKAbstractGraphWidget() = 0 ;
+        virtual ~FCAbstractGraphWidget() = 0 ;
        
         /**
          * @brief 清空所有显示对象（不删除对象）
@@ -82,11 +82,11 @@ namespace Core
 
         /**
          * @brief 从渲染窗口移除渲染对象
-         * @param[i]  FITKAbstractGraphObject    移除的渲染对象
+         * @param[i]  FCAbstractGraphObject    移除的渲染对象
          * @author libaojun (libaojunqd@foxmail.com)
          * @date 2024-04-11
          */
-        virtual void removeGraphObj(FITKAbstractGraphObject* gobj);
+        virtual void removeGraphObj(FCAbstractGraphObject* gobj);
         /**
          * @brief 获取窗口ID，与widget的id无关
          * @return int
@@ -105,7 +105,7 @@ namespace Core
     };
 
 
-    enum FITKGraph3DStandardView
+    enum FCGraph3DStandardView
     {
         F3DVXPos,
         F3DVXNeg,
@@ -123,11 +123,11 @@ namespace Core
   * @author libaojun (libaojunqd@foxmail.com)
   * @date 2024-04-08
   */
-    class FITKCoreAPI FITKAbstractGraph3DWidget : public FITKAbstractGraphWidget
+    class FCCORE_API FCAbstractGraph3DWidget : public FCAbstractGraphWidget
     {
     public:
-        using FITKAbstractGraphWidget::FITKAbstractGraphWidget;
-        virtual ~FITKAbstractGraph3DWidget() = 0 ;
+        using FCAbstractGraphWidget::FCAbstractGraphWidget;
+        virtual ~FCAbstractGraph3DWidget() = 0 ;
 
         /**
         * @brief 设置相机视角
@@ -144,7 +144,7 @@ namespace Core
         * @author libaojun (libaojunqd@foxmail.com)
         * @date 2024-06-13
         */
-        virtual void setView(FITKGraph3DStandardView v);
+        virtual void setView(FCGraph3DStandardView v);
         /**
          * @brief 获取当前相机视角
          * @param[o]  pos            相机位置三坐标
@@ -179,11 +179,11 @@ namespace Core
     * @author libaojun (libaojunqd@foxmail.com)
     * @date 2024-04-08
     */
-    class FITKCoreAPI FITKAbstractGraph2DWidget : public FITKAbstractGraphWidget
+    class FCCoreAPI FCAbstractGraph2DWidget : public FCAbstractGraphWidget
     {
     public:
-        using FITKAbstractGraphWidget::FITKAbstractGraphWidget;
-        virtual ~FITKAbstractGraph2DWidget() = 0 ;
+        using FCAbstractGraphWidget::FCAbstractGraphWidget;
+        virtual ~FCAbstractGraph2DWidget() = 0 ;
     };
 }
 

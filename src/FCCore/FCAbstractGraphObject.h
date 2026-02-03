@@ -8,45 +8,45 @@
 
 /**
  *
- * @file FITKAbstractGraphObject.h
+ * @file FCAbstractGraphObject.h
  * @brief 显示对象与显示对象管理器声明
  * @author LiBaojun (libaojunqd@foxmail.com)
  * @date 2024-04-18
  *
  */
-#ifndef _FITKABSTRACTGRAPH_OBJECT_H__
-#define _FITKABSTRACTGRAPH_OBJECT_H__
+#ifndef _FCABSTRACTGRAPH_OBJECT_H__
+#define _FCABSTRACTGRAPH_OBJECT_H__
 
 #include <QObject>
-#include "FITKAbstractObject.hpp"
-#include "FITKCoreAPI.h"
+#include "FCAbstractObject.hpp"
+#include "FCCoreAPI.h"
 #include <QList>
 
-#ifndef FITKGraphObjectRegist
-#define FITKGraphObjectRegist( \
+#ifndef FCGraphObjectRegist
+#define FCGraphObjectRegist( \
     thisClass, superclass) \
 protected: \
     virtual const char* GetClassName() const { return #thisClass; } \
 public: \
     typedef superclass Superclass; \
-    static thisClass* SafeDownCast(Core::FITKAbstractGraphObject* o) \
+    static thisClass* SafeDownCast(Core::FCAbstractGraphObject* o) \
     { \
         return dynamic_cast<thisClass*>(o); \
     }
-#endif // !FITKGraphObjectRegist
+#endif // !FCGraphObjectRegist
 
 namespace Core
 {
-    class FITKAbstractDataObject;
-    class FITKAbstractGraphWidget;
+    class FCAbstractDataObject;
+    class FCAbstractGraphWidget;
 
     /**
      * @brief 显示对象抽象类
      * @author LiBaojun (libaojunqd@foxmail.com)
      * @date 2024-04-18
      */
-    class FITKCoreAPI FITKAbstractGraphObject
-        :public QObject,  public FITKAbstractObject
+    class FCCORE_API FCAbstractGraphObject
+        :public QObject//,  public FCAbstractObject
     {
         Q_OBJECT
     public:
@@ -56,41 +56,41 @@ namespace Core
          * @author LiBaojun (libaojunqd@foxmail.com)
          * @date 2024-04-18
          */
-        explicit FITKAbstractGraphObject(FITKAbstractDataObject* data);
+        explicit FCAbstractGraphObject(FCAbstractDataObject* data);
         /**
-         * @brief Destroy the FITKAbstractGraphObject object
+         * @brief Destroy the FCAbstractGraphObject object
          * @author LiBaojun (libaojunqd@foxmail.com)
          * @date 2024-04-18
          */
-        virtual ~FITKAbstractGraphObject() = 0;
+        virtual ~FCAbstractGraphObject() = 0;
         /**
          * @brief 设置数据对象
          * @param[i]  dataobj        数据对象
          * @author LiBaojun (libaojunqd@foxmail.com)
          * @date 2024-04-18
          */
-        void setDataObject(FITKAbstractDataObject* dataobj);
+        void setDataObject(FCAbstractDataObject* dataobj);
         /**
          * @brief 记录显示窗口
          * @param[i]  gwidget       显示窗口
          * @author LiBaojun (libaojunqd@foxmail.com)
          * @date 2024-04-18
          */
-        void setGraphWidget(FITKAbstractGraphWidget* gwidget );
+        void setGraphWidget(FCAbstractGraphWidget* gwidget );
         /**
          * @brief 获取显示对象所在的窗口
-         * @return FITKAbstractGraphWidget*
+         * @return FCAbstractGraphWidget*
          * @author LiBaojun (libaojunqd@foxmail.com)
          * @date 2024-04-18
          */
-        FITKAbstractGraphWidget* getGraphWidget();
+        FCAbstractGraphWidget* getGraphWidget();
         /**
          * @brief 获取数据对象
-         * @return FITKAbstractDataObject*
+         * @return FCAbstractDataObject*
          * @author LiBaojun (libaojunqd@foxmail.com)
          * @date 2024-04-18
          */
-        FITKAbstractDataObject* getDataOject();
+        FCAbstractDataObject* getDataOject();
         /**
          * @brief 从显示窗口移除
          * @author LiBaojun (libaojunqd@foxmail.com)
@@ -112,7 +112,7 @@ namespace Core
          * @author LiBaojun (libaojunqd@foxmail.com)
          * @date 2024-04-18
          */
-        void graphObjDestroyedSig(FITKAbstractGraphObject* gobj);
+        void graphObjDestroyedSig(FCAbstractGraphObject* gobj);
 
     protected:
         /**
@@ -120,13 +120,13 @@ namespace Core
          * @author LiBaojun (libaojunqd@foxmail.com)
          * @date 2024-04-18
          */
-        FITKAbstractDataObject* _dataObj{};
+        FCAbstractDataObject* _dataObj{};
         /**
          * @brief 显示窗口对象
          * @author LiBaojun (libaojunqd@foxmail.com)
          * @date 2024-04-18
          */
-        FITKAbstractGraphWidget* _graphWidget{};
+        FCAbstractGraphWidget* _graphWidget{};
     };
 
     /**
@@ -134,23 +134,23 @@ namespace Core
      * @author LiBaojun (libaojunqd@foxmail.com)
      * @date 2024-04-18
      */
-    class FITKCoreAPI FITKGraphObjManager
-        : public QObject, public FITKAbstractObject
+    class FCCORE_API FCGraphObjManager
+        : public QObject, public FCAbstractObject
     {
         Q_OBJECT
     public:
         /**
-         * @brief Construct a new FITKGraphObjManager object
+         * @brief Construct a new FCGraphObjManager object
          * @author LiBaojun (libaojunqd@foxmail.com)
          * @date 2024-04-18
          */
-        explicit FITKGraphObjManager() = default;
+        explicit FCGraphObjManager() = default;
         /**
-         * @brief Destroy the FITKGraphObjManager object
+         * @brief Destroy the FCGraphObjManager object
          * @author LiBaojun (libaojunqd@foxmail.com)
          * @date 2024-04-18
          */
-        virtual ~FITKGraphObjManager();
+        virtual ~FCGraphObjManager();
         /**
          * @brief 清空管理器
          * @author LiBaojun (libaojunqd@foxmail.com)
@@ -163,14 +163,14 @@ namespace Core
          * @author LiBaojun (libaojunqd@foxmail.com)
          * @date 2024-04-18
          */
-        virtual void appendGraphObj(FITKAbstractGraphObject* gobj);
+        virtual void appendGraphObj(FCAbstractGraphObject* gobj);
         /**
          * @brief 移除显示对象
          * @param[i]  obj            显示对象
          * @author LiBaojun (libaojunqd@foxmail.com)
          * @date 2024-04-18
          */
-        virtual void removeGraphObj(FITKAbstractGraphObject* obj);
+        virtual void removeGraphObj(FCAbstractGraphObject* obj);
             /**
          * @brief 移除显示对象
          * @param[i]  index          显示对象索引
@@ -186,7 +186,7 @@ namespace Core
          * @author LiBaojun (libaojunqd@foxmail.com)
          * @date 2024-04-18
          */
-        virtual bool isContains(FITKAbstractGraphObject* gobj);
+        virtual bool isContains(FCAbstractGraphObject* gobj);
         /**
          * @brief 获取显示对象数量
          * @return int
@@ -197,11 +197,11 @@ namespace Core
         /**
          * @brief 获取显示对象
          * @param[i]  index          显示对象索引
-         * @return FITKAbstractGraphObject*
+         * @return FCAbstractGraphObject*
          * @author LiBaojun (libaojunqd@foxmail.com)
          * @date 2024-04-18
          */
-        FITKAbstractGraphObject* getGraphObjAt(const int index);
+        FCAbstractGraphObject* getGraphObjAt(const int index);
 
         template <class T>
         /**
@@ -223,7 +223,7 @@ namespace Core
          * @author LiBaojun (libaojunqd@foxmail.com)
          * @date 2024-04-18
          */
-        void removeGraphObjSlot(FITKAbstractGraphObject* obj);
+        void removeGraphObjSlot(FCAbstractGraphObject* obj);
 
     protected:
         /**
@@ -231,7 +231,7 @@ namespace Core
          * @author LiBaojun (libaojunqd@foxmail.com)
          * @date 2024-04-18
          */
-        QList<FITKAbstractGraphObject*> _graphObjList{};
+        QList<FCAbstractGraphObject*> _graphObjList{};
     };
 
 
@@ -239,4 +239,4 @@ namespace Core
 
 
 
-#endif // !_FITKABSTRACTGRAPH_OBJECT_H__
+#endif // !_FCABSTRACTGRAPH_OBJECT_H__
