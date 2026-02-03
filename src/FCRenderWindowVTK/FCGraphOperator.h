@@ -17,7 +17,7 @@
 #ifndef _FCGraphOperator_H_
 #define _FCGraphOperator_H_
 
-#include "FITK_Kernel/FITKCore/FITKAbstractOperator.h"
+#include "FCAbstractOperator.h"
 #include "FCRenderWindowVTKAPI.h"
 
 namespace Comp

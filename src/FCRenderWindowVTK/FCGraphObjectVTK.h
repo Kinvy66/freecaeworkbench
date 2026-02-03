@@ -18,8 +18,8 @@
 #define _FCGraphObject_H_VTK_
 
 #include "FCRenderWindowVTKAPI.h"
-#include "FITK_Kernel/FITKCore/FITKAbstractGraphObject.h"
-#include "FITK_Kernel/FITKCore/FITKCoreMacros.h"
+#include "FCAbstractGraphObject.h"
+#include "FCCoreMacros.h"
 #include <QObject>
 
 class vtkProp;

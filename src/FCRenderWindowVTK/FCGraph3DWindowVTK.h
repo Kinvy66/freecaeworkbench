@@ -19,7 +19,7 @@
 
 #include "FCRenderWindowVTKAPI.h"
 #include "FCGraph3DWindowInterface.h"
-#include "FITK_Kernel/FITKCore/FITKAbstractGraphWidget.h"
+#include "FCAbstractGraphWidget.h"
 
 #include <QWidget>
 #include <QMutex>
@@ -85,12 +85,12 @@ namespace FC
      * @date 2024-03-14
      */
     class FCRENDERWINDOWVTK_API FCGraph3DWindowVTK 
-        : public Core::FITKAbstractGraph3DWidget
+        : public Core::FCAbstractGraph3DWidget
     {
         Q_OBJECT;
     public:
         /**
-         * @brief Construct a new FITKGraph3DWindow object
+         * @brief Construct a new FCGraph3DWindow object
          * @param[i]  info           渲染窗口信息
          * @param[i]  gInterface     渲染窗口对应接口类
          * @author BaGuijun (baguijun@163.com)
@@ -328,7 +328,7 @@ namespace FC
          * @author libaojun (libaojunqd@foxmail.com)
          * @date 2024-04-11
          */
-        void removeGraphObj(Core::FITKAbstractGraphObject* gobj) override;
+        void removeGraphObj(Core::FCAbstractGraphObject* gobj) override;
 
         /**
          * @brief 获取渲染对象数量

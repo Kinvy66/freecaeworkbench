@@ -8,10 +8,10 @@
 
 #include "FCGraphInteractionStyle.h"
 #include "FCGraphAreaPicker.h"
-#include "FITK_Kernel/FITKAppFramework/FITKAppFramework.h"
-#include "FITK_Kernel/FITKAppFramework/FITKGlobalData.h"
-#include "FITK_Kernel/FITKAppFramework/FITKKeyMouseStates.h"
-#include "FITK_Kernel/FITKCore/FITKCoreMacros.h"
+#include "FCAppFramework.h"
+#include "FCGlobalData.h"
+#include "FCKeyMouseStates.h"
+#include "FCCoreMacros.h"
 #include <vtkRenderWindowInteractor.h>
 
 namespace Comp
