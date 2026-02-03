@@ -179,7 +179,7 @@ namespace Core
     * @author libaojun (libaojunqd@foxmail.com)
     * @date 2024-04-08
     */
-    class FCCoreAPI FCAbstractGraph2DWidget : public FCAbstractGraphWidget
+    class FCCORE_API FCAbstractGraph2DWidget : public FCAbstractGraphWidget
     {
     public:
         using FCAbstractGraphWidget::FCAbstractGraphWidget;

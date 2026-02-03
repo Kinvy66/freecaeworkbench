@@ -7,7 +7,7 @@
  */
 
 #include "FCAbstractGraphObject.h"
-#include "FITKAbstractGraphWidget.h"
+#include "FCAbstractGraphWidget.h"
 
 namespace Core
 {
@@ -15,7 +15,7 @@ namespace Core
      * @brief 构造函数，初始化图形对象。
      * @param data 指向关联数据对象的指针。
      */
-    FITKAbstractGraphObject::FITKAbstractGraphObject(FITKAbstractDataObject* data)
+    FCAbstractGraphObject::FCAbstractGraphObject(FCAbstractDataObject* data)
         :_dataObj(data)
     {
     }
@@ -23,7 +23,7 @@ namespace Core
     /**
      * @brief 析构函数，释放资源并发出图形对象销毁信号。
      */
-    FITKAbstractGraphObject::~FITKAbstractGraphObject()
+    FCAbstractGraphObject::~FCAbstractGraphObject()
     {
         emit this->graphObjDestroyedSig(this); // 发出图形对象销毁的信号
     }
@@ -32,7 +32,7 @@ namespace Core
      * @brief 设置关联的数据对象。
      * @param dataobj 指向要设置的数据对象的指针。
      */
-    void FITKAbstractGraphObject::setDataObject(FITKAbstractDataObject* dataobj)
+    void FCAbstractGraphObject::setDataObject(FCAbstractDataObject* dataobj)
     {
         _dataObj = dataobj;
     }
@@ -41,7 +41,7 @@ namespace Core
      * @brief 设置关联的图形小部件。
      * @param gwidget 指向要设置的图形小部件的指针。
      */
-    void FITKAbstractGraphObject::setGraphWidget(FITKAbstractGraphWidget* gwidget)
+    void FCAbstractGraphObject::setGraphWidget(FCAbstractGraphWidget* gwidget)
     {
         _graphWidget = gwidget;
     }
@@ -50,7 +50,7 @@ namespace Core
      * @brief 获取关联的图形小部件。
      * @return 返回关联的图形小部件的指针。
      */
-    Core::FITKAbstractGraphWidget* FITKAbstractGraphObject::getGraphWidget()
+    Core::FCAbstractGraphWidget* FCAbstractGraphObject::getGraphWidget()
     {
         return _graphWidget;
     }
@@ -59,7 +59,7 @@ namespace Core
      * @brief 获取关联的数据对象。
      * @return 返回关联的数据对象的指针。
      */
-    Core::FITKAbstractDataObject* FITKAbstractGraphObject::getDataOject()
+    Core::FCAbstractDataObject* FCAbstractGraphObject::getDataOject()
     {
         return _dataObj;
     }
@@ -68,14 +68,14 @@ namespace Core
      * @brief 从图形小部件中移除当前图形对象。
      * 如果当前图形对象没有关联的图形小部件，则不执行任何操作。
      */
-    void FITKAbstractGraphObject::removeFromGraphWidget()
+    void FCAbstractGraphObject::removeFromGraphWidget()
     {
         if (_graphWidget == nullptr) return;
         _graphWidget->removeGraphObj(this);
         _graphWidget = nullptr;
     }
 
-    void FITKAbstractGraphObject::update(bool mandatory /*= false*/)
+    void FCAbstractGraphObject::update(bool mandatory /*= false*/)
     {
 
     }
@@ -83,7 +83,7 @@ namespace Core
     /**
      * @brief 析构函数，清除管理的所有图形对象。
      */
-    FITKGraphObjManager::~FITKGraphObjManager()
+    FCGraphObjManager::~FCGraphObjManager()
     {
         this->clear(); // 清除管理的所有图形对象
     }
@@ -91,7 +91,7 @@ namespace Core
     /**
      * @brief 清除管理的图形对象列表。
      */
-    void FITKGraphObjManager::clear()
+    void FCGraphObjManager::clear()
     {
         _graphObjList.clear(); // 清除图形对象列表
     }
@@ -102,12 +102,12 @@ namespace Core
      * 添加时建立图形对象销毁信号与管理器的槽函数之间的连接，
      * 以便在图形对象销毁时自动从管理器中移除。
      */
-    void FITKGraphObjManager::appendGraphObj(FITKAbstractGraphObject* gobj)
+    void FCGraphObjManager::appendGraphObj(FCAbstractGraphObject* gobj)
     {
         if (gobj == nullptr) return;
         _graphObjList.append(gobj);
-        connect(gobj, SIGNAL(graphObjDestroyedSig(FITKAbstractGraphObject*)),
-            this, SLOT(removeGraphObjSlot(FITKAbstractGraphObject*)));
+        connect(gobj, SIGNAL(graphObjDestroyedSig(FCAbstractGraphObject*)),
+            this, SLOT(removeGraphObjSlot(FCAbstractGraphObject*)));
     }
 
     /**
@@ -116,12 +116,12 @@ namespace Core
      * 若传入的对象不在管理器中，则不执行任何操作。
      * 移除时断开图形对象销毁信号与管理器槽函数之间的连接。
      */
-    void FITKGraphObjManager::removeGraphObj(FITKAbstractGraphObject* obj)
+    void FCGraphObjManager::removeGraphObj(FCAbstractGraphObject* obj)
     {
         if (!_graphObjList.contains(obj)) return;
         _graphObjList.removeOne(obj);
-        disconnect(obj, SIGNAL(graphObjDestroyedSig(FITKAbstractGraphObject*)),
-            this, SLOT(removeGraphObjSlot(FITKAbstractGraphObject*)));
+        disconnect(obj, SIGNAL(graphObjDestroyedSig(FCAbstractGraphObject*)),
+            this, SLOT(removeGraphObjSlot(FCAbstractGraphObject*)));
     }
 
     /**
@@ -129,7 +129,7 @@ namespace Core
      * @param index 待移除图形对象的索引位置。
      * 若索引超出有效范围，则按该索引从管理器中移除对应的图形对象。
      */
-    void FITKGraphObjManager::removeGraphObj(const int index)
+    void FCGraphObjManager::removeGraphObj(const int index)
     {
         if (index < 0 || index >= _graphObjList.size())
         {
@@ -142,7 +142,7 @@ namespace Core
      * @param gobj 指向待检查的图形对象的指针。
      * @return 如果管理器包含指定图形对象，返回 true；否则返回 false。
      */
-    bool FITKGraphObjManager::isContains(FITKAbstractGraphObject* gobj)
+    bool FCGraphObjManager::isContains(FCAbstractGraphObject* gobj)
     {
         return _graphObjList.contains(gobj);
     }
@@ -151,7 +151,7 @@ namespace Core
      * @brief 获取图形对象管理器中的图形对象数量。
      * @return 返回管理器中当前存储的图形对象数量。
      */
-    int FITKGraphObjManager::getGraphObjCount()
+    int FCGraphObjManager::getGraphObjCount()
     {
         return _graphObjList.size();
     }
@@ -161,7 +161,7 @@ namespace Core
      * @param index 待获取图形对象的索引位置。
      * @return 如果索引在有效范围内，返回对应位置的图形对象指针；否则返回 nullptr。
      */
-    FITKAbstractGraphObject* FITKGraphObjManager::getGraphObjAt(const int index)
+    FCAbstractGraphObject* FCGraphObjManager::getGraphObjAt(const int index)
     {
         if (index < 0 || index >= _graphObjList.size())
             return nullptr;
@@ -172,7 +172,7 @@ namespace Core
      * @brief 私有槽函数，用于响应图形对象销毁信号并从管理器中移除相应对象。
      * @param obj 指向被销毁的图形对象的指针。
      */
-    void FITKGraphObjManager::removeGraphObjSlot(FITKAbstractGraphObject* obj)
+    void FCGraphObjManager::removeGraphObjSlot(FCAbstractGraphObject* obj)
     {
         this->removeGraphObj(obj);
     }
